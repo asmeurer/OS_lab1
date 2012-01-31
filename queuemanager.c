@@ -1,7 +1,7 @@
 /* The Queue manager! */
 
 /* Remove this */
-/* #include<stdio.h> */
+#include<stdio.h>
 
 /* NULL is in stdio.h.  Redefining NULL gives a warning, so call it null
    instead. */
@@ -90,13 +90,13 @@ void clear(struct process_control_block *process){
   process->next = null;
   process->prev = null;
   /*Set as empty*/
-  process->empty = 0;
+  process->empty = 1;
 }
 
 
 int dequeue(){
   /*If queue is empty*/
-  if (head->empty == 0){
+  if (head == null){
     return -1;
   }
   int ret = head->pid;
@@ -109,10 +109,12 @@ int dequeue(){
   else{
     /*Reset head pointer*/
     head = head->prev;
+    head->next = null;
   }
   clear(temp);
   return(ret);
 }
+
 struct process_control_block *find_process(int id){
   struct process_control_block *temp = tail;
   while(temp != null){
@@ -138,11 +140,15 @@ int delete(int id){
   }
   /*If entry is at tail*/
   else if(temp->prev == null){
+    printf("entry at tail\n");
     tail = temp->next;
+    tail->prev = null;
   }
   /*If entry is at head*/
   else if(temp->next == null){
+    printf("entry at head\n");
     head = temp->prev;
+    head->next = null;
   }
   /*If entry is in the middle*/
   else{
