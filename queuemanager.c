@@ -1,7 +1,9 @@
-/* The Queue manager! */
+/* The Queue manager!
 
-/* Remove this */
-#include<stdio.h>
+   Aaron Meurer
+   Oran Wallace
+   Sheng Lundquist
+*/
 
 /* NULL is in stdio.h.  Redefining NULL gives a warning, so call it null
    instead. */

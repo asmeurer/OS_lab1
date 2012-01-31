@@ -1,4 +1,9 @@
-/* The test file! */
+/* The test file!
+
+   Aaron Meurer
+   Oran Wallace
+   Sheng Lundquist
+*/
 
 #include<stdio.h>
 #include<string.h>
