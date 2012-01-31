@@ -50,5 +50,9 @@ int main() {
     /* listQ(); */
   }
   listQ();
+
+  r = dequeue();
+  printf("return value: %d\n", r);
+  listQ();
   return(0);
 }
