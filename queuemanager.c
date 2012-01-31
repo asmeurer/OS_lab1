@@ -3,7 +3,9 @@
 /* Remove this */
 /* #include<stdio.h> */
 
-#define NULL 0
+/* NULL is in stdio.h.  Redefining NULL gives a warning, so call it null
+   instead. */
+#define null 0
 #define NUM_REGS 3
 #define MAX_PROCESSES 20
 struct process_control_block {
@@ -17,8 +19,8 @@ struct process_control_block {
 };
 
 struct process_control_block process[MAX_PROCESSES];
-struct process_control_block *head = NULL;
-struct process_control_block *tail = NULL;
+struct process_control_block *head = null;
+struct process_control_block *tail = null;
 
 void init();
 struct process_control_block *find_nonempty();
@@ -38,7 +40,7 @@ struct process_control_block *find_nonempty() {
       return &process[i];
     }
   }
-  return NULL;
+  return null;
 }
 
 int enqueue(int pid, int psw, int page_table, int *regs) {
@@ -65,7 +67,6 @@ int enqueue(int pid, int psw, int page_table, int *regs) {
   } else {
     /* This is the first element of the queue */
     head = newprocess;
-    printf("Setting the head\n");
   }
   tail = newprocess;
 
