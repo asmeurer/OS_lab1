@@ -54,5 +54,29 @@ int main() {
   r = dequeue();
   printf("return value: %d\n", r);
   listQ();
+
+  r = delete(3);
+  printf("return value: %d\n", r);
+  listQ();
+
+  r = delete(1);
+  printf("return value: %d\n", r);
+  listQ();
+
+  printf("deleting 19\n");
+  r = delete(19);
+  printf("return value: %d\n", r);
+  listQ();
+
+  r = delete(21);
+  printf("return value: %d\n", r);
+  listQ();
+
+  for (i = 1; i < 21; i++) {
+    r = dequeue();
+    printf("return value: %d\n", r);
+    listQ();
+  }
+
   return(0);
 }
