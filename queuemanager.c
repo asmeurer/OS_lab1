@@ -25,15 +25,10 @@ struct process_control_block *tail = null;
 void init();
 struct process_control_block *find_nonempty();
 int enqueue(int pid, int psw, int page_table, int *regs);
-
-
-/*CHANGED*/
-/*Process must exist for clear function*/
 void clear(struct process_control_block *process);
 struct process_control_block *find_process(int pid);
 int dequeue();
 int delete(int id);
-/*ENDCHANGE*/
 
 void init() {
   int i = 0;
@@ -83,9 +78,6 @@ int enqueue(int pid, int psw, int page_table, int *regs) {
   return(0);
 }
 
-
-
-/*CHANGE*/
 /*Process must exist for clear function*/
 void clear(struct process_control_block *process){
 	process->pid = 0;
@@ -148,8 +140,4 @@ int delete(int id){
 		tail = temp->next;
 	}
 	/*If entry is at head*/
-	
-	
 }
-
-/*ENDCHANGE*/
