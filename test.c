@@ -1,6 +1,7 @@
 /* The test file! */
 
 #include<stdio.h>
+#include<string.h>
 #include "queuemanager.c"
 
 void printprocess(struct process_control_block process);
@@ -17,7 +18,7 @@ void printprocess(struct process_control_block process) {
   for (i = 0; i < NUM_REGS; i++) {
     printf("  %d\n", process.regs[i]);
   }
-  printf("\n");
+  /* printf("\n"); */
 }
 
 void listQ() {
@@ -27,56 +28,79 @@ void listQ() {
     printprocess(*temp);
     temp = temp->prev;
   }
-  printf("End of queue.\n\n");
+  printf("\nEnd of queue.\n\n");
 }
 
 int main() {
   int i = 0;
   int r = 0;
+  char line[100];
+  char delim[] = " \n";
+  char *command;
+  char *args[6];
+  int pid = 0;
+  int psw = 0;
+  int page_table = 0;
+  int reg1 = 0;
+  int reg2 = 0;
+  int reg3 = 0;
+  int regs[3];
 
   init();
-  listQ();
-  int regs1[3] = {3, 4, 5};
-  r = enqueue(0, 2, 3, regs1);
-  printf("return value: %d\n", r);
-  listQ();
-  int regs2[3] = {10, 14, 23};
-  r = enqueue(1, 21, 22, regs2);
-  printf("return value: %d\n", r);
-  listQ();
-  for (i = 2; i < 21; i++){
-    r = enqueue(i, i, i, regs1);
-    printf("return value: %d\n", r);
-    /* listQ(); */
+
+  FILE *file = fopen("tests", "r");
+
+  while(fgets(line, 100, file) != NULL) {
+    /* printf("reading the file\n"); */
+    command = strtok(line, delim);
+
+    /* printf("%s\n", line); */
+    /* printf("%s\n", command); */
+
+    if (!strcmp(command, "init_Q")) {
+      /* printf("initializing\n"); */
+      init();
+    }
+    else if (!strcmp(command, "list")) {
+      /* printf("listing\n"); */
+      listQ();
+    }
+    else if (!strcmp(command, "enqueue")) {
+      /* printf("enqueueing\n"); */
+      for (i = 0; i < 6; i++) {
+        args[i] = strtok(NULL, delim);
+      }
+      pid = atoi(args[0]);
+      psw = atoi(args[1]);
+      page_table = atoi(args[2]);
+      reg1 = atoi(args[3]);
+      reg2 = atoi(args[4]);
+      reg3 = atoi(args[5]);
+
+      /* printf("pid: %d, psw: %d, page_table: %d, reg1: %d, reg2: %d, reg3: %d\n", pid, psw, page_table, reg1, reg2, reg3); */
+      regs[0] = reg1;
+      regs[1] = reg2;
+      regs[2] = reg3;
+
+      enqueue(pid, psw, page_table, regs);
+    }
+    else if (!strcmp(command, "dequeue")) {
+      /* printf("dequeueing\n"); */
+      r = dequeue();
+      printf("%d\n", r);
+    }
+    else if (!strcmp(command, "delete")) {
+      /* printf("deleting\n"); */
+      pid = atoi(strtok(NULL, delim));
+      r = delete(pid);
+      printf("%d\n", r);
+    }
+    else {
+      printf("Unrecognized command: %s\n", command);
+    }
   }
-  listQ();
 
-  r = dequeue();
-  printf("return value: %d\n", r);
-  listQ();
-
-  r = delete(3);
-  printf("return value: %d\n", r);
-  listQ();
-
-  r = delete(1);
-  printf("return value: %d\n", r);
-  listQ();
-
-  printf("deleting 19\n");
-  r = delete(19);
-  printf("return value: %d\n", r);
-  listQ();
-
-  r = delete(21);
-  printf("return value: %d\n", r);
-  listQ();
-
-  for (i = 1; i < 21; i++) {
-    r = dequeue();
-    printf("return value: %d\n", r);
-    listQ();
-  }
+  close(file);
 
   return(0);
 }
