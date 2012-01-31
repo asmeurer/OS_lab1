@@ -22,11 +22,15 @@ void listQ() {
   struct process_control_block *temp = head;
   while (temp) {
     printprocess(*temp);
-    temp = temp->next;
+    temp = temp->prev;
   }
 }
 
 int main() {
+  init();
+  listQ();
+  int regs1[3] = {3, 4, 5};
+  enqueue(1, 2, 3, regs1);
   listQ();
   return(0);
 }
