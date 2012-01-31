@@ -1,5 +1,6 @@
 /* The Queue manager! */
 
+#define NULL 0
 #define NUM_REGS 3
 #define MAX_PROCESSES 20
 struct process_control_block {
@@ -18,9 +19,9 @@ int i = 0;
 struct process_control_block *head = NULL;
 struct process_control_block *tail = NULL;
 
-int enqueue(int pid, int psw, int page_table, int *regs);
+void init();
 struct process_control_block *find_nonempty();
-viod init();
+int enqueue(int pid, int psw, int page_table, int *regs);
 
 void init() {
   for (i = 0; i < MAX_PROCESSES; i++) {
