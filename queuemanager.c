@@ -14,6 +14,7 @@ struct process_control_block {
 struct process_control_block process[MAX_PROCESSES];
 
 int size = 0;
+int i = 0
 
 int enqueue(int pid, int psw, int page_table, int *regs);
 
@@ -22,6 +23,11 @@ int enqueue(int pid, int psw, int page_table, int *regs){
     return(-1)
       } else {
     /* Enqueue */
-
+    process_control_block[size].pid = pid;
+    process_control_block[size].psw = psw;
+    process_control_block[size].page_table = page_table;
+    for (i = 0; i < NUM_REGS; i++){
+      process_control_block[size].regs[i] = regs[i];
+    }
   }
 }
