@@ -26,6 +26,15 @@ void init();
 struct process_control_block *find_nonempty();
 int enqueue(int pid, int psw, int page_table, int *regs);
 
+
+/*CHANGED*/
+/*Process must exist for clear function*/
+void clear(struct process_control_block *process);
+struct process_control_block *find_process(int pid);
+int dequeue();
+int delete(int id);
+/*ENDCHANGE*/
+
 void init() {
   int i = 0;
   for (i = 0; i < MAX_PROCESSES; i++) {
@@ -73,3 +82,74 @@ int enqueue(int pid, int psw, int page_table, int *regs) {
 
   return(0);
 }
+
+
+
+/*CHANGE*/
+/*Process must exist for clear function*/
+void clear(struct process_control_block *process){
+	process->pid = 0;
+	process->psw = 0;
+	process->page_table = 0;
+	for (i = 0; i < NUM_REGS; i++) {
+      process->regs[i] = 0;
+    }
+	process->next = NULL;
+	process->prev = NULL;
+	/*Set as empty*/
+	process->empty = 0;
+}
+
+
+int dequeue(){
+	/*If queue is empty*/
+	if (head->empty == 0){
+		return -1;
+	}
+	int ret = head->pid;
+	struct process_control_block *temp = head;
+	/*If entry is only one in queue*/
+	if(head->prev == NULL){
+		head = NULL;
+		tail = NULL;
+	}
+	else{
+		/*Reset head pointer*/
+		head = head->prev;
+	}
+	clear(temp);
+	return(ret);
+}
+struct process_control_block *find_process(int id){
+	struct process_control_block temp = tail;
+	while(temp != NULL){
+		if(id == temp->pid){
+			return temp;
+		}
+		temp = temp->next;
+	}
+	return NULL;
+}
+
+int delete(int id){
+	struct process_control_block *temp = find_process(id);
+	/*If process doesnt exist*/
+	if (temp == NULL){
+		return -1;
+	}
+	int ret = temp->pid;
+	/*If entry is only one in queue*/
+	if(temp->next == NULL && temp->prev == NULL){
+		head = NULL;
+		tail = NULL;
+	}
+	/*If entry is at tail*/
+	else if(temp->prev == NULL){
+		tail = temp->next;
+	}
+	/*If entry is at head*/
+	
+	
+}
+
+/*ENDCHANGE*/
