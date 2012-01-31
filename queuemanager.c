@@ -114,31 +114,42 @@ int dequeue(){
 	return(ret);
 }
 struct process_control_block *find_process(int id){
-	struct process_control_block *temp = tail;
-	while(temp != null){
-		if(id == temp->pid){
-			return temp;
-		}
-		temp = temp->next;
-	}
-	return null;
+  struct process_control_block *temp = tail;
+  while(temp != null){
+    if(id == temp->pid){
+      return temp;
+    }
+    temp = temp->next;
+  }
+  return null;
 }
 
 int delete(int id){
-	struct process_control_block *temp = find_process(id);
-	/*If process doesnt exist*/
-	if (temp == null){
-		return -1;
-	}
-	int ret = temp->pid;
-	/*If entry is only one in queue*/
-	if(temp->next == null && temp->prev == null){
-		head = null;
-		tail = null;
-	}
-	/*If entry is at tail*/
-	else if(temp->prev == null){
-		tail = temp->next;
-	}
-	/*If entry is at head*/
+  struct process_control_block *temp = find_process(id);
+  /*If process doesn't exist*/
+  if (temp == null){
+    return -1;
+  }
+  int ret = temp->pid;
+  /*If entry is only one in queue*/
+  if(temp->next == null && temp->prev == null){
+    head = null;
+    tail = null;
+  }
+  /*If entry is at tail*/
+  else if(temp->prev == null){
+    tail = temp->next;
+  }
+  /*If entry is at head*/
+  else if(temp->next == null){
+    head = temp->prev;
+  }
+  /*If entry is in the middle*/
+  else{
+    temp->prev->next = temp->next;
+    temp->next->prev = temp->prev;
+  }
+  clear(temp);
+  return (ret);
+
 }
