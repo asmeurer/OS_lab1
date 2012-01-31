@@ -1,5 +1,8 @@
 /* The Queue manager! */
 
+/* Remove this */
+/* #include<stdio.h> */
+
 #define NULL 0
 #define NUM_REGS 3
 #define MAX_PROCESSES 20
@@ -24,7 +27,7 @@ int enqueue(int pid, int psw, int page_table, int *regs);
 void init() {
   int i = 0;
   for (i = 0; i < MAX_PROCESSES; i++) {
-  process[i].empty = 0;
+  process[i].empty = 1;
  }
 }
 
@@ -62,6 +65,7 @@ int enqueue(int pid, int psw, int page_table, int *regs) {
   } else {
     /* This is the first element of the queue */
     head = newprocess;
+    printf("Setting the head\n");
   }
   tail = newprocess;
 
