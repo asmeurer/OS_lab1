@@ -142,13 +142,11 @@ int delete(int id){
   }
   /*If entry is at tail*/
   else if(temp->prev == null){
-    printf("entry at tail\n");
     tail = temp->next;
     tail->prev = null;
   }
   /*If entry is at head*/
   else if(temp->next == null){
-    printf("entry at head\n");
     head = temp->prev;
     head->next = null;
   }
