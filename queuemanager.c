@@ -61,8 +61,8 @@ int enqueue(int pid, int psw, int page_table, int *regs) {
   } else {
     /* This is the first element of the queue */
     head = newprocess;
-    tail = newprocess;
   }
+  tail = newprocess;
 
   return(0);
 }
