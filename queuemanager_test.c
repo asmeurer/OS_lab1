@@ -87,18 +87,29 @@ int main() {
       regs[1] = reg2;
       regs[2] = reg3;
 
-      enqueue(pid, psw, page_table, regs);
+      r = enqueue(pid, psw, page_table, regs);
+      if (r == -1) {
+        printf("Could not enqueue; queue full.");
+      }
     }
     else if (!strcmp(command, "dequeue")) {
       /* printf("dequeueing\n"); */
       r = dequeue();
-      printf("%d\n", r);
+      if (r == -1) {
+        printf("Could not dequeue: queue empty.");
+      } else {
+        printf("%d\n", r);
+      }
     }
     else if (!strcmp(command, "delete")) {
       /* printf("deleting\n"); */
       pid = atoi(strtok(NULL, delim));
       r = delete(pid);
-      printf("%d\n", r);
+      if (r == -1) {
+        printf("Could not dequeue: queue empty.");
+      } else {
+        printf("%d\n", r);
+      }
     }
     else {
       printf("Unrecognized command: %s\n", command);
