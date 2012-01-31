@@ -14,8 +14,6 @@ struct process_control_block {
 };
 
 struct process_control_block process[MAX_PROCESSES];
-
-int i = 0;
 struct process_control_block *head = NULL;
 struct process_control_block *tail = NULL;
 
@@ -24,12 +22,14 @@ struct process_control_block *find_nonempty();
 int enqueue(int pid, int psw, int page_table, int *regs);
 
 void init() {
+  int i = 0;
   for (i = 0; i < MAX_PROCESSES; i++) {
   process[i].empty = 0;
  }
 }
 
 struct process_control_block *find_nonempty() {
+  int i = 0;
   for (i = 0; i < MAX_PROCESSES; i++) {
     if (process[i].empty == 1) {
       return &process[i];
@@ -41,6 +41,7 @@ struct process_control_block *find_nonempty() {
 int enqueue(int pid, int psw, int page_table, int *regs) {
   /* Enqueue */
   struct process_control_block *newprocess = find_nonempty();
+  int i = 0;
 
   if (!newprocess) {
     /* The queue if full */
