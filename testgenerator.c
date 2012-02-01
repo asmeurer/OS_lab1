@@ -47,7 +47,7 @@ int main() {
 
   while(input != 6){
 
-    printf("Ender an option: \n");
+    printf("Enter an option: \n");
     scanf("%d", &input);
 
     switch(input){
@@ -98,9 +98,9 @@ int main() {
     default:
 
       if(input == 6){
-        printf("Goodbye.");
+        printf("Goodbye.\n");
       }else{
-        printf("Invalid option.");
+        printf("Invalid option.\n");
       }
       break;
     }

@@ -89,14 +89,14 @@ int main() {
 
             r = enqueue(pid, psw, page_table, regs);
             if (r == -1) {
-                printf("Could not enqueue; queue full.");
+                printf("Could not enqueue; queue full.\n");
             }
         }
         else if (!strcmp(command, "dequeue")) {
             /* printf("dequeueing\n"); */
             r = dequeue();
             if (r == -1) {
-                printf("Could not dequeue: queue empty.");
+                printf("Could not dequeue: queue empty.\n");
             } else {
                 printf("%d\n", r);
             }
