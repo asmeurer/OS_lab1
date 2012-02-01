@@ -106,7 +106,9 @@ int main() {
             pid = atoi(strtok(NULL, delim));
             r = delete(pid);
             if (r == -1) {
-                printf("Could not dequeue: queue empty.");
+                printf("Could not dequeue: process not found.\n");
+            } else if (r == -2) {
+                printf("Could not dequeue: queue empty.\n");
             } else {
                 printf("%d\n", r);
             }

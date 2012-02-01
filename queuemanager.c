@@ -130,6 +130,12 @@ struct process_control_block *find_process(int id){
 
 int delete(int id){
     struct process_control_block *temp = find_process(id);
+
+    if (head == null && tail == null) {
+        /* The queue is empty */
+        return -2;
+    }
+
     /*If process doesn't exist*/
     if (temp == null){
         return -1;
