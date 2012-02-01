@@ -1,10 +1,46 @@
 init_Q
-list
 enqueue 1 33 11 17 15 13
-list
 enqueue 2 35 11 12 9 1
-list
 enqueue 3 12 2 10 19 3
-list
 enqueue 4 26 15 6 12 16
+enqueue 5 11 18 7 9 2
+enqueue 6 30 12 3 7 15
+enqueue 7 29 2 2 18 9
+enqueue 8 17 18 16 11 2
+enqueue 9 29 23 1 19 4
+enqueue 10 37 23 4 15 10
+enqueue 11 13 1 11 0 16
+enqueue 12 23 12 10 16 1
+enqueue 13 5 0 4 7 16
+enqueue 14 5 21 9 13 17
+enqueue 15 24 20 2 5 14
+enqueue 16 17 9 4 3 10
+enqueue 17 37 8 16 18 8
+enqueue 18 34 3 11 14 19
+enqueue 19 32 10 16 8 19
+enqueue 20 12 1 6 14 19
 list
+enqueue 21 45 20 14 18 7
+delete 1
+delete 20
+list
+delete 10
+dequeue
+dequeue
+dequeue
+dequeue
+dequeue
+dequeue
+dequeue
+dequeue
+dequeue
+dequeue
+dequeue
+dequeue
+dequeue
+dequeue
+dequeue
+dequeue
+dequeue
+list
+dequeue
