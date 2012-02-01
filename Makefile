@@ -4,3 +4,6 @@ all:
 	gcc testgenerator.c -o testgenerator.o
 clean:
 	-rm -f *.o
+
+check-syntax:
+	gcc -o nul -Wall -S $(CHK_SOURCES)
