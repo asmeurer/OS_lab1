@@ -7,6 +7,7 @@
 
 #include<stdio.h>
 #include<string.h>
+#include<stdlib.h>
 #include "queuemanager.c"
 
 void printprocess(struct process_control_block process);
@@ -118,7 +119,7 @@ int main() {
         }
     }
 
-    close(file);
+    fclose(file);
 
     return(0);
 }
