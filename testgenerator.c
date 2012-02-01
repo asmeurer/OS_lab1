@@ -1,18 +1,18 @@
 /* Test file generator!
 
-      Aaron Meurer
-         Oran Wallace
-            Sheng Lundquist
+   Aaron Meurer
+   Oran Wallace
+   Sheng Lundquist
 
-              This file is used to generate the file “tests” which is used by “queuemanager_test.c” to perform    various functions of our “queuemanager.c” program.
+   This file is used to generate the file “tests” which is used by
+   “queuemanager_test.c” to perform various functions of our “queuemanager.c”
+   program.
 
 */
 
 #include<stdio.h>
 #include<string.h>
 #include<stdlib.h>
-
-
 
 int main() {
 
@@ -24,14 +24,14 @@ int main() {
   int psw=0, page=0, reg1=0, reg2=0, reg3=0;
 
   if(fp == NULL){
-    printf("File does not exsist");
+    printf("File does not exist.\n");
     exit(1);
   }
 
   output = fopen(outputFilename, mode);
 
   if(output == NULL){
-    printf("Cannot get output file");
+    printf("Cannot get output file.\n");
 
     exit(1);
   }
@@ -55,7 +55,7 @@ int main() {
       fprintf(output, "init_Q\n");
       break;
     case 2:
-      printf("How many would you like to enqueue?");
+      printf("How many would you like to enqueue? ");
       scanf("%d", &number);
 
       for(i = 0; i < number; i++){
@@ -74,7 +74,7 @@ int main() {
       break;
     case 3:
 
-      printf("How many would you like to dequeue?");
+      printf("How many would you like to dequeue? ");
       scanf("%d", &number);
 
       for(i = 0; i < number; i++){
@@ -84,7 +84,7 @@ int main() {
       break;
     case 4:
 
-      printf("Please enter the process-number for the process to delete.");
+      printf("Please enter the process-number for the process to delete: ");
       scanf("%d", &number);
 
       fprintf(output, "delete %d\n", number);
