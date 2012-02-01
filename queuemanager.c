@@ -35,7 +35,7 @@ int delete(int id);
 void init() {
     int i = 0;
     for (i = 0; i < MAX_PROCESSES; i++) {
-        clear(process);
+        clear(&process[i]);
     }
 }
 
