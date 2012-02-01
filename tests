@@ -1,5 +1,10 @@
 init_Q
 list
-enqueue 1 2 3 4 5 6
+enqueue 1 33 11 17 15 13
 list
-dequeue
+enqueue 2 35 11 12 9 1
+list
+enqueue 3 12 2 10 19 3
+list
+enqueue 4 26 15 6 12 16
+list
