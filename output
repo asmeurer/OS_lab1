@@ -1,0 +1,340 @@
+Could not dequeue: queue empty.
+Start of queue.
+
+pid: 1
+psw: 33
+page_table: 11
+regs:
+  17
+  15
+  13
+
+pid: 2
+psw: 35
+page_table: 11
+regs:
+  12
+  9
+  1
+
+pid: 3
+psw: 12
+page_table: 2
+regs:
+  10
+  19
+  3
+
+pid: 4
+psw: 26
+page_table: 15
+regs:
+  6
+  12
+  16
+
+pid: 5
+psw: 11
+page_table: 18
+regs:
+  7
+  9
+  2
+
+pid: 6
+psw: 30
+page_table: 12
+regs:
+  3
+  7
+  15
+
+pid: 7
+psw: 29
+page_table: 2
+regs:
+  2
+  18
+  9
+
+pid: 8
+psw: 17
+page_table: 18
+regs:
+  16
+  11
+  2
+
+pid: 9
+psw: 29
+page_table: 23
+regs:
+  1
+  19
+  4
+
+pid: 10
+psw: 37
+page_table: 23
+regs:
+  4
+  15
+  10
+
+pid: 11
+psw: 13
+page_table: 1
+regs:
+  11
+  0
+  16
+
+pid: 12
+psw: 23
+page_table: 12
+regs:
+  10
+  16
+  1
+
+pid: 13
+psw: 5
+page_table: 0
+regs:
+  4
+  7
+  16
+
+pid: 14
+psw: 5
+page_table: 21
+regs:
+  9
+  13
+  17
+
+pid: 15
+psw: 24
+page_table: 20
+regs:
+  2
+  5
+  14
+
+pid: 16
+psw: 17
+page_table: 9
+regs:
+  4
+  3
+  10
+
+pid: 17
+psw: 37
+page_table: 8
+regs:
+  16
+  18
+  8
+
+pid: 18
+psw: 34
+page_table: 3
+regs:
+  11
+  14
+  19
+
+pid: 19
+psw: 32
+page_table: 10
+regs:
+  16
+  8
+  19
+
+pid: 20
+psw: 12
+page_table: 1
+regs:
+  6
+  14
+  19
+
+End of queue.
+
+Could not enqueue; queue full.
+1
+20
+Start of queue.
+
+pid: 2
+psw: 35
+page_table: 11
+regs:
+  12
+  9
+  1
+
+pid: 3
+psw: 12
+page_table: 2
+regs:
+  10
+  19
+  3
+
+pid: 4
+psw: 26
+page_table: 15
+regs:
+  6
+  12
+  16
+
+pid: 5
+psw: 11
+page_table: 18
+regs:
+  7
+  9
+  2
+
+pid: 6
+psw: 30
+page_table: 12
+regs:
+  3
+  7
+  15
+
+pid: 7
+psw: 29
+page_table: 2
+regs:
+  2
+  18
+  9
+
+pid: 8
+psw: 17
+page_table: 18
+regs:
+  16
+  11
+  2
+
+pid: 9
+psw: 29
+page_table: 23
+regs:
+  1
+  19
+  4
+
+pid: 10
+psw: 37
+page_table: 23
+regs:
+  4
+  15
+  10
+
+pid: 11
+psw: 13
+page_table: 1
+regs:
+  11
+  0
+  16
+
+pid: 12
+psw: 23
+page_table: 12
+regs:
+  10
+  16
+  1
+
+pid: 13
+psw: 5
+page_table: 0
+regs:
+  4
+  7
+  16
+
+pid: 14
+psw: 5
+page_table: 21
+regs:
+  9
+  13
+  17
+
+pid: 15
+psw: 24
+page_table: 20
+regs:
+  2
+  5
+  14
+
+pid: 16
+psw: 17
+page_table: 9
+regs:
+  4
+  3
+  10
+
+pid: 17
+psw: 37
+page_table: 8
+regs:
+  16
+  18
+  8
+
+pid: 18
+psw: 34
+page_table: 3
+regs:
+  11
+  14
+  19
+
+pid: 19
+psw: 32
+page_table: 10
+regs:
+  16
+  8
+  19
+
+End of queue.
+
+10
+2
+3
+4
+5
+6
+7
+8
+9
+11
+12
+13
+14
+15
+16
+17
+18
+19
+Start of queue.
+
+End of queue.
+
+Could not dequeue: queue empty.
+Could not dequeue: process not found.
