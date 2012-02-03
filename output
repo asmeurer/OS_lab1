@@ -1,4 +1,50 @@
+
+***initializing***
+
+***deleting***
 Could not dequeue: queue empty.
+
+***enqueueing***
+
+***enqueueing***
+
+***enqueueing***
+
+***enqueueing***
+
+***enqueueing***
+
+***enqueueing***
+
+***enqueueing***
+
+***enqueueing***
+
+***enqueueing***
+
+***enqueueing***
+
+***enqueueing***
+
+***enqueueing***
+
+***enqueueing***
+
+***enqueueing***
+
+***enqueueing***
+
+***enqueueing***
+
+***enqueueing***
+
+***enqueueing***
+
+***enqueueing***
+
+***enqueueing***
+
+***listing***
 Start of queue.
 
 pid: 1
@@ -163,9 +209,17 @@ regs:
 
 End of queue.
 
+
+***enqueueing***
 Could not enqueue; queue full.
+
+***deleting***
 1
+
+***deleting***
 20
+
+***listing***
 Start of queue.
 
 pid: 2
@@ -314,27 +368,71 @@ regs:
 
 End of queue.
 
+
+***deleting***
 10
+
+***dequeueing***
 2
+
+***dequeueing***
 3
+
+***dequeueing***
 4
+
+***dequeueing***
 5
+
+***dequeueing***
 6
+
+***dequeueing***
 7
+
+***dequeueing***
 8
+
+***dequeueing***
 9
+
+***dequeueing***
 11
+
+***dequeueing***
 12
+
+***dequeueing***
 13
+
+***dequeueing***
 14
+
+***dequeueing***
 15
+
+***dequeueing***
 16
+
+***dequeueing***
 17
+
+***dequeueing***
 18
+
+***dequeueing***
 19
+
+***listing***
 Start of queue.
 
 End of queue.
 
+
+***dequeueing***
 Could not dequeue: queue empty.
+
+***enqueueing***
+
+***deleting***
 Could not dequeue: process not found.
