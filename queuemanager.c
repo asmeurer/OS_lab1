@@ -120,6 +120,10 @@ struct queue_t get_process(enum QUEUES queue_enum) {
 	return terminated;
     case RUNNING:
 	return running;
+    default:
+        /* This will never be reached, but it silences a warning from the
+         * compiler. */
+        return new;
     }
 }
 
