@@ -55,7 +55,7 @@ int main() {
 
    init();
 
-   FILE *file = fopen("tests", "r");
+   FILE *file = fopen("queuemanager_tests", "r");
 
    while(fgets(line, 100, file) != NULL) {
    	/*printf("***reading the file***\n");*/

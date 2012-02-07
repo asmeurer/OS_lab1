@@ -20,7 +20,7 @@ int main() {
   int i = 0;
   FILE *fp, *output;
   char *mode = "w";
-  char outputFilename[] = "tests";
+  char outputFilename[] = "queuemanager_tests";
   int input=0, number=0, pid=0;
   int psw=0, page=0, reg1=0, reg2=0, reg3=0;
 
