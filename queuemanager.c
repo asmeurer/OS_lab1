@@ -81,12 +81,12 @@ struct queue_t running =
 
 void init();
 struct queue_t get_process(enum QUEUES queue_enum);
-struct process_control_block *find_nonempty(struct queue_t queue);
-int enqueue(struct queue_t queue, int pid, int psw, int page_table, int *regs);
+struct process_control_block *find_nonempty(struct queue_t *queue);
+int enqueue(struct queue_t *queue, int pid, int psw, int page_table, int *regs);
 void clear(struct process_control_block *process);
-struct process_control_block *find_process(struct queue_t queue, int pid);
-int dequeue();
-int delete(struct queue_t queue, int id);
+struct process_control_block *find_process(struct queue_t *queue, int pid);
+int dequeue(struct queue_t *queue);
+int delete(struct queue_t *queue, int id);
 
 void init() {
     int i = 0;
@@ -111,7 +111,7 @@ void init() {
 struct queue_t get_process(enum QUEUES queue_enum) {
     switch (queue_enum) {
     case NEW:
-	return new;
+        return new;
     case WAITING:
 	return waiting;
     case READY:
@@ -127,23 +127,23 @@ struct queue_t get_process(enum QUEUES queue_enum) {
     }
 }
 
-struct process_control_block *find_nonempty(struct queue_t queue) {
+struct process_control_block *find_nonempty(struct queue_t *queue) {
     int i = 0;
-    for (i = 0; i < queue.size; i++) {
-        if (queue.top[i].empty == 1) {
-            return &queue.top[i];
+    for (i = 0; i < queue->size; i++) {
+        if (queue->top[i].empty == 1) {
+            return &queue->top[i];
         }
     }
     return null;
 }
 
-int enqueue(struct queue_t queue, int pid, int psw, int page_table, int *regs) {
+int enqueue(struct queue_t *queue, int pid, int psw, int page_table, int *regs) {
     /* Enqueue */
     struct process_control_block *newprocess = find_nonempty(queue);
     int i = 0;
 
     if (!newprocess) {
-        /* The queue if full */
+        /* The queue is full */
         return(-1);
     }
 
@@ -154,15 +154,15 @@ int enqueue(struct queue_t queue, int pid, int psw, int page_table, int *regs) {
         newprocess->regs[i] = regs[i];
     }
 
-    if (queue.tail) {
+    if (queue->tail) {
         /* The queue already has elements */
-        newprocess->next = queue.tail;
-        queue.tail->prev = newprocess;
+        newprocess->next = queue->tail;
+        queue->tail->prev = newprocess;
     } else {
         /* This is the first element of the queue */
-        queue.head = newprocess;
+        queue->head = newprocess;
     }
-    queue.tail = newprocess;
+    queue->tail = newprocess;
     newprocess->empty = 0;
 
     return(0);
@@ -184,29 +184,29 @@ void clear(struct process_control_block *process){
 }
 
 
-int dequeue(struct queue_t queue){
+int dequeue(struct queue_t *queue){
     /*If queue is empty*/
-    if (queue.head == null){
+    if (queue->head == null){
         return -1;
     }
-    int ret = queue.head->pid;
-    struct process_control_block *temp = queue.head;
+    int ret = queue->head->pid;
+    struct process_control_block *temp = queue->head;
     /*If entry is only one in queue*/
-    if(queue.head->prev == null){
-        queue.head = null;
-        queue.tail = null;
+    if(queue->head->prev == null){
+        queue->head = null;
+        queue->tail = null;
     }
     else{
         /*Reset head pointer*/
-        queue.head = queue.head->prev;
-        queue.head->next = null;
+        queue->head = queue->head->prev;
+        queue->head->next = null;
     }
     clear(temp);
     return(ret);
 }
 
-struct process_control_block *find_process(struct queue_t queue, int id){
-    struct process_control_block *temp = queue.tail;
+struct process_control_block *find_process(struct queue_t *queue, int id){
+    struct process_control_block *temp = queue->tail;
     while(temp != null){
         if(id == temp->pid){
             return temp;
@@ -216,10 +216,10 @@ struct process_control_block *find_process(struct queue_t queue, int id){
     return null;
 }
 
-int delete(struct queue_t queue, int id){
+int delete(struct queue_t *queue, int id){
     struct process_control_block *temp = find_process(queue, id);
 
-    if (queue.head == null && queue.tail == null) {
+    if (queue->head == null && queue->tail == null) {
         /* The queue is empty */
         return -2;
     }
@@ -231,18 +231,18 @@ int delete(struct queue_t queue, int id){
     int ret = temp->pid;
     /*If entry is only one in queue*/
     if(temp->next == null && temp->prev == null){
-        queue.head = null;
-        queue.tail = null;
+        queue->head = null;
+        queue->tail = null;
     }
     /*If entry is at tail*/
     else if(temp->prev == null){
-        queue.tail = temp->next;
-        queue.tail->prev = null;
+        queue->tail = temp->next;
+        queue->tail->prev = null;
     }
     /*If entry is at head*/
     else if(temp->next == null){
-        queue.head = temp->prev;
-        queue.head->next = null;
+        queue->head = temp->prev;
+        queue->head->next = null;
     }
     /*If entry is in the middle*/
     else{
