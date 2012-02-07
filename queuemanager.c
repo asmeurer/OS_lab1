@@ -54,21 +54,21 @@ struct queue_t new =
 struct queue_t waiting =
 {.head = null,
  .tail = null,
- .size = 1,
+ .size = MAX_PROCESSES,
  .top = _waiting
 };
 
 struct queue_t ready =
 {.head = null,
  .tail = null,
- .size = 1,
+ .size = MAX_PROCESSES,
  .top = _ready
 };
 
 struct queue_t terminated =
 {.head = null,
  .tail = null,
- .size = 1,
+ .size = MAX_PROCESSES,
  .top = _terminated
 };
 
