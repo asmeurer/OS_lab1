@@ -11,6 +11,7 @@
 #define null 0
 #define NUM_REGS 3
 #define MAX_PROCESSES 20
+
 struct process_control_block {
     int pid;   /* Process ID */
     int psw;   /* Program status word */
@@ -21,38 +22,120 @@ struct process_control_block {
     int empty;
 };
 
-struct process_control_block process[MAX_PROCESSES];
-struct process_control_block *head = null;
-struct process_control_block *tail = null;
+struct queue_t {
+    struct process_control_block *head;
+    struct process_control_block *tail;
+    int size;
+    struct process_control_block *top;
+};
+
+enum QUEUES {
+    NEW,
+    WAITING,
+    READY,
+    TERMINATED,
+    RUNNING
+} queue_enum;
+
+
+struct process_control_block _new[1];
+struct process_control_block _waiting[MAX_PROCESSES];
+struct process_control_block _ready[MAX_PROCESSES];
+struct process_control_block _terminated[MAX_PROCESSES];
+struct process_control_block _running[1];
+
+struct queue_t new =
+{.head = null,
+ .tail = null,
+ .size = 1,
+ .top = _new
+};
+
+struct queue_t waiting =
+{.head = null,
+ .tail = null,
+ .size = 1,
+ .top = _waiting
+};
+
+struct queue_t ready =
+{.head = null,
+ .tail = null,
+ .size = 1,
+ .top = _ready
+};
+
+struct queue_t terminated =
+{.head = null,
+ .tail = null,
+ .size = 1,
+ .top = _terminated
+};
+
+struct queue_t running =
+{.head = null,
+ .tail = null,
+ .size = 1,
+ .top = _running
+};
 
 void init();
-struct process_control_block *find_nonempty();
-int enqueue(int pid, int psw, int page_table, int *regs);
+struct queue_t get_process(enum QUEUES queue_enum);
+struct process_control_block *find_nonempty(struct queue_t queue);
+int enqueue(struct queue_t queue, int pid, int psw, int page_table, int *regs);
 void clear(struct process_control_block *process);
-struct process_control_block *find_process(int pid);
+struct process_control_block *find_process(struct queue_t queue, int pid);
 int dequeue();
-int delete(int id);
+int delete(struct queue_t queue, int id);
 
 void init() {
     int i = 0;
-    for (i = 0; i < MAX_PROCESSES; i++) {
-        clear(&process[i]);
+
+    for (i = 0; i < new.size; i++) {
+	clear(&new.top[i]);
+    }
+    for (i = 0; i < waiting.size; i++) {
+	clear(&waiting.top[i]);
+    }
+    for (i = 0; i < ready.size; i++) {
+	clear(&ready.top[i]);
+    }
+    for (i = 0; i < terminated.size; i++) {
+	clear(&terminated.top[i]);
+    }
+    for (i = 0; i < running.size; i++) {
+	clear(&running.top[i]);
     }
 }
 
-struct process_control_block *find_nonempty() {
+struct queue_t get_process(enum QUEUES queue_enum) {
+    switch (queue_enum) {
+    case NEW:
+	return new;
+    case WAITING:
+	return waiting;
+    case READY:
+	return ready;
+    case TERMINATED:
+	return terminated;
+    case RUNNING:
+	return running;
+    }
+}
+
+struct process_control_block *find_nonempty(struct queue_t queue) {
     int i = 0;
-    for (i = 0; i < MAX_PROCESSES; i++) {
-        if (process[i].empty == 1) {
-            return &process[i];
+    for (i = 0; i < queue.size; i++) {
+        if (queue.top[i].empty == 1) {
+            return &queue.top[i];
         }
     }
     return null;
 }
 
-int enqueue(int pid, int psw, int page_table, int *regs) {
+int enqueue(struct queue_t queue, int pid, int psw, int page_table, int *regs) {
     /* Enqueue */
-    struct process_control_block *newprocess = find_nonempty();
+    struct process_control_block *newprocess = find_nonempty(queue);
     int i = 0;
 
     if (!newprocess) {
@@ -67,15 +150,15 @@ int enqueue(int pid, int psw, int page_table, int *regs) {
         newprocess->regs[i] = regs[i];
     }
 
-    if (tail) {
+    if (queue.tail) {
         /* The queue already has elements */
-        newprocess->next = tail;
-        tail->prev = newprocess;
+        newprocess->next = queue.tail;
+        queue.tail->prev = newprocess;
     } else {
         /* This is the first element of the queue */
-        head = newprocess;
+        queue.head = newprocess;
     }
-    tail = newprocess;
+    queue.tail = newprocess;
     newprocess->empty = 0;
 
     return(0);
@@ -97,29 +180,29 @@ void clear(struct process_control_block *process){
 }
 
 
-int dequeue(){
+int dequeue(struct queue_t queue){
     /*If queue is empty*/
-    if (head == null){
+    if (queue.head == null){
         return -1;
     }
-    int ret = head->pid;
-    struct process_control_block *temp = head;
+    int ret = queue.head->pid;
+    struct process_control_block *temp = queue.head;
     /*If entry is only one in queue*/
-    if(head->prev == null){
-        head = null;
-        tail = null;
+    if(queue.head->prev == null){
+        queue.head = null;
+        queue.tail = null;
     }
     else{
         /*Reset head pointer*/
-        head = head->prev;
-        head->next = null;
+        queue.head = queue.head->prev;
+        queue.head->next = null;
     }
     clear(temp);
     return(ret);
 }
 
-struct process_control_block *find_process(int id){
-    struct process_control_block *temp = tail;
+struct process_control_block *find_process(struct queue_t queue, int id){
+    struct process_control_block *temp = queue.tail;
     while(temp != null){
         if(id == temp->pid){
             return temp;
@@ -129,10 +212,10 @@ struct process_control_block *find_process(int id){
     return null;
 }
 
-int delete(int id){
-    struct process_control_block *temp = find_process(id);
+int delete(struct queue_t queue, int id){
+    struct process_control_block *temp = find_process(queue, id);
 
-    if (head == null && tail == null) {
+    if (queue.head == null && queue.tail == null) {
         /* The queue is empty */
         return -2;
     }
@@ -144,18 +227,18 @@ int delete(int id){
     int ret = temp->pid;
     /*If entry is only one in queue*/
     if(temp->next == null && temp->prev == null){
-        head = null;
-        tail = null;
+        queue.head = null;
+        queue.tail = null;
     }
     /*If entry is at tail*/
     else if(temp->prev == null){
-        tail = temp->next;
-        tail->prev = null;
+        queue.tail = temp->next;
+        queue.tail->prev = null;
     }
     /*If entry is at head*/
     else if(temp->next == null){
-        head = temp->prev;
-        head->next = null;
+        queue.head = temp->prev;
+        queue.head->next = null;
     }
     /*If entry is in the middle*/
     else{

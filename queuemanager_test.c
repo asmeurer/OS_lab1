@@ -11,6 +11,8 @@
 #include<stdlib.h>
 #include "queuemanager.c"
 
+/* Make the tests still work, by just testing the ready queue */
+
 void printprocess(struct process_control_block process);
 void listQ();
 
@@ -29,7 +31,7 @@ void printprocess(struct process_control_block process) {
 }
 
 void listQ() {
-   struct process_control_block *temp = head;
+   struct process_control_block *temp = ready.head;
    printf("Start of queue.\n");
    while (temp) {
    	printprocess(*temp);
@@ -89,14 +91,14 @@ int main() {
        	regs[1] = reg2;
        	regs[2] = reg3;
 
-       	r = enqueue(pid, psw, page_table, regs);
+       	r = enqueue(ready, pid, psw, page_table, regs);
        	if (r == -1) {
            	printf("Could not enqueue; queue full.\n");
        	}
    	}
    	else if (!strcmp(command, "dequeue")) {
        	printf("\n***dequeueing***\n");
-       	r = dequeue();
+       	r = dequeue(ready);
        	if (r == -1) {
            	printf("Could not dequeue: queue empty.\n");
        	} else {
@@ -106,7 +108,7 @@ int main() {
    	else if (!strcmp(command, "delete")) {
        	printf("\n***deleting***\n");
        	pid = atoi(strtok(NULL, delim));
-       	r = delete(pid);
+       	r = delete(ready, pid);
        	if (r == -1) {
            	printf("Could not dequeue: process not found.\n");
        	} else if (r == -2) {
