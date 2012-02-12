@@ -75,22 +75,22 @@ void init() {
     }
 }
 
-struct queue_t get_process(enum QUEUES queue_enum) {
+struct queue_t *get_process(enum QUEUES queue_enum) {
     switch (queue_enum) {
     case NEW:
-        return new;
+        return &new;
     case WAITING:
-	return waiting;
+	return &waiting;
     case READY:
-	return ready;
+	return &ready;
     case TERMINATED:
-	return terminated;
+	return &terminated;
     case RUNNING:
-	return running;
+	return &running;
     default:
         /* This will never be reached, but it silences a warning from the
          * compiler. */
-        return new;
+        return &new;
     }
 }
 

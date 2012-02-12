@@ -38,7 +38,7 @@ enum QUEUES {
 } queue_enum;
 
 void init();
-struct queue_t get_process(enum QUEUES queue_enum);
+struct queue_t *get_process(enum QUEUES queue_enum);
 struct process_control_block *find_nonempty(struct queue_t *queue);
 int enqueue(struct queue_t *queue, int pid, int psw, int page_table, int *regs);
 void clear(struct process_control_block *process);
