@@ -62,6 +62,8 @@ int unwait(int pid){
 	}
 	return 0;
 
+}
+
 int create(int pid, int psw, int page_table, int reg0, int reg1, int reg2){
 
 	int counter=0;
@@ -74,14 +76,13 @@ int create(int pid, int psw, int page_table, int reg0, int reg1, int reg2){
 			if((find_process(get_process(TERMINATED), pid)) != null){
 				return -1; /*process already exsists */
 			}
-		}	
+		}
    }
 
    regs[0] = reg0;
    regs[1] = reg1;
    regs[2] = reg2;
-   
-   enqueue(NEW, pid, psw, page_table, regs); 
+
+   enqueue(NEW, pid, psw, page_table, regs);
    counter++;
-     
 }
