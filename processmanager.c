@@ -92,8 +92,13 @@ int create(int pid, int psw, int page_table, int reg0, int reg1, int reg2){
 
 int eowait(){
 
-  
-
    move(RUNNING, TERMINATED);
-   retur 0;
+   return 0;
+}
+
+int wait(){
+
+   move(RUNNING, READY);
+   return 0;
+
 }
