@@ -38,10 +38,16 @@
 /* NULL is in stdio.h.  Redefining NULL gives a warning, so call it null
    instead. */
 #define null 0
+int go();
+int eoquantem();
+int move(enum QUEUES from_queue, enum QUEUES to_queue);
+int unwait(int pid);
+
 
 int go(){
+	struct queue_t *temp = get_process(RUNNING);
 	/*Running queue full, process already running*/
-	if (get_process(RUNNING).head != null){
+	if (temp->head != null){
 		return -2;
 	}
 	return move(READY, RUNNING);
@@ -81,28 +87,4 @@ int unwait(int pid){
 		return -666;
 	}
 	return 0;
-
-}
-
-int create(int pid, int psw, int page_table, int reg0, int reg1, int reg2){
-
-	int counter=0;
-	int regs[NUM_REGS];
-
-   if ((find_process(get_process(WAITING), pid)) != null){
-		return -1; /*process already exsists */
-		if((find_process(get_process(READY), pid)) != null){
-			return -1; /*process already exsists */
-			if((find_process(get_process(TERMINATED), pid)) != null){
-				return -1; /*process already exsists */
-			}
-		}
-   }
-
-   regs[0] = reg0;
-   regs[1] = reg1;
-   regs[2] = reg2;
-
-   enqueue(NEW, pid, psw, page_table, regs);
-   counter++;
 }
