@@ -42,7 +42,7 @@ int go();
 int eoquantem();
 int move(enum QUEUES from_queue, enum QUEUES to_queue);
 int unwait(int pid);
-
+int create(int pid, int psw, int page_table, int reg0, int reg1, int reg2);
 
 int go(){
 	struct queue_t *temp = get_process(RUNNING);
