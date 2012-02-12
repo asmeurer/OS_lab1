@@ -19,6 +19,14 @@
     int empty;
 }; */
 
+
+/* struct queue_t {
+    struct process_control_block *head;
+    struct process_control_block *tail;
+    int size;
+    struct process_control_block *top;
+}; */
+
 /* enum QUEUES {
     NEW,
     WAITING,
@@ -30,6 +38,18 @@
 /* NULL is in stdio.h.  Redefining NULL gives a warning, so call it null
    instead. */
 #define null 0
+
+int go(){
+	/*Running queue full, process already running*/
+	if (get_process(RUNNING).head != null){
+		return -2;
+	}
+	return move(READY, RUNNING);
+}
+
+int eoquantem(){
+	return move(RUNNING, READY);
+}
 
 int move(enum QUEUES from_queue, enum QUEUES to_queue){
 	struct process_control_block temp = dequeue(get_process(from_queue));
@@ -70,11 +90,11 @@ int create(int pid, int psw, int page_table, int reg0, int reg1, int reg2){
 	int regs[NUM_REGS];
 
    if ((find_process(get_process(WAITING), pid)) != null){
-		return -1; /*process already exsists */
+		return -1; /*process already exists */
 		if((find_process(get_process(READY), pid)) != null){
-			return -1; /*process already exsists */
+			return -1; /*process already exists */
 			if((find_process(get_process(TERMINATED), pid)) != null){
-				return -1; /*process already exsists */
+				return -1; /*process already exists */
 			}
 		}
    }
