@@ -85,4 +85,7 @@ int create(int pid, int psw, int page_table, int reg0, int reg1, int reg2){
 
    enqueue(NEW, pid, psw, page_table, regs);
    counter++;
+   move(NEW, READY);
+   return 0;
+
 }
