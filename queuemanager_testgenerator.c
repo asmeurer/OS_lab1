@@ -18,7 +18,7 @@
 int main() {
 
   int i = 0;
-  FILE *fp, *output;
+  FILE *fp = NULL, *output = NULL;
   char *mode = "w";
   char outputFilename[] = "queuemanager_tests";
   int input=0, number=0, pid=0;
