@@ -43,6 +43,7 @@ void listQ(struct queue_t queue) {
 int main() {
     int i = 0;
     int r = 0;
+    struct process_control_block ret;
     char line[100];
     char delim[] = " \n";
     char *command;
@@ -98,23 +99,23 @@ int main() {
    	}
    	else if (!strcmp(command, "dequeue")) {
             printf("\n***dequeueing***\n");
-            r = dequeue(&ready);
-            if (r == -1) {
+            ret = dequeue(&ready);
+            if (ret.pid == -1) {
            	printf("Could not dequeue: queue empty.\n");
             } else {
-           	printf("%d\n", r);
+           	printf("%d\n", ret.pid);
             }
    	}
    	else if (!strcmp(command, "delete")) {
             printf("\n***deleting***\n");
             pid = atoi(strtok(NULL, delim));
-            r = delete(&ready, pid);
-            if (r == -1) {
+            ret = delete(&ready, pid);
+            if (ret.pid == -1) {
            	printf("Could not dequeue: process not found.\n");
-            } else if (r == -2) {
+            } else if (ret.pid == -2) {
            	printf("Could not dequeue: queue empty.\n");
             } else {
-           	printf("%d\n", r);
+           	printf("%d\n", ret.pid);
             }
    	}
    	else {
