@@ -70,11 +70,11 @@ int create(int pid, int psw, int page_table, int reg0, int reg1, int reg2){
 	int regs[NUM_REGS];
 
    if ((find_process(get_process(WAITING), pid)) != null){
-		return -1; /*process already exsists */
+		return -1; /*process already exists */
 		if((find_process(get_process(READY), pid)) != null){
-			return -1; /*process already exsists */
+			return -1; /*process already exists */
 			if((find_process(get_process(TERMINATED), pid)) != null){
-				return -1; /*process already exsists */
+				return -1; /*process already exists */
 			}
 		}
    }
