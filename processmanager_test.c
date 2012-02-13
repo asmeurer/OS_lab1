@@ -203,7 +203,7 @@ int main() {
 		regs[1] = reg2;
 		regs[2] = reg3;
 
-		error = create_(pid, psw, page_table, regs);
+		error = create(pid, psw, page_table, regs);
 		if (error == -1 || error == -666) {
 			printf("FATAL ERROR: SYSTEM EXIT\n");
 			exit(-1);

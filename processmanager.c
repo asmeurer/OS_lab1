@@ -63,7 +63,7 @@ int unwait(int pid){
 	return 0;
 }
 
-int create_(int pid, int psw, int page_table, int *reg){
+int create(int pid, int psw, int page_table, int *reg){
 	int error;
 	/*If max allowed processes are reached*/
 	if(counter >= MAX_PROCESSES){
