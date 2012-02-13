@@ -79,10 +79,7 @@ int main() {
             printf("What queue would you like to list (new|terminated|ready|running|waiting|all|sched)? ");
             scanf("%s", string);
 
-            for(i = 0; i < number; i++){
-                fprintf(output, "LIST %s\n", string);
-            }
-            number = 0;
+            fprintf(output, "LIST %s\n", string);
             break;
         case 3:
 
@@ -91,7 +88,7 @@ int main() {
             break;
         case 4:
 
-            printf("What pid should be unwaited? \n");
+            printf("What pid should be unwaited? ");
             scanf("%d", &number);
             fprintf(output, "UNWAIT %d\n", number);
 
