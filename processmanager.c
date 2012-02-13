@@ -6,38 +6,8 @@
    Sheng Lundquist
 */
 
+#include"processmanager.h"
 #include"queuemanager.h"
-
-
-/* struct process_control_block {
-    int pid;
-    int psw;
-    int page_table;
-    int regs[NUM_REGS];
-    struct process_control_block *next;
-    struct process_control_block *prev;
-    int empty;
-}; */
-
-
-/* struct queue_t {
-    struct process_control_block *head;
-    struct process_control_block *tail;
-    int size;
-    struct process_control_block *top;
-}; */
-
-/* enum QUEUES {
-    NEW,
-    WAITING,
-    READY,
-    TERMINATED,
-    RUNNING
-} queue_enum; */
-
-/* NULL is in stdio.h.  Redefining NULL gives a warning, so call it null
-   instead. */
-#define null 0
 
 
 int go(){

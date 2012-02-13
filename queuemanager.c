@@ -6,7 +6,7 @@
    Sheng Lundquist
 */
 
-#include"queuemanager.h"
+#include "queuemanager.h"
 
 struct process_control_block _new[1];
 struct process_control_block _waiting[MAX_PROCESSES];
