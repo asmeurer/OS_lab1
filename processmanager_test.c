@@ -1,4 +1,4 @@
-/* The test file for the queuemanager!
+/* The test file for the process manager!
 
    Group 2
    Aaron Meurer
@@ -11,8 +11,6 @@
 #include<stdlib.h>
 #include "queuemanager.h"
 
-/* Make the tests still work by just testing the ready queue */
-
 /* enum QUEUES {
     NEW,
     WAITING,
@@ -21,7 +19,7 @@
     RUNNING
 } queue_enum;
  */
- 
+
 char* enum_to_string(enum QUEUES queue);
 void printprocess(struct process_control_block process);
 void list_Q(enum QUEUES queue);

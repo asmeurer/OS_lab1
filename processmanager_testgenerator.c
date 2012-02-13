@@ -35,17 +35,18 @@ int main() {
     }
 
     printf("0) Add comment\n");
-    printf("1) Create\n");
-    printf("2) List\n");
-    printf("3) Go\n");
-    printf("4) Unwait\n");
-    printf("5) EOQuantum\n");
-    printf("6) EOLife\n");
-    printf("7) Wait\n");
-    printf("8) Quit\n");
+    printf("1) Init\n");
+    printf("2) Create\n");
+    printf("3) List\n");
+    printf("4) Go\n");
+    printf("5) Unwait\n");
+    printf("6) EOQuantum\n");
+    printf("7) EOLife\n");
+    printf("8) Wait\n");
+    printf("9) Quit\n");
 
 
-    while(input != 8) {
+    while(input != 9) {
 
         printf("Enter an option: ");
         scanf("%d", &input);
@@ -58,6 +59,10 @@ int main() {
 
             break;
         case 1:
+            fprintf(output, "init\n");
+
+            break;
+        case 2:
             printf("How many would you like to create? ");
             scanf("%d", &number);
 
@@ -75,7 +80,7 @@ int main() {
             number = 0;
             i = 0;
             break;
-        case 2:
+        case 3:
 
             printf("What queue would you like to list (New|Terminated|Ready|rUnning|Waiting|All|Sched)? ");
             scanf("\n%c", &listtype);
@@ -114,36 +119,36 @@ int main() {
             }
 
             break;
-        case 3:
+        case 4:
 
             fprintf(output, "GO\n");
 
             break;
-        case 4:
+        case 5:
 
             printf("What pid should be unwaited? ");
             scanf("%d", &number);
             fprintf(output, "UNWAIT %d\n", number);
 
             break;
-        case 5:
+        case 6:
 
             fprintf(output, "EOQUANTUM\n");
 
             break;
-        case 6:
+        case 7:
 
             fprintf(output, "EOLIFE\n");
 
             break;
-        case 7:
+        case 8:
 
             fprintf(output, "WAIT\n");
 
             break;
         default:
 
-            if(input == 8){
+            if(input == 9){
                 printf("Goodbye.\n");
             } else {
                 printf("Invalid option.\n");
