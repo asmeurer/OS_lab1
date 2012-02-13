@@ -1,4 +1,4 @@
-/* The test file for the queuemanager!
+/* The test file for the process manager!
 
    Group 2
    Aaron Meurer
@@ -11,8 +11,6 @@
 #include<stdlib.h>
 #include "queuemanager.h"
 
-/* Make the tests still work by just testing the ready queue */
-
 /* enum QUEUES {
     NEW,
     WAITING,
@@ -21,7 +19,7 @@
     RUNNING
 } queue_enum;
  */
- 
+
 char* enum_to_string(enum QUEUES queue);
 void printprocess(struct process_control_block process);
 void list_Q(enum QUEUES queue);
@@ -85,9 +83,7 @@ void list_sched(){
 
 int main() {
     int i = 0;
-    int r = 0;
 	int error = 0;
-    struct process_control_block ret;
     char line[100];
     char delim[] = " \n";
     char *command;
@@ -112,7 +108,7 @@ int main() {
    	/* printf("%s\n", line); */
    	/* printf("%s\n", command); */
 
-   	if (!strcmp(command, "INIT_Q")) {
+   	if (!strcmp(command, "INIT")) {
             printf("\n***INIT command issued***\n");
             init();
    	}
@@ -197,13 +193,42 @@ int main() {
    	}
 	else if (!strcmp(command, "WAIT")) {
 		printf("\n***WAIT command issued***\n");
-		error = wait();
+		error = wait_();
 		if (error == -1){
 			printf("Could not WAIT: No running processes\n");
 		}
 		else if (error == -666){
 			printf("FATAL ERROR: SYSTEM EXIT\n");
 			exit(-1);
+		}
+   	}
+	else if (!strcmp(command, "CREATE")) {
+		printf("\n***CREATE command issued***\n");
+		for (i = 0; i < 6; i++) {
+		args[i] = strtok(NULL, delim);
+		}
+		pid = atoi(args[0]);
+		psw = atoi(args[1]);
+		page_table = atoi(args[2]);
+		reg1 = atoi(args[3]);
+		reg2 = atoi(args[4]);
+		reg3 = atoi(args[5]);
+
+		/* printf("pid: %d, psw: %d, page_table: %d, reg1: %d, reg2: %d, reg3: %d\n", pid, psw, page_table, reg1, reg2, reg3); */
+		regs[0] = reg1;
+		regs[1] = reg2;
+		regs[2] = reg3;
+
+		error = create_(pid, psw, page_table, regs);
+		if (error == -1 || error == -666) {
+			printf("FATAL ERROR: SYSTEM EXIT\n");
+			exit(-1);
+		}
+		else if (error == -2){
+			printf("Could not CREATE: Maximum allowed processes reached\n");
+		}
+		else if (error == -3){
+			printf("Could not CREATE: PID not unique\n");
 		}
    	}
    	else if (!strcmp(command, "#")) {

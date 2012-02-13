@@ -57,7 +57,7 @@ int eolife(){
 	return move(RUNNING, TERMINATED);
 }
 
-int wait(){
+int wait_(){
 	return move(RUNNING, WAITING);
 }
 
@@ -93,28 +93,31 @@ int unwait(int pid){
 	return 0;
 }
 
-int create(int pid, int psw, int page_table, int reg0, int reg1, int reg2){
-
-	int counter=0;
-	int regs[NUM_REGS];
-
-   if ((find_process(get_process(WAITING), pid)) != null){
-		return -3; /*process already exists */
+int create_(int pid, int psw, int page_table, int *reg){
+	int error;
+	/*If max allowed processes are reached*/
+	if(counter >= MAX_PROCESSES){
+		return -2;
+	}
+	/*Find if process already exists*/
+	if ((find_process(get_process(WAITING), pid)) != null){
+		return -3;
 		if((find_process(get_process(READY), pid)) != null){
-			return -3; /*process already exists */
+			return -3;
 			if((find_process(get_process(TERMINATED), pid)) != null){
-				return -3; /*process already exists */
+				return -3;
+				if((find_process(get_process(RUNNING), pid)) != null){
+					return -3;
+				}
 			}
 		}
-   }
-
-   regs[0] = reg0;
-   regs[1] = reg1;
-   regs[2] = reg2;
-
-   enqueue(NEW, pid, psw, page_table, regs);
-   counter++;
-   move(NEW, READY);
-   return 0;
-
+	}
+	error = enqueue(NEW, pid, psw, page_table, reg);
+	/*If new queue is full*/
+	if (error == -1){
+		return -666;
+	}
+	counter++;
+	/*-1 for nothing in queue (fatal), -666 for fatal error*/
+	return move(NEW, READY);
 }
