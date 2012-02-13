@@ -193,7 +193,7 @@ int main() {
    	}
 	else if (!strcmp(command, "WAIT")) {
 		printf("\n***WAIT command issued***\n");
-		error = wait();
+		error = wait_();
 		if (error == -1){
 			printf("Could not WAIT: No running processes\n");
 		}
@@ -219,7 +219,7 @@ int main() {
 		regs[1] = reg2;
 		regs[2] = reg3;
 
-		error = create(pid, psw, page_table, regs);
+		error = create_(pid, psw, page_table, regs);
 		if (error == -1 || error == -666) {
 			printf("FATAL ERROR: SYSTEM EXIT\n");
 			exit(-1);
