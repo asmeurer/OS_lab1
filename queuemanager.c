@@ -8,12 +8,6 @@
 
 #include"queuemanager.h"
 
-/* NULL is in stdio.h.  Redefining NULL gives a warning, so call it null
-   instead. */
-#define null 0
-#define NUM_REGS 3
-#define MAX_PROCESSES 20
-
 struct process_control_block _new[1];
 struct process_control_block _waiting[MAX_PROCESSES];
 struct process_control_block _ready[MAX_PROCESSES];

@@ -53,7 +53,9 @@ struct process_control_block delete(struct queue_t *queue, int id);
 
 /*Process manager function declerations*/
 int go();
-int eoquantem();
+int eoquantum();
+int eolife();
+int wait();
 int move(enum QUEUES from_queue, enum QUEUES to_queue);
 int unwait(int pid);
 int create(int pid, int psw, int page_table, int reg0, int reg1, int reg2);
