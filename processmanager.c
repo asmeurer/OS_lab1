@@ -27,6 +27,7 @@ int eolife(){
 	return move(RUNNING, TERMINATED);
 }
 
+/* wait() is a system call, so the name conflicts in the test runner */
 int wait_(){
 	return move(RUNNING, WAITING);
 }
