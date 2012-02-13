@@ -8,6 +8,11 @@
 
 /* NULL is in stdio.h.  Redefining NULL gives a warning, so call it null
    instead. */
+   
+
+#ifndef QUEUEMANAGER_H
+#define QUEUEMANAGER_H
+
 #define null 0
 #define NUM_REGS 3
 #define MAX_PROCESSES 20
@@ -45,3 +50,12 @@ void clear(struct process_control_block *process);
 struct process_control_block *find_process(struct queue_t *queue, int pid);
 struct process_control_block dequeue(struct queue_t *queue);
 struct process_control_block delete(struct queue_t *queue, int id);
+
+/*Process manager function declerations*/
+int go();
+int eoquantem();
+int move(enum QUEUES from_queue, enum QUEUES to_queue);
+int unwait(int pid);
+int create(int pid, int psw, int page_table, int reg0, int reg1, int reg2);
+
+#endif
