@@ -52,8 +52,9 @@ int main() {
         switch(input){
         case 0:
             printf("What comment would you like to add? ");
-            scanf("%s", string);
+            scanf("\n%[^\n]", string);
             fprintf(output, "# %s\n", string);
+
             break;
         case 1:
             printf("How many would you like to create? ");
