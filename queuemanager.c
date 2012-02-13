@@ -61,7 +61,7 @@ struct process_control_block error_process =
 
 void init() {
     int i = 0;
-
+	counter = 0;
     for (i = 0; i < new.size; i++) {
 	clear(&new.top[i]);
     }

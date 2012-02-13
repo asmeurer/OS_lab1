@@ -42,6 +42,8 @@ enum QUEUES {
     RUNNING
 } queue_enum;
 
+int counter;
+
 void init();
 struct queue_t *get_process(enum QUEUES queue_enum);
 struct process_control_block *find_nonempty(struct queue_t *queue);
@@ -58,6 +60,6 @@ int eolife();
 int wait();
 int move(enum QUEUES from_queue, enum QUEUES to_queue);
 int unwait(int pid);
-int create(int pid, int psw, int page_table, int reg0, int reg1, int reg2);
+int create(int pid, int psw, int page_table, int *reg);
 
 #endif
