@@ -18,17 +18,12 @@
 int main() {
 
     int i = 0;
-    FILE *fp = NULL, *output = NULL;
+    FILE *output = NULL;
     char *mode = "w";
     char outputFilename[] = "processmanager_tests";
     int input=0, number=0, pid=0;
     int psw=0, page=0, reg1=0, reg2=0, reg3=0;
     char string[256];
-
-    if(fp == NULL){
-        printf("File does not exist.\n");
-        exit(1);
-    }
 
     output = fopen(outputFilename, mode);
 
