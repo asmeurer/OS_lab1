@@ -86,11 +86,13 @@ void list_sched(){
 int main() {
     int i = 0;
     int r = 0;
+	int error = 0;
     struct process_control_block ret;
     char line[100];
     char delim[] = " \n";
     char *command;
     char *args[6];
+	char *arg;
     int pid = 0;
     int psw = 0;
     int page_table = 0;
@@ -110,37 +112,89 @@ int main() {
    	/* printf("%s\n", line); */
    	/* printf("%s\n", command); */
 
-   	if (!strcmp(command, "init_Q")) {
-            printf("\n***initializing***\n");
+   	if (!strcmp(command, "INIT_Q")) {
+            printf("\n***INIT command issued***\n");
             init();
    	}
-   	else if (!strcmp(command, "list")) {
-            printf("\n***listing***\n");
-            listQ(ready);
+   	else if (!strcmp(command, "LIST")) {
+        arg = atoi(strtok(NULL, delim));
+		printf("\n***LISTING command issued***\n");
+		if (!strcmp(arg, "NEW"){
+			list_Q(NEW);
+		}
+		else if (!strcmp(arg, "WAITING"){
+			list_Q(WAITING);
+		}
+		else if (!strcmp(arg, "READY"){
+			list_Q(READY);
+		}
+		else if (!strcmp(arg, "TERMINATED"){
+			list_Q(TERMINATED);
+		}
+		else if (!strcmp(arg, "RUNNING"){
+			list_Q(RUNNING);
+		}
+		else if (!strcmp(arg, "ALL"){
+			list_all();
+		}
+		else if (!strcmp(arg, "SCHED"){
+			list_sched();
+		}
+		else{
+			printf("Argument not recognized");
+		}
    	}
-   	else if (!strcmp(command, "enqueue")) {
-            printf("\n***enqueueing***\n");
-            for (i = 0; i < 6; i++) {
-           	args[i] = strtok(NULL, delim);
-            }
-            pid = atoi(args[0]);
-            psw = atoi(args[1]);
-            page_table = atoi(args[2]);
-            reg1 = atoi(args[3]);
-            reg2 = atoi(args[4]);
-            reg3 = atoi(args[5]);
-
-            /* printf("pid: %d, psw: %d, page_table: %d, reg1: %d, reg2: %d, reg3: %d\n", pid, psw, page_table, reg1, reg2, reg3); */
-            regs[0] = reg1;
-            regs[1] = reg2;
-            regs[2] = reg3;
-
-            r = enqueue(&ready, pid, psw, page_table, regs);
-            if (r == -1) {
-           	printf("Could not enqueue; queue full.\n");
-            }
+   	else if (!strcmp(command, "GO")) {
+		printf("\n***GO command issued***\n");
+		error = go();
+		if (error == -1){
+			printf("Could not GO: No ready processes\n");
+		}
+		else if (error == -2){
+			printf("Could not GO: Process already running\n");
+		}
+		else if (error == -666){
+			printf("FATAL ERROR: SYSTEM EXIT\n");
+			exit(-1);
+		}
    	}
-   	else if (!strcmp(command, "dequeue")) {
+   	else if (!strcmp(command, "UNWAIT")) {
+		printf("\n***UNWAIT command issued***\n");
+		pid = atoi(strtok(NULL, delim));
+		error = unwait();
+		if (error == -1){
+			printf("Could not UNWAIT: No waiting processes\n");
+		}
+		else if (error == -2){
+			printf("Could not UNWAIT: PID does not exist in waiting queue\n");
+		}
+		else if (error == -666){
+			printf("FATAL ERROR: SYSTEM EXIT\n");
+			exit(-1);
+		}
+   	}
+   	else if (!strcmp(command, "EOQUANTUM")) {
+		printf("\n***EOQUANTUM command issued***\n");
+		error = eoquantum();
+		if (error == -1){
+			printf("Could not UNWAIT: No waiting processes\n");
+		}
+		else if (error == -2){
+			printf("Could not UNWAIT: PID does not exist in waiting queue\n");
+		}
+		else if (error == -666){
+			printf("FATAL ERROR: SYSTEM EXIT\n");
+			exit(-1);
+		}
+   	}
+
+
+
+
+
+
+
+   	else if (!strcmp(command, "")) {
             printf("\n***dequeueing***\n");
             ret = dequeue(&ready);
             if (ret.pid == -1) {

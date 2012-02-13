@@ -53,6 +53,14 @@ int eoquantem(){
 	return move(RUNNING, READY);
 }
 
+int eolife(){
+	return move(RUNNING, TERMINATED);
+}
+
+int wait(){
+	return move(RUNNING, WAITING);
+}
+
 int move(enum QUEUES from_queue, enum QUEUES to_queue){
 	struct process_control_block temp = dequeue(get_process(from_queue));
 	/*Nothing in queue, recoverable*/
@@ -107,29 +115,6 @@ int create(int pid, int psw, int page_table, int reg0, int reg1, int reg2){
    enqueue(NEW, pid, psw, page_table, regs);
    counter++;
    move(NEW, READY);
-   return 0;
-
-}
-
-int eolife(){
-   struct queue_t *temp = get_process(RUNNING);
-   /*Running queue is full*/
-	if (temp->head != null){
-		return -2;
-	}
-
-   move(RUNNING, TERMINATED);
-   return 0;
-}
-
-int wait(){
-   struct queue_t *temp = get_process(RUNNING);
-   /*Running queue is full.*/
-	if (temp->head != null){
-		return -2;
-	}
-
-   move(RUNNING, WAITING);
    return 0;
 
 }
