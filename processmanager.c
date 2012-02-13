@@ -114,3 +114,26 @@ int create(int pid, int psw, int page_table, int reg0, int reg1, int reg2){
    return 0;
 
 }
+
+int eowait(){
+   struct queue_t *temp = get_process(RUNNING);
+   /*Running queue is full*/
+	if (temp->head != null){
+		return -2;
+	}
+
+   move(RUNNING, TERMINATED);
+   return 0;
+}
+
+int wait(){
+   struct queue_t *temp = get_process(RUNNING);
+   /*Running queue is full.*/
+	if (temp->head != null){
+		return -2;
+	}
+
+   move(RUNNING, READY);
+   return 0;
+
+}
