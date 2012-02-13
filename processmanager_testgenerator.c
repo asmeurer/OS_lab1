@@ -24,6 +24,7 @@ int main() {
     int input=0, number=0, pid=0;
     int psw=0, page=0, reg1=0, reg2=0, reg3=0;
     char string[256];
+    char listtype;
 
     output = fopen(outputFilename, mode);
 
@@ -76,10 +77,42 @@ int main() {
             break;
         case 2:
 
-            printf("What queue would you like to list (new|terminated|ready|running|waiting|all|sched)? ");
-            scanf("%s", string);
+            printf("What queue would you like to list (New|Terminated|Ready|rUnning|Waiting|All|Sched)? ");
+            scanf("\n%c", &listtype);
 
-            fprintf(output, "LIST %s\n", string);
+            switch (listtype) {
+            case 'N':
+            case 'n':
+                fprintf(output, "LIST new\n");
+                break;
+            case 'T':
+            case 't':
+                fprintf(output, "LIST terminated\n");
+                break;
+            case 'R':
+            case 'r':
+                fprintf(output, "LIST ready\n");
+                break;
+            case 'U':
+            case 'u':
+                fprintf(output, "LIST running\n");
+                break;
+            case 'W':
+            case 'w':
+                fprintf(output, "LIST waiting\n");
+                break;
+            case 'A':
+            case 'a':
+                fprintf(output, "LIST all\n");
+                break;
+            case 'S':
+            case 's':
+                fprintf(output, "LIST sched\n");
+                break;
+            default:
+                printf("Character not recognized\n");
+            }
+
             break;
         case 3:
 
