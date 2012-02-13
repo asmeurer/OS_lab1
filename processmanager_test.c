@@ -60,8 +60,8 @@ char* enum_to_string(enum QUEUES queue){
 }
 
 void list_Q(enum QUEUES queue) {
-    struct queue_t structqueue = getprocess(queue);
-	struct process_control_block *temp = structqueue.head;
+    struct queue_t *structqueue = get_process(queue);
+	struct process_control_block *temp = structqueue->head;
     printf("Start of %s.\n", enum_to_string(queue));
     while (temp) {
    	printprocess(*temp);
@@ -79,8 +79,8 @@ void list_all(){
 }
 
 void list_sched(){
-	struct queue_t *temp = getprocess(READY);
-	printf("Next scheduled process PID: %d\n\n", temp->head.pid);
+	struct queue_t *temp = get_process(READY);
+	printf("Next scheduled process PID: %d\n\n", temp->head->pid);
 }
 
 int main() {
@@ -103,7 +103,7 @@ int main() {
 
     init();
 
-    FILE *file = fopen("queuemanager_tests", "r");
+    FILE *file = fopen("processmanager_tests", "r");
 
     while(fgets(line, 100, file) != NULL) {
    	/*printf("***reading the file***\n");*/
@@ -117,34 +117,34 @@ int main() {
             init();
    	}
    	else if (!strcmp(command, "LIST")) {
-        arg = atoi(strtok(NULL, delim));
+        arg = strtok(NULL, delim);
 		printf("\n***LISTING command issued***\n");
-		if (!strcmp(arg, "NEW"){
+		if (!strcmp(arg, "NEW")){
 			list_Q(NEW);
 		}
-		else if (!strcmp(arg, "WAITING"){
+		else if (!strcmp(arg, "WAITING")){
 			list_Q(WAITING);
 		}
-		else if (!strcmp(arg, "READY"){
+		else if (!strcmp(arg, "READY")){
 			list_Q(READY);
 		}
-		else if (!strcmp(arg, "TERMINATED"){
+		else if (!strcmp(arg, "TERMINATED")){
 			list_Q(TERMINATED);
 		}
-		else if (!strcmp(arg, "RUNNING"){
+		else if (!strcmp(arg, "RUNNING")){
 			list_Q(RUNNING);
 		}
-		else if (!strcmp(arg, "ALL"){
+		else if (!strcmp(arg, "ALL")){
 			list_all();
 		}
-		else if (!strcmp(arg, "SCHED"){
+		else if (!strcmp(arg, "SCHED")){
 			list_sched();
 		}
 		else{
 			printf("Argument not recognized");
 		}
    	}
-   	else if (!strcmp(command, "GO")) {
+   	else if (!strcmp(command, "GO")){
 		printf("\n***GO command issued***\n");
 		error = go();
 		if (error == -1){
@@ -161,7 +161,7 @@ int main() {
    	else if (!strcmp(command, "UNWAIT")) {
 		printf("\n***UNWAIT command issued***\n");
 		pid = atoi(strtok(NULL, delim));
-		error = unwait();
+		error = unwait(pid);
 		if (error == -1){
 			printf("Could not UNWAIT: No waiting processes\n");
 		}
@@ -177,44 +177,38 @@ int main() {
 		printf("\n***EOQUANTUM command issued***\n");
 		error = eoquantum();
 		if (error == -1){
-			printf("Could not UNWAIT: No waiting processes\n");
-		}
-		else if (error == -2){
-			printf("Could not UNWAIT: PID does not exist in waiting queue\n");
+			printf("Could not EOQUANTUM: No running processes\n");
 		}
 		else if (error == -666){
 			printf("FATAL ERROR: SYSTEM EXIT\n");
 			exit(-1);
 		}
    	}
-
-
-
-
-
-
-
-   	else if (!strcmp(command, "")) {
-            printf("\n***dequeueing***\n");
-            ret = dequeue(&ready);
-            if (ret.pid == -1) {
-           	printf("Could not dequeue: queue empty.\n");
-            } else {
-           	printf("%d\n", ret.pid);
-            }
+   	else if (!strcmp(command, "EOLIFE")) {
+		printf("\n***EOLIFE command issued***\n");
+		error = eolife();
+		if (error == -1){
+			printf("Could not EOLIFE: No running processes\n");
+		}
+		else if (error == -666){
+			printf("FATAL ERROR: SYSTEM EXIT\n");
+			exit(-1);
+		}
    	}
-   	else if (!strcmp(command, "delete")) {
-            printf("\n***deleting***\n");
-            pid = atoi(strtok(NULL, delim));
-            ret = delete(&ready, pid);
-            if (ret.pid == -1) {
-           	printf("Could not dequeue: process not found.\n");
-            } else if (ret.pid == -2) {
-           	printf("Could not dequeue: queue empty.\n");
-            } else {
-           	printf("%d\n", ret.pid);
-            }
+	else if (!strcmp(command, "WAIT")) {
+		printf("\n***WAIT command issued***\n");
+		error = wait();
+		if (error == -1){
+			printf("Could not WAIT: No running processes\n");
+		}
+		else if (error == -666){
+			printf("FATAL ERROR: SYSTEM EXIT\n");
+			exit(-1);
+		}
    	}
+   	else if (!strcmp(command, "#")) {
+		printf("\n%s\n", line);
+	}
    	else {
             printf("Unrecognized command: %s\n", command);
    	}
