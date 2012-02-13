@@ -40,34 +40,34 @@
 #define null 0
 
 
-int go(){
-	struct queue_t *temp = get_process(RUNNING);
+int go_(){
+	struct queue_t *temp = get_process_(RUNNING);
 	/*Running queue full, process already running*/
 	if (temp->head != null){
 		return -2;
 	}
-	return move(READY, RUNNING);
+	return move_(READY, RUNNING);
 }
 
 int eoquantum(){
-	return move(RUNNING, READY);
+	return move_(RUNNING, READY);
 }
 
 int eolife(){
-	return move(RUNNING, TERMINATED);
+	return move_(RUNNING, TERMINATED);
 }
 
 int wait_(){
-	return move(RUNNING, WAITING);
+	return move_(RUNNING, WAITING);
 }
 
-int move(enum QUEUES from_queue, enum QUEUES to_queue){
-	struct process_control_block temp = dequeue(get_process(from_queue));
+int move_(enum QUEUES from_queue, enum QUEUES to_queue){
+	struct process_control_block temp = dequeue(get_process_(from_queue));
 	/*Nothing in queue, recoverable*/
 	if(temp.pid == -1){
 		return -1;
 	}
-	int error = enqueue(get_process(to_queue), temp.pid, temp.psw, temp.page_table, temp.regs);
+	int error = enqueue(get_process_(to_queue), temp.pid, temp.psw, temp.page_table, temp.regs);
 	/*Queue full, unrecoverable error*/
 	if(error == -1){
 		return -666;
@@ -75,8 +75,8 @@ int move(enum QUEUES from_queue, enum QUEUES to_queue){
 	return 0;
 }
 
-int unwait(int pid){
-	struct process_control_block temp = delete(get_process(WAITING), pid);
+int unwait_(int pid){
+	struct process_control_block temp = delete(get_process_(WAITING), pid);
 	/*Nothing in queue, recoverable*/
 	if(temp.pid == -1){
 		return -1;
@@ -85,7 +85,7 @@ int unwait(int pid){
 	else if(temp.pid == -2){
 		return -2;
 	}
-	int error = enqueue(get_process(READY), temp.pid, temp.psw, temp.page_table, temp.regs);
+	int error = enqueue(get_process_(READY), temp.pid, temp.psw, temp.page_table, temp.regs);
 	/*Queue full, unrecoverable error*/
 	if(error == -1){
 		return -666;
@@ -100,13 +100,13 @@ int create_(int pid, int psw, int page_table, int *reg){
 		return -2;
 	}
 	/*Find if process already exists*/
-	if ((find_process(get_process(WAITING), pid)) != null){
+	if ((find_process(get_process_(WAITING), pid)) != null){
 		return -3;
-		if((find_process(get_process(READY), pid)) != null){
+		if((find_process(get_process_(READY), pid)) != null){
 			return -3;
-			if((find_process(get_process(TERMINATED), pid)) != null){
+			if((find_process(get_process_(TERMINATED), pid)) != null){
 				return -3;
-				if((find_process(get_process(RUNNING), pid)) != null){
+				if((find_process(get_process_(RUNNING), pid)) != null){
 					return -3;
 				}
 			}
@@ -119,5 +119,5 @@ int create_(int pid, int psw, int page_table, int *reg){
 	}
 	counter++;
 	/*-1 for nothing in queue (fatal), -666 for fatal error*/
-	return move(NEW, READY);
+	return move_(NEW, READY);
 }

@@ -58,7 +58,7 @@ char* enum_to_string(enum QUEUES queue){
 }
 
 void list_Q(enum QUEUES queue) {
-    struct queue_t *structqueue = get_process(queue);
+    struct queue_t *structqueue = get_process_(queue);
 	struct process_control_block *temp = structqueue->head;
     printf("Start of %s.\n", enum_to_string(queue));
     while (temp) {
@@ -77,7 +77,7 @@ void list_all(){
 }
 
 void list_sched(){
-	struct queue_t *temp = get_process(READY);
+	struct queue_t *temp = get_process_(READY);
 	printf("Next scheduled process PID: %d\n\n", temp->head->pid);
 }
 
@@ -97,7 +97,7 @@ int main() {
     int reg3 = 0;
     int regs[3];
 
-    init();
+    init_();
 
     FILE *file = fopen("processmanager_tests", "r");
 
@@ -110,7 +110,7 @@ int main() {
 
    	if (!strcmp(command, "INIT")) {
             printf("\n***INIT command issued***\n");
-            init();
+            init_();
    	}
    	else if (!strcmp(command, "LIST")) {
         arg = strtok(NULL, delim);
@@ -142,7 +142,7 @@ int main() {
    	}
    	else if (!strcmp(command, "GO")){
 		printf("\n***GO command issued***\n");
-		error = go();
+		error = go_();
 		if (error == -1){
 			printf("Could not GO: No ready processes\n");
 		}
@@ -157,7 +157,7 @@ int main() {
    	else if (!strcmp(command, "UNWAIT")) {
 		printf("\n***UNWAIT command issued***\n");
 		pid = atoi(strtok(NULL, delim));
-		error = unwait(pid);
+		error = unwait_(pid);
 		if (error == -1){
 			printf("Could not UNWAIT: No waiting processes\n");
 		}

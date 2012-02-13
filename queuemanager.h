@@ -41,8 +41,8 @@ enum QUEUES {
 
 int counter;
 
-void init();
-struct queue_t *get_process(enum QUEUES queue_enum);
+void init_();
+struct queue_t *get_process_(enum QUEUES queue_enum);
 struct process_control_block *find_nonempty(struct queue_t *queue);
 int enqueue(struct queue_t *queue, int pid, int psw, int page_table, int *regs);
 void clear(struct process_control_block *process);
@@ -51,10 +51,10 @@ struct process_control_block dequeue(struct queue_t *queue);
 struct process_control_block delete(struct queue_t *queue, int id);
 
 /*Process manager function declerations*/
-int go();
+int go_();
 int eoquantum();
 int eolife();
 int wait_();
-int move(enum QUEUES from_queue, enum QUEUES to_queue);
-int unwait(int pid);
+int move_(enum QUEUES from_queue, enum QUEUES to_queue);
+int unwait_(int pid);
 int create_(int pid, int psw, int page_table, int *reg);

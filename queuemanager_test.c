@@ -56,7 +56,7 @@ int main() {
     int reg3 = 0;
     int regs[3];
 
-    init();
+    init_();
 
     FILE *file = fopen("queuemanager_tests", "r");
 
@@ -67,9 +67,9 @@ int main() {
    	/* printf("%s\n", line); */
    	/* printf("%s\n", command); */
 
-   	if (!strcmp(command, "init_Q")) {
+   	if (!strcmp(command, "initQ")) {
             printf("\n***initializing***\n");
-            init();
+            init_();
    	}
    	else if (!strcmp(command, "list")) {
             printf("\n***listing***\n");
