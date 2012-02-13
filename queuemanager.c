@@ -59,7 +59,7 @@ struct process_control_block error_process =
  .empty = 0
 };
 
-void init_() {
+void init() {
     int i = 0;
 	counter = 0;
     for (i = 0; i < new.size; i++) {
@@ -79,7 +79,7 @@ void init_() {
     }
 }
 
-struct queue_t *get_process_(enum QUEUES queue_enum) {
+struct queue_t *get_process(enum QUEUES queue_enum) {
     switch (queue_enum) {
     case NEW:
         return &new;
