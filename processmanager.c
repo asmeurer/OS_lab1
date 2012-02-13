@@ -111,12 +111,20 @@ int create(int pid, int psw, int page_table, int reg0, int reg1, int reg2){
 }
 
 int eowait(){
+   /*Running queue is full*/
+	if (get_process(RUNNING).head != null){
+		return -2;
+	}
 
    move(RUNNING, TERMINATED);
    return 0;
 }
 
 int wait(){
+   /*Running queue is full.*/
+	if (get_process(RUNNING).head != null){
+		return -2;
+	}
 
    move(RUNNING, READY);
    return 0;
