@@ -118,7 +118,7 @@ int main() {
            	printf("%d\n", ret.pid);
             }
    	}
-   	else {
+   	else{
             printf("Unrecognized command: %s\n", command);
    	}
     }
