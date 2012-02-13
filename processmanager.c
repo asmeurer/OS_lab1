@@ -49,7 +49,7 @@ int go(){
 	return move(READY, RUNNING);
 }
 
-int eoquantem(){
+int eoquantum(){
 	return move(RUNNING, READY);
 }
 
