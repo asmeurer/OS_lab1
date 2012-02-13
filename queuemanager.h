@@ -8,10 +8,7 @@
 
 /* NULL is in stdio.h.  Redefining NULL gives a warning, so call it null
    instead. */
-   
 
-#ifndef QUEUEMANAGER_H
-#define QUEUEMANAGER_H
 
 #define null 0
 #define NUM_REGS 3
@@ -57,9 +54,7 @@ struct process_control_block delete(struct queue_t *queue, int id);
 int go();
 int eoquantum();
 int eolife();
-int wait();
+int wait_();
 int move(enum QUEUES from_queue, enum QUEUES to_queue);
 int unwait(int pid);
-int create(int pid, int psw, int page_table, int *reg);
-
-#endif
+int create_(int pid, int psw, int page_table, int *reg);
