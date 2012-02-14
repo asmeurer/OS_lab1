@@ -216,7 +216,10 @@ int main() {
             }
    	}
    	else if (!strcmp(command, "#")) {
-            printf("\n%s\n", line);
+            arg = strtok(NULL, "\n");
+            printf("\n###############\n");
+            printf("# %s\n", arg);
+            printf("###############\n");
 	}
    	else {
             printf("Unrecognized command: %s\n", command);
