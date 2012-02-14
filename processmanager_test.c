@@ -142,10 +142,10 @@ int main() {
             printf("\n***UNWAIT command issued***\n");
             pid = atoi(strtok(NULL, delim));
             error = unwait(pid);
-            if (error == -1){
+            if (error == -2){
                 printf("Could not UNWAIT: No waiting processes\n");
             }
-            else if (error == -2){
+            else if (error == -1){
                 printf("Could not UNWAIT: PID does not exist in waiting queue\n");
             }
             else if (error == -666){
