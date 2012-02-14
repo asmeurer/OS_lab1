@@ -77,7 +77,9 @@ int create(int pid, int psw, int page_table, int *reg){
         ((find_process(get_process(RUNNING), pid)) != null)) {
         return -3;
     }
-    error = enqueue(NEW, pid, psw, page_table, reg);
+
+    error = enqueue(get_process(NEW), pid, psw, page_table, reg);
+
     /*If new queue is full*/
     if (error == -1){
         return -666;
