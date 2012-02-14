@@ -6,25 +6,9 @@
    Sheng Lundquist
 */
 
-#include<stdio.h>
-#include<string.h>
-#include<stdlib.h>
+#include "processmanager_test.h"
+#include "processmanager.h"
 #include "queuemanager.h"
-
-/* enum QUEUES {
-    NEW,
-    WAITING,
-    READY,
-    TERMINATED,
-    RUNNING
-} queue_enum;
- */
-
-char* enum_to_string(enum QUEUES queue);
-void printprocess(struct process_control_block process);
-void list_Q(enum QUEUES queue);
-void list_all();
-void list_sched();
 
 void printprocess(struct process_control_block process) {
     int i = 0;
@@ -219,7 +203,7 @@ int main() {
 		regs[1] = reg2;
 		regs[2] = reg3;
 
-		error = create_(pid, psw, page_table, regs);
+		error = create(pid, psw, page_table, regs);
 		if (error == -1 || error == -666) {
 			printf("FATAL ERROR: SYSTEM EXIT\n");
 			exit(-1);
