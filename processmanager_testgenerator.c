@@ -59,7 +59,7 @@ int main() {
 
             break;
         case 1:
-            fprintf(output, "init\n");
+            fprintf(output, "INIT\n");
 
             break;
         case 2:
