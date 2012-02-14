@@ -62,7 +62,11 @@ void list_all(){
 
 void list_sched(){
     struct queue_t *temp = get_process(READY);
-    printf("Next scheduled process PID: %d\n\n", temp->head->pid);
+    if (temp->head == null) {
+        printf("Nothing is scheduled to run (ready queue empty)\n");
+    } else {
+        printf("Next scheduled process PID: %d\n\n", temp->head->pid);
+    }
 }
 
 int main() {
