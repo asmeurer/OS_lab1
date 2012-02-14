@@ -98,7 +98,7 @@ int main() {
    	}
    	else if (!strcmp(command, "LIST")) {
             arg = strtok(NULL, delim);
-            printf("\n***LISTING command issued***\n");
+            printf("\n***LISTING command issued (%s)***\n", arg);
             if (!strcmp(arg, "NEW")){
                 list_Q(NEW);
             }
@@ -139,8 +139,8 @@ int main() {
             }
    	}
    	else if (!strcmp(command, "UNWAIT")) {
-            printf("\n***UNWAIT command issued***\n");
             pid = atoi(strtok(NULL, delim));
+            printf("\n***UNWAIT command issued (PID: %d)***\n", pid);
             error = unwait(pid);
             if (error == -2){
                 printf("Could not UNWAIT: No waiting processes\n");
@@ -187,7 +187,6 @@ int main() {
             }
    	}
 	else if (!strcmp(command, "CREATE")) {
-            printf("\n***CREATE command issued***\n");
             for (i = 0; i < 6; i++) {
 		args[i] = strtok(NULL, delim);
             }
@@ -203,6 +202,7 @@ int main() {
             regs[1] = reg2;
             regs[2] = reg3;
 
+            printf("\n***CREATE command issued (PID: %d)***\n", pid);
             error = create(pid, psw, page_table, regs);
             if (error == -1 || error == -666) {
                 printf("FATAL ERROR: SYSTEM EXIT\n");
