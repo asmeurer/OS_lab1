@@ -114,3 +114,6 @@ EOLIFE
 UNWAIT 2
 LIST ALL
 LIST SCHED
+# Test the list sched works correctly on empty ready queue
+INIT
+LIST SCHED
