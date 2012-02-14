@@ -48,11 +48,11 @@ int move(enum QUEUES from_queue, enum QUEUES to_queue){
 
 int unwait(int pid){
     struct process_control_block temp = delete(get_process(WAITING), pid);
-    /*Nothing in queue, recoverable*/
+    /*Pid doesn't exist*/
     if(temp.pid == -1){
         return -1;
     }
-    /*Pid doesn't exist*/
+    /*Nothing in queue, recoverable*/
     else if(temp.pid == -2){
         return -2;
     }

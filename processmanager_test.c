@@ -62,7 +62,11 @@ void list_all(){
 
 void list_sched(){
     struct queue_t *temp = get_process(READY);
-    printf("Next scheduled process PID: %d\n\n", temp->head->pid);
+    if (temp->head == null) {
+        printf("Nothing is scheduled to run (ready queue empty)\n");
+    } else {
+        printf("Next scheduled process PID: %d\n\n", temp->head->pid);
+    }
 }
 
 int main() {
@@ -98,7 +102,7 @@ int main() {
    	}
    	else if (!strcmp(command, "LIST")) {
             arg = strtok(NULL, delim);
-            printf("\n***LISTING command issued***\n");
+            printf("\n***LISTING command issued (%s)***\n", arg);
             if (!strcmp(arg, "NEW")){
                 list_Q(NEW);
             }
@@ -139,13 +143,13 @@ int main() {
             }
    	}
    	else if (!strcmp(command, "UNWAIT")) {
-            printf("\n***UNWAIT command issued***\n");
             pid = atoi(strtok(NULL, delim));
+            printf("\n***UNWAIT command issued (PID: %d)***\n", pid);
             error = unwait(pid);
-            if (error == -1){
+            if (error == -2){
                 printf("Could not UNWAIT: No waiting processes\n");
             }
-            else if (error == -2){
+            else if (error == -1){
                 printf("Could not UNWAIT: PID does not exist in waiting queue\n");
             }
             else if (error == -666){
@@ -187,7 +191,6 @@ int main() {
             }
    	}
 	else if (!strcmp(command, "CREATE")) {
-            printf("\n***CREATE command issued***\n");
             for (i = 0; i < 6; i++) {
 		args[i] = strtok(NULL, delim);
             }
@@ -203,6 +206,7 @@ int main() {
             regs[1] = reg2;
             regs[2] = reg3;
 
+            printf("\n***CREATE command issued (PID: %d)***\n", pid);
             error = create(pid, psw, page_table, regs);
             if (error == -1 || error == -666) {
                 printf("FATAL ERROR: SYSTEM EXIT\n");

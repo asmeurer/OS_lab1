@@ -1,0 +1,760 @@
+
+################################################################################
+# Initialize the manager
+################################################################################
+
+***INIT command issued***
+
+################################################################################
+# Create more than 20 processes
+################################################################################
+
+***CREATE command issued (PID: 1)***
+
+***CREATE command issued (PID: 2)***
+
+***CREATE command issued (PID: 3)***
+
+***CREATE command issued (PID: 4)***
+
+***CREATE command issued (PID: 5)***
+
+***CREATE command issued (PID: 6)***
+
+***CREATE command issued (PID: 7)***
+
+***CREATE command issued (PID: 8)***
+
+***CREATE command issued (PID: 9)***
+
+***CREATE command issued (PID: 10)***
+
+***CREATE command issued (PID: 11)***
+
+***CREATE command issued (PID: 12)***
+
+***CREATE command issued (PID: 13)***
+
+***CREATE command issued (PID: 14)***
+
+***CREATE command issued (PID: 15)***
+
+***CREATE command issued (PID: 16)***
+
+***CREATE command issued (PID: 17)***
+
+***CREATE command issued (PID: 18)***
+
+***CREATE command issued (PID: 19)***
+
+***CREATE command issued (PID: 20)***
+
+***CREATE command issued (PID: 21)***
+Could not CREATE: Maximum allowed processes reached
+
+################################################################################
+# Reset the manager
+################################################################################
+
+***INIT command issued***
+
+################################################################################
+# Create some processes to play with
+################################################################################
+
+***CREATE command issued (PID: 22)***
+
+***CREATE command issued (PID: 23)***
+
+***CREATE command issued (PID: 24)***
+
+***CREATE command issued (PID: 25)***
+
+***CREATE command issued (PID: 26)***
+
+***CREATE command issued (PID: 27)***
+
+################################################################################
+# Test if two go's in a row cause an error
+################################################################################
+
+***GO command issued***
+
+***GO command issued***
+Could not GO: Process already running
+
+################################################################################
+# Reset the manager
+################################################################################
+
+***INIT command issued***
+
+################################################################################
+# Test go with no ready process gives an error
+################################################################################
+
+***GO command issued***
+Could not GO: No ready processes
+
+################################################################################
+# Test that everything goes where it should
+################################################################################
+
+***INIT command issued***
+
+***LISTING command issued (ALL)***
+Start of New Queue.
+
+End of New Queue.
+
+Start of Waiting Queue.
+
+End of Waiting Queue.
+
+Start of Ready Queue.
+
+End of Ready Queue.
+
+Start of Terminated Queue.
+
+End of Terminated Queue.
+
+Start of Running Queue.
+
+End of Running Queue.
+
+
+***CREATE command issued (PID: 1)***
+
+***CREATE command issued (PID: 2)***
+
+***CREATE command issued (PID: 3)***
+
+***CREATE command issued (PID: 4)***
+
+***CREATE command issued (PID: 5)***
+
+***CREATE command issued (PID: 6)***
+
+***GO command issued***
+
+***LISTING command issued (ALL)***
+Start of New Queue.
+
+End of New Queue.
+
+Start of Waiting Queue.
+
+End of Waiting Queue.
+
+Start of Ready Queue.
+
+pid: 2
+psw: 35
+page_table: 11
+regs:
+  12
+  9
+  1
+
+pid: 3
+psw: 12
+page_table: 2
+regs:
+  10
+  19
+  3
+
+pid: 4
+psw: 26
+page_table: 15
+regs:
+  6
+  12
+  16
+
+pid: 5
+psw: 11
+page_table: 18
+regs:
+  7
+  9
+  2
+
+pid: 6
+psw: 30
+page_table: 12
+regs:
+  3
+  7
+  15
+
+End of Ready Queue.
+
+Start of Terminated Queue.
+
+End of Terminated Queue.
+
+Start of Running Queue.
+
+pid: 1
+psw: 33
+page_table: 11
+regs:
+  17
+  15
+  13
+
+End of Running Queue.
+
+
+***WAIT command issued***
+
+***LISTING command issued (ALL)***
+Start of New Queue.
+
+End of New Queue.
+
+Start of Waiting Queue.
+
+pid: 1
+psw: 33
+page_table: 11
+regs:
+  17
+  15
+  13
+
+End of Waiting Queue.
+
+Start of Ready Queue.
+
+pid: 2
+psw: 35
+page_table: 11
+regs:
+  12
+  9
+  1
+
+pid: 3
+psw: 12
+page_table: 2
+regs:
+  10
+  19
+  3
+
+pid: 4
+psw: 26
+page_table: 15
+regs:
+  6
+  12
+  16
+
+pid: 5
+psw: 11
+page_table: 18
+regs:
+  7
+  9
+  2
+
+pid: 6
+psw: 30
+page_table: 12
+regs:
+  3
+  7
+  15
+
+End of Ready Queue.
+
+Start of Terminated Queue.
+
+End of Terminated Queue.
+
+Start of Running Queue.
+
+End of Running Queue.
+
+
+***UNWAIT command issued (PID: 1)***
+
+***LISTING command issued (ALL)***
+Start of New Queue.
+
+End of New Queue.
+
+Start of Waiting Queue.
+
+End of Waiting Queue.
+
+Start of Ready Queue.
+
+pid: 2
+psw: 35
+page_table: 11
+regs:
+  12
+  9
+  1
+
+pid: 3
+psw: 12
+page_table: 2
+regs:
+  10
+  19
+  3
+
+pid: 4
+psw: 26
+page_table: 15
+regs:
+  6
+  12
+  16
+
+pid: 5
+psw: 11
+page_table: 18
+regs:
+  7
+  9
+  2
+
+pid: 6
+psw: 30
+page_table: 12
+regs:
+  3
+  7
+  15
+
+pid: 1
+psw: 33
+page_table: 11
+regs:
+  17
+  15
+  13
+
+End of Ready Queue.
+
+Start of Terminated Queue.
+
+End of Terminated Queue.
+
+Start of Running Queue.
+
+End of Running Queue.
+
+
+***GO command issued***
+
+***EOQUANTUM command issued***
+
+***LISTING command issued (ALL)***
+Start of New Queue.
+
+End of New Queue.
+
+Start of Waiting Queue.
+
+End of Waiting Queue.
+
+Start of Ready Queue.
+
+pid: 3
+psw: 12
+page_table: 2
+regs:
+  10
+  19
+  3
+
+pid: 4
+psw: 26
+page_table: 15
+regs:
+  6
+  12
+  16
+
+pid: 5
+psw: 11
+page_table: 18
+regs:
+  7
+  9
+  2
+
+pid: 6
+psw: 30
+page_table: 12
+regs:
+  3
+  7
+  15
+
+pid: 1
+psw: 33
+page_table: 11
+regs:
+  17
+  15
+  13
+
+pid: 2
+psw: 35
+page_table: 11
+regs:
+  12
+  9
+  1
+
+End of Ready Queue.
+
+Start of Terminated Queue.
+
+End of Terminated Queue.
+
+Start of Running Queue.
+
+End of Running Queue.
+
+
+***GO command issued***
+
+***EOLIFE command issued***
+
+***LISTING command issued (ALL)***
+Start of New Queue.
+
+End of New Queue.
+
+Start of Waiting Queue.
+
+End of Waiting Queue.
+
+Start of Ready Queue.
+
+pid: 4
+psw: 26
+page_table: 15
+regs:
+  6
+  12
+  16
+
+pid: 5
+psw: 11
+page_table: 18
+regs:
+  7
+  9
+  2
+
+pid: 6
+psw: 30
+page_table: 12
+regs:
+  3
+  7
+  15
+
+pid: 1
+psw: 33
+page_table: 11
+regs:
+  17
+  15
+  13
+
+pid: 2
+psw: 35
+page_table: 11
+regs:
+  12
+  9
+  1
+
+End of Ready Queue.
+
+Start of Terminated Queue.
+
+pid: 3
+psw: 12
+page_table: 2
+regs:
+  10
+  19
+  3
+
+End of Terminated Queue.
+
+Start of Running Queue.
+
+End of Running Queue.
+
+
+################################################################################
+# Reset
+################################################################################
+
+***INIT command issued***
+
+################################################################################
+# EOQUANTUM, WAIT, and EOLIFE should give an error on empty running queue
+################################################################################
+
+***EOQUANTUM command issued***
+Could not EOQUANTUM: No running processes
+
+***EOLIFE command issued***
+Could not EOLIFE: No running processes
+
+***WAIT command issued***
+Could not WAIT: No running processes
+
+################################################################################
+# UNWAIT should give an error on empty wait queue
+################################################################################
+
+***UNWAIT command issued (PID: 1)***
+Could not UNWAIT: No waiting processes
+
+***CREATE command issued (PID: 1)***
+
+***GO command issued***
+
+***WAIT command issued***
+
+***LISTING command issued (WAITING)***
+Start of Waiting Queue.
+
+pid: 1
+psw: 33
+page_table: 11
+regs:
+  17
+  15
+  13
+
+End of Waiting Queue.
+
+
+################################################################################
+# UNWAIT non-waited PID should give error
+################################################################################
+
+***UNWAIT command issued (PID: 2)***
+Could not UNWAIT: PID does not exist in waiting queue
+
+***CREATE command issued (PID: 2)***
+
+***UNWAIT command issued (PID: 2)***
+Could not UNWAIT: PID does not exist in waiting queue
+
+################################################################################
+# Reset
+################################################################################
+
+***INIT command issued***
+
+################################################################################
+# Create a process with an already existing PID
+################################################################################
+
+################################################################################
+# We have to do this manually (it can't be done with the test generator)
+################################################################################
+
+################################################################################
+# Test it for being in each queue
+################################################################################
+
+################################################################################
+# Ready
+################################################################################
+
+***CREATE command issued (PID: 3)***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+
+End of Running Queue.
+
+
+***CREATE command issued (PID: 3)***
+Could not CREATE: PID not unique
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+
+End of Running Queue.
+
+
+################################################################################
+# Waiting
+################################################################################
+
+***GO command issued***
+
+***WAIT command issued***
+
+***LISTING command issued (WAITING)***
+Start of Waiting Queue.
+
+pid: 3
+psw: 1
+page_table: 1
+regs:
+  1
+  1
+  1
+
+End of Waiting Queue.
+
+
+***CREATE command issued (PID: 3)***
+Could not CREATE: PID not unique
+
+***UNWAIT command issued (PID: 3)***
+
+################################################################################
+# Running
+################################################################################
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+
+pid: 3
+psw: 1
+page_table: 1
+regs:
+  1
+  1
+  1
+
+End of Running Queue.
+
+
+***CREATE command issued (PID: 3)***
+Could not CREATE: PID not unique
+
+################################################################################
+# Terminated
+################################################################################
+
+***EOLIFE command issued***
+
+***LISTING command issued (TERMINATED)***
+Start of Terminated Queue.
+
+pid: 3
+psw: 1
+page_table: 1
+regs:
+  1
+  1
+  1
+
+End of Terminated Queue.
+
+
+***CREATE command issued (PID: 3)***
+Could not CREATE: PID not unique
+
+################################################################################
+# We can't exactly test New :)
+################################################################################
+
+################################################################################
+# Do something more real life
+################################################################################
+
+***INIT command issued***
+
+***CREATE command issued (PID: 1)***
+
+***CREATE command issued (PID: 2)***
+
+***GO command issued***
+
+***EOQUANTUM command issued***
+
+***CREATE command issued (PID: 3)***
+
+***GO command issued***
+
+***WAIT command issued***
+
+***GO command issued***
+
+***EOLIFE command issued***
+
+***UNWAIT command issued (PID: 2)***
+
+***LISTING command issued (ALL)***
+Start of New Queue.
+
+End of New Queue.
+
+Start of Waiting Queue.
+
+End of Waiting Queue.
+
+Start of Ready Queue.
+
+pid: 3
+psw: 12
+page_table: 2
+regs:
+  10
+  19
+  3
+
+pid: 2
+psw: 35
+page_table: 11
+regs:
+  12
+  9
+  1
+
+End of Ready Queue.
+
+Start of Terminated Queue.
+
+pid: 1
+psw: 33
+page_table: 11
+regs:
+  17
+  15
+  13
+
+End of Terminated Queue.
+
+Start of Running Queue.
+
+End of Running Queue.
+
+
+***LISTING command issued (SCHED)***
+Next scheduled process PID: 3
+
+
+################################################################################
+# Test the list sched works correctly on empty ready queue
+################################################################################
+
+***INIT command issued***
+
+***LISTING command issued (SCHED)***
+Nothing is scheduled to run (ready queue empty)
