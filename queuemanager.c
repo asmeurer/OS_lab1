@@ -61,19 +61,30 @@ struct process_control_block error_process =
 
 void init() {
     int i = 0;
-	counter = 0;
+    counter = 0;
+
+    new.head = null;
+    new.tail = null;
     for (i = 0; i < new.size; i++) {
 	clear(&new.top[i]);
     }
+    waiting.head = null;
+    waiting.tail = null;
     for (i = 0; i < waiting.size; i++) {
 	clear(&waiting.top[i]);
     }
+    ready.head = null;
+    ready.tail = null;
     for (i = 0; i < ready.size; i++) {
 	clear(&ready.top[i]);
     }
+    terminated.head = null;
+    terminated.tail = null;
     for (i = 0; i < terminated.size; i++) {
 	clear(&terminated.top[i]);
     }
+    running.head = null;
+    running.tail = null;
     for (i = 0; i < running.size; i++) {
 	clear(&running.top[i]);
     }
