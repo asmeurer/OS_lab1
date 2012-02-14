@@ -19,7 +19,7 @@ int main() {
 
     int i = 0;
     FILE *output = NULL;
-    char *mode = "w";
+    char *mode = "a";
     char outputFilename[] = "processmanager_tests";
     int input=0, number=0, pid=0;
     int psw=0, page=0, reg1=0, reg2=0, reg3=0;
@@ -88,31 +88,31 @@ int main() {
             switch (listtype) {
             case 'N':
             case 'n':
-                fprintf(output, "LIST new\n");
+                fprintf(output, "LIST NEW\n");
                 break;
             case 'T':
             case 't':
-                fprintf(output, "LIST terminated\n");
+                fprintf(output, "LIST TERMINATED\n");
                 break;
             case 'R':
             case 'r':
-                fprintf(output, "LIST ready\n");
+                fprintf(output, "LIST READY\n");
                 break;
             case 'U':
             case 'u':
-                fprintf(output, "LIST running\n");
+                fprintf(output, "LIST RUNNING\n");
                 break;
             case 'W':
             case 'w':
-                fprintf(output, "LIST waiting\n");
+                fprintf(output, "LIST WAITING\n");
                 break;
             case 'A':
             case 'a':
-                fprintf(output, "LIST all\n");
+                fprintf(output, "LIST ALL\n");
                 break;
             case 'S':
             case 's':
-                fprintf(output, "LIST sched\n");
+                fprintf(output, "LIST SCHED\n");
                 break;
             default:
                 printf("Character not recognized\n");
