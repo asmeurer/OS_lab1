@@ -11,6 +11,7 @@
 #include<stdlib.h>
 #include "processmanager.h"
 #include "definitions.h"
+#include "queuemanager.c"
 
 /* Make the tests still work by just testing the ready queue */
 
@@ -57,7 +58,7 @@ int main() {
     int reg3 = 0;
     int regs[3];
 
-    pinit();
+    init();
 
     FILE *file = fopen("queuemanager_tests", "r");
 
@@ -70,7 +71,7 @@ int main() {
 
    	if (!strcmp(command, "init_Q")) {
             printf("\n***initializing***\n");
-            pinit();
+            init();
    	}
    	else if (!strcmp(command, "list")) {
             printf("\n***listing***\n");
