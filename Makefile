@@ -4,6 +4,8 @@
 # Add .d to Make's recognized suffixes.
 SUFFIXES += .d
 
+.DEFAULT_GOAL = all
+
 #Find all the C files in the lab directory
 SOURCES:=$(shell find . -name "*.c")
 CC = gcc
@@ -21,6 +23,8 @@ ifeq (0, $(words $(findstring $(MAKECMDGOALS), $(NODEPS))))
     #clean up automatically afterwards
     -include $(DEPFILES)
 endif
+
+all: $(patsubst %.c,%.o,$(SOURCES))
 
 #This is the rule for creating the dependency files
 %.d: %.c
