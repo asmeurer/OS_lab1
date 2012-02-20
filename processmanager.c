@@ -88,3 +88,21 @@ int create(int pid, int psw, int page_table, int *reg){
     /*-1 for nothing in queue (fatal), -666 for fatal error*/
     return move(NEW, READY);
 }
+
+int empty_term(){
+	struct queue_t *terminated = get_process(TERMINATED);
+	int i = 0;
+	/*If terminated queue is empty, return -1*/
+	if (terminated->head == null){
+		return -1;
+	}
+	terminated->head = null;
+    terminated->tail = null;
+    for (i = 0; i < terminated->size; i++) {
+		if(terminated->top[i].empty == 0){
+			counter--;
+		}
+		clear(&terminated->top[i]);
+    }
+	return 0;
+}
