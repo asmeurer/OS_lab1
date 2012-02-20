@@ -205,12 +205,11 @@ int main(int argc, char *argv[]) {
         for (i = 0; i < 6; i++) {
 			args[i] = strtok(NULL, delim);
         }
-        pid = atoi(args[0]);
-        psw = atoi(args[1]);
-        page_table = atoi(args[2]);
-        reg1 = atoi(args[3]);
-        reg2 = atoi(args[4]);
-        reg3 = atoi(args[5]);
+        psw = atoi(args[0]);
+        page_table = atoi(args[1]);
+        reg1 = atoi(args[2]);
+        reg2 = atoi(args[3]);
+        reg3 = atoi(args[4]);
 
         /* printf("pid: %d, psw: %d, page_table: %d, reg1: %d, reg2: %d, reg3: %d\n", pid, psw, page_table, reg1, reg2, reg3); */
 		regs[0] = reg1;
