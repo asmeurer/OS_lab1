@@ -9,6 +9,20 @@
 #include"processmanager.h"
 #include"queuemanager.h"
 
+void age_process(){
+	struct queue_t *queue_temp = get_process(READY);
+	struct process_control_block *temp = queue_temp->head;
+	while (temp != null){
+		temp->quantum_count++;
+		if(temp->quantum_count >= temp->priority){
+			temp->quantum_count = 0;
+			if(temp->priority < 20){
+				temp->priority++;
+			}
+		}
+		temp = temp->next;
+	}
+}
 
 int go(){
     struct queue_t *temp = get_process(RUNNING);
@@ -20,6 +34,15 @@ int go(){
 }
 
 int eoquantum(){
+	age_process();
+	struct queue_t *temp = get_process(RUNNING);
+	/*TODO: Differenciate between different schedulers to do below code*/
+	if(temp->head != null){
+		if(temp->head->priority > 1){
+			temp->head->priority--;
+		}
+	}
+	/*END TODO*/
     return move(RUNNING, READY);
 }
 
@@ -29,6 +52,14 @@ int eolife(){
 
 /* wait() is a system call, so the name conflicts in the test runner */
 int wait_(){
+	struct queue_t *temp = get_process(RUNNING);
+	/*TODO: Differenciate between different schedulers to do below code*/
+	if(temp->head != null){
+		if(temp->head->priority < 20){
+			temp->head->priority++;
+		}
+	}
+	/*END TODO*/
     return move(RUNNING, WAITING);
 }
 

@@ -18,5 +18,6 @@ int move(enum QUEUES from_queue, enum QUEUES to_queue);
 int unwait(int pid);
 int create(int psw, int page_table, int *reg);
 int empty_term();
+void age_process();
 
 #endif
