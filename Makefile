@@ -5,16 +5,19 @@
 SUFFIXES += .d
 
 .DEFAULT_GOAL = all
+.PHONY = clean check-syntax all
 
-#Find all the C files in the lab directory
-SOURCES:=$(shell find . -name "*.c")
+# Find all the C files in the lab directory
+# The cut removes leading ./ from the filenames
+SOURCES:=$(shell find . -name "*.c" | cut -d/ -f 2)
+OBJS = $(SOURCES:.c=.o)
 CC = gcc
 FLAGS = -Wall
 
 	# Only include -c if the file does not have a main function
 NOLINKFLAG =
 HASMAIN =
-ifneq (0, $(words $(findstring $(MAKECMDGOALS), $(SOURCES:.c=.o))))
+ifneq (0, $(words $(findstring $(MAKECMDGOALS), $(OBJS))))
 	HASMAIN = $(shell if grep "int main" $(MAKECMDGOALS:.o=.c) > /dev/null; then echo 1; else echo 0; fi)
 	ifeq (0, $(HASMAIN))
 		NOLINKFLAG = -c
