@@ -218,7 +218,7 @@ int main(int argc, char *argv[]) {
 		regs[2] = reg3;
 
 		printf("\n***CREATE command issued (PID: %d)***\n", pid);
-		error = create(pid, psw, page_table, regs);
+		error = create(psw, page_table, regs);
 		if (error == -1 || error == -666) {
 			printf("FATAL ERROR: SYSTEM EXIT\n");
 			exit(-1);
@@ -227,17 +227,16 @@ int main(int argc, char *argv[]) {
 			printf("Could not CREATE: Maximum allowed processes reached\n");
 		}
 		else if (error == -3){
-			printf("Could not CREATE: PID not unique\n");
+			/*printf("Could not CREATE: PID not unique\n");*/
+			printf("FATAL ERROR: SYSTEM EXIT\n");
 		}
    	}
 	else if (!strcmp(command, "CLEAR_TERM")){
-		printf("\nCLEAR_TERM command issued\n");
-		printf("Count: %d\n", counter);
+		printf("\n***CLEAR_TERM command issued***\n");
 		error = empty_term();
 		if (error == -1){
 			printf("Could not CLEAR_TERM: No process in terminated queue\n");
 		}
-		printf("Count: %d\n", counter);
 	}
    	else if (!strcmp(command, "#")) {
             arg = strtok(NULL, "\n");

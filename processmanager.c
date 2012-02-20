@@ -38,7 +38,7 @@ int move(enum QUEUES from_queue, enum QUEUES to_queue){
     if(temp.pid == -1){
         return -1;
     }
-    int error = enqueue(get_process(to_queue), temp.pid, temp.psw, temp.page_table, temp.regs);
+    int error = enqueue(get_process(to_queue), temp.pid, temp.psw, temp.page_table, temp.regs, temp.priority, temp.quantum_count);
     /*Queue full, unrecoverable error*/
     if(error == -1){
         return -666;
@@ -56,7 +56,7 @@ int unwait(int pid){
     else if(temp.pid == -2){
         return -2;
     }
-    int error = enqueue(get_process(READY), temp.pid, temp.psw, temp.page_table, temp.regs);
+    int error = enqueue(get_process(READY), temp.pid, temp.psw, temp.page_table, temp.regs, temp.priority, temp.quantum_count);
     /*Queue full, unrecoverable error*/
     if(error == -1){
         return -666;
@@ -64,12 +64,15 @@ int unwait(int pid){
     return 0;
 }
 
-int create(int pid, int psw, int page_table, int *reg){
+int create(int psw, int page_table, int *reg){
     int error;
     /*If max allowed processes are reached*/
-    if(counter >= MAX_PROCESSES){
+    if(process_counter >= MAX_PROCESSES){
         return -2;
     }
+	/*TODO: Create a unique pid in new queue instead of here*/
+	int pid = pid_counter;
+	pid_counter++;
     /*Find if process already exists*/
     if ((find_process(get_process(WAITING), pid) != null) ||
         ((find_process(get_process(READY), pid)) != null) ||
@@ -78,13 +81,15 @@ int create(int pid, int psw, int page_table, int *reg){
         return -3;
     }
 
-    error = enqueue(get_process(NEW), pid, psw, page_table, reg);
+	/*Creates process with default priority of 10*/
+	/*TODO: Differenciate between schedualers for default priority of 10 or 0*/
+    error = enqueue(get_process(NEW), pid, psw, page_table, reg, 10, 0);
 
     /*If new queue is full*/
     if (error == -1){
         return -666;
     }
-    counter++;
+    process_counter++;
     /*-1 for nothing in queue (fatal), -666 for fatal error*/
     return move(NEW, READY);
 }
@@ -100,7 +105,7 @@ int empty_term(){
     terminated->tail = null;
     for (i = 0; i < terminated->size; i++) {
 		if(terminated->top[i].empty == 0){
-			counter--;
+			process_counter--;
 		}
 		clear(&terminated->top[i]);
     }

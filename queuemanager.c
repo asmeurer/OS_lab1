@@ -61,7 +61,8 @@ struct process_control_block error_process =
 
 void init() {
     int i = 0;
-    counter = 0;
+    process_counter = 0;
+	pid_counter = 0;
 
     new.head = null;
     new.tail = null;
@@ -119,7 +120,7 @@ struct process_control_block *find_nonempty(struct queue_t *queue) {
     return null;
 }
 
-int enqueue(struct queue_t *queue, int pid, int psw, int page_table, int *regs) {
+int enqueue(struct queue_t *queue, int pid, int psw, int page_table, int *regs, int priority, int quantum_count) {
     /* Enqueue */
     struct process_control_block *newprocess = find_nonempty(queue);
     int i = 0;
@@ -135,7 +136,9 @@ int enqueue(struct queue_t *queue, int pid, int psw, int page_table, int *regs) 
     for (i = 0; i < NUM_REGS; i++) {
         newprocess->regs[i] = regs[i];
     }
-
+	newprocess->priority = priority;
+	newprocess->quantum_count = quantum_count;
+	
     if (queue->tail) {
         /* The queue already has elements */
         newprocess->next = queue->tail;
@@ -163,6 +166,8 @@ void clear(struct process_control_block *process){
     process->prev = null;
     /*Set as empty*/
     process->empty = 1;
+	process->priority = 0;
+	process->quantum_count = 0;
 }
 
 
