@@ -216,7 +216,7 @@ int main(int argc, char *argv[]) {
 		regs[1] = reg2;
 		regs[2] = reg3;
 
-		printf("\n***CREATE command issued (PID: %d)***\n", pid);
+		printf("\n***CREATE command issued (PID: %d)***\n", pid_counter);
 		error = create(psw, page_table, regs);
 		if (error == -1 || error == -666) {
 			printf("FATAL ERROR: SYSTEM EXIT\n");
