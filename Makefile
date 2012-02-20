@@ -11,6 +11,16 @@ SOURCES:=$(shell find . -name "*.c")
 CC = gcc
 FLAGS = -Wall
 
+	# Only include -c if the file does not have a main function
+NOLINKFLAG =
+HASMAIN =
+ifneq (0, $(words $(findstring $(MAKECMDGOALS), $(SOURCES:.c=.o))))
+	HASMAIN = $(shell if grep "int main" $(MAKECMDGOALS:.o=.c) > /dev/null; then echo 1; else echo 0; fi)
+	ifeq (0, $(HASMAIN))
+		NOLINKFLAG = -c
+	endif
+endif
+
 #We don't need to clean up when we're making these targets
 NODEPS:=clean check-syntax
 
@@ -19,9 +29,9 @@ DEPFILES:=$(patsubst %.c,%.d,$(SOURCES))
 
 #Don't create dependencies when we're cleaning, for instance
 ifeq (0, $(words $(findstring $(MAKECMDGOALS), $(NODEPS))))
-    #Chances are, these files don't exist.  GMake will create them and
-    #clean up automatically afterwards
-    -include $(DEPFILES)
+	#Chances are, these files don't exist.  GMake will create them and
+	#clean up automatically afterwards
+	-include $(DEPFILES)
 endif
 
 all: $(patsubst %.c,%.o,$(SOURCES))
@@ -32,10 +42,12 @@ all: $(patsubst %.c,%.o,$(SOURCES))
 #    $(CC) $(FLAGS) -MM -MT '$(patsubst src/%,obj/%,$(patsubst %.cpp,%.o,$<))' $< > $@
 
 
-#This rule does the compilation
+#These rules do the compilation
 %.o: %.c %.d %.h
-	$(CC) $(FLAGS) -o $@ -c $<
+	$(CC) $(FLAGS) $(NOLINKFLAG) -o $@ $<
 
+%.o: %.c %.d
+	$(CC) $(FLAGS) $(NOLINKFLAG) -o $@ $<
 
 # all: queuemanager.o queuemanager_testgenerator.o processmanager.o queuemanager_test.o processmanager_test.o
 #
