@@ -24,6 +24,8 @@ struct process_control_block {
     struct process_control_block *next;
     struct process_control_block *prev;
     int empty;
+	int priority;
+	int quantum_count;
 };
 
 struct queue_t {
@@ -41,6 +43,7 @@ enum QUEUES {
     RUNNING
 } queue_enum;
 
-int counter;
+int process_counter;
+int pid_counter;
 
 #endif
