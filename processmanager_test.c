@@ -128,7 +128,6 @@ int main(int argc, char *argv[]) {
     while(1) {
 		/*printf("***reading the file***\n");*/
 		error = fscanf(file," %s", command);
-		printf("%s\n", command);
 		if (error == 1){
 			/* printf("%s\n", line); */
 			/* printf("%s\n", command); */
@@ -279,6 +278,9 @@ int main(int argc, char *argv[]) {
 			else {
 					printf("Unrecognized command: %s\n", command);
 			}
+		}
+		else{
+			printf("NOT VALID COMMAND\n");
 		}
 	}
 
