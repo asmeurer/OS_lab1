@@ -758,3 +758,75 @@ Next scheduled process PID: 3
 
 ***LISTING command issued (SCHED)***
 Nothing is scheduled to run (ready queue empty)
+
+################################################################################
+# Test that we can unwait processes that aren't at the top of the queue
+################################################################################
+
+***INIT command issued***
+
+***CREATE command issued (PID: 1)***
+
+***CREATE command issued (PID: 2)***
+
+***CREATE command issued (PID: 3)***
+
+***GO command issued***
+
+***WAIT command issued***
+
+***GO command issued***
+
+***WAIT command issued***
+
+***GO command issued***
+
+***WAIT command issued***
+
+***UNWAIT command issued (PID: 2)***
+
+***LISTING command issued (ALL)***
+Start of New Queue.
+
+End of New Queue.
+
+Start of Waiting Queue.
+
+pid: 1
+psw: 33
+page_table: 11
+regs:
+  17
+  15
+  13
+
+pid: 3
+psw: 12
+page_table: 2
+regs:
+  10
+  19
+  3
+
+End of Waiting Queue.
+
+Start of Ready Queue.
+
+pid: 2
+psw: 35
+page_table: 11
+regs:
+  12
+  9
+  1
+
+End of Ready Queue.
+
+Start of Terminated Queue.
+
+End of Terminated Queue.
+
+Start of Running Queue.
+
+End of Running Queue.
+

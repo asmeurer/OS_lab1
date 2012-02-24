@@ -69,7 +69,7 @@ void list_sched(){
     }
 }
 
-int main() {
+int main(int argc, char *argv[]) {
     int i = 0;
     int error = 0;
     char line[100];
@@ -84,11 +84,22 @@ int main() {
     int reg2 = 0;
     int reg3 = 0;
     int regs[3];
+	FILE *file;
+	if (argc == 1){
+		file = stdin;	
+	}
+	else if (argc == 2){
+		file = fopen(argv[1], "r");
+	}
+	else{
+		printf("Usage:\n./processmanager_test.o (to read from stdin)\n");
+		printf("./processmanager_test.o <filename> (to read from filename)\n");
+		exit(-1);
+	}
 
     init();
-
-    FILE *file = fopen("processmanager_tests", "r");
-
+	
+	
     while(fgets(line, 100, file) != NULL) {
    	/*printf("***reading the file***\n");*/
    	command = strtok(line, delim);
@@ -191,34 +202,41 @@ int main() {
             }
    	}
 	else if (!strcmp(command, "CREATE")) {
-            for (i = 0; i < 6; i++) {
-		args[i] = strtok(NULL, delim);
-            }
-            pid = atoi(args[0]);
-            psw = atoi(args[1]);
-            page_table = atoi(args[2]);
-            reg1 = atoi(args[3]);
-            reg2 = atoi(args[4]);
-            reg3 = atoi(args[5]);
+        for (i = 0; i < 6; i++) {
+			args[i] = strtok(NULL, delim);
+        }
+        psw = atoi(args[0]);
+        page_table = atoi(args[1]);
+        reg1 = atoi(args[2]);
+        reg2 = atoi(args[3]);
+        reg3 = atoi(args[4]);
 
-            /* printf("pid: %d, psw: %d, page_table: %d, reg1: %d, reg2: %d, reg3: %d\n", pid, psw, page_table, reg1, reg2, reg3); */
-            regs[0] = reg1;
-            regs[1] = reg2;
-            regs[2] = reg3;
+        /* printf("pid: %d, psw: %d, page_table: %d, reg1: %d, reg2: %d, reg3: %d\n", pid, psw, page_table, reg1, reg2, reg3); */
+		regs[0] = reg1;
+		regs[1] = reg2;
+		regs[2] = reg3;
 
-            printf("\n***CREATE command issued (PID: %d)***\n", pid);
-            error = create(pid, psw, page_table, regs);
-            if (error == -1 || error == -666) {
-                printf("FATAL ERROR: SYSTEM EXIT\n");
-                exit(-1);
-            }
-            else if (error == -2){
-                printf("Could not CREATE: Maximum allowed processes reached\n");
-            }
-            else if (error == -3){
-                printf("Could not CREATE: PID not unique\n");
-            }
+		printf("\n***CREATE command issued (PID: %d)***\n", pid_counter);
+		error = create(psw, page_table, regs);
+		if (error == -1 || error == -666) {
+			printf("FATAL ERROR: SYSTEM EXIT\n");
+			exit(-1);
+		}
+		else if (error == -2){
+			printf("Could not CREATE: Maximum allowed processes reached\n");
+		}
+		else if (error == -3){
+			/*printf("Could not CREATE: PID not unique\n");*/
+			printf("FATAL ERROR: SYSTEM EXIT\n");
+		}
    	}
+	else if (!strcmp(command, "CLEAR_TERM")){
+		printf("\n***CLEAR_TERM command issued***\n");
+		error = empty_term();
+		if (error == -1){
+			printf("Could not CLEAR_TERM: No process in terminated queue\n");
+		}
+	}
    	else if (!strcmp(command, "#")) {
             arg = strtok(NULL, "\n");
             printf("\n################################################################################\n");

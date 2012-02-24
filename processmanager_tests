@@ -117,3 +117,16 @@ LIST SCHED
 # Test the list sched works correctly on empty ready queue
 INIT
 LIST SCHED
+# Test that we can unwait processes that aren't at the top of the queue
+INIT
+CREATE 1 33 11 17 15 13
+CREATE 2 35 11 12 9 1
+CREATE 3 12 2 10 19 3
+GO
+WAIT
+GO
+WAIT
+GO
+WAIT
+UNWAIT 2
+LIST ALL
