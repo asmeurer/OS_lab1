@@ -13,7 +13,7 @@
 void init();
 struct queue_t *get_process(enum QUEUES queue_enum);
 struct process_control_block *find_nonempty(struct queue_t *queue);
-int enqueue(struct queue_t *queue, int pid, int psw, int page_table, int *regs);
+int enqueue(struct queue_t *queue, int pid, int psw, int page_table, int *regs, int priority, int quantum_count);
 void clear(struct process_control_block *process);
 struct process_control_block *find_process(struct queue_t *queue, int pid);
 struct process_control_block dequeue(struct queue_t *queue);
