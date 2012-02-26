@@ -26,10 +26,9 @@ void age_process(){
 
 int set_group(int group){
 
-	struct queue_t *tempQ = get_process(NEW);
-	struct process_control_block *temp = tempQ->head; 
+	struct queue_t *temp = get_process(NEW); 
 	/* case new is full */
-	if(tempQ->head != null){
+	if(temp->head != null){
 		return -2;
 	}	
 	/* for the Group Scheduler, associates the group arg to which 
@@ -37,24 +36,27 @@ int set_group(int group){
 
 	if(scheduler == 0){
 		if(group == 0){
-			temp->Group = READY0; 
+			temp->head->Group = READY0; 
 			return move(NEW, READY0);
 		}
 		else if(group == 1){
-			temp->Group = READY1;
+			temp->head->Group = READY1;
 			return move(NEW, READY1);
 		}
 		else if(group == 2){
-			temp->Group = READY2;
+			temp->head->Group = READY2;
 			return move(NEW, READY2);
 		}
 		else if(group == 3){
-			temp->Group = READY3;
+			temp->head->Group = READY3;
 			return move(NEW, READY3);
 
 		}else{
 			return -4;
 		}		
+
+	/* For the Priority scheduler, just moves the process to the default group
+ * 	READY0		*/
 
 	}else {
 		return move(NEW, READY0);	
