@@ -232,17 +232,17 @@ int main(int argc, char *argv[]) {
                 }
             }
             /*TODO Take out this command*/
-            else if (!strcmp(command, "EOQUANTUM")) {
-                printf("\n***EOQUANTUM command issued***\n");
-                error = eoquantum();
-                if (error == -1){
-                    printf("Could not EOQUANTUM: No running processes\n");
-                }
-                else if (error == -666){
-                    printf("FATAL ERROR: SYSTEM EXIT\n");
-                    exit(-1);
-                }
-            }
+            /* else if (!strcmp(command, "EOQUANTUM")) { */
+            /*     printf("\n***EOQUANTUM command issued***\n"); */
+            /*     error = eoquantum(); */
+            /*     if (error == -1){ */
+            /*         printf("Could not EOQUANTUM: No running processes\n"); */
+            /*     } */
+            /*     else if (error == -666){ */
+            /*         printf("FATAL ERROR: SYSTEM EXIT\n"); */
+            /*         exit(-1); */
+            /*     } */
+            /* } */
             else if (!strcmp(command, "EOLIFE")) {
                 printf("\n***EOLIFE command issued***\n");
                 error = eolife();
@@ -266,7 +266,7 @@ int main(int argc, char *argv[]) {
                 }
             }
             else if (!strcmp(command, "CREATE")) {
-                error = fscanf(file, " %d %d %d %d %d %d", &psw, &page_table, &reg1, &reg2, &reg3);
+                error = fscanf(file, " %d %d %d %d %d", &psw, &page_table, &reg1, &reg2, &reg3);
                 if (error == 5){
                     /* printf("pid: %d, psw: %d, page_table: %d, reg1: %d, reg2: %d, reg3: %d\n", pid, psw, page_table, reg1, reg2, reg3); */
                     regs[0] = reg1;
@@ -274,7 +274,8 @@ int main(int argc, char *argv[]) {
                     regs[2] = reg3;
 
                     printf("\n***CREATE command issued (PID: %d)***\n", pid_counter);
-                    error = create(psw, page_table, regs);
+                    /* This should use the actual group eventually */
+                    error = create(psw, page_table, regs, 0);
                     if (error == -1 || error == -666) {
                         printf("FATAL ERROR: SYSTEM EXIT\n");
                         exit(-1);
