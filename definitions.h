@@ -11,7 +11,7 @@
 
 #ifndef DEF_H
 #define DEF_H
-   
+
 #define null 0
 #define NUM_REGS 3
 #define MAX_PROCESSES 20
@@ -24,8 +24,8 @@ struct process_control_block {
     struct process_control_block *next;
     struct process_control_block *prev;
     int empty;
-	int priority;
-	int quantum_count;
+    int priority;
+    int quantum_count;
 };
 
 struct queue_t {
@@ -38,7 +38,10 @@ struct queue_t {
 enum QUEUES {
     NEW,
     WAITING,
-    READY,
+    READY0,
+    READY1,
+    READY2,
+    READY3,
     TERMINATED,
     RUNNING
 } queue_enum;
