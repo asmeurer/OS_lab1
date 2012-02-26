@@ -1,4 +1,6 @@
-all: queuemanager.o queuemanager_testgenerator.o processmanager.o queuemanager_test.o processmanager_test.o
+SOURCES:=$(shell find . -name "*.c" | cut -d/ -f 2)
+
+all: $(patsubst %.c,%.o,$(SOURCES))
 
 queuemanager.o: queuemanager.c queuemanager.h definitions.h
 	gcc -Wall -c queuemanager.c -o queuemanager.o
