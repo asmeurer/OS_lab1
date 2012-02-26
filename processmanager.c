@@ -24,6 +24,46 @@ void age_process(){
     }
 }
 
+int set_group(int group){
+
+	struct queue_t *temp = get_process(NEW); 
+	/* case new is full */
+	if(temp->head != null){
+		return -2;
+	}	
+	/* for the Group Scheduler, associates the group arg to which 
+ * 	group to place the process in */
+
+	if(scheduler == 0){
+		if(group == 0){
+			temp->head->Group = READY0; 
+			return move(NEW, READY0);
+		}
+		else if(group == 1){
+			temp->head->Group = READY1;
+			return move(NEW, READY1);
+		}
+		else if(group == 2){
+			temp->head->Group = READY2;
+			return move(NEW, READY2);
+		}
+		else if(group == 3){
+			temp->head->Group = READY3;
+			return move(NEW, READY3);
+
+		}else{
+			return -4;
+		}		
+
+	/* For the Priority scheduler, just moves the process to the default group
+ * 	READY0		*/
+
+	}else {
+		return move(NEW, READY0);	
+	}
+}
+
+
 int go(){
     struct queue_t *temp = get_process(RUNNING);
     /*Running queue full, process already running*/
@@ -88,6 +128,7 @@ int unwait(int pid){
     else if(temp.pid == -2){
         return -2;
     }
+    
     int error = enqueue(get_process(READY0), temp.pid, temp.psw, temp.page_table, temp.regs, temp.priority, temp.quantum_count);
     /*Queue full, unrecoverable error*/
     if(error == -1){
