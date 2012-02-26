@@ -10,10 +10,10 @@
 
 struct process_control_block _new[1];
 struct process_control_block _waiting[MAX_PROCESSES];
-struct process_control_block _ready0[MAX_PROCESSES/4];
-struct process_control_block _ready1[MAX_PROCESSES/4];
-struct process_control_block _ready2[MAX_PROCESSES/4];
-struct process_control_block _ready3[MAX_PROCESSES/4];
+struct process_control_block _ready0[MAX_PROCESSES];
+struct process_control_block _ready1[MAX_PROCESSES];
+struct process_control_block _ready2[MAX_PROCESSES];
+struct process_control_block _ready3[MAX_PROCESSES];
 struct process_control_block _terminated[MAX_PROCESSES];
 struct process_control_block _running[1];
 
@@ -34,28 +34,28 @@ struct queue_t waiting =
 struct queue_t ready0 =
 {.head = null,
  .tail = null,
- .size = MAX_PROCESSES/4,
+ .size = MAX_PROCESSES,
  .top = _ready0
 };
 
 struct queue_t ready1 =
 {.head = null,
  .tail = null,
- .size = MAX_PROCESSES/4,
+ .size = MAX_PROCESSES,
  .top = _ready1
 };
 
 struct queue_t ready2 =
 {.head = null,
  .tail = null,
- .size = MAX_PROCESSES/4,
+ .size = MAX_PROCESSES,
  .top = _ready2
 };
 
 struct queue_t ready3 =
 {.head = null,
  .tail = null,
- .size = MAX_PROCESSES/4,
+ .size = MAX_PROCESSES,
  .top = _ready3
 };
 

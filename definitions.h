@@ -15,7 +15,7 @@
 #define MAX_QUANTUM 5
 #define null 0
 #define NUM_REGS 3
-#define MAX_PROCESSES 80
+#define MAX_PROCESSES 20
 
 
 enum QUEUES {
