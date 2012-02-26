@@ -10,7 +10,10 @@
 
 struct process_control_block _new[1];
 struct process_control_block _waiting[MAX_PROCESSES];
-struct process_control_block _ready[MAX_PROCESSES];
+struct process_control_block _ready0[MAX_PROCESSES/4];
+struct process_control_block _ready1[MAX_PROCESSES/4];
+struct process_control_block _ready2[MAX_PROCESSES/4];
+struct process_control_block _ready3[MAX_PROCESSES/4];
 struct process_control_block _terminated[MAX_PROCESSES];
 struct process_control_block _running[1];
 
@@ -28,11 +31,32 @@ struct queue_t waiting =
  .top = _waiting
 };
 
-struct queue_t ready =
+struct queue_t ready0 =
 {.head = null,
  .tail = null,
  .size = MAX_PROCESSES,
- .top = _ready
+ .top = _ready0
+};
+
+struct queue_t ready1 =
+{.head = null,
+ .tail = null,
+ .size = MAX_PROCESSES,
+ .top = _ready1
+};
+
+struct queue_t ready2 =
+{.head = null,
+ .tail = null,
+ .size = MAX_PROCESSES,
+ .top = _ready2
+};
+
+struct queue_t ready3 =
+{.head = null,
+ .tail = null,
+ .size = MAX_PROCESSES,
+ .top = _ready3
 };
 
 struct queue_t terminated =
@@ -62,32 +86,47 @@ struct process_control_block error_process =
 void init() {
     int i = 0;
     process_counter = 0;
-	pid_counter = 0;
+    pid_counter = 0;
 
     new.head = null;
     new.tail = null;
     for (i = 0; i < new.size; i++) {
-	clear(&new.top[i]);
+        clear(&new.top[i]);
     }
     waiting.head = null;
     waiting.tail = null;
     for (i = 0; i < waiting.size; i++) {
-	clear(&waiting.top[i]);
+        clear(&waiting.top[i]);
     }
-    ready.head = null;
-    ready.tail = null;
-    for (i = 0; i < ready.size; i++) {
-	clear(&ready.top[i]);
+    ready0.head = null;
+    ready0.tail = null;
+    for (i = 0; i < ready0.size; i++) {
+        clear(&ready0.top[i]);
+    }
+    ready1.head = null;
+    ready1.tail = null;
+    for (i = 0; i < ready1.size; i++) {
+        clear(&ready1.top[i]);
+    }
+    ready2.head = null;
+    ready2.tail = null;
+    for (i = 0; i < ready2.size; i++) {
+        clear(&ready2.top[i]);
+    }
+    ready3.head = null;
+    ready3.tail = null;
+    for (i = 0; i < ready3.size; i++) {
+        clear(&ready3.top[i]);
     }
     terminated.head = null;
     terminated.tail = null;
     for (i = 0; i < terminated.size; i++) {
-	clear(&terminated.top[i]);
+        clear(&terminated.top[i]);
     }
     running.head = null;
     running.tail = null;
     for (i = 0; i < running.size; i++) {
-	clear(&running.top[i]);
+        clear(&running.top[i]);
     }
 }
 
@@ -96,13 +135,19 @@ struct queue_t *get_process(enum QUEUES queue_enum) {
     case NEW:
         return &new;
     case WAITING:
-	return &waiting;
-    case READY:
-	return &ready;
+        return &waiting;
+    case READY0:
+        return &ready0;
+    case READY1:
+        return &ready1;
+    case READY2:
+        return &ready2;
+    case READY3:
+        return &ready3;
     case TERMINATED:
-	return &terminated;
+        return &terminated;
     case RUNNING:
-	return &running;
+        return &running;
     default:
         /* This will never be reached, but it silences a warning from the
          * compiler. */
@@ -136,9 +181,9 @@ int enqueue(struct queue_t *queue, int pid, int psw, int page_table, int *regs, 
     for (i = 0; i < NUM_REGS; i++) {
         newprocess->regs[i] = regs[i];
     }
-	newprocess->priority = priority;
-	newprocess->quantum_count = quantum_count;
-	
+    newprocess->priority = priority;
+    newprocess->quantum_count = quantum_count;
+
     if (queue->tail) {
         /* The queue already has elements */
         newprocess->next = queue->tail;
@@ -166,8 +211,8 @@ void clear(struct process_control_block *process){
     process->prev = null;
     /*Set as empty*/
     process->empty = 1;
-	process->priority = 0;
-	process->quantum_count = 0;
+    process->priority = 0;
+    process->quantum_count = 0;
 }
 
 

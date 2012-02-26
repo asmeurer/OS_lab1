@@ -29,7 +29,7 @@ char* enum_to_string(enum QUEUES queue){
         return "New Queue";
     case WAITING:
         return "Waiting Queue";
-    case READY:
+    case READY0:
         return "Ready Queue";
     case TERMINATED:
         return "Terminated Queue";
@@ -54,13 +54,13 @@ void list_Q(enum QUEUES queue) {
 void list_all(){
     list_Q(NEW);
     list_Q(WAITING);
-    list_Q(READY);
+    list_Q(READY0);
     list_Q(TERMINATED);
     list_Q(RUNNING);
 }
 
 void list_sched(){
-    struct queue_t *temp = get_process(READY);
+    struct queue_t *temp = get_process(READY0);
     if (temp->head == null) {
         printf("Nothing is scheduled to run (ready queue empty)\n");
     } else {
@@ -147,7 +147,7 @@ int main(int argc, char *argv[]) {
                         list_Q(WAITING);
                     }
                     else if (!strcmp(args[0], "READY")){
-                        list_Q(READY);
+                        list_Q(READY0);
                     }
                     else if (!strcmp(args[0], "TERMINATED")){
                         list_Q(TERMINATED);
