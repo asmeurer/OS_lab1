@@ -13,7 +13,7 @@ processmanager_testgenerator.o: processmanager_testgenerator.c
 	gcc -Wall processmanager_testgenerator.c -o processmanager_testgenerator.o
 
 queuemanager_test.o: processmanager.c processmanager.h queuemanager.c queuemanager.h definitions.h
-	gcc -Wall -c queuemanager_test.c processmanager.o queuemanager.o -o queuemanager_test.o
+	gcc -Wall queuemanager_test.c  -o queuemanager_test.o
 
 processmanager_test.o:
 	gcc -Wall processmanager_test.c processmanager.o queuemanager.o -o processmanager_test.o

@@ -75,7 +75,7 @@ int main() {
    	}
    	else if (!strcmp(command, "list")) {
             printf("\n***listing***\n");
-            listQ(ready);
+            listQ(ready0);
    	}
    	else if (!strcmp(command, "enqueue")) {
             printf("\n***enqueueing***\n");
@@ -94,14 +94,15 @@ int main() {
             regs[1] = reg2;
             regs[2] = reg3;
 
-            r = enqueue(&ready, pid, psw, page_table, regs);
+            /* Use dummy values for the priority and quantum count */
+            r = enqueue(&ready0, pid, psw, page_table, regs, 10, 0);
             if (r == -1) {
            	printf("Could not enqueue; queue full.\n");
             }
    	}
    	else if (!strcmp(command, "dequeue")) {
             printf("\n***dequeueing***\n");
-            ret = dequeue(&ready);
+            ret = dequeue(&ready0);
             if (ret.pid == -1) {
            	printf("Could not dequeue: queue empty.\n");
             } else {
@@ -111,7 +112,7 @@ int main() {
    	else if (!strcmp(command, "delete")) {
             printf("\n***deleting***\n");
             pid = atoi(strtok(NULL, delim));
-            ret = delete(&ready, pid);
+            ret = delete(&ready0, pid);
             if (ret.pid == -1) {
            	printf("Could not dequeue: process not found.\n");
             } else if (ret.pid == -2) {
