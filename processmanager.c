@@ -26,41 +26,41 @@ void age_process(){
 
 int set_group(int group){
 
-	struct queue_t *temp = get_process(NEW);
-	/* case new is full */
-	if(temp->head != null){
-		return -2;
-	}
-	/* for the Group Scheduler, associates the group arg to which
- * 	group to place the process in */
+    struct queue_t *temp = get_process(NEW);
+    /* case new is full */
+    if(temp->head != null){
+        return -2;
+    }
+    /* for the Group Scheduler, associates the group arg to which
+     *     group to place the process in */
 
-	if(scheduler == 0){
-		if(group == 0){
-			temp->head->group = READY0;
-			return move(NEW, READY0);
-		}
-		else if(group == 1){
-			temp->head->group = READY1;
-			return move(NEW, READY1);
-		}
-		else if(group == 2){
-			temp->head->group = READY2;
-			return move(NEW, READY2);
-		}
-		else if(group == 3){
-			temp->head->group = READY3;
-			return move(NEW, READY3);
+    if(scheduler == 0){
+        if(group == 0){
+            temp->head->group = READY0;
+            return move(NEW, READY0);
+        }
+        else if(group == 1){
+            temp->head->group = READY1;
+            return move(NEW, READY1);
+        }
+        else if(group == 2){
+            temp->head->group = READY2;
+            return move(NEW, READY2);
+        }
+        else if(group == 3){
+            temp->head->group = READY3;
+            return move(NEW, READY3);
 
-		}else{
-			return -4;
-		}
+        }else{
+            return -4;
+        }
 
-	/* For the Priority scheduler, just moves the process to the default group
- * 	READY0		*/
+        /* For the Priority scheduler, just moves the process to the default group
+         *     READY0        */
 
-	}else {
-		return move(NEW, READY0);
-	}
+    }else {
+        return move(NEW, READY0);
+    }
 }
 
 
