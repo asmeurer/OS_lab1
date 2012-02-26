@@ -20,6 +20,13 @@ void printprocess(struct process_control_block process) {
     for (i = 0; i < NUM_REGS; i++) {
         printf(" %d ", process.regs[i]);
     }
+	if (scheduler == 0){
+		printf("group: %s ", enum_to_string(process.LastQueue));
+	}
+	else{
+		printf("priority: %d ", process.priority);
+		printf("quantum_count: %d ", process.quantum_count);
+	}
     printf("\n");
 }
 
@@ -28,35 +35,56 @@ char* enum_to_string(enum QUEUES queue){
     case NEW:
         return "New Queue";
     case WAITING:
-        return "Waiting Queue";
+	return "Waiting Queue";
     case READY0:
-        return "Ready Queue";
+		if(scheduler == 0){
+			return "Group 0 Queue";
+		}
+		else{
+			return "Ready Queue";
+		}
+	case READY1:
+		return "Group 1 Queue";
+	case READY2:
+		return "Group 2 Queue";
+	case READY3:
+		return "Group 3 Queue";
     case TERMINATED:
-        return "Terminated Queue";
+		return "Terminated Queue";
     case RUNNING:
-        return "Running Queue";
+		return "Running Queue";
     default:
         return "No Such Queue";
     }
 }
 
 void list_Q(enum QUEUES queue) {
-    struct queue_t *structqueue = get_process(queue);
-    struct process_control_block *temp = structqueue->head;
-    printf("Start of %s.\n\n", enum_to_string(queue));
-    while (temp) {
-        printprocess(*temp);
-        temp = temp->prev;
-    }
-    printf("\nEnd of %s.\n\n", enum_to_string(queue));
+	struct queue_t *structqueue = get_process(queue);
+	struct process_control_block *temp = structqueue->head;
+	printf("Start of %s.\n\n", enum_to_string(queue));
+	while (temp) {
+		printprocess(*temp);
+		temp = temp->prev;
+	}
+	printf("\nEnd of %s.\n\n", enum_to_string(queue));
+
 }
 
 void list_all(){
     list_Q(NEW);
     list_Q(WAITING);
-    list_Q(READY0);
+    list_ready();
     list_Q(TERMINATED);
     list_Q(RUNNING);
+}
+
+void list_ready(){
+	list_Q(READY0);
+	if (scheduler == 0){
+		list_Q(READY1);
+		list_Q(READY2);
+		list_Q(READY3);
+	}
 }
 
 void list_sched(){
@@ -132,118 +160,118 @@ int main(int argc, char *argv[]) {
             /* printf("%s\n", line); */
             /* printf("%s\n", command); */
 
-            if (!strcmp(command, "INIT")) {
-                printf("\n***INIT command issued***\n");
-                init();
-            }
-            else if (!strcmp(command, "LIST")) {
-                error = fscanf(file, " %s", args[0]);
-                if (error == 1){
-                    printf("\n***LISTING command issued (%s)***\n", args[0]);
-                    if (!strcmp(args[0], "NEW")){
-                        list_Q(NEW);
-                    }
-                    else if (!strcmp(args[0], "WAITING")){
-                        list_Q(WAITING);
-                    }
-                    else if (!strcmp(args[0], "READY")){
-                        list_Q(READY0);
-                    }
-                    else if (!strcmp(args[0], "TERMINATED")){
-                        list_Q(TERMINATED);
-                    }
-                    else if (!strcmp(args[0], "RUNNING")){
-                        list_Q(RUNNING);
-                    }
-                    else if (!strcmp(args[0], "ALL")){
-                        list_all();
-                    }
-                    else if (!strcmp(args[0], "SCHED")){
-                        list_sched();
-                    }
-                    else{
-                        printf("Usage: LIST <NEW | WAITING | READY | TERMINATED | RUNNING | ALL | SCHED>\n");
-                    }
-                }
-                else{
-                    printf("Usage: LIST <NEW | WAITING | READY | TERMINATED | RUNNING | ALL | SCHED>\n");
-                }
-            }
-            else if (!strcmp(command, "GO")){
-                printf("\n***GO command issued***\n");
-                error = go();
-                if (error == -1){
-                    printf("Could not GO: No ready processes\n");
-                }
-                else if (error == -2){
-                    printf("Could not GO: Process already running\n");
-                }
-                else if (error == -666){
-                    printf("FATAL ERROR: SYSTEM EXIT\n");
-                    exit(-1);
-                }
-            }
-            else if (!strcmp(command, "UNWAIT")) {
-                error = fscanf(file, " %d", &pid);
-                if (error == 1){
-                    printf("\n***UNWAIT command issued (PID: %d)***\n", pid);
-                    error = unwait(pid);
-                    if (error == -2){
-                        printf("Could not UNWAIT: No waiting processes\n");
-                    }
-                    else if (error == -1){
-                        printf("Could not UNWAIT: PID does not exist in waiting queue\n");
-                    }
-                    else if (error == -666){
-                        printf("FATAL ERROR: SYSTEM EXIT\n");
-                        exit(-1);
-                    }
-                }
-                else{
-                    printf("Usage: UNWAIT <pid>\n");
-                }
-            }
-            /*TODO Take out this command*/
-            else if (!strcmp(command, "EOQUANTUM")) {
-                printf("\n***EOQUANTUM command issued***\n");
-                error = eoquantum();
-                if (error == -1){
-                    printf("Could not EOQUANTUM: No running processes\n");
-                }
-                else if (error == -666){
-                    printf("FATAL ERROR: SYSTEM EXIT\n");
-                    exit(-1);
-                }
-            }
-            else if (!strcmp(command, "EOLIFE")) {
-                printf("\n***EOLIFE command issued***\n");
-                error = eolife();
-                if (error == -1){
-                    printf("Could not EOLIFE: No running processes\n");
-                }
-                else if (error == -666){
-                    printf("FATAL ERROR: SYSTEM EXIT\n");
-                    exit(-1);
-                }
-            }
-            else if (!strcmp(command, "WAIT")) {
-                printf("\n***WAIT command issued***\n");
-                error = wait_();
-                if (error == -1){
-                    printf("Could not WAIT: No running processes\n");
-                }
-                else if (error == -666){
-                    printf("FATAL ERROR: SYSTEM EXIT\n");
-                    exit(-1);
-                }
-            }
-            else if (!strcmp(command, "CREATE")) {
-                error = fscanf(file, " %d %d %d %d %d", &psw, &page_table, &reg1, &reg2, &reg3);
-                if (error == 5){
-                    /* printf("pid: %d, psw: %d, page_table: %d, reg1: %d, reg2: %d, reg3: %d\n", pid, psw, page_table, reg1, reg2, reg3); */
-                    regs[0] = reg1;
-                    regs[1] = reg2;
-                    regs[2] = reg3;
+			if (!strcmp(command, "INIT")) {
+				printf("\n***INIT command issued***\n");
+				init();
+			}
+			else if (!strcmp(command, "LIST")) {
+				error = fscanf(file, " %s", args[0]);
+				if (error == 1){
+					printf("\n***LISTING command issued (%s)***\n", args[0]);
+					if (!strcmp(args[0], "NEW")){
+						list_Q(NEW);
+					}
+					else if (!strcmp(args[0], "WAITING")){
+						list_Q(WAITING);
+					}
+					else if (!strcmp(args[0], "READY")){
+						list_ready();
+					}
+					else if (!strcmp(args[0], "TERMINATED")){
+						list_Q(TERMINATED);
+					}
+					else if (!strcmp(args[0], "RUNNING")){
+						list_Q(RUNNING);
+					}
+					else if (!strcmp(args[0], "ALL")){
+						list_all();
+					}
+					else if (!strcmp(args[0], "SCHED")){
+						list_sched();
+					}
+					else{
+						printf("Usage: LIST <NEW | WAITING | READY | TERMINATED | RUNNING | ALL | SCHED>\n");
+					}
+				}
+				else{
+					printf("Usage: LIST <NEW | WAITING | READY | TERMINATED | RUNNING | ALL | SCHED>\n");
+				}
+			}
+			else if (!strcmp(command, "GO")){
+				printf("\n***GO command issued***\n");
+				error = go();
+				if (error == -1){
+					printf("Could not GO: No ready processes\n");
+				}
+				else if (error == -2){
+					printf("Could not GO: Process already running\n");
+				}
+				else if (error == -666){
+					printf("FATAL ERROR: SYSTEM EXIT\n");
+					exit(-1);
+				}
+			}
+			else if (!strcmp(command, "UNWAIT")) {
+				error = fscanf(file, " %d", &pid);
+				if (error == 1){
+					printf("\n***UNWAIT command issued (PID: %d)***\n", pid);
+					error = unwait(pid);
+					if (error == -2){
+						printf("Could not UNWAIT: No waiting processes\n");
+					}
+					else if (error == -1){
+						printf("Could not UNWAIT: PID does not exist in waiting queue\n");
+					}
+					else if (error == -666){
+						printf("FATAL ERROR: SYSTEM EXIT\n");
+						exit(-1);
+					}
+				}
+				else{
+					printf("Usage: UNWAIT <pid>\n");
+				}
+			}
+			/*TODO Take out this command*/
+			else if (!strcmp(command, "EOQUANTUM")) {
+				printf("\n***EOQUANTUM command issued***\n");
+				error = eoquantum();
+				if (error == -1){
+					printf("Could not EOQUANTUM: No running processes\n");
+				}
+				else if (error == -666){
+					printf("FATAL ERROR: SYSTEM EXIT\n");
+					exit(-1);
+				}
+			}
+			else if (!strcmp(command, "EOLIFE")) {
+				printf("\n***EOLIFE command issued***\n");
+				error = eolife();
+				if (error == -1){
+					printf("Could not EOLIFE: No running processes\n");
+				}
+				else if (error == -666){
+					printf("FATAL ERROR: SYSTEM EXIT\n");
+					exit(-1);
+				}
+			}
+			else if (!strcmp(command, "WAIT")) {
+				printf("\n***WAIT command issued***\n");
+				error = wait_();
+				if (error == -1){
+					printf("Could not WAIT: No running processes\n");
+				}
+				else if (error == -666){
+					printf("FATAL ERROR: SYSTEM EXIT\n");
+					exit(-1);
+				}
+			}
+			else if (!strcmp(command, "CREATE")) {
+				error = fscanf(file, " %d %d %d %d %d", &psw, &page_table, &reg1, &reg2, &reg3);
+				if (error == 5){
+					/* printf("pid: %d, psw: %d, page_table: %d, reg1: %d, reg2: %d, reg3: %d\n", pid, psw, page_table, reg1, reg2, reg3); */
+					regs[0] = reg1;
+					regs[1] = reg2;
+					regs[2] = reg3;
 
                     printf("\n***CREATE command issued (PID: %d)***\n", pid_counter);
                     error = create(psw, page_table, regs);
