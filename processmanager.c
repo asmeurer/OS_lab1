@@ -1,4 +1,4 @@
-/* The Process Manager!
+/* The Process Manager (with schedulers)!
 
    Group 2
    Aaron Meurer
