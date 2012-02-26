@@ -17,24 +17,6 @@
 #define NUM_REGS 3
 #define MAX_PROCESSES 80
 
-struct process_control_block {
-    int pid;   /* Process ID */
-    int psw;   /* Program status word */
-    int page_table;   /* Pagetable info */
-    int regs[NUM_REGS];   /* Array of registers */
-    struct process_control_block *next;
-    struct process_control_block *prev;
-    int empty;
-    int priority;
-    int quantum_count;
-};
-
-struct queue_t {
-    struct process_control_block *head;
-    struct process_control_block *tail;
-    int size;
-    struct process_control_block *top;
-};
 
 enum QUEUES {
     NEW,
@@ -46,6 +28,26 @@ enum QUEUES {
     TERMINATED,
     RUNNING
 } queue_enum;
+
+struct process_control_block {
+    int pid;   /* Process ID */
+    int psw;   /* Program status word */
+    int page_table;   /* Pagetable info */
+    int regs[NUM_REGS];   /* Array of registers */
+    struct process_control_block *next;
+    struct process_control_block *prev;
+    int empty;
+    int priority;
+    int quantum_count;
+    enum QUEUES LastQueue;
+};
+
+struct queue_t {
+    struct process_control_block *head;
+    struct process_control_block *tail;
+    int size;
+    struct process_control_block *top;
+};
 
 int process_counter;
 int scheduler; /* 0 for Group-Scheduler and 1 for Priority-Scheduler */
