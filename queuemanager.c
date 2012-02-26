@@ -165,8 +165,9 @@ struct process_control_block *find_nonempty(struct queue_t *queue) {
     return null;
 }
 
-int enqueue(struct queue_t *queue, int pid, int psw, int page_table, int *regs, int priority, int quantum_count) {
+int enqueue(enum QUEUES queue_enum, int pid, int psw, int page_table, int *regs, int priority, int quantum_count) {
     /* Enqueue */
+    struct queue_t *queue = get_process(queue_enum);
     struct process_control_block *newprocess = find_nonempty(queue);
     int i = 0;
 
@@ -216,8 +217,10 @@ void clear(struct process_control_block *process){
 }
 
 
-struct process_control_block dequeue(struct queue_t *queue){
+struct process_control_block dequeue(enum QUEUES queue_enum){
     /*If queue is empty*/
+    struct queue_t *queue = get_process(queue_enum);
+
     if (queue->head == null){
         error_process.pid = -1;
         return error_process;
@@ -239,7 +242,9 @@ struct process_control_block dequeue(struct queue_t *queue){
     return(ret);
 }
 
-struct process_control_block *find_process(struct queue_t *queue, int id){
+struct process_control_block *find_process(enum QUEUES queue_enum, int id){
+    struct queue_t *queue = get_process(queue_enum);
+
     struct process_control_block *temp = queue->tail;
     while(temp != null){
         if(id == temp->pid){
@@ -254,7 +259,9 @@ struct process_control_block *find_process(struct queue_t *queue, int id){
 * @param queue The queue that it is deleating from
 * @param temp The process control block that is being deleted
 */
-struct process_control_block delete(struct queue_t *queue, struct process_control_block *temp){
+struct process_control_block delete(enum QUEUES queue_enum, struct process_control_block *temp){
+    struct queue_t *queue = get_process(queue_enum);
+
     if (queue->head == null && queue->tail == null) {
         /* The queue is empty */
         error_process.pid = -2;
