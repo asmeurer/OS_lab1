@@ -32,7 +32,7 @@ int set_group(int group){
 		return -2;
 	}	
 	/* for the Group Scheduler, associates the group arg to which 
- * 	group to place the process in */
+      * 	group to place the process in */
 
 	if(scheduler == 0){
 		if(group == 0){
@@ -52,7 +52,7 @@ int set_group(int group){
 			return move(NEW, READY3);
 
 		}else{
-			return -4;
+			return -4;  /* Invalid group number */
 		}		
 
 	/* For the Priority scheduler, just moves the process to the default group
@@ -137,7 +137,7 @@ int unwait(int pid){
     return 0;
 }
 
-int create(int psw, int page_table, int *reg){
+int create(int psw, int page_table, int *reg, int group){
     int error;
     /*If max allowed processes are reached*/
     if(process_counter >= MAX_PROCESSES){
@@ -164,10 +164,11 @@ int create(int psw, int page_table, int *reg){
     /*If new queue is full*/
     if (error == -1){
         return -666;
-    }
+    } 
     process_counter++;
     /*-1 for nothing in queue (fatal), -666 for fatal error*/
-    return move(NEW, READY0);
+	set_group(group);
+    return 0;
 }
 
 int empty_term(){

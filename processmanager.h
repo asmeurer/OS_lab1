@@ -16,7 +16,7 @@ int eolife();
 int wait_();
 int move(enum QUEUES from_queue, enum QUEUES to_queue);
 int unwait(int pid);
-int create(int psw, int page_table, int *reg);
+int create(int psw, int page_table, int *reg, int group);
 int empty_term();
 void age_process();
 

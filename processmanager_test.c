@@ -238,7 +238,7 @@ int main(int argc, char *argv[]) {
                 }
             }
             else if (!strcmp(command, "CREATE")) {
-                error = fscanf(file, " %d %d %d %d %d", &psw, &page_table, &reg1, &reg2, &reg3);
+                error = fscanf(file, " %d %d %d %d %d %d", &psw, &page_table, &reg1, &reg2, &reg3);
                 if (error == 5){
                     /* printf("pid: %d, psw: %d, page_table: %d, reg1: %d, reg2: %d, reg3: %d\n", pid, psw, page_table, reg1, reg2, reg3); */
                     regs[0] = reg1;
