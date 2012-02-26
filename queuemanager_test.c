@@ -95,14 +95,14 @@ int main() {
             regs[2] = reg3;
 
             /* Use dummy values for the priority and quantum count */
-            r = enqueue(&ready0, pid, psw, page_table, regs, 10, 0);
+            r = enqueue(READY0, pid, psw, page_table, regs, 10, 0);
             if (r == -1) {
            	printf("Could not enqueue; queue full.\n");
             }
    	}
    	else if (!strcmp(command, "dequeue")) {
             printf("\n***dequeueing***\n");
-            ret = dequeue(&ready0);
+            ret = dequeue(READY0);
             if (ret.pid == -1) {
            	printf("Could not dequeue: queue empty.\n");
             } else {
@@ -112,7 +112,7 @@ int main() {
    	else if (!strcmp(command, "delete")) {
             printf("\n***deleting***\n");
             pid = atoi(strtok(NULL, delim));
-            ret = delete(&ready0, find_process(get_process(READY0), pid));
+            ret = delete(READY0, find_process(READY0, pid));
             if (ret.pid == -1) {
            	printf("Could not dequeue: process not found.\n");
             } else if (ret.pid == -2) {
