@@ -12,6 +12,7 @@
 #ifndef DEF_H
 #define DEF_H
 
+#define MAX_QUANTUM 5
 #define null 0
 #define NUM_REGS 3
 #define MAX_PROCESSES 20
