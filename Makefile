@@ -4,15 +4,22 @@
 # Add .d to Make's recognized suffixes.
 SUFFIXES += .d
 
-.DEFAULT_GOAL = all
-.PHONY = clean check-syntax all
+.DEFAULT_GOAL := all
+.PHONY := clean check-syntax all
 
 # Find all the C files in the lab directory
 # The cut removes leading ./ from the filenames
 SOURCES:=$(shell find . -name "*.c" | cut -d/ -f 2)
 OBJS = $(SOURCES:.c=.o)
-CC = gcc
-FLAGS = -Wall
+CC := gcc
+FLAGS := -Wall
+
+# Include additional files to be linked in.
+# I couldn't figure out how to do this autmatically, so we have to do it manually
+ADDITIONAL_INFILES =
+ifneq (0, $(words $(findstring $(MAKECMDGOALS), "processmanager_test.o queuemanager_test.o")))
+	ADDITIONAL_INFILES = queuemanager.o processmanager.o
+endif
 
 	# Only include -c if the file does not have a main function
 NOLINKFLAG =
@@ -44,13 +51,12 @@ all: $(patsubst %.c,%.o,$(SOURCES))
 	$(CC) $(FLAGS) -MM -MT $(patsubst %.c,%.o,$<) $< > $@
 #    $(CC) $(FLAGS) -MM -MT '$(patsubst src/%,obj/%,$(patsubst %.cpp,%.o,$<))' $< > $@
 
-
 #These rules do the compilation
 %.o: %.c %.d %.h
-	$(CC) $(FLAGS) $(NOLINKFLAG) -o $@ $<
+	$(CC) $(FLAGS) $(NOLINKFLAG) -o $@ $< $(ADDITIONAL_INFILES)
 
 %.o: %.c %.d
-	$(CC) $(FLAGS) $(NOLINKFLAG) -o $@ $<
+	$(CC) $(FLAGS) $(NOLINKFLAG) -o $@ $< $(ADDITIONAL_INFILES)
 
 # all: queuemanager.o queuemanager_testgenerator.o processmanager.o queuemanager_test.o processmanager_test.o
 #
@@ -69,8 +75,6 @@ all: $(patsubst %.c,%.o,$(SOURCES))
 # queuemanager_test.o: processmanager.c processmanager.h queuemanager.c queuemanager.h definitions.h
 #	gcc -Wall -c queuemanager_test.c processmanager.o queuemanager.o -o queuemanager_test.o
 #
-# processmanager_test.o:
-#	gcc -Wall processmanager_test.c processmanager.o queuemanager.o -o processmanager_test.o
 
 clean:
 	-rm -f *.o *.d
