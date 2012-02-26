@@ -34,28 +34,28 @@ struct queue_t waiting =
 struct queue_t ready0 =
 {.head = null,
  .tail = null,
- .size = MAX_PROCESSES,
+ .size = MAX_PROCESSES/4,
  .top = _ready0
 };
 
 struct queue_t ready1 =
 {.head = null,
  .tail = null,
- .size = MAX_PROCESSES,
+ .size = MAX_PROCESSES/4,
  .top = _ready1
 };
 
 struct queue_t ready2 =
 {.head = null,
  .tail = null,
- .size = MAX_PROCESSES,
+ .size = MAX_PROCESSES/4,
  .top = _ready2
 };
 
 struct queue_t ready3 =
 {.head = null,
  .tail = null,
- .size = MAX_PROCESSES,
+ .size = MAX_PROCESSES/4,
  .top = _ready3
 };
 
