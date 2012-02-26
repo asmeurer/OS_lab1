@@ -9,6 +9,8 @@
 # Create more than 20 processes
 ################################################################################
 
+***CREATE command issued (PID: 0)***
+
 ***CREATE command issued (PID: 1)***
 
 ***CREATE command issued (PID: 2)***
@@ -48,8 +50,6 @@
 ***CREATE command issued (PID: 19)***
 
 ***CREATE command issued (PID: 20)***
-
-***CREATE command issued (PID: 21)***
 Could not CREATE: Maximum allowed processes reached
 
 ################################################################################
@@ -62,17 +62,17 @@ Could not CREATE: Maximum allowed processes reached
 # Create some processes to play with
 ################################################################################
 
-***CREATE command issued (PID: 22)***
+***CREATE command issued (PID: 0)***
 
-***CREATE command issued (PID: 23)***
+***CREATE command issued (PID: 1)***
 
-***CREATE command issued (PID: 24)***
+***CREATE command issued (PID: 2)***
 
-***CREATE command issued (PID: 25)***
+***CREATE command issued (PID: 3)***
 
-***CREATE command issued (PID: 26)***
+***CREATE command issued (PID: 4)***
 
-***CREATE command issued (PID: 27)***
+***CREATE command issued (PID: 5)***
 
 ################################################################################
 # Test if two go's in a row cause an error
@@ -104,25 +104,31 @@ Could not GO: No ready processes
 
 ***LISTING command issued (ALL)***
 Start of New Queue.
-
 End of New Queue.
 
 Start of Waiting Queue.
-
 End of Waiting Queue.
 
-Start of Ready Queue.
+Start of Group 0 Queue.
+End of Group 0 Queue.
 
-End of Ready Queue.
+Start of Group 1 Queue.
+End of Group 1 Queue.
+
+Start of Group 2 Queue.
+End of Group 2 Queue.
+
+Start of Group 3 Queue.
+End of Group 3 Queue.
 
 Start of Terminated Queue.
-
 End of Terminated Queue.
 
 Start of Running Queue.
-
 End of Running Queue.
 
+
+***CREATE command issued (PID: 0)***
 
 ***CREATE command issued (PID: 1)***
 
@@ -134,77 +140,37 @@ End of Running Queue.
 
 ***CREATE command issued (PID: 5)***
 
-***CREATE command issued (PID: 6)***
-
 ***GO command issued***
 
 ***LISTING command issued (ALL)***
 Start of New Queue.
-
 End of New Queue.
 
 Start of Waiting Queue.
-
 End of Waiting Queue.
 
-Start of Ready Queue.
+Start of Group 0 Queue.
+pid: 1	psw: 35	p_table: 11	regs: 12 9 1	group: New Queue
+pid: 2	psw: 12	p_table: 2	regs: 10 19 3	group: New Queue
+pid: 3	psw: 26	p_table: 15	regs: 6 12 16	group: New Queue
+pid: 4	psw: 11	p_table: 18	regs: 7 9 2	group: New Queue
+pid: 5	psw: 30	p_table: 12	regs: 3 7 15	group: New Queue
+End of Group 0 Queue.
 
-pid: 2
-psw: 35
-page_table: 11
-regs:
-  12
-  9
-  1
+Start of Group 1 Queue.
+End of Group 1 Queue.
 
-pid: 3
-psw: 12
-page_table: 2
-regs:
-  10
-  19
-  3
+Start of Group 2 Queue.
+End of Group 2 Queue.
 
-pid: 4
-psw: 26
-page_table: 15
-regs:
-  6
-  12
-  16
-
-pid: 5
-psw: 11
-page_table: 18
-regs:
-  7
-  9
-  2
-
-pid: 6
-psw: 30
-page_table: 12
-regs:
-  3
-  7
-  15
-
-End of Ready Queue.
+Start of Group 3 Queue.
+End of Group 3 Queue.
 
 Start of Terminated Queue.
-
 End of Terminated Queue.
 
 Start of Running Queue.
-
-pid: 1
-psw: 33
-page_table: 11
-regs:
-  17
-  15
-  13
-
+pid: 0	psw: 33	p_table: 11	regs: 17 15 13	group: New Queue
 End of Running Queue.
 
 
@@ -212,143 +178,68 @@ End of Running Queue.
 
 ***LISTING command issued (ALL)***
 Start of New Queue.
-
 End of New Queue.
 
 Start of Waiting Queue.
-
-pid: 1
-psw: 33
-page_table: 11
-regs:
-  17
-  15
-  13
-
+pid: 0	psw: 33	p_table: 11	regs: 17 15 13	group: New Queue
 End of Waiting Queue.
 
-Start of Ready Queue.
+Start of Group 0 Queue.
+pid: 1	psw: 35	p_table: 11	regs: 12 9 1	group: New Queue
+pid: 2	psw: 12	p_table: 2	regs: 10 19 3	group: New Queue
+pid: 3	psw: 26	p_table: 15	regs: 6 12 16	group: New Queue
+pid: 4	psw: 11	p_table: 18	regs: 7 9 2	group: New Queue
+pid: 5	psw: 30	p_table: 12	regs: 3 7 15	group: New Queue
+End of Group 0 Queue.
 
-pid: 2
-psw: 35
-page_table: 11
-regs:
-  12
-  9
-  1
+Start of Group 1 Queue.
+End of Group 1 Queue.
 
-pid: 3
-psw: 12
-page_table: 2
-regs:
-  10
-  19
-  3
+Start of Group 2 Queue.
+End of Group 2 Queue.
 
-pid: 4
-psw: 26
-page_table: 15
-regs:
-  6
-  12
-  16
-
-pid: 5
-psw: 11
-page_table: 18
-regs:
-  7
-  9
-  2
-
-pid: 6
-psw: 30
-page_table: 12
-regs:
-  3
-  7
-  15
-
-End of Ready Queue.
+Start of Group 3 Queue.
+End of Group 3 Queue.
 
 Start of Terminated Queue.
-
 End of Terminated Queue.
 
 Start of Running Queue.
-
 End of Running Queue.
 
 
 ***UNWAIT command issued (PID: 1)***
+Could not UNWAIT: PID does not exist in waiting queue
 
 ***LISTING command issued (ALL)***
 Start of New Queue.
-
 End of New Queue.
 
 Start of Waiting Queue.
-
+pid: 0	psw: 33	p_table: 11	regs: 17 15 13	group: New Queue
 End of Waiting Queue.
 
-Start of Ready Queue.
+Start of Group 0 Queue.
+pid: 1	psw: 35	p_table: 11	regs: 12 9 1	group: New Queue
+pid: 2	psw: 12	p_table: 2	regs: 10 19 3	group: New Queue
+pid: 3	psw: 26	p_table: 15	regs: 6 12 16	group: New Queue
+pid: 4	psw: 11	p_table: 18	regs: 7 9 2	group: New Queue
+pid: 5	psw: 30	p_table: 12	regs: 3 7 15	group: New Queue
+End of Group 0 Queue.
 
-pid: 2
-psw: 35
-page_table: 11
-regs:
-  12
-  9
-  1
+Start of Group 1 Queue.
+End of Group 1 Queue.
 
-pid: 3
-psw: 12
-page_table: 2
-regs:
-  10
-  19
-  3
+Start of Group 2 Queue.
+End of Group 2 Queue.
 
-pid: 4
-psw: 26
-page_table: 15
-regs:
-  6
-  12
-  16
-
-pid: 5
-psw: 11
-page_table: 18
-regs:
-  7
-  9
-  2
-
-pid: 6
-psw: 30
-page_table: 12
-regs:
-  3
-  7
-  15
-
-pid: 1
-psw: 33
-page_table: 11
-regs:
-  17
-  15
-  13
-
-End of Ready Queue.
+Start of Group 3 Queue.
+End of Group 3 Queue.
 
 Start of Terminated Queue.
-
 End of Terminated Queue.
 
 Start of Running Queue.
-
 End of Running Queue.
 
 
@@ -358,71 +249,33 @@ End of Running Queue.
 
 ***LISTING command issued (ALL)***
 Start of New Queue.
-
 End of New Queue.
 
 Start of Waiting Queue.
-
+pid: 0	psw: 33	p_table: 11	regs: 17 15 13	group: New Queue
 End of Waiting Queue.
 
-Start of Ready Queue.
+Start of Group 0 Queue.
+pid: 2	psw: 12	p_table: 2	regs: 10 19 3	group: New Queue
+pid: 3	psw: 26	p_table: 15	regs: 6 12 16	group: New Queue
+pid: 4	psw: 11	p_table: 18	regs: 7 9 2	group: New Queue
+pid: 5	psw: 30	p_table: 12	regs: 3 7 15	group: New Queue
+pid: 1	psw: 35	p_table: 11	regs: 12 9 1	group: New Queue
+End of Group 0 Queue.
 
-pid: 3
-psw: 12
-page_table: 2
-regs:
-  10
-  19
-  3
+Start of Group 1 Queue.
+End of Group 1 Queue.
 
-pid: 4
-psw: 26
-page_table: 15
-regs:
-  6
-  12
-  16
+Start of Group 2 Queue.
+End of Group 2 Queue.
 
-pid: 5
-psw: 11
-page_table: 18
-regs:
-  7
-  9
-  2
-
-pid: 6
-psw: 30
-page_table: 12
-regs:
-  3
-  7
-  15
-
-pid: 1
-psw: 33
-page_table: 11
-regs:
-  17
-  15
-  13
-
-pid: 2
-psw: 35
-page_table: 11
-regs:
-  12
-  9
-  1
-
-End of Ready Queue.
+Start of Group 3 Queue.
+End of Group 3 Queue.
 
 Start of Terminated Queue.
-
 End of Terminated Queue.
 
 Start of Running Queue.
-
 End of Running Queue.
 
 
@@ -432,71 +285,33 @@ End of Running Queue.
 
 ***LISTING command issued (ALL)***
 Start of New Queue.
-
 End of New Queue.
 
 Start of Waiting Queue.
-
+pid: 0	psw: 33	p_table: 11	regs: 17 15 13	group: New Queue
 End of Waiting Queue.
 
-Start of Ready Queue.
+Start of Group 0 Queue.
+pid: 3	psw: 26	p_table: 15	regs: 6 12 16	group: New Queue
+pid: 4	psw: 11	p_table: 18	regs: 7 9 2	group: New Queue
+pid: 5	psw: 30	p_table: 12	regs: 3 7 15	group: New Queue
+pid: 1	psw: 35	p_table: 11	regs: 12 9 1	group: New Queue
+End of Group 0 Queue.
 
-pid: 4
-psw: 26
-page_table: 15
-regs:
-  6
-  12
-  16
+Start of Group 1 Queue.
+End of Group 1 Queue.
 
-pid: 5
-psw: 11
-page_table: 18
-regs:
-  7
-  9
-  2
+Start of Group 2 Queue.
+End of Group 2 Queue.
 
-pid: 6
-psw: 30
-page_table: 12
-regs:
-  3
-  7
-  15
-
-pid: 1
-psw: 33
-page_table: 11
-regs:
-  17
-  15
-  13
-
-pid: 2
-psw: 35
-page_table: 11
-regs:
-  12
-  9
-  1
-
-End of Ready Queue.
+Start of Group 3 Queue.
+End of Group 3 Queue.
 
 Start of Terminated Queue.
-
-pid: 3
-psw: 12
-page_table: 2
-regs:
-  10
-  19
-  3
-
+pid: 2	psw: 12	p_table: 2	regs: 10 19 3	group: New Queue
 End of Terminated Queue.
 
 Start of Running Queue.
-
 End of Running Queue.
 
 
@@ -526,7 +341,7 @@ Could not WAIT: No running processes
 ***UNWAIT command issued (PID: 1)***
 Could not UNWAIT: No waiting processes
 
-***CREATE command issued (PID: 1)***
+***CREATE command issued (PID: 0)***
 
 ***GO command issued***
 
@@ -534,15 +349,7 @@ Could not UNWAIT: No waiting processes
 
 ***LISTING command issued (WAITING)***
 Start of Waiting Queue.
-
-pid: 1
-psw: 33
-page_table: 11
-regs:
-  17
-  15
-  13
-
+pid: 0	psw: 33	p_table: 11	regs: 17 15 13	group: New Queue
 End of Waiting Queue.
 
 
@@ -553,7 +360,7 @@ End of Waiting Queue.
 ***UNWAIT command issued (PID: 2)***
 Could not UNWAIT: PID does not exist in waiting queue
 
-***CREATE command issued (PID: 2)***
+***CREATE command issued (PID: 1)***
 
 ***UNWAIT command issued (PID: 2)***
 Could not UNWAIT: PID does not exist in waiting queue
@@ -580,20 +387,17 @@ Could not UNWAIT: PID does not exist in waiting queue
 # Ready
 ################################################################################
 
-***CREATE command issued (PID: 3)***
+***CREATE command issued (PID: 0)***
 
 ***LISTING command issued (RUNNING)***
 Start of Running Queue.
-
 End of Running Queue.
 
 
-***CREATE command issued (PID: 3)***
-Could not CREATE: PID not unique
+***CREATE command issued (PID: 1)***
 
 ***LISTING command issued (RUNNING)***
 Start of Running Queue.
-
 End of Running Queue.
 
 
@@ -607,22 +411,14 @@ End of Running Queue.
 
 ***LISTING command issued (WAITING)***
 Start of Waiting Queue.
-
-pid: 3
-psw: 1
-page_table: 1
-regs:
-  1
-  1
-  1
-
+pid: 0	psw: 1	p_table: 1	regs: 1 1 1	group: New Queue
 End of Waiting Queue.
 
 
-***CREATE command issued (PID: 3)***
-Could not CREATE: PID not unique
+***CREATE command issued (PID: 2)***
 
 ***UNWAIT command issued (PID: 3)***
+Could not UNWAIT: PID does not exist in waiting queue
 
 ################################################################################
 # Running
@@ -632,20 +428,11 @@ Could not CREATE: PID not unique
 
 ***LISTING command issued (RUNNING)***
 Start of Running Queue.
-
-pid: 3
-psw: 1
-page_table: 1
-regs:
-  1
-  1
-  1
-
+pid: 1	psw: 1	p_table: 1	regs: 1 1 1	group: New Queue
 End of Running Queue.
 
 
 ***CREATE command issued (PID: 3)***
-Could not CREATE: PID not unique
 
 ################################################################################
 # Terminated
@@ -655,20 +442,11 @@ Could not CREATE: PID not unique
 
 ***LISTING command issued (TERMINATED)***
 Start of Terminated Queue.
-
-pid: 3
-psw: 1
-page_table: 1
-regs:
-  1
-  1
-  1
-
+pid: 1	psw: 1	p_table: 1	regs: 1 1 1	group: New Queue
 End of Terminated Queue.
 
 
-***CREATE command issued (PID: 3)***
-Could not CREATE: PID not unique
+***CREATE command issued (PID: 4)***
 
 ################################################################################
 # We can't exactly test New :)
@@ -680,15 +458,15 @@ Could not CREATE: PID not unique
 
 ***INIT command issued***
 
-***CREATE command issued (PID: 1)***
+***CREATE command issued (PID: 0)***
 
-***CREATE command issued (PID: 2)***
+***CREATE command issued (PID: 1)***
 
 ***GO command issued***
 
 ***EOQUANTUM command issued***
 
-***CREATE command issued (PID: 3)***
+***CREATE command issued (PID: 2)***
 
 ***GO command issued***
 
@@ -699,55 +477,39 @@ Could not CREATE: PID not unique
 ***EOLIFE command issued***
 
 ***UNWAIT command issued (PID: 2)***
+Could not UNWAIT: PID does not exist in waiting queue
 
 ***LISTING command issued (ALL)***
 Start of New Queue.
-
 End of New Queue.
 
 Start of Waiting Queue.
-
+pid: 1	psw: 35	p_table: 11	regs: 12 9 1	group: New Queue
 End of Waiting Queue.
 
-Start of Ready Queue.
+Start of Group 0 Queue.
+pid: 2	psw: 12	p_table: 2	regs: 10 19 3	group: New Queue
+End of Group 0 Queue.
 
-pid: 3
-psw: 12
-page_table: 2
-regs:
-  10
-  19
-  3
+Start of Group 1 Queue.
+End of Group 1 Queue.
 
-pid: 2
-psw: 35
-page_table: 11
-regs:
-  12
-  9
-  1
+Start of Group 2 Queue.
+End of Group 2 Queue.
 
-End of Ready Queue.
+Start of Group 3 Queue.
+End of Group 3 Queue.
 
 Start of Terminated Queue.
-
-pid: 1
-psw: 33
-page_table: 11
-regs:
-  17
-  15
-  13
-
+pid: 0	psw: 33	p_table: 11	regs: 17 15 13	group: New Queue
 End of Terminated Queue.
 
 Start of Running Queue.
-
 End of Running Queue.
 
 
 ***LISTING command issued (SCHED)***
-Next scheduled process PID: 3
+Next scheduled process PID: 2
 
 
 ################################################################################
@@ -765,11 +527,11 @@ Nothing is scheduled to run (ready queue empty)
 
 ***INIT command issued***
 
+***CREATE command issued (PID: 0)***
+
 ***CREATE command issued (PID: 1)***
 
 ***CREATE command issued (PID: 2)***
-
-***CREATE command issued (PID: 3)***
 
 ***GO command issued***
 
@@ -787,46 +549,29 @@ Nothing is scheduled to run (ready queue empty)
 
 ***LISTING command issued (ALL)***
 Start of New Queue.
-
 End of New Queue.
 
 Start of Waiting Queue.
-
-pid: 1
-psw: 33
-page_table: 11
-regs:
-  17
-  15
-  13
-
-pid: 3
-psw: 12
-page_table: 2
-regs:
-  10
-  19
-  3
-
+pid: 0	psw: 33	p_table: 11	regs: 17 15 13	group: New Queue
+pid: 1	psw: 35	p_table: 11	regs: 12 9 1	group: New Queue
 End of Waiting Queue.
 
-Start of Ready Queue.
+Start of Group 0 Queue.
+pid: 2	psw: 12	p_table: 2	regs: 10 19 3	group: New Queue
+End of Group 0 Queue.
 
-pid: 2
-psw: 35
-page_table: 11
-regs:
-  12
-  9
-  1
+Start of Group 1 Queue.
+End of Group 1 Queue.
 
-End of Ready Queue.
+Start of Group 2 Queue.
+End of Group 2 Queue.
+
+Start of Group 3 Queue.
+End of Group 3 Queue.
 
 Start of Terminated Queue.
-
 End of Terminated Queue.
 
 Start of Running Queue.
-
 End of Running Queue.
 
