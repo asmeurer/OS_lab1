@@ -112,7 +112,7 @@ int main() {
    	else if (!strcmp(command, "delete")) {
             printf("\n***deleting***\n");
             pid = atoi(strtok(NULL, delim));
-            ret = delete(&ready0, pid);
+            ret = delete(&ready0, find_process(get_process(READY0), pid));
             if (ret.pid == -1) {
            	printf("Could not dequeue: process not found.\n");
             } else if (ret.pid == -2) {

@@ -9,19 +9,32 @@
 #include"processmanager.h"
 #include"queuemanager.h"
 
-void age_process(){
+/**
+* A function that implements aging as well as finding the process with the highest priority to schedual next
+* NOTE: If there is nothing in the ready queue, highest_priority.priority will be 0
+*/
+struct process_control_block iterate(){
     struct queue_t *queue_temp = get_process(READY0);
-    struct process_control_block *temp = queue_temp->head;
+    struct process_control_block *temp = queue_temp->tail;
+	struct process_control_block highest_priority;
+	highest_priority.priority = 0;
     while (temp != null){
-        temp->quantum_count++;
+        /*Aging*/
+		temp->quantum_count++;
         if(temp->quantum_count >= temp->priority){
             temp->quantum_count = 0;
             if(temp->priority < 20){
                 temp->priority++;
             }
         }
+		/*Find highest priority*/
+		/*Since starting at head, if equal priority, don't want to replace highest_priority*/
+		if(temp->priority >= highest_priority.priority){
+			highest_priority = *temp;
+		}
         temp = temp->next;
     }
+	return highest_priority;
 }
 
 int set_group(int group){
@@ -66,25 +79,39 @@ int set_group(int group){
 
 int go(){
     struct queue_t *temp = get_process(RUNNING);
-    /*Running queue full, process already running*/
+	struct process_control_block run_me_next;
+	int error;
+    /*Running queue full, process already running, do eoquantum*/
     if (temp->head != null){
-        return -2;
+		/*Group Fair Share*/
+		if (scheduler == 0){
+			move(RUNNING, temp->head->group);
+		}
+		/*Priority*/
+		else if (scheduler == 1){
+			run_me_next = iterate();
+			/*If there is nothing in the ready queue when the process is running*/
+			/*Set next scheduled process as the current running process*/
+			if (run_me_next.priority == 0){
+				run_me_next = *temp->head;
+			}
+		    if(temp->head->priority > 1){
+				temp->head->priority--;
+			}
+			error = move(RUNNING, READY0);
+			if (error == -666){
+				return error;
+			}
+		}
     }
+	else{
+		if (scheduler == 1){
+			run_me_next = iterate();
+		}
+	}
+	/*TODO: Schedual Next Process*/
     return move(READY0, RUNNING);
-}
 
-int eoquantum(){
-    age_process();
-    struct queue_t *temp = get_process(RUNNING);
-
-    /*TODO: Differenciate between different schedulers to do below code*/
-    if(temp->head != null){
-        if(temp->head->priority > 1){
-            temp->head->priority--;
-        }
-    }
-    /*END TODO*/
-    return move(RUNNING, READY0);
 }
 
 int eolife(){
@@ -119,7 +146,7 @@ int move(enum QUEUES from_queue, enum QUEUES to_queue){
 }
 
 int unwait(int pid){
-    struct process_control_block temp = delete(get_process(WAITING), pid);
+    struct process_control_block temp = delete(get_process(WAITING), find_process(get_process(WAITING), pid));
     /*Pid doesn't exist*/
     if(temp.pid == -1){
         return -1;

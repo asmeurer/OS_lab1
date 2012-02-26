@@ -17,6 +17,6 @@ int enqueue(struct queue_t *queue, int pid, int psw, int page_table, int *regs, 
 void clear(struct process_control_block *process);
 struct process_control_block *find_process(struct queue_t *queue, int pid);
 struct process_control_block dequeue(struct queue_t *queue);
-struct process_control_block delete(struct queue_t *queue, int id);
+struct process_control_block delete(struct queue_t *queue, struct process_control_block *temp);
 
 #endif
