@@ -27,6 +27,7 @@ struct process_control_block {
     int empty;
     int priority;
     int quantum_count;
+    enum QUEUE LastQueue;
 };
 
 struct queue_t {
