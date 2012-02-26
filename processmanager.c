@@ -132,12 +132,12 @@ int wait_(){
 }
 
 int move(enum QUEUES from_queue, enum QUEUES to_queue){
-    struct process_control_block temp = dequeue(get_process(from_queue));
+    struct process_control_block temp = dequeue(from_queue);
     /*Nothing in queue, recoverable*/
     if(temp.pid == -1){
         return -1;
     }
-    int error = enqueue(get_process(to_queue), temp.pid, temp.psw, temp.page_table, temp.regs, temp.priority, temp.quantum_count);
+    int error = enqueue(to_queue, temp.pid, temp.psw, temp.page_table, temp.regs, temp.priority, temp.quantum_count);
     /*Queue full, unrecoverable error*/
     if(error == -1){
         return -666;
@@ -146,7 +146,7 @@ int move(enum QUEUES from_queue, enum QUEUES to_queue){
 }
 
 int unwait(int pid){
-    struct process_control_block temp = delete(get_process(WAITING), find_process(get_process(WAITING), pid));
+    struct process_control_block temp = delete(WAITING, find_process(WAITING, pid));
     /*Pid doesn't exist*/
     if(temp.pid == -1){
         return -1;
@@ -156,7 +156,7 @@ int unwait(int pid){
         return -2;
     }
 
-    int error = enqueue(get_process(READY0), temp.pid, temp.psw, temp.page_table, temp.regs, temp.priority, temp.quantum_count);
+    int error = enqueue(READY0, temp.pid, temp.psw, temp.page_table, temp.regs, temp.priority, temp.quantum_count);
     /*Queue full, unrecoverable error*/
     if(error == -1){
         return -666;
@@ -174,19 +174,19 @@ int create(int psw, int page_table, int *reg, int group){
     int pid = pid_counter;
     pid_counter++;
     /*Find if process already exists*/
-    if ((find_process(get_process(WAITING), pid) != null) ||
-        ((find_process(get_process(READY0), pid)) != null) ||
-        ((find_process(get_process(READY1), pid)) != null) ||
-        ((find_process(get_process(READY2), pid)) != null) ||
-        ((find_process(get_process(READY3), pid)) != null) ||
-        ((find_process(get_process(TERMINATED), pid)) != null) ||
-        ((find_process(get_process(RUNNING), pid)) != null)) {
+    if ((find_process(WAITING, pid) != null) ||
+        ((find_process(READY0, pid)) != null) ||
+        ((find_process(READY1, pid)) != null) ||
+        ((find_process(READY2, pid)) != null) ||
+        ((find_process(READY3, pid)) != null) ||
+        ((find_process(TERMINATED, pid)) != null) ||
+        ((find_process(RUNNING, pid)) != null)) {
         return -3;
     }
 
     /*Creates process with default priority of 10*/
     /*TODO: Differenciate between schedualers for default priority of 10 or 0*/
-    error = enqueue(get_process(NEW), pid, psw, page_table, reg, 10, 0);
+    error = enqueue(NEW, pid, psw, page_table, reg, 10, 0);
 
     /*If new queue is full*/
     if (error == -1){
