@@ -21,7 +21,7 @@ void printprocess(struct process_control_block process) {
         printf(" %d ", process.regs[i]);
     }
 	if (scheduler == 0){
-		printf("group: %s ", enum_to_string(process.LastQueue));
+		printf("group: %s ", enum_to_string(process.Group));
 	}
 	else{
 		printf("priority: %d ", process.priority);
@@ -232,7 +232,7 @@ int main(int argc, char *argv[]) {
 				}
 			}
 			/*TODO Take out this command*/
-			else if (!strcmp(command, "EOQUANTUM")) {
+			/* else if (!strcmp(command, "EOQUANTUM")) {
 				printf("\n***EOQUANTUM command issued***\n");
 				error = eoquantum();
 				if (error == -1){
@@ -242,7 +242,7 @@ int main(int argc, char *argv[]) {
 					printf("FATAL ERROR: SYSTEM EXIT\n");
 					exit(-1);
 				}
-			}
+			} */
 			else if (!strcmp(command, "EOLIFE")) {
 				printf("\n***EOLIFE command issued***\n");
 				error = eolife();

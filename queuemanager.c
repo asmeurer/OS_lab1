@@ -250,9 +250,11 @@ struct process_control_block *find_process(struct queue_t *queue, int id){
     return null;
 }
 
-struct process_control_block delete(struct queue_t *queue, int id){
-    struct process_control_block *temp = find_process(queue, id);
-
+/**
+* @param queue The queue that it is deleating from
+* @param temp The process control block that is being deleted
+*/
+struct process_control_block delete(struct queue_t *queue, struct process_control_block *temp){
     if (queue->head == null && queue->tail == null) {
         /* The queue is empty */
         error_process.pid = -2;
