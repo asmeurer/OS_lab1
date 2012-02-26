@@ -20,6 +20,13 @@ void printprocess(struct process_control_block process) {
     for (i = 0; i < NUM_REGS; i++) {
    	printf(" %d ", process.regs[i]);
     }
+	if (scheduler == 0){
+		printf("group: %s ", enum_to_string(process.LastQueue));
+	}
+	else{
+		printf("priority: %d ", process.priority);
+		printf("quantum_count: %d ", process.quantum_count);
+	}
     printf("\n");
 }
 
@@ -29,34 +36,55 @@ char* enum_to_string(enum QUEUES queue){
         return "New Queue";
     case WAITING:
 	return "Waiting Queue";
-    case READY:
-	return "Ready Queue";
+    case READY0:
+		if(scheduler == 0){
+			return "Group 0 Queue";
+		}
+		else{
+			return "Ready Queue";
+		}
+	case READY1:
+		return "Group 1 Queue";
+	case READY2:
+		return "Group 2 Queue";
+	case READY3:
+		return "Group 3 Queue";
     case TERMINATED:
-	return "Terminated Queue";
+		return "Terminated Queue";
     case RUNNING:
-	return "Running Queue";
+		return "Running Queue";
     default:
         return "No Such Queue";
     }
 }
 
 void list_Q(enum QUEUES queue) {
-    struct queue_t *structqueue = get_process(queue);
-    struct process_control_block *temp = structqueue->head;
-    printf("Start of %s.\n\n", enum_to_string(queue));
-    while (temp) {
-   	printprocess(*temp);
-   	temp = temp->prev;
-    }
-    printf("\nEnd of %s.\n\n", enum_to_string(queue));
+	struct queue_t *structqueue = get_process(queue);
+	struct process_control_block *temp = structqueue->head;
+	printf("Start of %s.\n\n", enum_to_string(queue));
+	while (temp) {
+		printprocess(*temp);
+		temp = temp->prev;
+	}
+	printf("\nEnd of %s.\n\n", enum_to_string(queue));
+
 }
 
 void list_all(){
     list_Q(NEW);
     list_Q(WAITING);
-    list_Q(READY);
+    list_ready();
     list_Q(TERMINATED);
     list_Q(RUNNING);
+}
+
+void list_ready(){
+	list_Q(READY0);
+	if (scheduler == 0){
+		list_Q(READY1);
+		list_Q(READY2);
+		list_Q(READY3);
+	}
 }
 
 void list_sched(){
@@ -147,7 +175,7 @@ int main(int argc, char *argv[]) {
 						list_Q(WAITING);
 					}
 					else if (!strcmp(args[0], "READY")){
-						list_Q(READY);
+						list_ready();
 					}
 					else if (!strcmp(args[0], "TERMINATED")){
 						list_Q(TERMINATED);

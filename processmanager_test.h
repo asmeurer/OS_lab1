@@ -18,6 +18,8 @@ char* enum_to_string(enum QUEUES queue);
 void printprocess(struct process_control_block process);
 void list_Q(enum QUEUES queue);
 void list_all();
+void list_ready();
 void list_sched();
+char *fgetstring(FILE* fFile);
 
 #endif
