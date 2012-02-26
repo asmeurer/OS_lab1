@@ -21,7 +21,7 @@ void printprocess(struct process_control_block process) {
         printf(" %d", process.regs[i]);
     }
     if (scheduler == 0){
-        printf("\tgroup: %s", enum_to_string(process.LastQueue));
+        printf("\tgroup: %s", enum_to_string(process.group));
     }
     else{
         printf("\tpriority: %d", process.priority);
