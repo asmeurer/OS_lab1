@@ -95,7 +95,7 @@ int main() {
             regs[2] = reg3;
 
             /* Use dummy values for the priority and quantum count */
-            r = enqueue(READY0, pid, psw, page_table, regs, 10, 0);
+            r = enqueue(READY0, pid, psw, page_table, regs, 10, 0, 0);
             if (r == -1) {
                 printf("Could not enqueue; queue full.\n");
             }

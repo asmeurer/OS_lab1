@@ -292,39 +292,8 @@ int main(int argc, char *argv[]) {
                         regs[1] = reg2;
                         regs[2] = reg3;
 
-						
-						error = create(psw, page_table, regs, group);
-						
-						if (error == -1 || error == -666) {
-							printf("FATAL ERROR: SYSTEM EXIT\n");
-							exit(-1);
-						}
-						else if (error == -2){
-							printf("Could not CREATE: Maximum allowed processes reached\n");
-						}
-						else if (error == -3){
-							printf("Could not CREATE: PID not unique\n");
-							printf("FATAL ERROR: SYSTEM EXIT\n");
-						}
-						else if (error == -4){
-							printf("Could not CREATE: Invalid group number\n");
-						}
-						else if (error == 0){
-							printf("\n***CREATE command issued (PID: %d)***\n", (pid_counter - 1));
-						}
-					}
-					else{
-						printf("Usage: CREATE <psw> <page_table> <reg1> <reg2> <reg3> <group>\n");
-					}
-				}
-				/*Priority Scheduler*/
-				else{
-					error = fscanf(file, " %d %d %d %d %d", &psw, &page_table, &reg1, &reg2, &reg3);
-					if (error == 5){
-						/* printf("pid: %d, psw: %d, page_table: %d, reg1: %d, reg2: %d, reg3: %d\n", pid, psw, page_table, reg1, reg2, reg3); */
-						regs[0] = reg1;
-						regs[1] = reg2;
-						regs[2] = reg3;
+
+                        error = create(psw, page_table, regs, group);
 
                         if (error == -1 || error == -666) {
                             printf("FATAL ERROR: SYSTEM EXIT\n");
@@ -334,19 +303,23 @@ int main(int argc, char *argv[]) {
                             printf("Could not CREATE: Maximum allowed processes reached\n");
                         }
                         else if (error == -3){
-                            /*printf("Could not CREATE: PID not unique\n");*/
+                            printf("Could not CREATE: PID not unique\n");
                             printf("FATAL ERROR: SYSTEM EXIT\n");
                         }
                         else if (error == -4){
                             printf("Could not CREATE: Invalid group number\n");
+                        }
+                        else if (error == 0){
+                            printf("\n***CREATE command issued (PID: %d)***\n", (pid_counter - 1));
                         }
                     }
                     else{
                         printf("Usage: CREATE <psw> <page_table> <reg1> <reg2> <reg3> <group>\n");
                     }
                 }
+
                 /*Priority Scheduler*/
-                else{
+                else {
                     error = fscanf(file, " %d %d %d %d %d", &psw, &page_table, &reg1, &reg2, &reg3);
                     if (error == 5){
                         /* printf("pid: %d, psw: %d, page_table: %d, reg1: %d, reg2: %d, reg3: %d\n", pid, psw, page_table, reg1, reg2, reg3); */
