@@ -58,5 +58,4 @@ int scheduler; /* 0 for Group-Scheduler and 1 for Priority-Scheduler */
 int pid_counter;
 int global_quantum_count;
 
-
 #endif
