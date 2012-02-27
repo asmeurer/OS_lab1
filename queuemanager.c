@@ -87,7 +87,10 @@ void init(enum SCHEDS current_scheduler) {
     int i = 0;
     process_counter = 0;
     pid_counter = 0;
-    global_quantum_count = 0;
+    /* Set this to -1 because the first time we run, the running queue is
+     * empty, but we still want to increment it each time the running queue
+     * is empty (to avoid starvation from waits). */
+    global_quantum_count = -1;
     current_group = READY0;
 
     new.head = null;
