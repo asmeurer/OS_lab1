@@ -92,10 +92,7 @@ int switch_group(){
 		default:
 			return -666;
 	}
-<<<<<<< HEAD
-
-=======
->>>>>>> 2cdc667cca1f9216a371e09bc00814feae00dddc
+	
 }
 
 
