@@ -70,7 +70,7 @@ int set_group(int group){
         /* For the Priority scheduler, just moves the process to the default group
          *     READY0        */
 
-    }else {
+    }else if(scheduler == PRIORITY) {
         return move(NEW, READY0);
     }
 }
