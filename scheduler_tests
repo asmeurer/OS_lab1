@@ -2,3 +2,4 @@
 INIT General_purpose
 # Test that groups not in the range 0-3 don't work
 CREATE 1 33 11 17 15 13 6
+CREATE 1 33 11 17 15 13 0

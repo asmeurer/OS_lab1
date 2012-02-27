@@ -19,15 +19,15 @@ struct process_control_block *iterate(int do_aging){
     struct process_control_block *highest_priority = temp;
     while (temp != null){
         if(do_aging == 0){
-			/*Aging*/
-			temp->quantum_count++;
-			if(temp->quantum_count >= temp->priority){
-				temp->quantum_count = 0;
-				if(temp->priority < 20){
-					temp->priority++;
-				}
-			}
-		}
+            /*Aging*/
+            temp->quantum_count++;
+            if(temp->quantum_count >= temp->priority){
+                temp->quantum_count = 0;
+                if(temp->priority < 20){
+                    temp->priority++;
+                }
+            }
+        }
         /*Find highest priority*/
         /*Since starting at head, if equal priority, don't want to replace highest_priority*/
         if(temp->priority >= highest_priority->priority){
@@ -65,7 +65,7 @@ int set_group(int group){
             temp->head->group = READY3;
             return move(NEW, READY3);
 
-        }else{
+        } else {
             return -4;  /* Invalid group number */
         }
 
@@ -79,131 +79,131 @@ int set_group(int group){
 }
 
 int switch_group(){
-	global_quantum_count = 0;
-	switch(current_group){
-		case READY0:
-			current_group = READY1;
-		case READY1:
-			current_group = READY2;
-		case READY2:
-			current_group = READY3;
-		case READY3:
-			current_group = READY0;
-		default:
-			return -666;
-	}
+    global_quantum_count = 0;
+    switch(current_group){
+    case READY0:
+        current_group = READY1;
+    case READY1:
+        current_group = READY2;
+    case READY2:
+        current_group = READY3;
+    case READY3:
+        current_group = READY0;
+    default:
+        return -666;
+    }
 }
 
 
 int go(){
     struct queue_t *running_queue = get_process(RUNNING);
-	struct process_control_block *run_me_next;
-	int error;
-	int i = 0;
+    struct process_control_block *run_me_next;
+    int error;
+    int i = 0;
     /*Running queue full, process already running, do eoquantum*/
     if (running_queue->head != null){
-		/*Group Fair Share*/
-		if (scheduler == GROUP){
-			error = move(RUNNING, running_queue->head->group);
-			/*If empty queue error, unrecoverable because error checked above*/
-			if (error == -666 || error == -1){
-				return -666;
-			}
-			global_quantum_count++;
-			if (global_quantum_count >= MAX_QUANTUM){
-				error = switch_group();
-				if (error == -666){
-					return -666;
-				}
-			}
-		}
-		/*Priority*/
-		else if (scheduler == PRIORITY){
-			run_me_next = iterate(1);
-			/*If there is nothing in the ready queue when the process is running*/
-			/*Set next scheduled process as the current running process*/
-			if (run_me_next == null){
-				run_me_next = running_queue->head;
-			}
-			/*Decrease the priority of running process because of eoquantum call*/
-		    if(running_queue->head->priority > 1){
-				running_queue->head->priority--;
-			}
-			error = move(RUNNING, READY0);
-			/*If empty queue error, unrecoverable because error checked above*/
-			if (error == -666 || error == -1){
-				return -666;
-			}
-		}
+        /*Group Fair Share*/
+        if (scheduler == GROUP){
+            error = move(RUNNING, running_queue->head->group);
+            /*If empty queue error, unrecoverable because error checked above*/
+            if (error == -666 || error == -1){
+                return -666;
+            }
+            global_quantum_count++;
+            if (global_quantum_count >= MAX_QUANTUM){
+                error = switch_group();
+                if (error == -666){
+                    return -666;
+                }
+            }
+        }
+        /*Priority*/
+        else if (scheduler == PRIORITY){
+            run_me_next = iterate(1);
+            /*If there is nothing in the ready queue when the process is running*/
+            /*Set next scheduled process as the current running process*/
+            if (run_me_next == null){
+                run_me_next = running_queue->head;
+            }
+            /*Decrease the priority of running process because of eoquantum call*/
+            if(running_queue->head->priority > 1){
+                running_queue->head->priority--;
+            }
+            error = move(RUNNING, READY0);
+            /*If empty queue error, unrecoverable because error checked above*/
+            if (error == -666 || error == -1){
+                return -666;
+            }
+        }
     }
-	/*Nothing in running queue*/
-	else{
-		/*Group fair share*/
-		if (scheduler == GROUP){
-			global_quantum_count++;
-			if (global_quantum_count >= MAX_QUANTUM){
-				error = switch_group();
-				if (error == -666){
-					return -666;
-				}
-			}
-		}
-		/*Priority*/
-		else{
-			run_me_next = iterate(1);
-			/*No ready processes*/
-			if (run_me_next->priority == null){
-				return -1;
-			}
-		}
-	}
-	/*Schedual next process*/
+    /*Nothing in running queue*/
+    else{
+        /*Group fair share*/
+        if (scheduler == GROUP){
+            global_quantum_count++;
+            if (global_quantum_count >= MAX_QUANTUM){
+                error = switch_group();
+                if (error == -666){
+                    return -666;
+                }
+            }
+        }
+        /*Priority*/
+        else{
+            run_me_next = iterate(1);
+            /*No ready processes*/
+            if (run_me_next->priority == null){
+                return -1;
+            }
+        }
+    }
+    /*Schedual next process*/
 
-	/*Group fair share*/
-	if (scheduler == GROUP){
-		i = 0;
-		/*Runs through 4 times, checking all 4 groups*/
-		while (i < 4){
-			error = move(current_group, RUNNING);
-			/*If empty ready queue in group*/
-			/*Switch group*/
-			if (error == -1){
-				/*If all queues are empty*/
-				if (i == 3){
-					return -1;
-				}
-				switch_group();
-			}
-			/*Unrecoverable error*/
-			else if (error == -666){
-				return -666;
-			}
-			/*Success*/
-			else if (error == 0){
-				break;
-			}
-			i++;
-		}
-	}
-	/*Priority*/
-	else{
-		struct process_control_block temp = delete(READY0, run_me_next);
-		/*Pid doesn't exist, unrecoverable since iterate() should have found run_me_next*/
-		if(temp.pid == -1){
-			return -666;
-		}
-		/*Nothing in queue, unrecoverable, since already checked for empty queue*/
-		else if(temp.pid == -2){
-			return -666;
-		}
-		error = enqueue(RUNNING, temp.pid, temp.psw, temp.page_table, temp.regs, temp.priority, temp.quantum_count);
-		/*Queue is full, unrecoverable, since GO should have eoquantum*/
-		if (error == -1){
-			return -666;
-		}
-	}
+    /*Group fair share*/
+    if (scheduler == GROUP){
+        i = 0;
+        /*Runs through 4 times, checking all 4 groups*/
+        while (i < 4){
+            error = move(current_group, RUNNING);
+            /*If empty ready queue in group*/
+            /*Switch group*/
+            if (error == -1){
+                /*If all queues are empty*/
+                if (i == 3){
+                    return -1;
+                }
+                switch_group();
+            }
+            /*Unrecoverable error*/
+            else if (error == -666){
+                return -666;
+            }
+            /*Success*/
+            else if (error == 0){
+                break;
+            }
+            i++;
+        }
+    }
+    /*Priority*/
+    else{
+        struct process_control_block temp = delete(READY0, run_me_next);
+        /*Pid doesn't exist, unrecoverable since iterate() should have found run_me_next*/
+        if(temp.pid == -1){
+            return -666;
+        }
+        /*Nothing in queue, unrecoverable, since already checked for empty queue*/
+        else if(temp.pid == -2){
+            return -666;
+        }
+        error = enqueue(RUNNING, temp.pid, temp.psw, temp.page_table, temp.regs, temp.priority, temp.quantum_count);
+        /*Queue is full, unrecoverable, since GO should have eoquantum*/
+        if (error == -1){
+            return -666;
+        }
+    }
 
-	return 0;
+    return 0;
 }
 
 int eolife(){

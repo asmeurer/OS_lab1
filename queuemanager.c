@@ -89,8 +89,7 @@ void init(enum SCHEDS current_scheduler) {
     pid_counter = 0;
     global_quantum_count = 0;
     current_group = READY0;
-	
-	
+
     new.head = null;
     new.tail = null;
     for (i = 0; i < new.size; i++) {
@@ -107,23 +106,23 @@ void init(enum SCHEDS current_scheduler) {
         clear(&ready0.top[i]);
     }
 
-    if(scheduler == 0){ 
-    	ready1.head = null;
-  	  ready1.tail = null;
-    	for (i = 0; i < ready1.size; i++) {
-		clear(&ready1.top[i]);
-    	}
-    	ready2.head = null;
-    	ready2.tail = null;
-    	for (i = 0; i < ready2.size; i++) {
-        	clear(&ready2.top[i]);
-   	 }
-    	ready3.head = null;
-    	ready3.tail = null;
-    	for (i = 0; i < ready3.size; i++) {
-        	clear(&ready3.top[i]);
-	    }
-	}
+    if(scheduler == 0){
+        ready1.head = null;
+        ready1.tail = null;
+        for (i = 0; i < ready1.size; i++) {
+            clear(&ready1.top[i]);
+        }
+        ready2.head = null;
+        ready2.tail = null;
+        for (i = 0; i < ready2.size; i++) {
+            clear(&ready2.top[i]);
+        }
+        ready3.head = null;
+        ready3.tail = null;
+        for (i = 0; i < ready3.size; i++) {
+            clear(&ready3.top[i]);
+        }
+    }
 
     terminated.head = null;
     terminated.tail = null;
