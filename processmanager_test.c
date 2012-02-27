@@ -203,9 +203,6 @@ int main(int argc, char *argv[]) {
                 if (error == -1){
                     printf("Could not GO: No ready processes\n");
                 }
-                else if (error == -2){
-                    printf("Could not GO: Process already running\n");
-                }
                 else if (error == -666){
                     printf("FATAL ERROR: SYSTEM EXIT\n");
                     exit(-1);
