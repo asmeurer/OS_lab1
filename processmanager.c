@@ -226,7 +226,7 @@ int eolife(){
 int wait_(){
     struct queue_t *temp = get_process(RUNNING);
     /*Differenciate between different schedulers to do below code*/
-	if (scheduler == PRIORITY){	
+	if (scheduler == PRIORITY){
 		if(temp->head != null){
 			if(temp->head->priority < 20){
 				temp->head->priority++;
@@ -310,14 +310,12 @@ int create(int psw, int page_table, int *reg, int group){
 		error = enqueue(NEW, pid, psw, page_table, reg, 10, 0, 0);
 	}
 
-    error = enqueue(NEW, pid, psw, page_table, reg, 10, 0, 0);
-
     /*If new queue is full*/
     if (error == ERROR_QUEUE_FULL){
         return error;
     }
     process_counter++;
-	
+
     /*If New queue is empty, unrecoverable, since just enqueued*/
 	/*If Ready group queue is full, unrecoverable, since should never be full*/
 	/*If Group doesn't exist, recoverable*/
