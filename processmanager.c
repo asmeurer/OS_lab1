@@ -64,6 +64,8 @@ int set_group(int group){
             return move(NEW, READY3);
 
         } else {
+            delete(NEW, get_process(NEW)->head);
+
             return -4;  /* Invalid group number */
         }
 
