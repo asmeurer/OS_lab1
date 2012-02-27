@@ -168,6 +168,9 @@ int main(int argc, char *argv[]) {
 
     while(1) {
         /*printf("***reading the file***\n");*/
+        if (file == stdin) {
+            printf("> ");
+        }
         error = fscanf(file," %s", command);
         if (error == 1){
             /* printf("%s\n", line); */
@@ -191,7 +194,7 @@ int main(int argc, char *argv[]) {
 				else{
 					printf("Usage: INIT <General_purpose | Interactive>\n");
 				}
-				
+
             }
             else if (!strcmp(command, "LIST")) {
                 error = fscanf(file, " %s", args[0]);
@@ -291,7 +294,7 @@ int main(int argc, char *argv[]) {
 
 						printf("\n***CREATE command issued (PID: %d)***\n", pid_counter);
 						error = create(psw, page_table, regs, group);
-						
+
 						if (error == -1 || error == -666) {
 							printf("FATAL ERROR: SYSTEM EXIT\n");
 							exit(-1);
@@ -358,6 +361,7 @@ int main(int argc, char *argv[]) {
         }
         else
             if (error == EOF) {
+                printf("\n");
                 break;
             }
     }
