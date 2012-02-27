@@ -109,24 +109,25 @@ void init(enum SCHEDS current_scheduler) {
         clear(&ready0.top[i]);
     }
 
+
+    ready1.head = null;
+    ready1.tail = null;
+    for (i = 0; i < ready1.size; i++) {
+        clear(&ready1.top[i]);
+    }
+    ready2.head = null;
+    ready2.tail = null;
+    for (i = 0; i < ready2.size; i++) {
+        clear(&ready2.top[i]);
+    }
+    ready3.head = null;
+    ready3.tail = null;
+    for (i = 0; i < ready3.size; i++) {
+        clear(&ready3.top[i]);
+    }
+
     if(current_scheduler == GROUP){
         scheduler = GROUP;
-
-        ready1.head = null;
-        ready1.tail = null;
-        for (i = 0; i < ready1.size; i++) {
-            clear(&ready1.top[i]);
-        }
-        ready2.head = null;
-        ready2.tail = null;
-        for (i = 0; i < ready2.size; i++) {
-            clear(&ready2.top[i]);
-        }
-        ready3.head = null;
-        ready3.tail = null;
-        for (i = 0; i < ready3.size; i++) {
-            clear(&ready3.top[i]);
-        }
     } else {
         scheduler = PRIORITY;
     }
@@ -197,7 +198,7 @@ int enqueue(enum QUEUES queue_enum, int pid, int psw, int page_table, int *regs,
     }
     newprocess->priority = priority;
     newprocess->quantum_count = quantum_count;
-	newprocess->group = group;
+    newprocess->group = group;
 
     if (queue->tail) {
         /* The queue already has elements */
