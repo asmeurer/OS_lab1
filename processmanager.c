@@ -42,7 +42,7 @@ int set_group(int group){
 
     struct queue_t *temp = get_process(NEW);
     /* case new is full */
-    if (temp->head != null){
+    if (temp->head == null){
         return -666;
     }
     /* for the Group Scheduler, associates the group arg to which
