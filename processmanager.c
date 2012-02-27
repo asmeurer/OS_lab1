@@ -83,16 +83,20 @@ int switch_group(){
     switch(current_group){
     case READY0:
         current_group = READY1;
+        break;
     case READY1:
         current_group = READY2;
+        break;
     case READY2:
         current_group = READY3;
+        break;
     case READY3:
         current_group = READY0;
+        break;
     default:
         return -666;
     }
-
+    return 0;
 }
 
 
@@ -176,7 +180,7 @@ int go(){
                 switch_group();
             }
             /*Unrecoverable error*/
-            else if (error == -666){
+            else if (error == -666) {
                 return -666;
             }
             /*Success*/

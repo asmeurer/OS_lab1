@@ -232,7 +232,7 @@ int main(int argc, char *argv[]) {
             else if (!strcmp(command, "GO")){
                 printf("\n***GO command issued***\n");
                 error = go();
-                if (error == -1){
+                if (error == -1) {
                     printf("Could not GO: No ready processes\n");
                 }
                 else if (error == -666){
@@ -291,7 +291,6 @@ int main(int argc, char *argv[]) {
                         regs[0] = reg1;
                         regs[1] = reg2;
                         regs[2] = reg3;
-
 
                         error = create(psw, page_table, regs, group);
 
