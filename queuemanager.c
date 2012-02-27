@@ -83,17 +83,14 @@ struct process_control_block error_process =
  .empty = 0
 };
 
-void init(int current_scheduler) {
-	/* Setting all variables for */
+void init(enum SCHEDS current_scheduler) {
     int i = 0;
     process_counter = 0;
     pid_counter = 0;
-    int scheduler;
     global_quantum_count = 0;
     current_group = READY0;
-  
-    scheduler = current_scheduler;
-
+	
+	
     new.head = null;
     new.tail = null;
     for (i = 0; i < new.size; i++) {
@@ -266,9 +263,9 @@ struct process_control_block *find_process(enum QUEUES queue_enum, int id){
 }
 
 /**
-* @param queue The queue that it is deleating from
-* @param temp The process control block that is being deleted
-*/
+ * @param queue The queue that it is deleating from
+ * @param temp The process control block that is being deleted
+ */
 struct process_control_block delete(enum QUEUES queue_enum, struct process_control_block *temp){
     struct queue_t *queue = get_process(queue_enum);
 

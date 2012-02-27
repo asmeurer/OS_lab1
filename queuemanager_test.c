@@ -27,7 +27,7 @@ void printprocess(struct process_control_block process) {
     printf("page_table: %d\n", process.page_table);
     printf("regs:\n");
     for (i = 0; i < NUM_REGS; i++) {
-   	printf("  %d\n", process.regs[i]);
+        printf("  %d\n", process.regs[i]);
     }
     /* printf("\n"); */
 }
@@ -36,8 +36,8 @@ void listQ(struct queue_t queue) {
     struct process_control_block *temp = queue.head;
     printf("Start of queue.\n");
     while (temp) {
-   	printprocess(*temp);
-   	temp = temp->prev;
+        printprocess(*temp);
+        temp = temp->prev;
     }
     printf("\nEnd of queue.\n\n");
 }
@@ -58,29 +58,29 @@ int main() {
     int reg3 = 0;
     int regs[3];
 
-    init();
+    init(PRIORITY);
 
     FILE *file = fopen("queuemanager_tests", "r");
 
     while(fgets(line, 100, file) != NULL) {
-   	/*printf("***reading the file***\n");*/
-   	command = strtok(line, delim);
+        /*printf("***reading the file***\n");*/
+        command = strtok(line, delim);
 
-   	/* printf("%s\n", line); */
-   	/* printf("%s\n", command); */
+        /* printf("%s\n", line); */
+        /* printf("%s\n", command); */
 
-   	if (!strcmp(command, "init_Q")) {
+        if (!strcmp(command, "init_Q")) {
             printf("\n***initializing***\n");
-            init();
-   	}
-   	else if (!strcmp(command, "list")) {
+            init(PRIORITY);
+        }
+        else if (!strcmp(command, "list")) {
             printf("\n***listing***\n");
             listQ(ready0);
-   	}
-   	else if (!strcmp(command, "enqueue")) {
+        }
+        else if (!strcmp(command, "enqueue")) {
             printf("\n***enqueueing***\n");
             for (i = 0; i < 6; i++) {
-           	args[i] = strtok(NULL, delim);
+                args[i] = strtok(NULL, delim);
             }
             pid = atoi(args[0]);
             psw = atoi(args[1]);
@@ -97,33 +97,33 @@ int main() {
             /* Use dummy values for the priority and quantum count */
             r = enqueue(READY0, pid, psw, page_table, regs, 10, 0);
             if (r == -1) {
-           	printf("Could not enqueue; queue full.\n");
+                printf("Could not enqueue; queue full.\n");
             }
-   	}
-   	else if (!strcmp(command, "dequeue")) {
+        }
+        else if (!strcmp(command, "dequeue")) {
             printf("\n***dequeueing***\n");
             ret = dequeue(READY0);
             if (ret.pid == -1) {
-           	printf("Could not dequeue: queue empty.\n");
+                printf("Could not dequeue: queue empty.\n");
             } else {
-           	printf("%d\n", ret.pid);
+                printf("%d\n", ret.pid);
             }
-   	}
-   	else if (!strcmp(command, "delete")) {
+        }
+        else if (!strcmp(command, "delete")) {
             printf("\n***deleting***\n");
             pid = atoi(strtok(NULL, delim));
             ret = delete(READY0, find_process(READY0, pid));
             if (ret.pid == -1) {
-           	printf("Could not dequeue: process not found.\n");
+                printf("Could not dequeue: process not found.\n");
             } else if (ret.pid == -2) {
-           	printf("Could not dequeue: queue empty.\n");
+                printf("Could not dequeue: queue empty.\n");
             } else {
-           	printf("%d\n", ret.pid);
+                printf("%d\n", ret.pid);
             }
-   	}
-   	else{
+        }
+        else{
             printf("Unrecognized command: %s\n", command);
-   	}
+        }
     }
 
     fclose(file);

@@ -27,7 +27,7 @@ int main() {
     char string[256];
     char schedtype;
     char listtype;
-    enum SCHEDS scheduler_enum = GROUP;
+    enum SCHEDS scheduler = GROUP;
 
     output = fopen(outputFilename, mode);
 
@@ -67,13 +67,13 @@ int main() {
             case 'g':
             case 'G':
                 fprintf(output, "INIT general_purpose\n");
-                scheduler_enum = GROUP;
+                scheduler = GROUP;
                 break;
 
             case 'I':
             case 'i':
                 fprintf(output, "INIT interactive\n");
-                scheduler_enum = PRIORITY;
+                scheduler = PRIORITY;
                 break;
 
             default:
@@ -96,7 +96,7 @@ int main() {
                 pid++;
 
 
-            if (scheduler_enum == GROUP) {
+            if (scheduler == GROUP) {
                 printf("What group should process %d be in? ", i);
                 scanf("%d", &group);
                 if (!(group >= 0 && group <= 3)){
