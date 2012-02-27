@@ -20,7 +20,7 @@ void printprocess(struct process_control_block process) {
     for (i = 0; i < NUM_REGS; i++) {
         printf(" %d", process.regs[i]);
     }
-    if (scheduler == 0){
+    if (scheduler == GROUP){
         printf("\tgroup: %s", enum_to_string(process.group));
     }
     else{
@@ -37,7 +37,7 @@ char* enum_to_string(enum QUEUES queue){
     case WAITING:
         return "Waiting Queue";
     case READY0:
-        if(scheduler == 0){
+        if(scheduler == GROUP){
             return "Group 0 Queue";
         }
         else{
@@ -80,7 +80,7 @@ void list_all(){
 
 void list_ready(){
     list_Q(READY0);
-    if (scheduler == 0){
+    if (scheduler == GROUP){
         list_Q(READY1);
         list_Q(READY2);
         list_Q(READY3);

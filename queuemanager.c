@@ -89,7 +89,8 @@ void init(enum SCHEDS current_scheduler) {
     pid_counter = 0;
     global_quantum_count = 0;
     current_group = READY0;
-
+	
+	
     new.head = null;
     new.tail = null;
     for (i = 0; i < new.size; i++) {
