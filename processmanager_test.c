@@ -88,12 +88,25 @@ void list_ready(){
 }
 
 void list_sched(){
-    struct queue_t *temp = get_process(READY0);
-    if (temp->head == null) {
-        printf("Nothing is scheduled to run (ready queue empty)\n");
-    } else {
-        printf("Next scheduled process PID: %d\n\n", temp->head->pid);
-    }
+	struct queue_t *temp;
+	struct process_control_block *pcb;
+	if (scheduler == GROUP){
+		temp = get_process(current_group);
+	    if (temp->head == null) {
+			printf("Nothing is scheduled to run (ready queue empty)\n");
+		} else {
+			printprocess(*temp->head);
+		}
+	}
+	else{
+		pcb = iterate(0);
+	    if (pcb == null) {
+			printf("Nothing is scheduled to run (ready queue empty)\n");
+		} else {
+			printprocess(*pcb);
+		}
+	}
+
 }
 
 /**
@@ -125,7 +138,6 @@ char *fgetstring(FILE* fFile){
 
     return (name);
 }
-
 int main(int argc, char *argv[]) {
     int error = 0;
     char command[20];
@@ -136,6 +148,7 @@ int main(int argc, char *argv[]) {
     int reg1 = 0;
     int reg2 = 0;
     int reg3 = 0;
+	int group = 0;
     int regs[3];
     FILE *file;
     if (argc == 1){
@@ -150,7 +163,7 @@ int main(int argc, char *argv[]) {
         exit(-1);
     }
 
-    init();
+    init(GROUP);
 
 
     while(1) {
@@ -161,8 +174,24 @@ int main(int argc, char *argv[]) {
             /* printf("%s\n", command); */
 
             if (!strcmp(command, "INIT")) {
-                printf("\n***INIT command issued***\n");
-                init();
+                error = fscanf(file, " %s", args[0]);
+                if (error == 1){
+					if (!strcmp(args[0], "General_purpose")){
+						printf("\n***INIT command issued (%s)***\n", args[0]);
+						init(GROUP);
+					}
+					else if(!strcmp(args[0], "Interactive")){
+						printf("\n***INIT command issued (%s)***\n", args[0]);
+						init(PRIORITY);
+					}
+					else{
+						printf("Usage: INIT <General_purpose | Interactive>\n");
+					}
+				}
+				else{
+					printf("Usage: INIT <General_purpose | Interactive>\n");
+				}
+				
             }
             else if (!strcmp(command, "LIST")) {
                 error = fscanf(file, " %s", args[0]);
@@ -228,18 +257,6 @@ int main(int argc, char *argv[]) {
                     printf("Usage: UNWAIT <pid>\n");
                 }
             }
-            /*TODO Take out this command*/
-            /* else if (!strcmp(command, "EOQUANTUM")) { */
-            /*     printf("\n***EOQUANTUM command issued***\n"); */
-            /*     error = eoquantum(); */
-            /*     if (error == -1){ */
-            /*         printf("Could not EOQUANTUM: No running processes\n"); */
-            /*     } */
-            /*     else if (error == -666){ */
-            /*         printf("FATAL ERROR: SYSTEM EXIT\n"); */
-            /*         exit(-1); */
-            /*     } */
-            /* } */
             else if (!strcmp(command, "EOLIFE")) {
                 printf("\n***EOLIFE command issued***\n");
                 error = eolife();
@@ -263,31 +280,65 @@ int main(int argc, char *argv[]) {
                 }
             }
             else if (!strcmp(command, "CREATE")) {
-                error = fscanf(file, " %d %d %d %d %d", &psw, &page_table, &reg1, &reg2, &reg3);
-                if (error == 5){
-                    /* printf("pid: %d, psw: %d, page_table: %d, reg1: %d, reg2: %d, reg3: %d\n", pid, psw, page_table, reg1, reg2, reg3); */
-                    regs[0] = reg1;
-                    regs[1] = reg2;
-                    regs[2] = reg3;
+                /*Group Scheduler*/
+                if (scheduler == GROUP){
+					error = fscanf(file, " %d %d %d %d %d %d", &psw, &page_table, &reg1, &reg2, &reg3, &group);
+					if (error == 6){
+						/* printf("pid: %d, psw: %d, page_table: %d, reg1: %d, reg2: %d, reg3: %d\n", pid, psw, page_table, reg1, reg2, reg3); */
+						regs[0] = reg1;
+						regs[1] = reg2;
+						regs[2] = reg3;
 
-                    printf("\n***CREATE command issued (PID: %d)***\n", pid_counter);
-                    /* This should use the actual group eventually */
-                    error = create(psw, page_table, regs, 0);
-                    if (error == -1 || error == -666) {
-                        printf("FATAL ERROR: SYSTEM EXIT\n");
-                        exit(-1);
-                    }
-                    else if (error == -2){
-                        printf("Could not CREATE: Maximum allowed processes reached\n");
-                    }
-                    else if (error == -3){
-                        /*printf("Could not CREATE: PID not unique\n");*/
-                        printf("FATAL ERROR: SYSTEM EXIT\n");
-                    }
-                }
-                else{
-                    printf("Usage: CREATE <psw> <page_table> <reg1> <reg2> <reg3>\n");
-                }
+						printf("\n***CREATE command issued (PID: %d)***\n", pid_counter);
+						error = create(psw, page_table, regs, group);
+						
+						if (error == -1 || error == -666) {
+							printf("FATAL ERROR: SYSTEM EXIT\n");
+							exit(-1);
+						}
+						else if (error == -2){
+							printf("Could not CREATE: Maximum allowed processes reached\n");
+						}
+						else if (error == -3){
+							/*printf("Could not CREATE: PID not unique\n");*/
+							printf("FATAL ERROR: SYSTEM EXIT\n");
+						}
+						else if (error == -4){
+							printf("Could not CREATE: Invalid group number\n");
+						}
+					}
+					else{
+						printf("Usage: CREATE <psw> <page_table> <reg1> <reg2> <reg3> <group>\n");
+					}
+				}
+				/*Priority Scheduler*/
+				else{
+					error = fscanf(file, " %d %d %d %d %d", &psw, &page_table, &reg1, &reg2, &reg3);
+					if (error == 5){
+						/* printf("pid: %d, psw: %d, page_table: %d, reg1: %d, reg2: %d, reg3: %d\n", pid, psw, page_table, reg1, reg2, reg3); */
+						regs[0] = reg1;
+						regs[1] = reg2;
+						regs[2] = reg3;
+
+						printf("\n***CREATE command issued (PID: %d)***\n", pid_counter);
+						/*Priority scheduler defaults to group 0*/
+						error = create(psw, page_table, regs, 0);
+						if (error == -1 || error == -666) {
+							printf("FATAL ERROR: SYSTEM EXIT\n");
+							exit(-1);
+						}
+						else if (error == -2){
+							printf("Could not CREATE: Maximum allowed processes reached\n");
+						}
+						else if (error == -3 || error == -4){
+							/*printf("Could not CREATE: PID not unique\n");*/
+							printf("FATAL ERROR: SYSTEM EXIT\n");
+						}
+					}
+					else{
+						printf("Usage: CREATE <psw> <page_table> <reg1> <reg2> <reg3>\n");
+					}
+				}
             }
             else if (!strcmp(command, "CLEAR_TERM")){
                 printf("\n***CLEAR_TERM command issued***\n");
