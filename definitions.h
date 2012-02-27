@@ -17,6 +17,17 @@
 #define NUM_REGS 3
 #define MAX_PROCESSES 20
 
+/*Global Error Codes*/
+#define ERROR_SUCCESS 0
+#define ERROR_QUEUE_EMPTY -1
+#define ERROR_QUEUE_FULL -2
+#define ERROR_PROCESS_NOT_EXIST -3
+#define ERROR_GROUP_NOT_EXIST -4
+#define ERROR_SWITCH_DEFAULT -5
+#define ERROR_NO_READY_PROCESS -6
+#define ERROR_MAX_PROCESSES -7
+#define ERROR_PROCESS_NOT_UNIQUE -8
+
 enum QUEUES {
     NEW,
     WAITING,

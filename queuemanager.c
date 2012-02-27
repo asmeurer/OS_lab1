@@ -186,7 +186,7 @@ int enqueue(enum QUEUES queue_enum, int pid, int psw, int page_table, int *regs,
 
     if (!newprocess) {
         /* The queue is full */
-        return(-1);
+        return(ERROR_QUEUE_FULL);
     }
 
     newprocess->pid = pid;
@@ -210,7 +210,7 @@ int enqueue(enum QUEUES queue_enum, int pid, int psw, int page_table, int *regs,
     queue->tail = newprocess;
     newprocess->empty = 0;
 
-    return(0);
+    return(ERROR_SUCCESS);
 }
 
 /*Process must exist for clear function*/
@@ -232,11 +232,11 @@ void clear(struct process_control_block *process){
 
 
 struct process_control_block dequeue(enum QUEUES queue_enum){
-    /*If queue is empty*/
-    struct queue_t *queue = get_process(queue_enum);
 
+    struct queue_t *queue = get_process(queue_enum);
+    /*If queue is empty*/
     if (queue->head == null){
-        error_process.pid = -1;
+        error_process.pid = ERROR_QUEUE_EMPTY;
         return error_process;
     }
 
@@ -278,13 +278,13 @@ struct process_control_block delete(enum QUEUES queue_enum, struct process_contr
 
     if (queue->head == null && queue->tail == null) {
         /* The queue is empty */
-        error_process.pid = -2;
+        error_process.pid = ERROR_QUEUE_EMPTY;
         return error_process;
     }
 
     /*If process doesn't exist*/
     if (temp == null){
-        error_process.pid = -1;
+        error_process.pid = ERROR_PROCESS_NOT_EXIST;
         return error_process;
     }
     struct process_control_block ret = *temp;
@@ -310,5 +310,4 @@ struct process_control_block delete(enum QUEUES queue_enum, struct process_contr
     }
     clear(temp);
     return (ret);
-
 }

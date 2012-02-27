@@ -58,6 +58,29 @@ char* enum_to_string(enum QUEUES queue){
     }
 }
 
+char* error_to_string(int error){
+    switch (error) {
+    case ERROR_QUEUE_EMPTY:
+        return "Queue Empty";
+    case ERROR_QUEUE_FULL:
+        return "Queue Full";
+    case ERROR_PROCESS_NOT_EXIST:
+        return "Process Doesn't Exist";
+    case ERROR_GROUP_NOT_EXIST:
+        return "Group Doesn't Exist";
+    case ERROR_SWITCH_DEFAULT:
+        return "Switch Default Error";
+    case ERROR_NO_READY_PROCESS:
+        return "No Ready Processes";
+    case ERROR_MAX_PROCESSES:
+        return "Maximum Processes Reached";
+    case ERROR_PROCESS_NOT_UNIQUE:
+        return "Process Not Unique";
+    default:
+        return "No Such Error";
+    }
+}
+
 void list_Q(enum QUEUES queue) {
     struct queue_t *structqueue = get_process(queue);
     struct process_control_block *temp = structqueue->head;
@@ -232,11 +255,14 @@ int main(int argc, char *argv[]) {
             else if (!strcmp(command, "GO")){
                 printf("\n***GO command issued***\n");
                 error = go();
-                if (error == -1) {
-                    printf("Could not GO: No ready processes\n");
+                if (error == ERROR_NO_READY_PROCESS){
+                    printf("Could not GO: %s\n", error_to_string(error));
                 }
-                else if (error == -666){
-                    printf("FATAL ERROR: SYSTEM EXIT\n");
+                else if (error == ERROR_QUEUE_EMPTY ||
+						error == ERROR_QUEUE_FULL ||
+						error == ERROR_SWITCH_DEFAULT ||
+						error == ERROR_PROCESS_NOT_EXIST){
+                    printf("FATAL ERROR: %s\n", error_to_string(error));
                     exit(-1);
                 }
             }
@@ -245,14 +271,14 @@ int main(int argc, char *argv[]) {
                 if (error == 1){
                     printf("\n***UNWAIT command issued (PID: %d)***\n", pid);
                     error = unwait(pid);
-                    if (error == -2){
+                    if (error == ERROR_QUEUE_EMPTY){
                         printf("Could not UNWAIT: No waiting processes\n");
                     }
-                    else if (error == -1){
+                    else if (error == ERROR_PROCESS_NOT_EXIST){
                         printf("Could not UNWAIT: PID does not exist in waiting queue\n");
                     }
-                    else if (error == -666){
-                        printf("FATAL ERROR: SYSTEM EXIT\n");
+                    else if (error == ERROR_QUEUE_FULL){
+                        printf("FATAL ERROR: %s\n", error_to_string(error));
                         exit(-1);
                     }
                 }
@@ -263,22 +289,22 @@ int main(int argc, char *argv[]) {
             else if (!strcmp(command, "EOLIFE")) {
                 printf("\n***EOLIFE command issued***\n");
                 error = eolife();
-                if (error == -1){
+                if (error == ERROR_QUEUE_EMPTY){
                     printf("Could not EOLIFE: No running processes\n");
                 }
-                else if (error == -666){
-                    printf("FATAL ERROR: SYSTEM EXIT\n");
+                else if (error == ERROR_QUEUE_FULL){
+                    printf("FATAL ERROR: %s\n", error_to_string(error));
                     exit(-1);
                 }
             }
             else if (!strcmp(command, "WAIT")) {
                 printf("\n***WAIT command issued***\n");
                 error = wait_();
-                if (error == -1){
+                if (error == ERROR_QUEUE_EMPTY){
                     printf("Could not WAIT: No running processes\n");
                 }
-                else if (error == -666){
-                    printf("FATAL ERROR: SYSTEM EXIT\n");
+                else if (error == ERROR_QUEUE_FULL){
+                    printf("FATAL ERROR: %s\n", error_to_string(error));
                     exit(-1);
                 }
             }
@@ -292,64 +318,64 @@ int main(int argc, char *argv[]) {
                         regs[1] = reg2;
                         regs[2] = reg3;
 
-                        error = create(psw, page_table, regs, group);
+						error = create(psw, page_table, regs, group);
+						if (error == ERROR_MAX_PROCESSES){
+							printf("Could not CREATE: Maximum allowed processes reached\n");
+						}
+						else if (error == ERROR_GROUP_NOT_EXIST){
+							printf("Could not CREATE: Invalid group number\n");
+						}
+						else if (error == ERROR_PROCESS_NOT_UNIQUE ||
+						error == ERROR_QUEUE_FULL ||
+						error == ERROR_QUEUE_EMPTY ||
+						error == ERROR_QUEUE_FULL) {
+							printf("FATAL ERROR: %s\n", error_to_string(error));
+							exit(-1);
+						}
+						else if (error == ERROR_SUCCESS){
+							printf("\n***CREATE command issued (PID: %d)***\n", (pid_counter - 1));
+						}
+					}
+					else{
+						printf("Usage: CREATE <psw> <page_table> <reg1> <reg2> <reg3> <group>\n");
+					}
+				}
+				/*Priority Scheduler*/
+				else{
+					error = fscanf(file, " %d %d %d %d %d", &psw, &page_table, &reg1, &reg2, &reg3);
+					if (error == 5){
+						/* printf("pid: %d, psw: %d, page_table: %d, reg1: %d, reg2: %d, reg3: %d\n", pid, psw, page_table, reg1, reg2, reg3); */
+						regs[0] = reg1;
+						regs[1] = reg2;
+						regs[2] = reg3;
 
-                        if (error == -1 || error == -666) {
-                            printf("FATAL ERROR: SYSTEM EXIT\n");
-                            exit(-1);
-                        }
-                        else if (error == -2){
-                            printf("Could not CREATE: Maximum allowed processes reached\n");
-                        }
-                        else if (error == -3){
-                            printf("Could not CREATE: PID not unique\n");
-                            printf("FATAL ERROR: SYSTEM EXIT\n");
-                        }
-                        else if (error == -4){
-                            printf("Could not CREATE: Invalid group number\n");
-                        }
-                        else if (error == 0){
-                            printf("\n***CREATE command issued (PID: %d)***\n", (pid_counter - 1));
-                        }
-                    }
-                    else{
-                        printf("Usage: CREATE <psw> <page_table> <reg1> <reg2> <reg3> <group>\n");
-                    }
-                }
-
-                /*Priority Scheduler*/
-                else {
-                    error = fscanf(file, " %d %d %d %d %d", &psw, &page_table, &reg1, &reg2, &reg3);
-                    if (error == 5){
-                        /* printf("pid: %d, psw: %d, page_table: %d, reg1: %d, reg2: %d, reg3: %d\n", pid, psw, page_table, reg1, reg2, reg3); */
-                        regs[0] = reg1;
-                        regs[1] = reg2;
-                        regs[2] = reg3;
-
-                        printf("\n***CREATE command issued (PID: %d)***\n", pid_counter);
-                        /*Priority scheduler defaults to group 0*/
-                        error = create(psw, page_table, regs, 0);
-                        if (error == -1 || error == -666) {
-                            printf("FATAL ERROR: SYSTEM EXIT\n");
-                            exit(-1);
-                        }
-                        else if (error == -2){
-                            printf("Could not CREATE: Maximum allowed processes reached\n");
-                        }
-                        else if (error == -3 || error == -4){
-                            /*printf("Could not CREATE: PID not unique\n");*/
-                            printf("FATAL ERROR: SYSTEM EXIT\n");
-                        }
-                    }
-                    else{
-                        printf("Usage: CREATE <psw> <page_table> <reg1> <reg2> <reg3>\n");
-                    }
-                }
+						printf("\n***CREATE command issued (PID: %d)***\n", pid_counter);
+						/*Priority scheduler defaults to group 0*/
+						error = create(psw, page_table, regs, 0);
+						if (error == ERROR_MAX_PROCESSES){
+							printf("Could not CREATE: Maximum allowed processes reached\n");
+						}
+						else if (error == ERROR_PROCESS_NOT_UNIQUE ||
+						error == ERROR_QUEUE_FULL ||
+						error == ERROR_QUEUE_EMPTY ||
+						error == ERROR_QUEUE_FULL ||
+						error == ERROR_GROUP_NOT_EXIST) {
+							printf("FATAL ERROR: %s\n", error_to_string(error));
+							exit(-1);
+						}
+						else if (error == ERROR_SUCCESS){
+							printf("\n***CREATE command issued (PID: %d)***\n", (pid_counter - 1));
+						}
+					}
+					else{
+						printf("Usage: CREATE <psw> <page_table> <reg1> <reg2> <reg3>\n");
+					}
+				}
             }
             else if (!strcmp(command, "CLEAR_TERM")){
                 printf("\n***CLEAR_TERM command issued***\n");
                 error = empty_term();
-                if (error == -1){
+                if (error == ERROR_QUEUE_EMPTY){
                     printf("Could not CLEAR_TERM: No process in terminated queue\n");
                 }
             }
