@@ -9,6 +9,9 @@
 #include"processmanager.h"
 #include"queuemanager.h"
 
+/*Remove me*/
+#include <stdio.h>
+
 /**
  * A function that implements aging as well as finding the process with the highest priority to schedual next
  * NOTE: If there is nothing in the ready queue, highest_priority pointer will be null
@@ -39,30 +42,19 @@ struct process_control_block *iterate(int do_aging){
 }
 
 int set_group(int group){
-
-    struct queue_t *temp = get_process(NEW);
-    /* case new is full */
-    if (temp->head == null){
-        return -666;
-    }
-    /* for the Group Scheduler, associates the group arg to which
+	/* for the Group Scheduler, associates the group arg to which
      *     group to place the process in */
-
     if (scheduler == GROUP){
         if(group == 0){
-            temp->head->group = READY0;
-            return move(NEW, READY0);
+			return move(NEW, READY0);
         }
         else if(group == 1){
-            temp->head->group = READY1;
             return move(NEW, READY1);
         }
         else if(group == 2){
-            temp->head->group = READY2;
             return move(NEW, READY2);
         }
         else if(group == 3){
-            temp->head->group = READY3;
             return move(NEW, READY3);
 
         } else {
@@ -159,49 +151,49 @@ int go(){
     }
     /*Schedual next process*/
 
-    /*Group fair share*/
-    if (scheduler == GROUP){
-        i = 0;
-        /*Runs through 4 times, checking all 4 groups*/
-        while (i < 4){
-            error = move(current_group, RUNNING);
-            /*If empty ready queue in group*/
-            /*Switch group*/
-            if (error == -1){
-                /*If all queues are empty*/
-                if (i == 3){
-                    return -1;
-                }
-                switch_group();
-            }
-            /*Unrecoverable error*/
-            else if (error == -666){
-                return -666;
-            }
-            /*Success*/
-            else if (error == 0){
-                break;
-            }
-            i++;
-        }
-    }
-    /*Priority*/
-    else{
-        struct process_control_block temp = delete(READY0, run_me_next);
-        /*Pid doesn't exist, unrecoverable since iterate() should have found run_me_next*/
-        if(temp.pid == -1){
-            return -666;
-        }
-        /*Nothing in queue, unrecoverable, since already checked for empty queue*/
-        else if(temp.pid == -2){
-            return -666;
-        }
-        error = enqueue(RUNNING, temp.pid, temp.psw, temp.page_table, temp.regs, temp.priority, temp.quantum_count);
-        /*Queue is full, unrecoverable, since GO should have eoquantum*/
-        if (error == -1){
-            return -666;
-        }
-    }
+	/*Group fair share*/
+	if (scheduler == GROUP){
+		i = 0;
+		/*Runs through 4 times, checking all 4 groups*/
+		while (i < 4){
+			error = move(current_group, RUNNING);
+			/*If empty ready queue in group*/
+			/*Switch group*/
+			if (error == -1){
+				/*If all queues are empty*/
+				if (i == 3){
+					return -1;
+				}
+				switch_group();
+			}
+			/*Unrecoverable error*/
+			else if (error == -666){
+				return -666;
+			}
+			/*Success*/
+			else if (error == 0){
+				break;
+			}
+			i++;
+		}
+	}
+	/*Priority*/
+	else{
+		struct process_control_block temp = delete(READY0, run_me_next);
+		/*Pid doesn't exist, unrecoverable since iterate() should have found run_me_next*/
+		if(temp.pid == -1){
+			return -666;
+		}
+		/*Nothing in queue, unrecoverable, since already checked for empty queue*/
+		else if(temp.pid == -2){
+			return -666;
+		}
+		error = enqueue(RUNNING, temp.pid, temp.psw, temp.page_table, temp.regs, temp.priority, temp.quantum_count, temp.group);
+		/*Queue is full, unrecoverable, since GO should have eoquantum*/
+		if (error == -1){
+			return -666;
+		}
+	}
 
     return 0;
 }
@@ -229,7 +221,7 @@ int move(enum QUEUES from_queue, enum QUEUES to_queue){
     if(temp.pid == -1){
         return -1;
     }
-    int error = enqueue(to_queue, temp.pid, temp.psw, temp.page_table, temp.regs, temp.priority, temp.quantum_count);
+    int error = enqueue(to_queue, temp.pid, temp.psw, temp.page_table, temp.regs, temp.priority, temp.quantum_count, temp.group);
     /*Queue full, unrecoverable error*/
     if(error == -1){
         return -666;
@@ -252,14 +244,14 @@ int unwait(int pid){
 
     if(scheduler == GROUP){
 
-        int error = enqueue(temp.group, temp.pid, temp.psw, temp.page_table, temp.regs, temp.priority, temp.quantum_count);
+        int error = enqueue(temp.group, temp.pid, temp.psw, temp.page_table, temp.regs, temp.priority, temp.quantum_count, temp.group);
         /*Queue full, unrecoverable error*/
         if(error == -1){
             return -666;
         }
     }else if(scheduler == PRIORITY){
 
-        int error = enqueue(READY0, temp.pid, temp.psw, temp.page_table, temp.regs, temp.priority, temp.quantum_count);
+        int error = enqueue(READY0, temp.pid, temp.psw, temp.page_table, temp.regs, temp.priority, temp.quantum_count, temp.group);
         /*Queue full, unrecoverable error*/
         if(error == -1){
             return -666;
@@ -292,13 +284,14 @@ int create(int psw, int page_table, int *reg, int group){
 
     /*Creates process with default priority of 10*/
     /*TODO: Differenciate between schedualers for default priority of 10 or 0*/
-    error = enqueue(NEW, pid, psw, page_table, reg, 10, 0);
+    error = enqueue(NEW, pid, psw, page_table, reg, 10, 0, group);
 
     /*If new queue is full*/
     if (error == -1){
         return -666;
     }
     process_counter++;
+	
     /*-1 for nothing in queue (fatal), -666 for fatal error*/
     return set_group(group);
 }

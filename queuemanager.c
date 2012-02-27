@@ -171,7 +171,7 @@ struct process_control_block *find_nonempty(struct queue_t *queue) {
     return null;
 }
 
-int enqueue(enum QUEUES queue_enum, int pid, int psw, int page_table, int *regs, int priority, int quantum_count) {
+int enqueue(enum QUEUES queue_enum, int pid, int psw, int page_table, int *regs, int priority, int quantum_count, int group) {
     /* Enqueue */
     struct queue_t *queue = get_process(queue_enum);
     struct process_control_block *newprocess = find_nonempty(queue);
@@ -190,6 +190,7 @@ int enqueue(enum QUEUES queue_enum, int pid, int psw, int page_table, int *regs,
     }
     newprocess->priority = priority;
     newprocess->quantum_count = quantum_count;
+	newprocess->group = group;
 
     if (queue->tail) {
         /* The queue already has elements */
