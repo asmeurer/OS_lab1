@@ -179,6 +179,8 @@ int move(enum QUEUES from_queue, enum QUEUES to_queue){
     return 0;
 }
 
+
+
 int unwait(int pid){
     struct process_control_block temp = delete(WAITING, find_process(WAITING, pid));
     /*Pid doesn't exist*/
@@ -190,11 +192,23 @@ int unwait(int pid){
         return -2;
     }
 
-    int error = enqueue(READY0, temp.pid, temp.psw, temp.page_table, temp.regs, temp.priority, temp.quantum_count);
-    /*Queue full, unrecoverable error*/
-    if(error == -1){
-        return -666;
-    }
+	if(scheduler == 0){
+	
+		 int error = enqueue(temp.group, temp.pid, temp.psw, temp.page_table, temp.regs, temp.priority, temp.quantum_count);
+    		/*Queue full, unrecoverable error*/
+    		if(error == -1){
+        		return -666;
+    		}		
+	}else if(scheduler == 1){
+
+		 int error = enqueue(READY0, temp.pid, temp.psw, temp.page_table, temp.regs, temp.priority, temp.quantum_count);
+    		/*Queue full, unrecoverable error*/
+		if(error == -1){
+        		return -666;
+    		}
+	} 
+
+   
     return 0;
 }
 
