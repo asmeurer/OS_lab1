@@ -210,3 +210,27 @@ pid: 1	psw: 33	p_table: 11	regs: 17 15 13	group: Group 0 Ready Queue
 End of Running Queue.
 
 
+################################################################################
+# Try out the priority scheduler
+################################################################################
+
+***INIT command issued (PRIORITY)***
+
+***CREATE command issued (PID: 0)***
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: 0	psw: 33	p_table: 11	regs: 17 15 13	priority: 10	quantum_count: 0
+End of Running Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: 0	psw: 33	p_table: 11	regs: 17 15 13	priority: 9	quantum_count: 0
+End of Running Queue.
+
+

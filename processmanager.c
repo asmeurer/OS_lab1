@@ -102,6 +102,7 @@ int switch_group(){
 
 int go(){
     struct queue_t *running_queue = get_process(RUNNING);
+    struct queue_t *ready0_queue = get_process(READY0);
     struct process_control_block *run_me_next;
     int error;
     int i = 0;
@@ -125,16 +126,18 @@ int go(){
         /*Priority*/
         else if (scheduler == PRIORITY){
             run_me_next = iterate(1);
-            /*If there is nothing in the ready queue when the process is running*/
-            /*Set next scheduled process as the current running process*/
-            if (run_me_next == null){
-                run_me_next = running_queue->head;
-            }
             /*Decrease the priority of running process because of eoquantum call*/
             if(running_queue->head->priority > 1){
                 running_queue->head->priority--;
             }
             error = move(RUNNING, READY0);
+            /*If there is nothing in the ready queue when the process is running*/
+            /*Set next scheduled process as the current running process (now
+             * the only process in the ready queue. */
+            if (run_me_next == null){
+                run_me_next = ready0_queue->head;
+            }
+
             /*If empty queue error, unrecoverable because error checked above*/
             if (error == -666 || error == -1){
                 return -666;
