@@ -289,7 +289,7 @@ int main(int argc, char *argv[]) {
 						regs[1] = reg2;
 						regs[2] = reg3;
 
-						printf("\n***CREATE command issued (PID: %d)***\n", pid_counter);
+						
 						error = create(psw, page_table, regs, group);
 						
 						if (error == -1 || error == -666) {
@@ -300,11 +300,14 @@ int main(int argc, char *argv[]) {
 							printf("Could not CREATE: Maximum allowed processes reached\n");
 						}
 						else if (error == -3){
-							/*printf("Could not CREATE: PID not unique\n");*/
+							printf("Could not CREATE: PID not unique\n");
 							printf("FATAL ERROR: SYSTEM EXIT\n");
 						}
 						else if (error == -4){
 							printf("Could not CREATE: Invalid group number\n");
+						}
+						else if (error == 0){
+							printf("\n***CREATE command issued (PID: %d)***\n", (pid_counter - 1));
 						}
 					}
 					else{
