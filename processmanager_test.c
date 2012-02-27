@@ -176,11 +176,12 @@ int main(int argc, char *argv[]) {
             if (!strcmp(command, "INIT")) {
                 error = fscanf(file, " %s", args[0]);
                 if (error == 1){
-					printf("\n***INIT command issued (%s)***\n", args[0]);
-					if (args[0] == "General_purpose"){
+					if (!strcmp(args[0], "General_purpose")){
+						printf("\n***INIT command issued (%s)***\n", args[0]);
 						init(GROUP);
 					}
-					else if(args[0] == "Interactive"){
+					else if(!strcmp(args[0], "Interactive")){
+						printf("\n***INIT command issued (%s)***\n", args[0]);
 						init(PRIORITY);
 					}
 					else{
@@ -290,6 +291,7 @@ int main(int argc, char *argv[]) {
 
 						printf("\n***CREATE command issued (PID: %d)***\n", pid_counter);
 						error = create(psw, page_table, regs, group);
+						
 						if (error == -1 || error == -666) {
 							printf("FATAL ERROR: SYSTEM EXIT\n");
 							exit(-1);
