@@ -46,7 +46,7 @@ int set_group(int group){
 	/* for the Group Scheduler, associates the group arg to which 
       * 	group to place the process in */
 
-    if(scheduler == 0){
+    if(scheduler == GROUP){
         if(group == 0){
             temp->head->group = READY0;
             return move(NEW, READY0);
@@ -70,7 +70,7 @@ int set_group(int group){
         /* For the Priority scheduler, just moves the process to the default group
          *     READY0        */
 
-    }else {
+    }else if(scheduler == PRIORITY) {
         return move(NEW, READY0);
     }
 }
