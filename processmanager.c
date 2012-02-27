@@ -63,7 +63,7 @@ int set_group(int group){
 			temp->head->group = READY3;
             return move(NEW, READY3);
         }else{
-            return -4;  /* Invalid group number */
+            return ERROR_GROUP_NOT_EXIST;  /* Invalid group number */
         }
 
         /* For the Priority scheduler, just moves the process to the default group
@@ -72,7 +72,7 @@ int set_group(int group){
     } else if (scheduler == PRIORITY) {
         return move(NEW, READY0);
     }
-    return 0;
+    return ERROR_SUCCESS;
 }
 
 int switch_group(){
@@ -87,7 +87,7 @@ int switch_group(){
 		case READY3:
 			current_group = READY0;
 		default:
-			return -666;
+			return ERROR_SWITCH_DEFAULT;
 	}
 }
 
@@ -102,20 +102,22 @@ int go(){
 		/*Group Fair Share*/
 		if (scheduler == GROUP){
 			error = move(RUNNING, running_queue->head->group);
-			/*If empty queue error, unrecoverable because error checked above*/
-			if (error == -666 || error == -1){
-				return -666;
+			/*If empty queue error, unrecoverable because error checked already*/
+			/*If full queue error, unrecoverable because running queues should never be full*/
+			if (error == ERROR_QUEUE_EMPTY || error == ERROR_QUEUE_FULL){
+				return error;
 			}
 			global_quantum_count++;
 			if (global_quantum_count >= MAX_QUANTUM){
 				error = switch_group();
-				if (error == -666){
-					return -666;
+				if (error == ERROR_SWITCH_DEFAULT){
+					return error;
 				}
 			}
 		}
 		/*Priority*/
 		else if (scheduler == PRIORITY){
+			/*Iterate with aging*/
 			run_me_next = iterate(1);
 			/*If there is nothing in the ready queue when the process is running*/
 			/*Set next scheduled process as the current running process*/
@@ -127,9 +129,10 @@ int go(){
 				running_queue->head->priority--;
 			}
 			error = move(RUNNING, READY0);
-			/*If empty queue error, unrecoverable because error checked above*/
-			if (error == -666 || error == -1){
-				return -666;
+			/*If empty queue error, unrecoverable because error checked already*/
+			/*If full queue error, unrecoverable because running queues should never be full*/
+			if (error == ERROR_QUEUE_FULL || error == ERROR_QUEUE_EMPTY){
+				return error;
 			}
 		}
     }
@@ -140,8 +143,8 @@ int go(){
 			global_quantum_count++;
 			if (global_quantum_count >= MAX_QUANTUM){
 				error = switch_group();
-				if (error == -666){
-					return -666;
+				if (error == ERROR_SWITCH_DEFAULT){
+					return error;
 				}
 			}
 		}
@@ -149,8 +152,8 @@ int go(){
 		else{
 			run_me_next = iterate(1);
 			/*No ready processes*/
-			if (run_me_next->priority == null){
-				return -1;
+			if (run_me_next == null){
+				return ERROR_NO_READY_PROCESS;
 			}
 		}
 	}
@@ -164,19 +167,19 @@ int go(){
 			error = move(current_group, RUNNING);
 			/*If empty ready queue in group*/
 			/*Switch group*/
-			if (error == -1){
+			if (error == ERROR_QUEUE_EMPTY){
 				/*If all queues are empty*/
 				if (i == 3){
-					return -1;
+					return ERROR_NO_READY_PROCESS;
 				}
 				switch_group();
 			}
-			/*Unrecoverable error*/
-			else if (error == -666){
-				return -666;
+			/*If full queue, error*/
+			else if (error == ERROR_QUEUE_FULL){
+				return error;
 			}
 			/*Success*/
-			else if (error == 0){
+			else if (error == ERROR_SUCCESS){
 				break;
 			}
 			i++;
@@ -186,21 +189,21 @@ int go(){
 	else{
 		struct process_control_block temp = delete(READY0, run_me_next);
 		/*Pid doesn't exist, unrecoverable since iterate() should have found run_me_next*/
-		if(temp.pid == -1){
-			return -666;
+		if(temp.pid == ERROR_PROCESS_NOT_EXIST){
+			return ERROR_PROCESS_NOT_EXIST;
 		}
 		/*Nothing in queue, unrecoverable, since already checked for empty queue*/
-		else if(temp.pid == -2){
-			return -666;
+		else if(temp.pid == ERROR_QUEUE_EMPTY){
+			return ERROR_QUEUE_EMPTY;
 		}
 		error = enqueue(RUNNING, temp.pid, temp.psw, temp.page_table, temp.regs, temp.priority, temp.quantum_count, temp.group);
 		/*Queue is full, unrecoverable, since GO should have eoquantum*/
-		if (error == -1){
-			return -666;
+		if (error == ERROR_QUEUE_FULL){
+			return ERROR_QUEUE_FULL;
 		}
 	}
 
-	return 0;
+	return ERROR_SUCCESS;
 }
 
 int eolife(){
@@ -210,95 +213,100 @@ int eolife(){
 /* wait() is a system call, so the name conflicts in the test runner */
 int wait_(){
     struct queue_t *temp = get_process(RUNNING);
-    /*TODO: Differenciate between different schedulers to do below code*/
-    if(temp->head != null){
-        if(temp->head->priority < 20){
-            temp->head->priority++;
-        }
-    }
-    /*END TODO*/
+    /*Differenciate between different schedulers to do below code*/
+	if (scheduler == PRIORITY){	
+		if(temp->head != null){
+			if(temp->head->priority < 20){
+				temp->head->priority++;
+			}
+		}
+	}
     return move(RUNNING, WAITING);
 }
 
 int move(enum QUEUES from_queue, enum QUEUES to_queue){
     struct process_control_block temp = dequeue(from_queue);
     /*Nothing in queue, recoverable*/
-    if(temp.pid == -1){
-        return -1;
+    if(temp.pid == ERROR_QUEUE_EMPTY){
+        return ERROR_QUEUE_EMPTY;
     }
     int error = enqueue(to_queue, temp.pid, temp.psw, temp.page_table, temp.regs, temp.priority, temp.quantum_count, temp.group);
     /*Queue full, unrecoverable error*/
-    if(error == -1){
-        return -666;
+    if(error == ERROR_QUEUE_FULL){
+        return ERROR_QUEUE_FULL;
     }
-    return 0;
+    return ERROR_SUCCESS;
 }
 
 
 
 int unwait(int pid){
     struct process_control_block temp = delete(WAITING, find_process(WAITING, pid));
-    /*Pid doesn't exist*/
-    if(temp.pid == -1){
-        return -1;
+    /*Pid doesn't exist, recoverable*/
+    if(temp.pid == ERROR_PROCESS_NOT_EXIST){
+        return ERROR_PROCESS_NOT_EXIST;
     }
     /*Nothing in queue, recoverable*/
-    else if(temp.pid == -2){
-        return -2;
+    else if(temp.pid == ERROR_QUEUE_EMPTY){
+        return ERROR_QUEUE_EMPTY;
     }
 
     if(scheduler == GROUP){
 
         int error = enqueue(temp.group, temp.pid, temp.psw, temp.page_table, temp.regs, temp.priority, temp.quantum_count, temp.group);
         /*Queue full, unrecoverable error*/
-        if(error == -1){
-            return -666;
+        if(error == ERROR_QUEUE_FULL){
+            return error;
         }
     }else if(scheduler == PRIORITY){
-
         int error = enqueue(READY0, temp.pid, temp.psw, temp.page_table, temp.regs, temp.priority, temp.quantum_count, temp.group);
         /*Queue full, unrecoverable error*/
-        if(error == -1){
-            return -666;
+        if(error == ERROR_QUEUE_FULL){
+            return error;
         }
     }
 
 
-    return 0;
+    return ERROR_SUCCESS;
 }
 
 int create(int psw, int page_table, int *reg, int group){
     int error;
     /*If max allowed processes are reached*/
     if(process_counter >= MAX_PROCESSES){
-        return -2;
+        return ERROR_MAX_PROCESSES;
     }
-    /*TODO: Create a unique pid in new queue instead of here*/
     int pid = pid_counter;
     pid_counter++;
     /*Find if process already exists*/
     if ((find_process(WAITING, pid) != null) ||
-        ((find_process(READY0, pid)) != null) ||
-        ((find_process(READY1, pid)) != null) ||
-        ((find_process(READY2, pid)) != null) ||
-        ((find_process(READY3, pid)) != null) ||
-        ((find_process(TERMINATED, pid)) != null) ||
-        ((find_process(RUNNING, pid)) != null)) {
-        return -3;
+        (find_process(READY0, pid) != null) ||
+        (find_process(READY1, pid) != null) ||
+        (find_process(READY2, pid) != null) ||
+        (find_process(READY3, pid) != null) ||
+        (find_process(TERMINATED, pid) != null) ||
+        (find_process(RUNNING, pid) != null)) {
+        return ERROR_PROCESS_NOT_UNIQUE;
     }
 
     /*Creates process with default priority of 10*/
-    /*TODO: Differenciate between schedualers for default priority of 10 or 0*/
-    
-	error = enqueue(NEW, pid, psw, page_table, reg, 10, 0, 0);
+    /*Differenciate between schedualers for default priority of 10 or 0*/
+    if (scheduler == GROUP){
+		error = enqueue(NEW, pid, psw, page_table, reg, 0, 0, 0);
+	}
+	else{
+		error = enqueue(NEW, pid, psw, page_table, reg, 10, 0, 0);
+	}
 
     /*If new queue is full*/
-    if (error == -1){
-        return -666;
+    if (error == ERROR_QUEUE_FULL){
+        return error;
     }
     process_counter++;
 	
-    /*-1 for nothing in queue (fatal), -666 for fatal error*/
+    /*If New queue is empty, unrecoverable, since just enqueued*/
+	/*If Ready group queue is full, unrecoverable, since should never be full*/
+	/*If Group doesn't exist, recoverable*/
     return set_group(group);
 }
 
@@ -307,7 +315,7 @@ int empty_term(){
     int i = 0;
     /*If terminated queue is empty, return -1*/
     if (terminated->head == null){
-        return -1;
+        return ERROR_QUEUE_EMPTY;
     }
     terminated->head = null;
     terminated->tail = null;
@@ -317,5 +325,5 @@ int empty_term(){
         }
         clear(&terminated->top[i]);
     }
-    return 0;
+    return ERROR_SUCCESS;
 }
