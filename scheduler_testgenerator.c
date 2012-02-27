@@ -66,13 +66,13 @@ int main() {
             switch (schedtype) {
             case 'g':
             case 'G':
-                fprintf(output, "INIT General_purpose\n");
+                fprintf(output, "INIT GROUP\n");
                 scheduler = GROUP;
                 break;
 
             case 'I':
             case 'i':
-                fprintf(output, "INIT Interactive\n");
+                fprintf(output, "INIT PRIORITY\n");
                 scheduler = PRIORITY;
                 break;
 

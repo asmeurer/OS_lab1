@@ -179,20 +179,20 @@ int main(int argc, char *argv[]) {
             if (!strcmp(command, "INIT")) {
                 error = fscanf(file, " %s", args[0]);
                 if (error == 1){
-                    if (!strcmp(args[0], "General_purpose")){
+                    if (!strcmp(args[0], "GROUP")){
                         printf("\n***INIT command issued (%s)***\n", args[0]);
                         init(GROUP);
                     }
-                    else if(!strcmp(args[0], "Interactive")){
+                    else if(!strcmp(args[0], "PRIORITY")){
                         printf("\n***INIT command issued (%s)***\n", args[0]);
                         init(PRIORITY);
                     }
                     else{
-                        printf("Usage: INIT <General_purpose | Interactive>\n");
+                        printf("Usage: INIT <GROUP | PRIORITY>\n");
                     }
                 }
                 else{
-                    printf("Usage: INIT <General_purpose | Interactive>\n");
+                    printf("Usage: INIT <GROUP | PRIORITY>\n");
                 }
 
             }

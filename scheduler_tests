@@ -1,5 +1,5 @@
 # Start with the group scheduler
-INIT General_purpose
+INIT GROUP
 # Test that groups not in the range 0-3 don't work
 CREATE 33 11 17 15 13 6
 CREATE 33 11 17 15 13 0

@@ -109,7 +109,9 @@ void init(enum SCHEDS current_scheduler) {
         clear(&ready0.top[i]);
     }
 
-    if(scheduler == 0){
+    if(current_scheduler == GROUP){
+        scheduler = GROUP;
+
         ready1.head = null;
         ready1.tail = null;
         for (i = 0; i < ready1.size; i++) {
@@ -125,6 +127,8 @@ void init(enum SCHEDS current_scheduler) {
         for (i = 0; i < ready3.size; i++) {
             clear(&ready3.top[i]);
         }
+    } else {
+        scheduler = PRIORITY;
     }
 
     terminated.head = null;
