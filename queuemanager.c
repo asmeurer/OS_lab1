@@ -87,7 +87,6 @@ void init() {
     int i = 0;
     process_counter = 0;
     pid_counter = 0;
-    int scheduler;
     global_quantum_count = 0;
     current_group = READY0;
 

@@ -46,7 +46,7 @@ int set_group(int group){
     /* for the Group Scheduler, associates the group arg to which
      *     group to place the process in */
 
-    if(scheduler == 0){
+    if(scheduler == GROUP){
         if(group == 0){
             temp->head->group = READY0;
             return move(NEW, READY0);
@@ -83,7 +83,7 @@ int go(){
     /*Running queue full, process already running, do eoquantum*/
     if (running_queue->head != null){
         /*Group Fair Share*/
-        if (scheduler == 0){
+        if (scheduler == GROUP){
             error = move(RUNNING, running_queue->head->group);
             /*If empty queue error, unrecoverable because error checked above*/
             if (error == -666 || error == -1){
@@ -91,7 +91,7 @@ int go(){
             }
         }
         /*Priority*/
-        else if (scheduler == 1){
+        else if (scheduler == PRIORITY){
             run_me_next = iterate();
             /*If there is nothing in the ready queue when the process is running*/
             /*Set next scheduled process as the current running process*/
@@ -111,7 +111,7 @@ int go(){
     }
     /*Nothing in running queue*/
     else{
-        if (scheduler == 1){
+        if (scheduler == PRIORITY){
             run_me_next = iterate();
             /*No ready processes*/
             if (run_me_next->priority == null){
@@ -122,7 +122,7 @@ int go(){
     /*Schedual next process*/
 
     /*Group fair share*/
-    if (scheduler == 0){
+    if (scheduler == GROUP){
 
     }
     /*Priority*/
@@ -136,7 +136,7 @@ int go(){
         else if(temp.pid == -2){
             return -666;
         }
-        error == enqueue(RUNNING, temp.pid, temp.psw, temp.page_table, temp.regs, temp.priority, temp.quantum_count);
+        error = enqueue(RUNNING, temp.pid, temp.psw, temp.page_table, temp.regs, temp.priority, temp.quantum_count);
         /*Queue is full, unrecoverable, since GO should have eoquantum*/
         if (error == -1){
             return -666;
@@ -192,14 +192,14 @@ int unwait(int pid){
         return -2;
     }
 
-    if(scheduler == 0){
+    if(scheduler == GROUP){
 
         int error = enqueue(temp.group, temp.pid, temp.psw, temp.page_table, temp.regs, temp.priority, temp.quantum_count);
         /*Queue full, unrecoverable error*/
         if(error == -1){
             return -666;
         }
-    }else if(scheduler == 1){
+    }else if(scheduler == PRIORITY){
 
         int error = enqueue(READY0, temp.pid, temp.psw, temp.page_table, temp.regs, temp.priority, temp.quantum_count);
         /*Queue full, unrecoverable error*/

@@ -31,7 +31,7 @@ enum QUEUES {
 enum SCHEDS {
     GROUP,
     PRIORITY
-} scheduler_enum;
+} scheduler;
 
 struct process_control_block {
     int pid;   /* Process ID */
@@ -54,7 +54,6 @@ struct queue_t {
 };
 
 int process_counter;
-int scheduler; /* 0 for Group-Scheduler and 1 for Priority-Scheduler */
 int pid_counter;
 int global_quantum_count;
 enum QUEUES current_group;
