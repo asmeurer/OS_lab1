@@ -222,7 +222,7 @@ End of Running Queue.
 
 ***LISTING command issued (RUNNING)***
 Start of Running Queue.
-pid: 0	psw: 33	p_table: 11	regs: 17 15 13	priority: 10	quantum_count: 0
+pid: 0	psw: 33	p_table: 11	regs: 17 15 13	priority: 10	quantum_count: 1
 End of Running Queue.
 
 
@@ -230,7 +230,177 @@ End of Running Queue.
 
 ***LISTING command issued (RUNNING)***
 Start of Running Queue.
-pid: 0	psw: 33	p_table: 11	regs: 17 15 13	priority: 9	quantum_count: 0
+pid: 0	psw: 33	p_table: 11	regs: 17 15 13	priority: 9	quantum_count: 1
 End of Running Queue.
+
+
+***CREATE command issued (PID: 1)***
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: 1	psw: 23	p_table: 42	regs: 23 23 12	priority: 10	quantum_count: 1
+End of Running Queue.
+
+
+***LISTING command issued (READY)***
+Start of Ready Queue.
+pid: 0	psw: 33	p_table: 11	regs: 17 15 13	priority: 8	quantum_count: 1
+End of Ready Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: 0	psw: 33	p_table: 11	regs: 17 15 13	priority: 8	quantum_count: 2
+End of Running Queue.
+
+
+***LISTING command issued (READY)***
+Start of Ready Queue.
+pid: 1	psw: 23	p_table: 42	regs: 23 23 12	priority: 9	quantum_count: 1
+End of Ready Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: 1	psw: 23	p_table: 42	regs: 23 23 12	priority: 9	quantum_count: 2
+End of Running Queue.
+
+
+***LISTING command issued (READY)***
+Start of Ready Queue.
+pid: 0	psw: 33	p_table: 11	regs: 17 15 13	priority: 7	quantum_count: 2
+End of Ready Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: 0	psw: 33	p_table: 11	regs: 17 15 13	priority: 7	quantum_count: 3
+End of Running Queue.
+
+
+***LISTING command issued (READY)***
+Start of Ready Queue.
+pid: 1	psw: 23	p_table: 42	regs: 23 23 12	priority: 8	quantum_count: 2
+End of Ready Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: 1	psw: 23	p_table: 42	regs: 23 23 12	priority: 8	quantum_count: 3
+End of Running Queue.
+
+
+***LISTING command issued (READY)***
+Start of Ready Queue.
+pid: 0	psw: 33	p_table: 11	regs: 17 15 13	priority: 6	quantum_count: 3
+End of Ready Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: 0	psw: 33	p_table: 11	regs: 17 15 13	priority: 6	quantum_count: 4
+End of Running Queue.
+
+
+***LISTING command issued (READY)***
+Start of Ready Queue.
+pid: 1	psw: 23	p_table: 42	regs: 23 23 12	priority: 7	quantum_count: 3
+End of Ready Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: 1	psw: 23	p_table: 42	regs: 23 23 12	priority: 7	quantum_count: 4
+End of Running Queue.
+
+
+***LISTING command issued (READY)***
+Start of Ready Queue.
+pid: 0	psw: 33	p_table: 11	regs: 17 15 13	priority: 5	quantum_count: 4
+End of Ready Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: 0	psw: 33	p_table: 11	regs: 17 15 13	priority: 5	quantum_count: 5
+End of Running Queue.
+
+
+***LISTING command issued (READY)***
+Start of Ready Queue.
+pid: 1	psw: 23	p_table: 42	regs: 23 23 12	priority: 6	quantum_count: 4
+End of Ready Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: 1	psw: 23	p_table: 42	regs: 23 23 12	priority: 6	quantum_count: 5
+End of Running Queue.
+
+
+***LISTING command issued (READY)***
+Start of Ready Queue.
+pid: 0	psw: 33	p_table: 11	regs: 17 15 13	priority: 4	quantum_count: 5
+End of Ready Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: 0	psw: 33	p_table: 11	regs: 17 15 13	priority: 5	quantum_count: 0
+End of Running Queue.
+
+
+***LISTING command issued (READY)***
+Start of Ready Queue.
+pid: 1	psw: 23	p_table: 42	regs: 23 23 12	priority: 5	quantum_count: 5
+End of Ready Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: 1	psw: 23	p_table: 42	regs: 23 23 12	priority: 6	quantum_count: 0
+End of Running Queue.
+
+
+***LISTING command issued (READY)***
+Start of Ready Queue.
+pid: 0	psw: 33	p_table: 11	regs: 17 15 13	priority: 4	quantum_count: 0
+End of Ready Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: 0	psw: 33	p_table: 11	regs: 17 15 13	priority: 4	quantum_count: 1
+End of Running Queue.
+
+
+***LISTING command issued (READY)***
+Start of Ready Queue.
+pid: 1	psw: 23	p_table: 42	regs: 23 23 12	priority: 5	quantum_count: 0
+End of Ready Queue.
 
 
