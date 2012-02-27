@@ -21,7 +21,7 @@ struct process_control_block *iterate(int do_aging){
     struct process_control_block *temp = queue_temp->tail;
     struct process_control_block *highest_priority = temp;
     while (temp != null){
-        if(do_aging == 0){
+        if(do_aging == 1){
             /*Aging*/
             temp->quantum_count++;
             if(temp->quantum_count >= temp->priority){
