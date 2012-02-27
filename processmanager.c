@@ -77,19 +77,20 @@ int set_group(int group){
 }
 
 int switch_group(){
-    global_quantum_count = 0;
-    switch(current_group){
-    case READY0:
-        current_group = READY1;
-    case READY1:
-        current_group = READY2;
-    case READY2:
-        current_group = READY3;
-    case READY3:
-        current_group = READY0;
-    default:
-        return -666;
-    }
+	global_quantum_count = 0;
+	switch(current_group){
+		case READY0:
+			current_group = READY1;
+		case READY1:
+			current_group = READY2;
+		case READY2:
+			current_group = READY3;
+		case READY3:
+			current_group = READY0;
+		default:
+			return -666;
+	}
+	
 }
 
 
