@@ -1,5 +1,15 @@
 # Start with the group scheduler
 INIT General_purpose
 # Test that groups not in the range 0-3 don't work
-CREATE 1 33 11 17 15 13 6
-CREATE 1 33 11 17 15 13 0
+CREATE 33 11 17 15 13 6
+CREATE 33 11 17 15 13 0
+CREATE 33 11 17 15 13 1
+CREATE 35 11 12 9 1 2
+CREATE 12 2 10 19 3 3
+GO
+GO
+GO
+GO
+GO
+GO
+GO

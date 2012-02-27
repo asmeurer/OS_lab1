@@ -22,7 +22,7 @@ int main() {
     FILE *output = NULL;
     char *mode = "a";
     char outputFilename[] = "scheduler_tests";
-    int input=0, number=0, pid=0, group=0;
+    int input=0, number=0, group=0;
     int psw=0, page=0, reg1=0, reg2=0, reg3=0;
     char string[256];
     char schedtype;
@@ -93,8 +93,6 @@ int main() {
                 reg2 = random() % 20;
                 reg3 = random() % 20;
 
-                pid++;
-
 
             if (scheduler == GROUP) {
                 printf("What group should process %d be in? ", i);
@@ -103,9 +101,9 @@ int main() {
                     printf("group must be 0, 1, 2, or 3.  Defaulting to 0.\n");
                     group = 0;
                 }
-                fprintf(output, "CREATE %d %d %d %d %d %d %d\n", pid, psw, page, reg1, reg2, reg3, group);
+                fprintf(output, "CREATE %d %d %d %d %d %d\n", psw, page, reg1, reg2, reg3, group);
             } else {
-                fprintf(output, "CREATE %d %d %d %d %d %d\n", pid, psw, page, reg1, reg2, reg3);
+                fprintf(output, "CREATE %d %d %d %d %d\n", psw, page, reg1, reg2, reg3);
             }
             }
 
