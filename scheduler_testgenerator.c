@@ -61,7 +61,7 @@ int main() {
 
             break;
         case 1:
-            printf("Which scheduler would you like to initialize (General_purpose|Interactive)? ");
+            printf("Which scheduler would you like to initialize (Group|Priority)? ");
             scanf("\n%c", &schedtype);
             switch (schedtype) {
             case 'g':
@@ -70,8 +70,8 @@ int main() {
                 scheduler = GROUP;
                 break;
 
-            case 'I':
-            case 'i':
+            case 'P':
+            case 'p':
                 fprintf(output, "INIT PRIORITY\n");
                 scheduler = PRIORITY;
                 break;
