@@ -17,7 +17,6 @@
 #define NUM_REGS 3
 #define MAX_PROCESSES 20
 
-
 enum QUEUES {
     NEW,
     WAITING,
@@ -28,6 +27,11 @@ enum QUEUES {
     TERMINATED,
     RUNNING
 } queue_enum;
+
+enum SCHEDS {
+    GROUP,
+    PRIORITY
+} scheduler_enum;
 
 struct process_control_block {
     int pid;   /* Process ID */
