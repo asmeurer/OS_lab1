@@ -10,7 +10,7 @@
 #define QUEUE_MANAGER_H
 
 #include "definitions.h"
-void init();
+void init(enum SCHEDS current_scheduler);
 struct queue_t *get_process(enum QUEUES queue_enum);
 struct process_control_block *find_nonempty(struct queue_t *queue);
 int enqueue(enum QUEUES queue_enum, int pid, int psw, int page_table, int *regs, int priority, int quantum_count);

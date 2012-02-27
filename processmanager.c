@@ -13,19 +13,21 @@
  * A function that implements aging as well as finding the process with the highest priority to schedual next
  * NOTE: If there is nothing in the ready queue, highest_priority pointer will be null
  */
-struct process_control_block *iterate(){
+struct process_control_block *iterate(int do_aging){
     struct queue_t *queue_temp = get_process(READY0);
     struct process_control_block *temp = queue_temp->tail;
     struct process_control_block *highest_priority = temp;
     while (temp != null){
-        /*Aging*/
-        temp->quantum_count++;
-        if(temp->quantum_count >= temp->priority){
-            temp->quantum_count = 0;
-            if(temp->priority < 20){
-                temp->priority++;
-            }
-        }
+        if(do_aging == 0){
+			/*Aging*/
+			temp->quantum_count++;
+			if(temp->quantum_count >= temp->priority){
+				temp->quantum_count = 0;
+				if(temp->priority < 20){
+					temp->priority++;
+				}
+			}
+		}
         /*Find highest priority*/
         /*Since starting at head, if equal priority, don't want to replace highest_priority*/
         if(temp->priority >= highest_priority->priority){
@@ -41,7 +43,7 @@ int set_group(int group){
     struct queue_t *temp = get_process(NEW);
     /* case new is full */
     if (temp->head != null){
-        return -2;
+        return -666;
     }
     /* for the Group Scheduler, associates the group arg to which
      *     group to place the process in */
@@ -117,7 +119,7 @@ int go(){
 		}
 		/*Priority*/
 		else if (scheduler == PRIORITY){
-			run_me_next = iterate();
+			run_me_next = iterate(1);
 			/*If there is nothing in the ready queue when the process is running*/
 			/*Set next scheduled process as the current running process*/
 			if (run_me_next == null){
@@ -148,7 +150,7 @@ int go(){
 		}
 		/*Priority*/
 		else{
-			run_me_next = iterate();
+			run_me_next = iterate(1);
 			/*No ready processes*/
 			if (run_me_next->priority == null){
 				return -1;
@@ -298,8 +300,7 @@ int create(int psw, int page_table, int *reg, int group){
     }
     process_counter++;
     /*-1 for nothing in queue (fatal), -666 for fatal error*/
-    set_group(group);
-    return 0;
+    return set_group(group);
 }
 
 int empty_term(){

@@ -19,7 +19,7 @@ int unwait(int pid);
 int create(int psw, int page_table, int *reg, int group);
 int empty_term();
 void age_process();
-struct process_control_block *iterate();
+struct process_control_block *iterate(int do_aging);
 int set_group(int group);
 int switch_group();
 

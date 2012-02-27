@@ -23,10 +23,6 @@ processmanager_test.o: processmanager_test.c processmanager_test.h definitions.h
 scheduler_testgenerator.o: scheduler_testgenerator.c definitions.h queuemanager.o processmanager.o
 	gcc -Wall scheduler_testgenerator.c -o scheduler_testgenerator.o
 
-scheduler_test.o: scheduler_test.c scheduler_test.h definitions.h \
-  processmanager.h queuemanager.h processmanager.o queuemanager.o
-	gcc -Wall scheduler_test.c processmanager.o queuemanager.o -o scheduler_test.o
-
 clean:
 	-rm -f *.o
 
