@@ -84,6 +84,7 @@ struct process_control_block error_process =
 };
 
 void init(int current_scheduler) {
+	/* Setting all variables for */
     int i = 0;
     process_counter = 0;
     pid_counter = 0;
@@ -108,21 +109,25 @@ void init(int current_scheduler) {
     for (i = 0; i < ready0.size; i++) {
         clear(&ready0.top[i]);
     }
-    ready1.head = null;
-    ready1.tail = null;
-    for (i = 0; i < ready1.size; i++) {
-        clear(&ready1.top[i]);
-    }
-    ready2.head = null;
-    ready2.tail = null;
-    for (i = 0; i < ready2.size; i++) {
-        clear(&ready2.top[i]);
-    }
-    ready3.head = null;
-    ready3.tail = null;
-    for (i = 0; i < ready3.size; i++) {
-        clear(&ready3.top[i]);
-    }
+
+    if(scheduler == 0){ 
+    	ready1.head = null;
+  	  ready1.tail = null;
+    	for (i = 0; i < ready1.size; i++) {
+		clear(&ready1.top[i]);
+    	}
+    	ready2.head = null;
+    	ready2.tail = null;
+    	for (i = 0; i < ready2.size; i++) {
+        	clear(&ready2.top[i]);
+   	 }
+    	ready3.head = null;
+    	ready3.tail = null;
+    	for (i = 0; i < ready3.size; i++) {
+        	clear(&ready3.top[i]);
+	    }
+	}
+
     terminated.head = null;
     terminated.tail = null;
     for (i = 0; i < terminated.size; i++) {
