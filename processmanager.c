@@ -123,7 +123,7 @@ int go(){
 	
 	/*Group fair share*/
 	if (scheduler == 0){
-	
+		
 	}
 	/*Priority*/
 	else{
