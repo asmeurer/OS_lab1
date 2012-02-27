@@ -242,7 +242,7 @@ int create(int psw, int page_table, int *reg, int group){
     } 
     process_counter++;
     /*-1 for nothing in queue (fatal), -666 for fatal error*/
-	set_group(group);
+    set_group(group);
     return 0;
 }
 
