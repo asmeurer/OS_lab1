@@ -89,7 +89,7 @@ void init() {
     pid_counter = 0;
     int scheduler;
     global_quantum_count = 0;
-	current_group = READY0;
+    current_group = READY0;
 
     new.head = null;
     new.tail = null;
@@ -259,9 +259,9 @@ struct process_control_block *find_process(enum QUEUES queue_enum, int id){
 }
 
 /**
-* @param queue The queue that it is deleating from
-* @param temp The process control block that is being deleted
-*/
+ * @param queue The queue that it is deleating from
+ * @param temp The process control block that is being deleted
+ */
 struct process_control_block delete(enum QUEUES queue_enum, struct process_control_block *temp){
     struct queue_t *queue = get_process(queue_enum);
 
