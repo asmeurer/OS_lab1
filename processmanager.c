@@ -40,13 +40,13 @@ int set_group(int group){
 
     struct queue_t *temp = get_process(NEW);
     /* case new is full */
-    if(temp->head != null){
+    if (temp->head != null){
         return -2;
     }
     /* for the Group Scheduler, associates the group arg to which
      *     group to place the process in */
 
-    if(scheduler == GROUP){
+    if (scheduler == GROUP){
         if(group == 0){
             temp->head->group = READY0;
             return move(NEW, READY0);
@@ -70,9 +70,10 @@ int set_group(int group){
         /* For the Priority scheduler, just moves the process to the default group
          *     READY0        */
 
-    }else if(scheduler == PRIORITY) {
+    } else if (scheduler == PRIORITY) {
         return move(NEW, READY0);
     }
+    return 0;
 }
 
 int switch_group(){
