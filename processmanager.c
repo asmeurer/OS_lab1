@@ -73,6 +73,7 @@ int set_group(int group){
     }else if(scheduler == PRIORITY) {
         return move(NEW, READY0);
     }
+    
 }
 
 
