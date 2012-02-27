@@ -83,7 +83,7 @@ struct process_control_block error_process =
  .empty = 0
 };
 
-void init() {
+void init(enum SCHEDS current_scheduler) {
     int i = 0;
     process_counter = 0;
     pid_counter = 0;
