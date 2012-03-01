@@ -413,7 +413,10 @@ int main(int argc, char *argv[]) {
             }
             else if (!strcmp(command, "#")) {
                 printf("\n################################################################################\n");
-                printf("#%s\n", fgetstring(file));
+                printf("#");
+                textcolor(BRIGHT, WHITE, BLACK);
+                printf("%s\n", fgetstring(file));
+                textcolor(RESET, -1, -1);
                 printf("################################################################################\n");
             }
             else {
