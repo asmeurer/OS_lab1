@@ -23,7 +23,7 @@ struct process_control_block *iterate(int do_aging){
             temp->quantum_count++;
             if(temp->quantum_count >= temp->priority){
                 temp->quantum_count = 0;
-                if(temp->priority < 20){
+                if(temp->priority < MAX_PRIORITY){
                     temp->priority++;
                 }
             }
@@ -304,7 +304,7 @@ int create(int psw, int page_table, int *reg, int group){
 		error = enqueue(NEW, pid, psw, page_table, reg, 0, 0, 0);
 	}
 	else{
-		error = enqueue(NEW, pid, psw, page_table, reg, 10, 0, 0);
+		error = enqueue(NEW, pid, psw, page_table, reg, (MAX_PRIORITY/2), 0, 0);
 	}
 
     /*If new queue is full*/
