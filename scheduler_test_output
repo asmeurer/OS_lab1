@@ -1021,9 +1021,19 @@ End of Terminated Queue.
 
 ***INIT command issued (PRIORITY)***
 
+################################################################################
+# Test that the default priority is 5
+################################################################################
+
 ***CREATE command issued (PID: 0)***
 
 ***CREATE command issued (PID: 0)***
+
+***LISTING command issued (READY)***
+Start of Ready Queue.
+pid: 0	psw: 33	p_table: 11	regs: 17 15 13	priority: 5	quantum_count: 0
+End of Ready Queue.
+
 
 ***GO command issued***
 
@@ -1040,6 +1050,10 @@ Start of Running Queue.
 pid: 0	psw: 33	p_table: 11	regs: 17 15 13	priority: 4	quantum_count: 1
 End of Running Queue.
 
+
+################################################################################
+# Test that process reduce in priority as they are run
+################################################################################
 
 ***CREATE command issued (PID: 1)***
 
@@ -1212,6 +1226,26 @@ Start of Ready Queue.
 pid: 1	psw: 23	p_table: 42	regs: 23 23 12	priority: 1	quantum_count: 1
 End of Ready Queue.
 
+
+################################################################################
+# Test that waiting increases priority
+################################################################################
+
+################################################################################
+# Also test that aging works Note that this takes longer than it would in a
+################################################################################
+
+################################################################################
+# real-life situation to run the non-interactive processes again because the
+################################################################################
+
+################################################################################
+# interactive process always unwaits immediately after it waits.  But even so,
+################################################################################
+
+################################################################################
+# it still should age eventually.
+################################################################################
 
 ***CREATE command issued (PID: 2)***
 
@@ -1449,6 +1483,576 @@ End of Running Queue.
 Start of Ready Queue.
 pid: 1	psw: 23	p_table: 42	regs: 23 23 12	priority: 5	quantum_count: 2
 pid: 0	psw: 33	p_table: 11	regs: 17 15 13	priority: 6	quantum_count: 0
+End of Ready Queue.
+
+
+***WAIT command issued***
+
+***UNWAIT command issued (PID: 2)***
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: 2	psw: 1	p_table: 2	regs: 3 4 5	priority: 10	quantum_count: 3
+End of Running Queue.
+
+
+***LISTING command issued (READY)***
+Start of Ready Queue.
+pid: 1	psw: 23	p_table: 42	regs: 23 23 12	priority: 5	quantum_count: 3
+pid: 0	psw: 33	p_table: 11	regs: 17 15 13	priority: 6	quantum_count: 1
+End of Ready Queue.
+
+
+***WAIT command issued***
+
+***UNWAIT command issued (PID: 2)***
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: 2	psw: 1	p_table: 2	regs: 3 4 5	priority: 10	quantum_count: 4
+End of Running Queue.
+
+
+***LISTING command issued (READY)***
+Start of Ready Queue.
+pid: 1	psw: 23	p_table: 42	regs: 23 23 12	priority: 5	quantum_count: 4
+pid: 0	psw: 33	p_table: 11	regs: 17 15 13	priority: 6	quantum_count: 2
+End of Ready Queue.
+
+
+***WAIT command issued***
+
+***UNWAIT command issued (PID: 2)***
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: 2	psw: 1	p_table: 2	regs: 3 4 5	priority: 10	quantum_count: 5
+End of Running Queue.
+
+
+***LISTING command issued (READY)***
+Start of Ready Queue.
+pid: 1	psw: 23	p_table: 42	regs: 23 23 12	priority: 6	quantum_count: 0
+pid: 0	psw: 33	p_table: 11	regs: 17 15 13	priority: 6	quantum_count: 3
+End of Ready Queue.
+
+
+***WAIT command issued***
+
+***UNWAIT command issued (PID: 2)***
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: 2	psw: 1	p_table: 2	regs: 3 4 5	priority: 10	quantum_count: 6
+End of Running Queue.
+
+
+***LISTING command issued (READY)***
+Start of Ready Queue.
+pid: 1	psw: 23	p_table: 42	regs: 23 23 12	priority: 6	quantum_count: 1
+pid: 0	psw: 33	p_table: 11	regs: 17 15 13	priority: 6	quantum_count: 4
+End of Ready Queue.
+
+
+***WAIT command issued***
+
+***UNWAIT command issued (PID: 2)***
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: 2	psw: 1	p_table: 2	regs: 3 4 5	priority: 10	quantum_count: 7
+End of Running Queue.
+
+
+***LISTING command issued (READY)***
+Start of Ready Queue.
+pid: 1	psw: 23	p_table: 42	regs: 23 23 12	priority: 6	quantum_count: 2
+pid: 0	psw: 33	p_table: 11	regs: 17 15 13	priority: 6	quantum_count: 5
+End of Ready Queue.
+
+
+***WAIT command issued***
+
+***UNWAIT command issued (PID: 2)***
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: 2	psw: 1	p_table: 2	regs: 3 4 5	priority: 10	quantum_count: 8
+End of Running Queue.
+
+
+***LISTING command issued (READY)***
+Start of Ready Queue.
+pid: 1	psw: 23	p_table: 42	regs: 23 23 12	priority: 6	quantum_count: 3
+pid: 0	psw: 33	p_table: 11	regs: 17 15 13	priority: 7	quantum_count: 0
+End of Ready Queue.
+
+
+***WAIT command issued***
+
+***UNWAIT command issued (PID: 2)***
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: 2	psw: 1	p_table: 2	regs: 3 4 5	priority: 10	quantum_count: 9
+End of Running Queue.
+
+
+***LISTING command issued (READY)***
+Start of Ready Queue.
+pid: 1	psw: 23	p_table: 42	regs: 23 23 12	priority: 6	quantum_count: 4
+pid: 0	psw: 33	p_table: 11	regs: 17 15 13	priority: 7	quantum_count: 1
+End of Ready Queue.
+
+
+***WAIT command issued***
+
+***UNWAIT command issued (PID: 2)***
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: 2	psw: 1	p_table: 2	regs: 3 4 5	priority: 10	quantum_count: 0
+End of Running Queue.
+
+
+***LISTING command issued (READY)***
+Start of Ready Queue.
+pid: 1	psw: 23	p_table: 42	regs: 23 23 12	priority: 6	quantum_count: 5
+pid: 0	psw: 33	p_table: 11	regs: 17 15 13	priority: 7	quantum_count: 2
+End of Ready Queue.
+
+
+***WAIT command issued***
+
+***UNWAIT command issued (PID: 2)***
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: 2	psw: 1	p_table: 2	regs: 3 4 5	priority: 10	quantum_count: 1
+End of Running Queue.
+
+
+***LISTING command issued (READY)***
+Start of Ready Queue.
+pid: 1	psw: 23	p_table: 42	regs: 23 23 12	priority: 7	quantum_count: 0
+pid: 0	psw: 33	p_table: 11	regs: 17 15 13	priority: 7	quantum_count: 3
+End of Ready Queue.
+
+
+***WAIT command issued***
+
+***UNWAIT command issued (PID: 2)***
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: 2	psw: 1	p_table: 2	regs: 3 4 5	priority: 10	quantum_count: 2
+End of Running Queue.
+
+
+***LISTING command issued (READY)***
+Start of Ready Queue.
+pid: 1	psw: 23	p_table: 42	regs: 23 23 12	priority: 7	quantum_count: 1
+pid: 0	psw: 33	p_table: 11	regs: 17 15 13	priority: 7	quantum_count: 4
+End of Ready Queue.
+
+
+***WAIT command issued***
+
+***UNWAIT command issued (PID: 2)***
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: 2	psw: 1	p_table: 2	regs: 3 4 5	priority: 10	quantum_count: 3
+End of Running Queue.
+
+
+***LISTING command issued (READY)***
+Start of Ready Queue.
+pid: 1	psw: 23	p_table: 42	regs: 23 23 12	priority: 7	quantum_count: 2
+pid: 0	psw: 33	p_table: 11	regs: 17 15 13	priority: 7	quantum_count: 5
+End of Ready Queue.
+
+
+***WAIT command issued***
+
+***UNWAIT command issued (PID: 2)***
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: 2	psw: 1	p_table: 2	regs: 3 4 5	priority: 10	quantum_count: 4
+End of Running Queue.
+
+
+***LISTING command issued (READY)***
+Start of Ready Queue.
+pid: 1	psw: 23	p_table: 42	regs: 23 23 12	priority: 7	quantum_count: 3
+pid: 0	psw: 33	p_table: 11	regs: 17 15 13	priority: 7	quantum_count: 6
+End of Ready Queue.
+
+
+***WAIT command issued***
+
+***UNWAIT command issued (PID: 2)***
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: 2	psw: 1	p_table: 2	regs: 3 4 5	priority: 10	quantum_count: 5
+End of Running Queue.
+
+
+***LISTING command issued (READY)***
+Start of Ready Queue.
+pid: 1	psw: 23	p_table: 42	regs: 23 23 12	priority: 7	quantum_count: 4
+pid: 0	psw: 33	p_table: 11	regs: 17 15 13	priority: 8	quantum_count: 0
+End of Ready Queue.
+
+
+***WAIT command issued***
+
+***UNWAIT command issued (PID: 2)***
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: 2	psw: 1	p_table: 2	regs: 3 4 5	priority: 10	quantum_count: 6
+End of Running Queue.
+
+
+***LISTING command issued (READY)***
+Start of Ready Queue.
+pid: 1	psw: 23	p_table: 42	regs: 23 23 12	priority: 7	quantum_count: 5
+pid: 0	psw: 33	p_table: 11	regs: 17 15 13	priority: 8	quantum_count: 1
+End of Ready Queue.
+
+
+***WAIT command issued***
+
+***UNWAIT command issued (PID: 2)***
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: 2	psw: 1	p_table: 2	regs: 3 4 5	priority: 10	quantum_count: 7
+End of Running Queue.
+
+
+***LISTING command issued (READY)***
+Start of Ready Queue.
+pid: 1	psw: 23	p_table: 42	regs: 23 23 12	priority: 7	quantum_count: 6
+pid: 0	psw: 33	p_table: 11	regs: 17 15 13	priority: 8	quantum_count: 2
+End of Ready Queue.
+
+
+***WAIT command issued***
+
+***UNWAIT command issued (PID: 2)***
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: 2	psw: 1	p_table: 2	regs: 3 4 5	priority: 10	quantum_count: 8
+End of Running Queue.
+
+
+***LISTING command issued (READY)***
+Start of Ready Queue.
+pid: 1	psw: 23	p_table: 42	regs: 23 23 12	priority: 8	quantum_count: 0
+pid: 0	psw: 33	p_table: 11	regs: 17 15 13	priority: 8	quantum_count: 3
+End of Ready Queue.
+
+
+***WAIT command issued***
+
+***UNWAIT command issued (PID: 2)***
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: 2	psw: 1	p_table: 2	regs: 3 4 5	priority: 10	quantum_count: 9
+End of Running Queue.
+
+
+***LISTING command issued (READY)***
+Start of Ready Queue.
+pid: 1	psw: 23	p_table: 42	regs: 23 23 12	priority: 8	quantum_count: 1
+pid: 0	psw: 33	p_table: 11	regs: 17 15 13	priority: 8	quantum_count: 4
+End of Ready Queue.
+
+
+***WAIT command issued***
+
+***UNWAIT command issued (PID: 2)***
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: 2	psw: 1	p_table: 2	regs: 3 4 5	priority: 10	quantum_count: 0
+End of Running Queue.
+
+
+***LISTING command issued (READY)***
+Start of Ready Queue.
+pid: 1	psw: 23	p_table: 42	regs: 23 23 12	priority: 8	quantum_count: 2
+pid: 0	psw: 33	p_table: 11	regs: 17 15 13	priority: 8	quantum_count: 5
+End of Ready Queue.
+
+
+***WAIT command issued***
+
+***UNWAIT command issued (PID: 2)***
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: 2	psw: 1	p_table: 2	regs: 3 4 5	priority: 10	quantum_count: 1
+End of Running Queue.
+
+
+***LISTING command issued (READY)***
+Start of Ready Queue.
+pid: 1	psw: 23	p_table: 42	regs: 23 23 12	priority: 8	quantum_count: 3
+pid: 0	psw: 33	p_table: 11	regs: 17 15 13	priority: 8	quantum_count: 6
+End of Ready Queue.
+
+
+***WAIT command issued***
+
+***UNWAIT command issued (PID: 2)***
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: 2	psw: 1	p_table: 2	regs: 3 4 5	priority: 10	quantum_count: 2
+End of Running Queue.
+
+
+***LISTING command issued (READY)***
+Start of Ready Queue.
+pid: 1	psw: 23	p_table: 42	regs: 23 23 12	priority: 8	quantum_count: 4
+pid: 0	psw: 33	p_table: 11	regs: 17 15 13	priority: 8	quantum_count: 7
+End of Ready Queue.
+
+
+***WAIT command issued***
+
+***UNWAIT command issued (PID: 2)***
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: 2	psw: 1	p_table: 2	regs: 3 4 5	priority: 10	quantum_count: 3
+End of Running Queue.
+
+
+***LISTING command issued (READY)***
+Start of Ready Queue.
+pid: 1	psw: 23	p_table: 42	regs: 23 23 12	priority: 8	quantum_count: 5
+pid: 0	psw: 33	p_table: 11	regs: 17 15 13	priority: 9	quantum_count: 0
+End of Ready Queue.
+
+
+***WAIT command issued***
+
+***UNWAIT command issued (PID: 2)***
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: 2	psw: 1	p_table: 2	regs: 3 4 5	priority: 10	quantum_count: 4
+End of Running Queue.
+
+
+***LISTING command issued (READY)***
+Start of Ready Queue.
+pid: 1	psw: 23	p_table: 42	regs: 23 23 12	priority: 8	quantum_count: 6
+pid: 0	psw: 33	p_table: 11	regs: 17 15 13	priority: 9	quantum_count: 1
+End of Ready Queue.
+
+
+***WAIT command issued***
+
+***UNWAIT command issued (PID: 2)***
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: 2	psw: 1	p_table: 2	regs: 3 4 5	priority: 10	quantum_count: 5
+End of Running Queue.
+
+
+***LISTING command issued (READY)***
+Start of Ready Queue.
+pid: 1	psw: 23	p_table: 42	regs: 23 23 12	priority: 8	quantum_count: 7
+pid: 0	psw: 33	p_table: 11	regs: 17 15 13	priority: 9	quantum_count: 2
+End of Ready Queue.
+
+
+***WAIT command issued***
+
+***UNWAIT command issued (PID: 2)***
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: 2	psw: 1	p_table: 2	regs: 3 4 5	priority: 10	quantum_count: 6
+End of Running Queue.
+
+
+***LISTING command issued (READY)***
+Start of Ready Queue.
+pid: 1	psw: 23	p_table: 42	regs: 23 23 12	priority: 9	quantum_count: 0
+pid: 0	psw: 33	p_table: 11	regs: 17 15 13	priority: 9	quantum_count: 3
+End of Ready Queue.
+
+
+***WAIT command issued***
+
+***UNWAIT command issued (PID: 2)***
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: 2	psw: 1	p_table: 2	regs: 3 4 5	priority: 10	quantum_count: 7
+End of Running Queue.
+
+
+***LISTING command issued (READY)***
+Start of Ready Queue.
+pid: 1	psw: 23	p_table: 42	regs: 23 23 12	priority: 9	quantum_count: 1
+pid: 0	psw: 33	p_table: 11	regs: 17 15 13	priority: 9	quantum_count: 4
+End of Ready Queue.
+
+
+***WAIT command issued***
+
+***UNWAIT command issued (PID: 2)***
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: 2	psw: 1	p_table: 2	regs: 3 4 5	priority: 10	quantum_count: 8
+End of Running Queue.
+
+
+***LISTING command issued (READY)***
+Start of Ready Queue.
+pid: 1	psw: 23	p_table: 42	regs: 23 23 12	priority: 9	quantum_count: 2
+pid: 0	psw: 33	p_table: 11	regs: 17 15 13	priority: 9	quantum_count: 5
+End of Ready Queue.
+
+
+***WAIT command issued***
+
+***UNWAIT command issued (PID: 2)***
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: 2	psw: 1	p_table: 2	regs: 3 4 5	priority: 10	quantum_count: 9
+End of Running Queue.
+
+
+***LISTING command issued (READY)***
+Start of Ready Queue.
+pid: 1	psw: 23	p_table: 42	regs: 23 23 12	priority: 9	quantum_count: 3
+pid: 0	psw: 33	p_table: 11	regs: 17 15 13	priority: 9	quantum_count: 6
+End of Ready Queue.
+
+
+***WAIT command issued***
+
+***UNWAIT command issued (PID: 2)***
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: 2	psw: 1	p_table: 2	regs: 3 4 5	priority: 10	quantum_count: 0
+End of Running Queue.
+
+
+***LISTING command issued (READY)***
+Start of Ready Queue.
+pid: 1	psw: 23	p_table: 42	regs: 23 23 12	priority: 9	quantum_count: 4
+pid: 0	psw: 33	p_table: 11	regs: 17 15 13	priority: 9	quantum_count: 7
+End of Ready Queue.
+
+
+***WAIT command issued***
+
+***UNWAIT command issued (PID: 2)***
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: 2	psw: 1	p_table: 2	regs: 3 4 5	priority: 10	quantum_count: 1
+End of Running Queue.
+
+
+***LISTING command issued (READY)***
+Start of Ready Queue.
+pid: 1	psw: 23	p_table: 42	regs: 23 23 12	priority: 9	quantum_count: 5
+pid: 0	psw: 33	p_table: 11	regs: 17 15 13	priority: 9	quantum_count: 8
+End of Ready Queue.
+
+
+***WAIT command issued***
+
+***UNWAIT command issued (PID: 2)***
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: 0	psw: 33	p_table: 11	regs: 17 15 13	priority: 10	quantum_count: 0
+End of Running Queue.
+
+
+***LISTING command issued (READY)***
+Start of Ready Queue.
+pid: 1	psw: 23	p_table: 42	regs: 23 23 12	priority: 9	quantum_count: 6
+pid: 2	psw: 1	p_table: 2	regs: 3 4 5	priority: 10	quantum_count: 2
 End of Ready Queue.
 
 
