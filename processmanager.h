@@ -22,5 +22,6 @@ void age_process();
 struct process_control_block *iterate(int do_aging);
 int set_group(int group);
 int switch_group();
+int set_priority(int pid, int priority);
 
 #endif

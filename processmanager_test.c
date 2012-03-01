@@ -174,6 +174,7 @@ int main(int argc, char *argv[]) {
     int group = 0;
     int regs[3];
     FILE *file;
+	int priority = 0;
     if (argc == 1){
         file = stdin;
     }
@@ -286,6 +287,27 @@ int main(int argc, char *argv[]) {
                     printf("Usage: UNWAIT <pid>\n");
                 }
             }
+			else if (!strcmp(command, "SET_PRIORITY")) {
+				
+				error = fscanf(file, " %d %d", &pid, &priority);
+				if (error == 2){
+					printf("\n***SET_PRIORITY command issued (PID: %d)***\n", pid);
+					error = set_priority(pid, priority);
+					if (error == ERROR_WRONG_SCHEDULER){
+						printf("Could not SET_PRIORITY: Command only avaliable in Priority Scheduler\n");
+					}
+					else if (error == ERROR_PROCESS_NOT_EXIST){
+						printf("Could not SET_PRIORITY: PID does not exist in ready queue\n");
+					}
+					else if (error == ERROR_INVALID_PARAMETER){
+						printf("Could not SET_PRIORITY: Priority must be between 1 and %d\n", MAX_PRIORITY);
+					}
+				}
+				else{
+					printf("Usage: SET_PRIORITY <pid> <priority>\n");
+				}
+				
+            }
             else if (!strcmp(command, "EOLIFE")) {
                 printf("\n***EOLIFE command issued***\n");
                 error = eolife();
@@ -372,11 +394,11 @@ int main(int argc, char *argv[]) {
 					}
 				}
             }
-            else if (!strcmp(command, "CLEAR_TERM")){
-                printf("\n***CLEAR_TERM command issued***\n");
+            else if (!strcmp(command, "EMPTY_TERM")){
+                printf("\n***EMPTY_TERM command issued***\n");
                 error = empty_term();
                 if (error == ERROR_QUEUE_EMPTY){
-                    printf("Could not CLEAR_TERM: No process in terminated queue\n");
+                    printf("Could not EMPTY_TERM: No process in terminated queue\n");
                 }
             }
             else if (!strcmp(command, "#")) {
