@@ -11,6 +11,13 @@
 Could not CREATE: Invalid group number
 
 ################################################################################
+# SET_PRIORITY should not work
+################################################################################
+
+***SET_PRIORITY command issued (PID: 0)***
+Could not SET_PRIORITY: Command only avaliable in Priority Scheduler
+
+################################################################################
 # Create processes in each group
 ################################################################################
 
@@ -2055,4 +2062,43 @@ pid: [1;31;40m1	[0;29;39mpsw: 23	p_table: 42	regs: 23 23 12	priority: [1;36;4
 pid: [1;31;40m2	[0;29;39mpsw: 1	p_table: 2	regs: 3 4 5	priority: [1;36;40m10[0;29;39m	quantum_count: 2
 End of Ready Queue.
 
+
+################################################################################
+# Test the SET_PRIORITY command
+################################################################################
+
+***CREATE command issued (PID: 3)***
+
+***CREATE command issued (PID: 3)***
+
+################################################################################
+# Invalid priority
+################################################################################
+
+***SET_PRIORITY command issued (PID: 3)***
+Could not SET_PRIORITY: Priority must be between 1 and 10
+
+***SET_PRIORITY command issued (PID: 3)***
+Could not SET_PRIORITY: Priority must be between 1 and 10
+
+################################################################################
+# Value priority
+################################################################################
+
+***SET_PRIORITY command issued (PID: 3)***
+
+***LISTING command issued (READY)***
+Start of Ready Queue.
+pid: [1;31;40m1	[0;29;39mpsw: 23	p_table: 42	regs: 23 23 12	priority: [1;36;40m9[0;29;39m	quantum_count: 6
+pid: [1;31;40m2	[0;29;39mpsw: 1	p_table: 2	regs: 3 4 5	priority: [1;36;40m10[0;29;39m	quantum_count: 2
+pid: [1;31;40m3	[0;29;39mpsw: 1	p_table: 32	regs: 43 4 5	priority: [1;36;40m3[0;29;39m	quantum_count: 0
+End of Ready Queue.
+
+
+################################################################################
+# Invalid PID
+################################################################################
+
+***SET_PRIORITY command issued (PID: 10)***
+Could not SET_PRIORITY: PID does not exist in ready queue
 

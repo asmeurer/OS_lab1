@@ -2,6 +2,8 @@
 INIT GROUP
 # Test that groups not in the range 0-3 don't work
 CREATE 33 11 17 15 13 6
+# SET_PRIORITY should not work
+SET_PRIORITY 0 3
 # Create processes in each group
 CREATE 33 11 17 15 13 0
 CREATE 33 11 17 15 13 1
@@ -497,3 +499,13 @@ UNWAIT 2
 GO
 LIST RUNNING
 LIST READY
+# Test the SET_PRIORITY command
+CREATE 1 32 43 4 5
+# Invalid priority
+SET_PRIORITY 3 -1
+SET_PRIORITY 3 11
+# Value priority
+SET_PRIORITY 3 3
+LIST READY
+# Invalid PID
+SET_PRIORITY 10 3
