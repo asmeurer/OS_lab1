@@ -16,6 +16,7 @@
 #define null 0
 #define NUM_REGS 3
 #define MAX_PROCESSES 20
+#define MAX_PRIORITY 10
 
 /*Global Error Codes*/
 #define ERROR_SUCCESS 0
