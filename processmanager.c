@@ -225,7 +225,7 @@ int wait_(){
     /*Differenciate between different schedulers to do below code*/
 	if (scheduler == PRIORITY){
 		if(temp->head != null){
-			if(temp->head->priority < 20){
+			if(temp->head->priority < MAX_PRIORITY){
 				temp->head->priority++;
 			}
 		}
