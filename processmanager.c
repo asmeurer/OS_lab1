@@ -316,8 +316,7 @@ int create(int psw, int page_table, int *reg, int group){
         return ERROR_PROCESS_NOT_UNIQUE;
     }
 
-    /*Creates process with default priority of 10*/
-    /*Differenciate between schedualers for default priority of 10 or 0*/
+    /*Creates process with default priority of MAX_PRIORITY/2*/
     if (scheduler == GROUP){
 		error = enqueue(NEW, pid, psw, page_table, reg, 0, 0, 0);
 	}
