@@ -9,11 +9,15 @@
 #include "processmanager_test.h"
 #include "processmanager.h"
 #include "queuemanager.h"
+#include "textcolor.c"
 
 void printprocess(struct process_control_block process) {
     int i = 0;
 
-    printf("pid: %d\t", process.pid);
+    printf("pid: ");
+    textcolor(BRIGHT, RED, BLACK);
+    printf("%d\t", process.pid);
+    textcolor(RESET, -1, -1);
     printf("psw: %d\t", process.psw);
     printf("p_table: %d\t", process.page_table);
     printf("regs:");
@@ -21,10 +25,16 @@ void printprocess(struct process_control_block process) {
         printf(" %d", process.regs[i]);
     }
     if (scheduler == GROUP){
-        printf("\tgroup: %s", enum_to_string(process.group));
+        printf("\tgroup: ");
+        textcolor(BRIGHT, MAGENTA, BLACK);
+        printf("%s", enum_to_string(process.group));
+        textcolor(RESET, -1, -1);
     }
     else{
-        printf("\tpriority: %d", process.priority);
+        printf("\tpriority: ");
+        textcolor(BRIGHT, CYAN, BLACK);
+        printf("%d", process.priority);
+        textcolor(RESET, -1, -1);
         printf("\tquantum_count: %d", process.quantum_count);
     }
     printf("\n");
@@ -288,7 +298,7 @@ int main(int argc, char *argv[]) {
                 }
             }
 			else if (!strcmp(command, "SET_PRIORITY")) {
-				
+
 				error = fscanf(file, " %d %d", &pid, &priority);
 				if (error == 2){
 					printf("\n***SET_PRIORITY command issued (PID: %d)***\n", pid);
@@ -306,7 +316,7 @@ int main(int argc, char *argv[]) {
 				else{
 					printf("Usage: SET_PRIORITY <pid> <priority>\n");
 				}
-				
+
             }
             else if (!strcmp(command, "EOLIFE")) {
                 printf("\n***EOLIFE command issued***\n");

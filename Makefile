@@ -17,11 +17,14 @@ processmanager_testgenerator.o: processmanager_testgenerator.c
 queuemanager_test.o: queuemanager_test.c processmanager.h definitions.h queuemanager.c queuemanager.h
 	gcc -Wall queuemanager_test.c  -o queuemanager_test.o
 
-processmanager_test.o: processmanager_test.c processmanager_test.h definitions.h processmanager.h queuemanager.h queuemanager.o processmanager.o
+processmanager_test.o: textcolor.c processmanager_test.c processmanager_test.h definitions.h processmanager.h queuemanager.h queuemanager.o processmanager.o
 	gcc -Wall processmanager_test.c processmanager.o queuemanager.o -o processmanager_test.o
 
 scheduler_testgenerator.o: scheduler_testgenerator.c definitions.h queuemanager.o processmanager.o
 	gcc -Wall scheduler_testgenerator.c -o scheduler_testgenerator.o
+
+textcolor.o: textcolor.c
+	gcc -Wall -c textcolor.c -o textcolor.o
 
 clean:
 	-rm -f *.o
