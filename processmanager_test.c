@@ -230,7 +230,7 @@ int main(int argc, char *argv[]) {
                         list_Q(WAITING);
                     }
                     else if (!strcmp(args[0], "READY")){
-                        list_Q(READY0);
+                        list_ready();
                     }
                     else if (!strcmp(args[0], "TERMINATED")){
                         list_Q(TERMINATED);

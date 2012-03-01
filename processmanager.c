@@ -9,9 +9,6 @@
 #include"processmanager.h"
 #include"queuemanager.h"
 
-/*Remove me*/
-#include <stdio.h>
-
 /**
  * A function that implements aging as well as finding the process with the highest priority to schedual next
  * NOTE: If there is nothing in the ready queue, highest_priority pointer will be null
