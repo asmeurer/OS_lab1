@@ -10,6 +10,10 @@
 ################################################################################
 Could not CREATE: Invalid group number
 
+################################################################################
+# Create processes in each group
+################################################################################
+
 ***CREATE command issued (PID: 1)***
 
 ***CREATE command issued (PID: 2)***
@@ -18,11 +22,61 @@ Could not CREATE: Invalid group number
 
 ***CREATE command issued (PID: 4)***
 
+***CREATE command issued (PID: 5)***
+
+***CREATE command issued (PID: 6)***
+
+***CREATE command issued (PID: 7)***
+
+***CREATE command issued (PID: 8)***
+
+################################################################################
+# Test that everything goes where it needs to
+################################################################################
+
+***LISTING command issued (READY)***
+Start of Group 0 Ready Queue.
+pid: 1	psw: 33	p_table: 11	regs: 17 15 13	group: Group 0 Ready Queue
+pid: 5	psw: 33	p_table: 11	regs: 17 15 13	group: Group 0 Ready Queue
+End of Group 0 Ready Queue.
+
+Start of Group 1 Ready Queue.
+pid: 2	psw: 33	p_table: 11	regs: 17 15 13	group: Group 1 Ready Queue
+pid: 6	psw: 33	p_table: 11	regs: 17 15 13	group: Group 1 Ready Queue
+End of Group 1 Ready Queue.
+
+Start of Group 2 Ready Queue.
+pid: 3	psw: 35	p_table: 11	regs: 12 9 1	group: Group 2 Ready Queue
+pid: 7	psw: 35	p_table: 11	regs: 12 9 1	group: Group 2 Ready Queue
+End of Group 2 Ready Queue.
+
+Start of Group 3 Ready Queue.
+pid: 4	psw: 12	p_table: 2	regs: 10 19 3	group: Group 3 Ready Queue
+pid: 8	psw: 12	p_table: 2	regs: 10 19 3	group: Group 3 Ready Queue
+End of Group 3 Ready Queue.
+
+
+################################################################################
+# Test that they correctly round robin, both within the groups and among the
+################################################################################
+
+################################################################################
+# groups
+################################################################################
+
 ***GO command issued***
 
 ***LISTING command issued (RUNNING)***
 Start of Running Queue.
 pid: 1	psw: 33	p_table: 11	regs: 17 15 13	group: Group 0 Ready Queue
+End of Running Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: 5	psw: 33	p_table: 11	regs: 17 15 13	group: Group 0 Ready Queue
 End of Running Queue.
 
 
@@ -38,15 +92,7 @@ End of Running Queue.
 
 ***LISTING command issued (RUNNING)***
 Start of Running Queue.
-pid: 1	psw: 33	p_table: 11	regs: 17 15 13	group: Group 0 Ready Queue
-End of Running Queue.
-
-
-***GO command issued***
-
-***LISTING command issued (RUNNING)***
-Start of Running Queue.
-pid: 1	psw: 33	p_table: 11	regs: 17 15 13	group: Group 0 Ready Queue
+pid: 5	psw: 33	p_table: 11	regs: 17 15 13	group: Group 0 Ready Queue
 End of Running Queue.
 
 
@@ -70,7 +116,7 @@ End of Running Queue.
 
 ***LISTING command issued (RUNNING)***
 Start of Running Queue.
-pid: 2	psw: 33	p_table: 11	regs: 17 15 13	group: Group 1 Ready Queue
+pid: 6	psw: 33	p_table: 11	regs: 17 15 13	group: Group 1 Ready Queue
 End of Running Queue.
 
 
@@ -86,7 +132,7 @@ End of Running Queue.
 
 ***LISTING command issued (RUNNING)***
 Start of Running Queue.
-pid: 2	psw: 33	p_table: 11	regs: 17 15 13	group: Group 1 Ready Queue
+pid: 6	psw: 33	p_table: 11	regs: 17 15 13	group: Group 1 Ready Queue
 End of Running Queue.
 
 
@@ -110,7 +156,7 @@ End of Running Queue.
 
 ***LISTING command issued (RUNNING)***
 Start of Running Queue.
-pid: 3	psw: 35	p_table: 11	regs: 12 9 1	group: Group 2 Ready Queue
+pid: 7	psw: 35	p_table: 11	regs: 12 9 1	group: Group 2 Ready Queue
 End of Running Queue.
 
 
@@ -126,7 +172,7 @@ End of Running Queue.
 
 ***LISTING command issued (RUNNING)***
 Start of Running Queue.
-pid: 3	psw: 35	p_table: 11	regs: 12 9 1	group: Group 2 Ready Queue
+pid: 7	psw: 35	p_table: 11	regs: 12 9 1	group: Group 2 Ready Queue
 End of Running Queue.
 
 
@@ -150,7 +196,7 @@ End of Running Queue.
 
 ***LISTING command issued (RUNNING)***
 Start of Running Queue.
-pid: 4	psw: 12	p_table: 2	regs: 10 19 3	group: Group 3 Ready Queue
+pid: 8	psw: 12	p_table: 2	regs: 10 19 3	group: Group 3 Ready Queue
 End of Running Queue.
 
 
@@ -166,7 +212,7 @@ End of Running Queue.
 
 ***LISTING command issued (RUNNING)***
 Start of Running Queue.
-pid: 4	psw: 12	p_table: 2	regs: 10 19 3	group: Group 3 Ready Queue
+pid: 8	psw: 12	p_table: 2	regs: 10 19 3	group: Group 3 Ready Queue
 End of Running Queue.
 
 
@@ -182,7 +228,7 @@ End of Running Queue.
 
 ***LISTING command issued (RUNNING)***
 Start of Running Queue.
-pid: 1	psw: 33	p_table: 11	regs: 17 15 13	group: Group 0 Ready Queue
+pid: 5	psw: 33	p_table: 11	regs: 17 15 13	group: Group 0 Ready Queue
 End of Running Queue.
 
 
@@ -198,7 +244,7 @@ End of Running Queue.
 
 ***LISTING command issued (RUNNING)***
 Start of Running Queue.
-pid: 1	psw: 33	p_table: 11	regs: 17 15 13	group: Group 0 Ready Queue
+pid: 5	psw: 33	p_table: 11	regs: 17 15 13	group: Group 0 Ready Queue
 End of Running Queue.
 
 
@@ -208,6 +254,773 @@ End of Running Queue.
 Start of Running Queue.
 pid: 1	psw: 33	p_table: 11	regs: 17 15 13	group: Group 0 Ready Queue
 End of Running Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: 5	psw: 33	p_table: 11	regs: 17 15 13	group: Group 0 Ready Queue
+End of Running Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: 6	psw: 33	p_table: 11	regs: 17 15 13	group: Group 1 Ready Queue
+End of Running Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: 2	psw: 33	p_table: 11	regs: 17 15 13	group: Group 1 Ready Queue
+End of Running Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: 6	psw: 33	p_table: 11	regs: 17 15 13	group: Group 1 Ready Queue
+End of Running Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: 2	psw: 33	p_table: 11	regs: 17 15 13	group: Group 1 Ready Queue
+End of Running Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: 6	psw: 33	p_table: 11	regs: 17 15 13	group: Group 1 Ready Queue
+End of Running Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: 7	psw: 35	p_table: 11	regs: 12 9 1	group: Group 2 Ready Queue
+End of Running Queue.
+
+
+################################################################################
+# Test that unwait goes back to the correct group
+################################################################################
+
+***WAIT command issued***
+
+***UNWAIT command issued (PID: 7)***
+
+***LISTING command issued (READY)***
+Start of Group 0 Ready Queue.
+pid: 1	psw: 33	p_table: 11	regs: 17 15 13	group: Group 0 Ready Queue
+pid: 5	psw: 33	p_table: 11	regs: 17 15 13	group: Group 0 Ready Queue
+End of Group 0 Ready Queue.
+
+Start of Group 1 Ready Queue.
+pid: 2	psw: 33	p_table: 11	regs: 17 15 13	group: Group 1 Ready Queue
+pid: 6	psw: 33	p_table: 11	regs: 17 15 13	group: Group 1 Ready Queue
+End of Group 1 Ready Queue.
+
+Start of Group 2 Ready Queue.
+pid: 3	psw: 35	p_table: 11	regs: 12 9 1	group: Group 2 Ready Queue
+pid: 7	psw: 35	p_table: 11	regs: 12 9 1	group: Group 2 Ready Queue
+End of Group 2 Ready Queue.
+
+Start of Group 3 Ready Queue.
+pid: 8	psw: 12	p_table: 2	regs: 10 19 3	group: Group 3 Ready Queue
+pid: 4	psw: 12	p_table: 2	regs: 10 19 3	group: Group 3 Ready Queue
+End of Group 3 Ready Queue.
+
+
+################################################################################
+# Do it for all four groups
+################################################################################
+
+***GO command issued***
+
+***GO command issued***
+
+***GO command issued***
+
+***GO command issued***
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: 8	psw: 12	p_table: 2	regs: 10 19 3	group: Group 3 Ready Queue
+End of Running Queue.
+
+
+***WAIT command issued***
+
+***UNWAIT command issued (PID: 8)***
+
+***LISTING command issued (READY)***
+Start of Group 0 Ready Queue.
+pid: 1	psw: 33	p_table: 11	regs: 17 15 13	group: Group 0 Ready Queue
+pid: 5	psw: 33	p_table: 11	regs: 17 15 13	group: Group 0 Ready Queue
+End of Group 0 Ready Queue.
+
+Start of Group 1 Ready Queue.
+pid: 2	psw: 33	p_table: 11	regs: 17 15 13	group: Group 1 Ready Queue
+pid: 6	psw: 33	p_table: 11	regs: 17 15 13	group: Group 1 Ready Queue
+End of Group 1 Ready Queue.
+
+Start of Group 2 Ready Queue.
+pid: 3	psw: 35	p_table: 11	regs: 12 9 1	group: Group 2 Ready Queue
+pid: 7	psw: 35	p_table: 11	regs: 12 9 1	group: Group 2 Ready Queue
+End of Group 2 Ready Queue.
+
+Start of Group 3 Ready Queue.
+pid: 4	psw: 12	p_table: 2	regs: 10 19 3	group: Group 3 Ready Queue
+pid: 8	psw: 12	p_table: 2	regs: 10 19 3	group: Group 3 Ready Queue
+End of Group 3 Ready Queue.
+
+
+***GO command issued***
+
+***GO command issued***
+
+***GO command issued***
+
+***GO command issued***
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: 1	psw: 33	p_table: 11	regs: 17 15 13	group: Group 0 Ready Queue
+End of Running Queue.
+
+
+***WAIT command issued***
+
+***UNWAIT command issued (PID: 1)***
+
+***LISTING command issued (READY)***
+Start of Group 0 Ready Queue.
+pid: 5	psw: 33	p_table: 11	regs: 17 15 13	group: Group 0 Ready Queue
+pid: 1	psw: 33	p_table: 11	regs: 17 15 13	group: Group 0 Ready Queue
+End of Group 0 Ready Queue.
+
+Start of Group 1 Ready Queue.
+pid: 2	psw: 33	p_table: 11	regs: 17 15 13	group: Group 1 Ready Queue
+pid: 6	psw: 33	p_table: 11	regs: 17 15 13	group: Group 1 Ready Queue
+End of Group 1 Ready Queue.
+
+Start of Group 2 Ready Queue.
+pid: 3	psw: 35	p_table: 11	regs: 12 9 1	group: Group 2 Ready Queue
+pid: 7	psw: 35	p_table: 11	regs: 12 9 1	group: Group 2 Ready Queue
+End of Group 2 Ready Queue.
+
+Start of Group 3 Ready Queue.
+pid: 4	psw: 12	p_table: 2	regs: 10 19 3	group: Group 3 Ready Queue
+pid: 8	psw: 12	p_table: 2	regs: 10 19 3	group: Group 3 Ready Queue
+End of Group 3 Ready Queue.
+
+
+***GO command issued***
+
+***GO command issued***
+
+***GO command issued***
+
+***GO command issued***
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: 2	psw: 33	p_table: 11	regs: 17 15 13	group: Group 1 Ready Queue
+End of Running Queue.
+
+
+***WAIT command issued***
+
+***UNWAIT command issued (PID: 2)***
+
+***LISTING command issued (READY)***
+Start of Group 0 Ready Queue.
+pid: 5	psw: 33	p_table: 11	regs: 17 15 13	group: Group 0 Ready Queue
+pid: 1	psw: 33	p_table: 11	regs: 17 15 13	group: Group 0 Ready Queue
+End of Group 0 Ready Queue.
+
+Start of Group 1 Ready Queue.
+pid: 6	psw: 33	p_table: 11	regs: 17 15 13	group: Group 1 Ready Queue
+pid: 2	psw: 33	p_table: 11	regs: 17 15 13	group: Group 1 Ready Queue
+End of Group 1 Ready Queue.
+
+Start of Group 2 Ready Queue.
+pid: 3	psw: 35	p_table: 11	regs: 12 9 1	group: Group 2 Ready Queue
+pid: 7	psw: 35	p_table: 11	regs: 12 9 1	group: Group 2 Ready Queue
+End of Group 2 Ready Queue.
+
+Start of Group 3 Ready Queue.
+pid: 4	psw: 12	p_table: 2	regs: 10 19 3	group: Group 3 Ready Queue
+pid: 8	psw: 12	p_table: 2	regs: 10 19 3	group: Group 3 Ready Queue
+End of Group 3 Ready Queue.
+
+
+################################################################################
+# Test that that it skips over empty groups
+################################################################################
+
+***GO command issued***
+
+***EOLIFE command issued***
+
+***GO command issued***
+
+***EOLIFE command issued***
+
+***LISTING command issued (READY)***
+Start of Group 0 Ready Queue.
+pid: 5	psw: 33	p_table: 11	regs: 17 15 13	group: Group 0 Ready Queue
+pid: 1	psw: 33	p_table: 11	regs: 17 15 13	group: Group 0 Ready Queue
+End of Group 0 Ready Queue.
+
+Start of Group 1 Ready Queue.
+End of Group 1 Ready Queue.
+
+Start of Group 2 Ready Queue.
+pid: 3	psw: 35	p_table: 11	regs: 12 9 1	group: Group 2 Ready Queue
+pid: 7	psw: 35	p_table: 11	regs: 12 9 1	group: Group 2 Ready Queue
+End of Group 2 Ready Queue.
+
+Start of Group 3 Ready Queue.
+pid: 4	psw: 12	p_table: 2	regs: 10 19 3	group: Group 3 Ready Queue
+pid: 8	psw: 12	p_table: 2	regs: 10 19 3	group: Group 3 Ready Queue
+End of Group 3 Ready Queue.
+
+
+################################################################################
+# Now group 1 is empty
+################################################################################
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: 3	psw: 35	p_table: 11	regs: 12 9 1	group: Group 2 Ready Queue
+End of Running Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: 7	psw: 35	p_table: 11	regs: 12 9 1	group: Group 2 Ready Queue
+End of Running Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: 3	psw: 35	p_table: 11	regs: 12 9 1	group: Group 2 Ready Queue
+End of Running Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: 7	psw: 35	p_table: 11	regs: 12 9 1	group: Group 2 Ready Queue
+End of Running Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: 3	psw: 35	p_table: 11	regs: 12 9 1	group: Group 2 Ready Queue
+End of Running Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: 4	psw: 12	p_table: 2	regs: 10 19 3	group: Group 3 Ready Queue
+End of Running Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: 8	psw: 12	p_table: 2	regs: 10 19 3	group: Group 3 Ready Queue
+End of Running Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: 4	psw: 12	p_table: 2	regs: 10 19 3	group: Group 3 Ready Queue
+End of Running Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: 8	psw: 12	p_table: 2	regs: 10 19 3	group: Group 3 Ready Queue
+End of Running Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: 4	psw: 12	p_table: 2	regs: 10 19 3	group: Group 3 Ready Queue
+End of Running Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: 5	psw: 33	p_table: 11	regs: 17 15 13	group: Group 0 Ready Queue
+End of Running Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: 1	psw: 33	p_table: 11	regs: 17 15 13	group: Group 0 Ready Queue
+End of Running Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: 5	psw: 33	p_table: 11	regs: 17 15 13	group: Group 0 Ready Queue
+End of Running Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: 1	psw: 33	p_table: 11	regs: 17 15 13	group: Group 0 Ready Queue
+End of Running Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: 5	psw: 33	p_table: 11	regs: 17 15 13	group: Group 0 Ready Queue
+End of Running Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: 7	psw: 35	p_table: 11	regs: 12 9 1	group: Group 2 Ready Queue
+End of Running Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: 3	psw: 35	p_table: 11	regs: 12 9 1	group: Group 2 Ready Queue
+End of Running Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: 7	psw: 35	p_table: 11	regs: 12 9 1	group: Group 2 Ready Queue
+End of Running Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: 3	psw: 35	p_table: 11	regs: 12 9 1	group: Group 2 Ready Queue
+End of Running Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: 7	psw: 35	p_table: 11	regs: 12 9 1	group: Group 2 Ready Queue
+End of Running Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: 8	psw: 12	p_table: 2	regs: 10 19 3	group: Group 3 Ready Queue
+End of Running Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: 4	psw: 12	p_table: 2	regs: 10 19 3	group: Group 3 Ready Queue
+End of Running Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: 8	psw: 12	p_table: 2	regs: 10 19 3	group: Group 3 Ready Queue
+End of Running Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: 4	psw: 12	p_table: 2	regs: 10 19 3	group: Group 3 Ready Queue
+End of Running Queue.
+
+
+################################################################################
+# Keep terminating and testing this
+################################################################################
+
+***EOLIFE command issued***
+
+***GO command issued***
+
+***EOLIFE command issued***
+
+***LISTING command issued (READY)***
+Start of Group 0 Ready Queue.
+pid: 1	psw: 33	p_table: 11	regs: 17 15 13	group: Group 0 Ready Queue
+pid: 5	psw: 33	p_table: 11	regs: 17 15 13	group: Group 0 Ready Queue
+End of Group 0 Ready Queue.
+
+Start of Group 1 Ready Queue.
+End of Group 1 Ready Queue.
+
+Start of Group 2 Ready Queue.
+pid: 3	psw: 35	p_table: 11	regs: 12 9 1	group: Group 2 Ready Queue
+pid: 7	psw: 35	p_table: 11	regs: 12 9 1	group: Group 2 Ready Queue
+End of Group 2 Ready Queue.
+
+Start of Group 3 Ready Queue.
+End of Group 3 Ready Queue.
+
+
+################################################################################
+# This killed off group 3
+################################################################################
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: 1	psw: 33	p_table: 11	regs: 17 15 13	group: Group 0 Ready Queue
+End of Running Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: 5	psw: 33	p_table: 11	regs: 17 15 13	group: Group 0 Ready Queue
+End of Running Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: 1	psw: 33	p_table: 11	regs: 17 15 13	group: Group 0 Ready Queue
+End of Running Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: 5	psw: 33	p_table: 11	regs: 17 15 13	group: Group 0 Ready Queue
+End of Running Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: 1	psw: 33	p_table: 11	regs: 17 15 13	group: Group 0 Ready Queue
+End of Running Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: 3	psw: 35	p_table: 11	regs: 12 9 1	group: Group 2 Ready Queue
+End of Running Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: 7	psw: 35	p_table: 11	regs: 12 9 1	group: Group 2 Ready Queue
+End of Running Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: 3	psw: 35	p_table: 11	regs: 12 9 1	group: Group 2 Ready Queue
+End of Running Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: 7	psw: 35	p_table: 11	regs: 12 9 1	group: Group 2 Ready Queue
+End of Running Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: 3	psw: 35	p_table: 11	regs: 12 9 1	group: Group 2 Ready Queue
+End of Running Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: 5	psw: 33	p_table: 11	regs: 17 15 13	group: Group 0 Ready Queue
+End of Running Queue.
+
+
+***EOLIFE command issued***
+
+***GO command issued***
+
+***EOLIFE command issued***
+
+***LISTING command issued (READY)***
+Start of Group 0 Ready Queue.
+End of Group 0 Ready Queue.
+
+Start of Group 1 Ready Queue.
+End of Group 1 Ready Queue.
+
+Start of Group 2 Ready Queue.
+pid: 7	psw: 35	p_table: 11	regs: 12 9 1	group: Group 2 Ready Queue
+pid: 3	psw: 35	p_table: 11	regs: 12 9 1	group: Group 2 Ready Queue
+End of Group 2 Ready Queue.
+
+Start of Group 3 Ready Queue.
+End of Group 3 Ready Queue.
+
+
+################################################################################
+# This killed off group 0
+################################################################################
+
+################################################################################
+# More than five go's should remain in group 2
+################################################################################
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: 7	psw: 35	p_table: 11	regs: 12 9 1	group: Group 2 Ready Queue
+End of Running Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: 3	psw: 35	p_table: 11	regs: 12 9 1	group: Group 2 Ready Queue
+End of Running Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: 7	psw: 35	p_table: 11	regs: 12 9 1	group: Group 2 Ready Queue
+End of Running Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: 3	psw: 35	p_table: 11	regs: 12 9 1	group: Group 2 Ready Queue
+End of Running Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: 7	psw: 35	p_table: 11	regs: 12 9 1	group: Group 2 Ready Queue
+End of Running Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: 3	psw: 35	p_table: 11	regs: 12 9 1	group: Group 2 Ready Queue
+End of Running Queue.
+
+
+################################################################################
+# As soon as we create a new process in another group
+################################################################################
+
+################################################################################
+# It should start switching to the next group again
+################################################################################
+
+***CREATE command issued (PID: 9)***
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: 7	psw: 35	p_table: 11	regs: 12 9 1	group: Group 2 Ready Queue
+End of Running Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: 3	psw: 35	p_table: 11	regs: 12 9 1	group: Group 2 Ready Queue
+End of Running Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: 7	psw: 35	p_table: 11	regs: 12 9 1	group: Group 2 Ready Queue
+End of Running Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: 3	psw: 35	p_table: 11	regs: 12 9 1	group: Group 2 Ready Queue
+End of Running Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: 9	psw: 1	p_table: 2	regs: 3 4 5	group: Group 0 Ready Queue
+End of Running Queue.
+
+
+################################################################################
+# Now clear everything
+################################################################################
+
+***EOLIFE command issued***
+
+***GO command issued***
+
+***EOLIFE command issued***
+
+***GO command issued***
+
+***EOLIFE command issued***
+
+################################################################################
+# Test that it doesn't die on a go when there are no ready processes
+################################################################################
+
+***GO command issued***
+Could not GO: No Ready Processes
+
+***LISTING command issued (ALL)***
+Start of New Queue.
+End of New Queue.
+
+Start of Waiting Queue.
+End of Waiting Queue.
+
+Start of Group 0 Ready Queue.
+End of Group 0 Ready Queue.
+
+Start of Group 1 Ready Queue.
+End of Group 1 Ready Queue.
+
+Start of Group 2 Ready Queue.
+End of Group 2 Ready Queue.
+
+Start of Group 3 Ready Queue.
+End of Group 3 Ready Queue.
+
+Start of Terminated Queue.
+pid: 6	psw: 33	p_table: 11	regs: 17 15 13	group: Group 1 Ready Queue
+pid: 2	psw: 33	p_table: 11	regs: 17 15 13	group: Group 1 Ready Queue
+pid: 4	psw: 12	p_table: 2	regs: 10 19 3	group: Group 3 Ready Queue
+pid: 8	psw: 12	p_table: 2	regs: 10 19 3	group: Group 3 Ready Queue
+pid: 5	psw: 33	p_table: 11	regs: 17 15 13	group: Group 0 Ready Queue
+pid: 1	psw: 33	p_table: 11	regs: 17 15 13	group: Group 0 Ready Queue
+pid: 9	psw: 1	p_table: 2	regs: 3 4 5	group: Group 0 Ready Queue
+pid: 7	psw: 35	p_table: 11	regs: 12 9 1	group: Group 2 Ready Queue
+pid: 3	psw: 35	p_table: 11	regs: 12 9 1	group: Group 2 Ready Queue
+End of Terminated Queue.
+
+Start of Running Queue.
+End of Running Queue.
+
+
+################################################################################
+# Test the EMPTY_TERM command
+################################################################################
+Unrecognized command: EMPTY_TERM
+
+***LISTING command issued (TERMINATED)***
+Start of Terminated Queue.
+pid: 6	psw: 33	p_table: 11	regs: 17 15 13	group: Group 1 Ready Queue
+pid: 2	psw: 33	p_table: 11	regs: 17 15 13	group: Group 1 Ready Queue
+pid: 4	psw: 12	p_table: 2	regs: 10 19 3	group: Group 3 Ready Queue
+pid: 8	psw: 12	p_table: 2	regs: 10 19 3	group: Group 3 Ready Queue
+pid: 5	psw: 33	p_table: 11	regs: 17 15 13	group: Group 0 Ready Queue
+pid: 1	psw: 33	p_table: 11	regs: 17 15 13	group: Group 0 Ready Queue
+pid: 9	psw: 1	p_table: 2	regs: 3 4 5	group: Group 0 Ready Queue
+pid: 7	psw: 35	p_table: 11	regs: 12 9 1	group: Group 2 Ready Queue
+pid: 3	psw: 35	p_table: 11	regs: 12 9 1	group: Group 2 Ready Queue
+End of Terminated Queue.
 
 
 ################################################################################
@@ -215,6 +1028,8 @@ End of Running Queue.
 ################################################################################
 
 ***INIT command issued (PRIORITY)***
+
+***CREATE command issued (PID: 0)***
 
 ***CREATE command issued (PID: 0)***
 
@@ -233,6 +1048,8 @@ Start of Running Queue.
 pid: 0	psw: 33	p_table: 11	regs: 17 15 13	priority: 9	quantum_count: 1
 End of Running Queue.
 
+
+***CREATE command issued (PID: 1)***
 
 ***CREATE command issued (PID: 1)***
 
@@ -338,7 +1155,7 @@ End of Ready Queue.
 
 ***LISTING command issued (RUNNING)***
 Start of Running Queue.
-pid: 0	psw: 33	p_table: 11	regs: 17 15 13	priority: 5	quantum_count: 5
+pid: 0	psw: 33	p_table: 11	regs: 17 15 13	priority: 6	quantum_count: 0
 End of Running Queue.
 
 
@@ -358,7 +1175,7 @@ End of Running Queue.
 
 ***LISTING command issued (READY)***
 Start of Ready Queue.
-pid: 0	psw: 33	p_table: 11	regs: 17 15 13	priority: 4	quantum_count: 5
+pid: 0	psw: 33	p_table: 11	regs: 17 15 13	priority: 5	quantum_count: 0
 End of Ready Queue.
 
 
@@ -366,7 +1183,7 @@ End of Ready Queue.
 
 ***LISTING command issued (RUNNING)***
 Start of Running Queue.
-pid: 0	psw: 33	p_table: 11	regs: 17 15 13	priority: 5	quantum_count: 0
+pid: 0	psw: 33	p_table: 11	regs: 17 15 13	priority: 5	quantum_count: 1
 End of Running Queue.
 
 
@@ -386,7 +1203,7 @@ End of Running Queue.
 
 ***LISTING command issued (READY)***
 Start of Ready Queue.
-pid: 0	psw: 33	p_table: 11	regs: 17 15 13	priority: 4	quantum_count: 0
+pid: 0	psw: 33	p_table: 11	regs: 17 15 13	priority: 4	quantum_count: 1
 End of Ready Queue.
 
 
@@ -394,13 +1211,252 @@ End of Ready Queue.
 
 ***LISTING command issued (RUNNING)***
 Start of Running Queue.
-pid: 0	psw: 33	p_table: 11	regs: 17 15 13	priority: 4	quantum_count: 1
+pid: 0	psw: 33	p_table: 11	regs: 17 15 13	priority: 4	quantum_count: 2
 End of Running Queue.
 
 
 ***LISTING command issued (READY)***
 Start of Ready Queue.
 pid: 1	psw: 23	p_table: 42	regs: 23 23 12	priority: 5	quantum_count: 0
+End of Ready Queue.
+
+
+***CREATE command issued (PID: 2)***
+
+***CREATE command issued (PID: 2)***
+
+***WAIT command issued***
+
+***UNWAIT command issued (PID: 0)***
+
+***GO command issued***
+
+***LISTING command issued (ALL)***
+Start of New Queue.
+End of New Queue.
+
+Start of Waiting Queue.
+End of Waiting Queue.
+
+Start of Ready Queue.
+pid: 1	psw: 23	p_table: 42	regs: 23 23 12	priority: 5	quantum_count: 1
+pid: 0	psw: 33	p_table: 11	regs: 17 15 13	priority: 5	quantum_count: 3
+End of Ready Queue.
+
+Start of Terminated Queue.
+End of Terminated Queue.
+
+Start of Running Queue.
+pid: 2	psw: 1	p_table: 2	regs: 3 4 5	priority: 10	quantum_count: 1
+End of Running Queue.
+
+
+***WAIT command issued***
+
+***UNWAIT command issued (PID: 2)***
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: 2	psw: 1	p_table: 2	regs: 3 4 5	priority: 11	quantum_count: 2
+End of Running Queue.
+
+
+***LISTING command issued (READY)***
+Start of Ready Queue.
+pid: 1	psw: 23	p_table: 42	regs: 23 23 12	priority: 5	quantum_count: 2
+pid: 0	psw: 33	p_table: 11	regs: 17 15 13	priority: 5	quantum_count: 4
+End of Ready Queue.
+
+
+***WAIT command issued***
+
+***UNWAIT command issued (PID: 2)***
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: 2	psw: 1	p_table: 2	regs: 3 4 5	priority: 12	quantum_count: 3
+End of Running Queue.
+
+
+***LISTING command issued (READY)***
+Start of Ready Queue.
+pid: 1	psw: 23	p_table: 42	regs: 23 23 12	priority: 5	quantum_count: 3
+pid: 0	psw: 33	p_table: 11	regs: 17 15 13	priority: 6	quantum_count: 0
+End of Ready Queue.
+
+
+***WAIT command issued***
+
+***UNWAIT command issued (PID: 2)***
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: 2	psw: 1	p_table: 2	regs: 3 4 5	priority: 13	quantum_count: 4
+End of Running Queue.
+
+
+***LISTING command issued (READY)***
+Start of Ready Queue.
+pid: 1	psw: 23	p_table: 42	regs: 23 23 12	priority: 5	quantum_count: 4
+pid: 0	psw: 33	p_table: 11	regs: 17 15 13	priority: 6	quantum_count: 1
+End of Ready Queue.
+
+
+***WAIT command issued***
+
+***UNWAIT command issued (PID: 2)***
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: 2	psw: 1	p_table: 2	regs: 3 4 5	priority: 14	quantum_count: 5
+End of Running Queue.
+
+
+***LISTING command issued (READY)***
+Start of Ready Queue.
+pid: 1	psw: 23	p_table: 42	regs: 23 23 12	priority: 6	quantum_count: 0
+pid: 0	psw: 33	p_table: 11	regs: 17 15 13	priority: 6	quantum_count: 2
+End of Ready Queue.
+
+
+***WAIT command issued***
+
+***UNWAIT command issued (PID: 2)***
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: 2	psw: 1	p_table: 2	regs: 3 4 5	priority: 15	quantum_count: 6
+End of Running Queue.
+
+
+***LISTING command issued (READY)***
+Start of Ready Queue.
+pid: 1	psw: 23	p_table: 42	regs: 23 23 12	priority: 6	quantum_count: 1
+pid: 0	psw: 33	p_table: 11	regs: 17 15 13	priority: 6	quantum_count: 3
+End of Ready Queue.
+
+
+***WAIT command issued***
+
+***UNWAIT command issued (PID: 2)***
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: 2	psw: 1	p_table: 2	regs: 3 4 5	priority: 16	quantum_count: 7
+End of Running Queue.
+
+
+***LISTING command issued (READY)***
+Start of Ready Queue.
+pid: 1	psw: 23	p_table: 42	regs: 23 23 12	priority: 6	quantum_count: 2
+pid: 0	psw: 33	p_table: 11	regs: 17 15 13	priority: 6	quantum_count: 4
+End of Ready Queue.
+
+
+***WAIT command issued***
+
+***UNWAIT command issued (PID: 2)***
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: 2	psw: 1	p_table: 2	regs: 3 4 5	priority: 17	quantum_count: 8
+End of Running Queue.
+
+
+***LISTING command issued (READY)***
+Start of Ready Queue.
+pid: 1	psw: 23	p_table: 42	regs: 23 23 12	priority: 6	quantum_count: 3
+pid: 0	psw: 33	p_table: 11	regs: 17 15 13	priority: 6	quantum_count: 5
+End of Ready Queue.
+
+
+***WAIT command issued***
+
+***UNWAIT command issued (PID: 2)***
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: 2	psw: 1	p_table: 2	regs: 3 4 5	priority: 18	quantum_count: 9
+End of Running Queue.
+
+
+***LISTING command issued (READY)***
+Start of Ready Queue.
+pid: 1	psw: 23	p_table: 42	regs: 23 23 12	priority: 6	quantum_count: 4
+pid: 0	psw: 33	p_table: 11	regs: 17 15 13	priority: 7	quantum_count: 0
+End of Ready Queue.
+
+
+***WAIT command issued***
+
+***UNWAIT command issued (PID: 2)***
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: 2	psw: 1	p_table: 2	regs: 3 4 5	priority: 19	quantum_count: 10
+End of Running Queue.
+
+
+***LISTING command issued (READY)***
+Start of Ready Queue.
+pid: 1	psw: 23	p_table: 42	regs: 23 23 12	priority: 6	quantum_count: 5
+pid: 0	psw: 33	p_table: 11	regs: 17 15 13	priority: 7	quantum_count: 1
+End of Ready Queue.
+
+
+***WAIT command issued***
+
+***UNWAIT command issued (PID: 2)***
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: 2	psw: 1	p_table: 2	regs: 3 4 5	priority: 20	quantum_count: 11
+End of Running Queue.
+
+
+***LISTING command issued (READY)***
+Start of Ready Queue.
+pid: 1	psw: 23	p_table: 42	regs: 23 23 12	priority: 7	quantum_count: 0
+pid: 0	psw: 33	p_table: 11	regs: 17 15 13	priority: 7	quantum_count: 2
+End of Ready Queue.
+
+
+***WAIT command issued***
+
+***UNWAIT command issued (PID: 2)***
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: 2	psw: 1	p_table: 2	regs: 3 4 5	priority: 20	quantum_count: 12
+End of Running Queue.
+
+
+***LISTING command issued (READY)***
+Start of Ready Queue.
+pid: 1	psw: 23	p_table: 42	regs: 23 23 12	priority: 7	quantum_count: 1
+pid: 0	psw: 33	p_table: 11	regs: 17 15 13	priority: 7	quantum_count: 3
 End of Ready Queue.
 
 
