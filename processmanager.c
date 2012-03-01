@@ -279,6 +279,24 @@ int unwait(int pid){
     return ERROR_SUCCESS;
 }
 
+int set_priority(int pid, int priority){
+	struct process_control_block *temp;
+	if (scheduler == GROUP){
+		return ERROR_WRONG_SCHEDULER;
+	}
+	else{
+		temp = find_process(READY0, pid);
+		if (temp == null){
+			return ERROR_PROCESS_NOT_EXIST;
+		}
+		if (priority < 1 || priority > MAX_PRIORITY){
+			return ERROR_INVALID_PARAMETER;
+		}
+		temp->priority = priority;
+	}
+	return ERROR_SUCCESS;
+}
+
 int create(int psw, int page_table, int *reg, int group){
     int error;
     /*If max allowed processes are reached*/
