@@ -123,13 +123,26 @@ void list_ready(){
 void list_sched(){
     struct queue_t *temp;
     struct process_control_block *pcb;
+	int i = 0;
+	enum QUEUES temp_current_group;
     if (scheduler == GROUP){
+		temp_current_group = current_group;
         temp = get_process(current_group);
-        if (temp->head == null) {
-            printf("Nothing is scheduled to run (ready queue empty)\n");
-        } else {
-            printprocess(*temp->head);
-        }
+        while (i < 4){
+			if (temp->head == null) {
+				if (i == 3){
+					printf("Nothing is scheduled to run (all groups empty)\n");
+					break;
+				}
+				switch_group();
+				temp = get_process(current_group);
+			} else {
+				printprocess(*temp->head);
+				break;
+			}
+			i++;
+		}
+		current_group = temp_current_group;
     }
     else{
         pcb = iterate(0);
