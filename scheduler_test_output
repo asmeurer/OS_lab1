@@ -956,6 +956,29 @@ End of Running Queue.
 
 
 ################################################################################
+#[1;37;40m Test LIST SCHED
+[0;29;39m################################################################################
+
+***LISTING command issued (READY)***
+Start of Group 0 Ready Queue.
+End of Group 0 Ready Queue.
+
+Start of Group 1 Ready Queue.
+End of Group 1 Ready Queue.
+
+Start of Group 2 Ready Queue.
+pid: [1;31;40m7	[0;29;39mpsw: 35	p_table: 11	regs: 12 9 1	group: [1;35;40mGroup 2 Ready Queue[0;29;39m
+pid: [1;31;40m3	[0;29;39mpsw: 35	p_table: 11	regs: 12 9 1	group: [1;35;40mGroup 2 Ready Queue[0;29;39m
+End of Group 2 Ready Queue.
+
+Start of Group 3 Ready Queue.
+End of Group 3 Ready Queue.
+
+
+***LISTING command issued (SCHED)***
+pid: [1;31;40m7	[0;29;39mpsw: 35	p_table: 11	regs: 12 9 1	group: [1;35;40mGroup 2 Ready Queue[0;29;39m
+
+################################################################################
 #[1;37;40m Now clear everything
 [0;29;39m################################################################################
 
