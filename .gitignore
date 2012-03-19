@@ -1,3 +1,4 @@
 *.o
 nul
 .DS_Store
+*~
