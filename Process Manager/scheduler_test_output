@@ -1,0 +1,2127 @@
+
+################################################################################
+#[1;37;40m Start with the group scheduler
+[0;29;39m################################################################################
+
+***INIT command issued (GROUP)***
+
+################################################################################
+#[1;37;40m Test that groups not in the range 0-3 don't work
+[0;29;39m################################################################################
+Could not CREATE: Invalid group number
+
+################################################################################
+#[1;37;40m SET_PRIORITY should not work
+[0;29;39m################################################################################
+
+***SET_PRIORITY command issued (PID: 0)***
+Could not SET_PRIORITY: Command only avaliable in Priority Scheduler
+
+################################################################################
+#[1;37;40m Create processes in each group
+[0;29;39m################################################################################
+
+***CREATE command issued (PID: 1)***
+
+***CREATE command issued (PID: 2)***
+
+***CREATE command issued (PID: 3)***
+
+***CREATE command issued (PID: 4)***
+
+***CREATE command issued (PID: 5)***
+
+***CREATE command issued (PID: 6)***
+
+***CREATE command issued (PID: 7)***
+
+***CREATE command issued (PID: 8)***
+
+################################################################################
+#[1;37;40m Test that everything goes where it needs to
+[0;29;39m################################################################################
+
+***LISTING command issued (READY)***
+Start of Group 0 Ready Queue.
+pid: [1;31;40m1	[0;29;39mpsw: 33	p_table: 11	regs: 17 15 13	group: [1;35;40mGroup 0 Ready Queue[0;29;39m
+pid: [1;31;40m5	[0;29;39mpsw: 33	p_table: 11	regs: 17 15 13	group: [1;35;40mGroup 0 Ready Queue[0;29;39m
+End of Group 0 Ready Queue.
+
+Start of Group 1 Ready Queue.
+pid: [1;31;40m2	[0;29;39mpsw: 33	p_table: 11	regs: 17 15 13	group: [1;35;40mGroup 1 Ready Queue[0;29;39m
+pid: [1;31;40m6	[0;29;39mpsw: 33	p_table: 11	regs: 17 15 13	group: [1;35;40mGroup 1 Ready Queue[0;29;39m
+End of Group 1 Ready Queue.
+
+Start of Group 2 Ready Queue.
+pid: [1;31;40m3	[0;29;39mpsw: 35	p_table: 11	regs: 12 9 1	group: [1;35;40mGroup 2 Ready Queue[0;29;39m
+pid: [1;31;40m7	[0;29;39mpsw: 35	p_table: 11	regs: 12 9 1	group: [1;35;40mGroup 2 Ready Queue[0;29;39m
+End of Group 2 Ready Queue.
+
+Start of Group 3 Ready Queue.
+pid: [1;31;40m4	[0;29;39mpsw: 12	p_table: 2	regs: 10 19 3	group: [1;35;40mGroup 3 Ready Queue[0;29;39m
+pid: [1;31;40m8	[0;29;39mpsw: 12	p_table: 2	regs: 10 19 3	group: [1;35;40mGroup 3 Ready Queue[0;29;39m
+End of Group 3 Ready Queue.
+
+
+################################################################################
+#[1;37;40m Test that they correctly round robin, both within the groups and among the
+[0;29;39m################################################################################
+
+################################################################################
+#[1;37;40m groups
+[0;29;39m################################################################################
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m1	[0;29;39mpsw: 33	p_table: 11	regs: 17 15 13	group: [1;35;40mGroup 0 Ready Queue[0;29;39m
+End of Running Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m5	[0;29;39mpsw: 33	p_table: 11	regs: 17 15 13	group: [1;35;40mGroup 0 Ready Queue[0;29;39m
+End of Running Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m1	[0;29;39mpsw: 33	p_table: 11	regs: 17 15 13	group: [1;35;40mGroup 0 Ready Queue[0;29;39m
+End of Running Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m5	[0;29;39mpsw: 33	p_table: 11	regs: 17 15 13	group: [1;35;40mGroup 0 Ready Queue[0;29;39m
+End of Running Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m1	[0;29;39mpsw: 33	p_table: 11	regs: 17 15 13	group: [1;35;40mGroup 0 Ready Queue[0;29;39m
+End of Running Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m2	[0;29;39mpsw: 33	p_table: 11	regs: 17 15 13	group: [1;35;40mGroup 1 Ready Queue[0;29;39m
+End of Running Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m6	[0;29;39mpsw: 33	p_table: 11	regs: 17 15 13	group: [1;35;40mGroup 1 Ready Queue[0;29;39m
+End of Running Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m2	[0;29;39mpsw: 33	p_table: 11	regs: 17 15 13	group: [1;35;40mGroup 1 Ready Queue[0;29;39m
+End of Running Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m6	[0;29;39mpsw: 33	p_table: 11	regs: 17 15 13	group: [1;35;40mGroup 1 Ready Queue[0;29;39m
+End of Running Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m2	[0;29;39mpsw: 33	p_table: 11	regs: 17 15 13	group: [1;35;40mGroup 1 Ready Queue[0;29;39m
+End of Running Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m3	[0;29;39mpsw: 35	p_table: 11	regs: 12 9 1	group: [1;35;40mGroup 2 Ready Queue[0;29;39m
+End of Running Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m7	[0;29;39mpsw: 35	p_table: 11	regs: 12 9 1	group: [1;35;40mGroup 2 Ready Queue[0;29;39m
+End of Running Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m3	[0;29;39mpsw: 35	p_table: 11	regs: 12 9 1	group: [1;35;40mGroup 2 Ready Queue[0;29;39m
+End of Running Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m7	[0;29;39mpsw: 35	p_table: 11	regs: 12 9 1	group: [1;35;40mGroup 2 Ready Queue[0;29;39m
+End of Running Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m3	[0;29;39mpsw: 35	p_table: 11	regs: 12 9 1	group: [1;35;40mGroup 2 Ready Queue[0;29;39m
+End of Running Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m4	[0;29;39mpsw: 12	p_table: 2	regs: 10 19 3	group: [1;35;40mGroup 3 Ready Queue[0;29;39m
+End of Running Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m8	[0;29;39mpsw: 12	p_table: 2	regs: 10 19 3	group: [1;35;40mGroup 3 Ready Queue[0;29;39m
+End of Running Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m4	[0;29;39mpsw: 12	p_table: 2	regs: 10 19 3	group: [1;35;40mGroup 3 Ready Queue[0;29;39m
+End of Running Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m8	[0;29;39mpsw: 12	p_table: 2	regs: 10 19 3	group: [1;35;40mGroup 3 Ready Queue[0;29;39m
+End of Running Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m4	[0;29;39mpsw: 12	p_table: 2	regs: 10 19 3	group: [1;35;40mGroup 3 Ready Queue[0;29;39m
+End of Running Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m5	[0;29;39mpsw: 33	p_table: 11	regs: 17 15 13	group: [1;35;40mGroup 0 Ready Queue[0;29;39m
+End of Running Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m1	[0;29;39mpsw: 33	p_table: 11	regs: 17 15 13	group: [1;35;40mGroup 0 Ready Queue[0;29;39m
+End of Running Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m5	[0;29;39mpsw: 33	p_table: 11	regs: 17 15 13	group: [1;35;40mGroup 0 Ready Queue[0;29;39m
+End of Running Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m1	[0;29;39mpsw: 33	p_table: 11	regs: 17 15 13	group: [1;35;40mGroup 0 Ready Queue[0;29;39m
+End of Running Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m5	[0;29;39mpsw: 33	p_table: 11	regs: 17 15 13	group: [1;35;40mGroup 0 Ready Queue[0;29;39m
+End of Running Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m6	[0;29;39mpsw: 33	p_table: 11	regs: 17 15 13	group: [1;35;40mGroup 1 Ready Queue[0;29;39m
+End of Running Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m2	[0;29;39mpsw: 33	p_table: 11	regs: 17 15 13	group: [1;35;40mGroup 1 Ready Queue[0;29;39m
+End of Running Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m6	[0;29;39mpsw: 33	p_table: 11	regs: 17 15 13	group: [1;35;40mGroup 1 Ready Queue[0;29;39m
+End of Running Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m2	[0;29;39mpsw: 33	p_table: 11	regs: 17 15 13	group: [1;35;40mGroup 1 Ready Queue[0;29;39m
+End of Running Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m6	[0;29;39mpsw: 33	p_table: 11	regs: 17 15 13	group: [1;35;40mGroup 1 Ready Queue[0;29;39m
+End of Running Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m7	[0;29;39mpsw: 35	p_table: 11	regs: 12 9 1	group: [1;35;40mGroup 2 Ready Queue[0;29;39m
+End of Running Queue.
+
+
+################################################################################
+#[1;37;40m Test that unwait goes back to the correct group
+[0;29;39m################################################################################
+
+***WAIT command issued***
+
+***UNWAIT command issued (PID: 7)***
+
+***LISTING command issued (READY)***
+Start of Group 0 Ready Queue.
+pid: [1;31;40m1	[0;29;39mpsw: 33	p_table: 11	regs: 17 15 13	group: [1;35;40mGroup 0 Ready Queue[0;29;39m
+pid: [1;31;40m5	[0;29;39mpsw: 33	p_table: 11	regs: 17 15 13	group: [1;35;40mGroup 0 Ready Queue[0;29;39m
+End of Group 0 Ready Queue.
+
+Start of Group 1 Ready Queue.
+pid: [1;31;40m2	[0;29;39mpsw: 33	p_table: 11	regs: 17 15 13	group: [1;35;40mGroup 1 Ready Queue[0;29;39m
+pid: [1;31;40m6	[0;29;39mpsw: 33	p_table: 11	regs: 17 15 13	group: [1;35;40mGroup 1 Ready Queue[0;29;39m
+End of Group 1 Ready Queue.
+
+Start of Group 2 Ready Queue.
+pid: [1;31;40m3	[0;29;39mpsw: 35	p_table: 11	regs: 12 9 1	group: [1;35;40mGroup 2 Ready Queue[0;29;39m
+pid: [1;31;40m7	[0;29;39mpsw: 35	p_table: 11	regs: 12 9 1	group: [1;35;40mGroup 2 Ready Queue[0;29;39m
+End of Group 2 Ready Queue.
+
+Start of Group 3 Ready Queue.
+pid: [1;31;40m8	[0;29;39mpsw: 12	p_table: 2	regs: 10 19 3	group: [1;35;40mGroup 3 Ready Queue[0;29;39m
+pid: [1;31;40m4	[0;29;39mpsw: 12	p_table: 2	regs: 10 19 3	group: [1;35;40mGroup 3 Ready Queue[0;29;39m
+End of Group 3 Ready Queue.
+
+
+################################################################################
+#[1;37;40m Do it for all four groups
+[0;29;39m################################################################################
+
+***GO command issued***
+
+***GO command issued***
+
+***GO command issued***
+
+***GO command issued***
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m8	[0;29;39mpsw: 12	p_table: 2	regs: 10 19 3	group: [1;35;40mGroup 3 Ready Queue[0;29;39m
+End of Running Queue.
+
+
+***WAIT command issued***
+
+***UNWAIT command issued (PID: 8)***
+
+***LISTING command issued (READY)***
+Start of Group 0 Ready Queue.
+pid: [1;31;40m1	[0;29;39mpsw: 33	p_table: 11	regs: 17 15 13	group: [1;35;40mGroup 0 Ready Queue[0;29;39m
+pid: [1;31;40m5	[0;29;39mpsw: 33	p_table: 11	regs: 17 15 13	group: [1;35;40mGroup 0 Ready Queue[0;29;39m
+End of Group 0 Ready Queue.
+
+Start of Group 1 Ready Queue.
+pid: [1;31;40m2	[0;29;39mpsw: 33	p_table: 11	regs: 17 15 13	group: [1;35;40mGroup 1 Ready Queue[0;29;39m
+pid: [1;31;40m6	[0;29;39mpsw: 33	p_table: 11	regs: 17 15 13	group: [1;35;40mGroup 1 Ready Queue[0;29;39m
+End of Group 1 Ready Queue.
+
+Start of Group 2 Ready Queue.
+pid: [1;31;40m3	[0;29;39mpsw: 35	p_table: 11	regs: 12 9 1	group: [1;35;40mGroup 2 Ready Queue[0;29;39m
+pid: [1;31;40m7	[0;29;39mpsw: 35	p_table: 11	regs: 12 9 1	group: [1;35;40mGroup 2 Ready Queue[0;29;39m
+End of Group 2 Ready Queue.
+
+Start of Group 3 Ready Queue.
+pid: [1;31;40m4	[0;29;39mpsw: 12	p_table: 2	regs: 10 19 3	group: [1;35;40mGroup 3 Ready Queue[0;29;39m
+pid: [1;31;40m8	[0;29;39mpsw: 12	p_table: 2	regs: 10 19 3	group: [1;35;40mGroup 3 Ready Queue[0;29;39m
+End of Group 3 Ready Queue.
+
+
+***GO command issued***
+
+***GO command issued***
+
+***GO command issued***
+
+***GO command issued***
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m1	[0;29;39mpsw: 33	p_table: 11	regs: 17 15 13	group: [1;35;40mGroup 0 Ready Queue[0;29;39m
+End of Running Queue.
+
+
+***WAIT command issued***
+
+***UNWAIT command issued (PID: 1)***
+
+***LISTING command issued (READY)***
+Start of Group 0 Ready Queue.
+pid: [1;31;40m5	[0;29;39mpsw: 33	p_table: 11	regs: 17 15 13	group: [1;35;40mGroup 0 Ready Queue[0;29;39m
+pid: [1;31;40m1	[0;29;39mpsw: 33	p_table: 11	regs: 17 15 13	group: [1;35;40mGroup 0 Ready Queue[0;29;39m
+End of Group 0 Ready Queue.
+
+Start of Group 1 Ready Queue.
+pid: [1;31;40m2	[0;29;39mpsw: 33	p_table: 11	regs: 17 15 13	group: [1;35;40mGroup 1 Ready Queue[0;29;39m
+pid: [1;31;40m6	[0;29;39mpsw: 33	p_table: 11	regs: 17 15 13	group: [1;35;40mGroup 1 Ready Queue[0;29;39m
+End of Group 1 Ready Queue.
+
+Start of Group 2 Ready Queue.
+pid: [1;31;40m3	[0;29;39mpsw: 35	p_table: 11	regs: 12 9 1	group: [1;35;40mGroup 2 Ready Queue[0;29;39m
+pid: [1;31;40m7	[0;29;39mpsw: 35	p_table: 11	regs: 12 9 1	group: [1;35;40mGroup 2 Ready Queue[0;29;39m
+End of Group 2 Ready Queue.
+
+Start of Group 3 Ready Queue.
+pid: [1;31;40m4	[0;29;39mpsw: 12	p_table: 2	regs: 10 19 3	group: [1;35;40mGroup 3 Ready Queue[0;29;39m
+pid: [1;31;40m8	[0;29;39mpsw: 12	p_table: 2	regs: 10 19 3	group: [1;35;40mGroup 3 Ready Queue[0;29;39m
+End of Group 3 Ready Queue.
+
+
+***GO command issued***
+
+***GO command issued***
+
+***GO command issued***
+
+***GO command issued***
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m2	[0;29;39mpsw: 33	p_table: 11	regs: 17 15 13	group: [1;35;40mGroup 1 Ready Queue[0;29;39m
+End of Running Queue.
+
+
+***WAIT command issued***
+
+***UNWAIT command issued (PID: 2)***
+
+***LISTING command issued (READY)***
+Start of Group 0 Ready Queue.
+pid: [1;31;40m5	[0;29;39mpsw: 33	p_table: 11	regs: 17 15 13	group: [1;35;40mGroup 0 Ready Queue[0;29;39m
+pid: [1;31;40m1	[0;29;39mpsw: 33	p_table: 11	regs: 17 15 13	group: [1;35;40mGroup 0 Ready Queue[0;29;39m
+End of Group 0 Ready Queue.
+
+Start of Group 1 Ready Queue.
+pid: [1;31;40m6	[0;29;39mpsw: 33	p_table: 11	regs: 17 15 13	group: [1;35;40mGroup 1 Ready Queue[0;29;39m
+pid: [1;31;40m2	[0;29;39mpsw: 33	p_table: 11	regs: 17 15 13	group: [1;35;40mGroup 1 Ready Queue[0;29;39m
+End of Group 1 Ready Queue.
+
+Start of Group 2 Ready Queue.
+pid: [1;31;40m3	[0;29;39mpsw: 35	p_table: 11	regs: 12 9 1	group: [1;35;40mGroup 2 Ready Queue[0;29;39m
+pid: [1;31;40m7	[0;29;39mpsw: 35	p_table: 11	regs: 12 9 1	group: [1;35;40mGroup 2 Ready Queue[0;29;39m
+End of Group 2 Ready Queue.
+
+Start of Group 3 Ready Queue.
+pid: [1;31;40m4	[0;29;39mpsw: 12	p_table: 2	regs: 10 19 3	group: [1;35;40mGroup 3 Ready Queue[0;29;39m
+pid: [1;31;40m8	[0;29;39mpsw: 12	p_table: 2	regs: 10 19 3	group: [1;35;40mGroup 3 Ready Queue[0;29;39m
+End of Group 3 Ready Queue.
+
+
+################################################################################
+#[1;37;40m Test that that it skips over empty groups
+[0;29;39m################################################################################
+
+***GO command issued***
+
+***EOLIFE command issued***
+
+***GO command issued***
+
+***EOLIFE command issued***
+
+***LISTING command issued (READY)***
+Start of Group 0 Ready Queue.
+pid: [1;31;40m5	[0;29;39mpsw: 33	p_table: 11	regs: 17 15 13	group: [1;35;40mGroup 0 Ready Queue[0;29;39m
+pid: [1;31;40m1	[0;29;39mpsw: 33	p_table: 11	regs: 17 15 13	group: [1;35;40mGroup 0 Ready Queue[0;29;39m
+End of Group 0 Ready Queue.
+
+Start of Group 1 Ready Queue.
+End of Group 1 Ready Queue.
+
+Start of Group 2 Ready Queue.
+pid: [1;31;40m3	[0;29;39mpsw: 35	p_table: 11	regs: 12 9 1	group: [1;35;40mGroup 2 Ready Queue[0;29;39m
+pid: [1;31;40m7	[0;29;39mpsw: 35	p_table: 11	regs: 12 9 1	group: [1;35;40mGroup 2 Ready Queue[0;29;39m
+End of Group 2 Ready Queue.
+
+Start of Group 3 Ready Queue.
+pid: [1;31;40m4	[0;29;39mpsw: 12	p_table: 2	regs: 10 19 3	group: [1;35;40mGroup 3 Ready Queue[0;29;39m
+pid: [1;31;40m8	[0;29;39mpsw: 12	p_table: 2	regs: 10 19 3	group: [1;35;40mGroup 3 Ready Queue[0;29;39m
+End of Group 3 Ready Queue.
+
+
+################################################################################
+#[1;37;40m Now group 1 is empty
+[0;29;39m################################################################################
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m3	[0;29;39mpsw: 35	p_table: 11	regs: 12 9 1	group: [1;35;40mGroup 2 Ready Queue[0;29;39m
+End of Running Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m7	[0;29;39mpsw: 35	p_table: 11	regs: 12 9 1	group: [1;35;40mGroup 2 Ready Queue[0;29;39m
+End of Running Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m3	[0;29;39mpsw: 35	p_table: 11	regs: 12 9 1	group: [1;35;40mGroup 2 Ready Queue[0;29;39m
+End of Running Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m7	[0;29;39mpsw: 35	p_table: 11	regs: 12 9 1	group: [1;35;40mGroup 2 Ready Queue[0;29;39m
+End of Running Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m3	[0;29;39mpsw: 35	p_table: 11	regs: 12 9 1	group: [1;35;40mGroup 2 Ready Queue[0;29;39m
+End of Running Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m4	[0;29;39mpsw: 12	p_table: 2	regs: 10 19 3	group: [1;35;40mGroup 3 Ready Queue[0;29;39m
+End of Running Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m8	[0;29;39mpsw: 12	p_table: 2	regs: 10 19 3	group: [1;35;40mGroup 3 Ready Queue[0;29;39m
+End of Running Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m4	[0;29;39mpsw: 12	p_table: 2	regs: 10 19 3	group: [1;35;40mGroup 3 Ready Queue[0;29;39m
+End of Running Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m8	[0;29;39mpsw: 12	p_table: 2	regs: 10 19 3	group: [1;35;40mGroup 3 Ready Queue[0;29;39m
+End of Running Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m4	[0;29;39mpsw: 12	p_table: 2	regs: 10 19 3	group: [1;35;40mGroup 3 Ready Queue[0;29;39m
+End of Running Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m5	[0;29;39mpsw: 33	p_table: 11	regs: 17 15 13	group: [1;35;40mGroup 0 Ready Queue[0;29;39m
+End of Running Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m1	[0;29;39mpsw: 33	p_table: 11	regs: 17 15 13	group: [1;35;40mGroup 0 Ready Queue[0;29;39m
+End of Running Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m5	[0;29;39mpsw: 33	p_table: 11	regs: 17 15 13	group: [1;35;40mGroup 0 Ready Queue[0;29;39m
+End of Running Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m1	[0;29;39mpsw: 33	p_table: 11	regs: 17 15 13	group: [1;35;40mGroup 0 Ready Queue[0;29;39m
+End of Running Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m5	[0;29;39mpsw: 33	p_table: 11	regs: 17 15 13	group: [1;35;40mGroup 0 Ready Queue[0;29;39m
+End of Running Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m7	[0;29;39mpsw: 35	p_table: 11	regs: 12 9 1	group: [1;35;40mGroup 2 Ready Queue[0;29;39m
+End of Running Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m3	[0;29;39mpsw: 35	p_table: 11	regs: 12 9 1	group: [1;35;40mGroup 2 Ready Queue[0;29;39m
+End of Running Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m7	[0;29;39mpsw: 35	p_table: 11	regs: 12 9 1	group: [1;35;40mGroup 2 Ready Queue[0;29;39m
+End of Running Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m3	[0;29;39mpsw: 35	p_table: 11	regs: 12 9 1	group: [1;35;40mGroup 2 Ready Queue[0;29;39m
+End of Running Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m7	[0;29;39mpsw: 35	p_table: 11	regs: 12 9 1	group: [1;35;40mGroup 2 Ready Queue[0;29;39m
+End of Running Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m8	[0;29;39mpsw: 12	p_table: 2	regs: 10 19 3	group: [1;35;40mGroup 3 Ready Queue[0;29;39m
+End of Running Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m4	[0;29;39mpsw: 12	p_table: 2	regs: 10 19 3	group: [1;35;40mGroup 3 Ready Queue[0;29;39m
+End of Running Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m8	[0;29;39mpsw: 12	p_table: 2	regs: 10 19 3	group: [1;35;40mGroup 3 Ready Queue[0;29;39m
+End of Running Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m4	[0;29;39mpsw: 12	p_table: 2	regs: 10 19 3	group: [1;35;40mGroup 3 Ready Queue[0;29;39m
+End of Running Queue.
+
+
+################################################################################
+#[1;37;40m Keep terminating and testing this
+[0;29;39m################################################################################
+
+***EOLIFE command issued***
+
+***GO command issued***
+
+***EOLIFE command issued***
+
+***LISTING command issued (READY)***
+Start of Group 0 Ready Queue.
+pid: [1;31;40m1	[0;29;39mpsw: 33	p_table: 11	regs: 17 15 13	group: [1;35;40mGroup 0 Ready Queue[0;29;39m
+pid: [1;31;40m5	[0;29;39mpsw: 33	p_table: 11	regs: 17 15 13	group: [1;35;40mGroup 0 Ready Queue[0;29;39m
+End of Group 0 Ready Queue.
+
+Start of Group 1 Ready Queue.
+End of Group 1 Ready Queue.
+
+Start of Group 2 Ready Queue.
+pid: [1;31;40m3	[0;29;39mpsw: 35	p_table: 11	regs: 12 9 1	group: [1;35;40mGroup 2 Ready Queue[0;29;39m
+pid: [1;31;40m7	[0;29;39mpsw: 35	p_table: 11	regs: 12 9 1	group: [1;35;40mGroup 2 Ready Queue[0;29;39m
+End of Group 2 Ready Queue.
+
+Start of Group 3 Ready Queue.
+End of Group 3 Ready Queue.
+
+
+################################################################################
+#[1;37;40m This killed off group 3
+[0;29;39m################################################################################
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m1	[0;29;39mpsw: 33	p_table: 11	regs: 17 15 13	group: [1;35;40mGroup 0 Ready Queue[0;29;39m
+End of Running Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m5	[0;29;39mpsw: 33	p_table: 11	regs: 17 15 13	group: [1;35;40mGroup 0 Ready Queue[0;29;39m
+End of Running Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m1	[0;29;39mpsw: 33	p_table: 11	regs: 17 15 13	group: [1;35;40mGroup 0 Ready Queue[0;29;39m
+End of Running Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m5	[0;29;39mpsw: 33	p_table: 11	regs: 17 15 13	group: [1;35;40mGroup 0 Ready Queue[0;29;39m
+End of Running Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m1	[0;29;39mpsw: 33	p_table: 11	regs: 17 15 13	group: [1;35;40mGroup 0 Ready Queue[0;29;39m
+End of Running Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m3	[0;29;39mpsw: 35	p_table: 11	regs: 12 9 1	group: [1;35;40mGroup 2 Ready Queue[0;29;39m
+End of Running Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m7	[0;29;39mpsw: 35	p_table: 11	regs: 12 9 1	group: [1;35;40mGroup 2 Ready Queue[0;29;39m
+End of Running Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m3	[0;29;39mpsw: 35	p_table: 11	regs: 12 9 1	group: [1;35;40mGroup 2 Ready Queue[0;29;39m
+End of Running Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m7	[0;29;39mpsw: 35	p_table: 11	regs: 12 9 1	group: [1;35;40mGroup 2 Ready Queue[0;29;39m
+End of Running Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m3	[0;29;39mpsw: 35	p_table: 11	regs: 12 9 1	group: [1;35;40mGroup 2 Ready Queue[0;29;39m
+End of Running Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m5	[0;29;39mpsw: 33	p_table: 11	regs: 17 15 13	group: [1;35;40mGroup 0 Ready Queue[0;29;39m
+End of Running Queue.
+
+
+***EOLIFE command issued***
+
+***GO command issued***
+
+***EOLIFE command issued***
+
+***LISTING command issued (READY)***
+Start of Group 0 Ready Queue.
+End of Group 0 Ready Queue.
+
+Start of Group 1 Ready Queue.
+End of Group 1 Ready Queue.
+
+Start of Group 2 Ready Queue.
+pid: [1;31;40m7	[0;29;39mpsw: 35	p_table: 11	regs: 12 9 1	group: [1;35;40mGroup 2 Ready Queue[0;29;39m
+pid: [1;31;40m3	[0;29;39mpsw: 35	p_table: 11	regs: 12 9 1	group: [1;35;40mGroup 2 Ready Queue[0;29;39m
+End of Group 2 Ready Queue.
+
+Start of Group 3 Ready Queue.
+End of Group 3 Ready Queue.
+
+
+################################################################################
+#[1;37;40m This killed off group 0
+[0;29;39m################################################################################
+
+################################################################################
+#[1;37;40m More than five go's should remain in group 2
+[0;29;39m################################################################################
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m7	[0;29;39mpsw: 35	p_table: 11	regs: 12 9 1	group: [1;35;40mGroup 2 Ready Queue[0;29;39m
+End of Running Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m3	[0;29;39mpsw: 35	p_table: 11	regs: 12 9 1	group: [1;35;40mGroup 2 Ready Queue[0;29;39m
+End of Running Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m7	[0;29;39mpsw: 35	p_table: 11	regs: 12 9 1	group: [1;35;40mGroup 2 Ready Queue[0;29;39m
+End of Running Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m3	[0;29;39mpsw: 35	p_table: 11	regs: 12 9 1	group: [1;35;40mGroup 2 Ready Queue[0;29;39m
+End of Running Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m7	[0;29;39mpsw: 35	p_table: 11	regs: 12 9 1	group: [1;35;40mGroup 2 Ready Queue[0;29;39m
+End of Running Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m3	[0;29;39mpsw: 35	p_table: 11	regs: 12 9 1	group: [1;35;40mGroup 2 Ready Queue[0;29;39m
+End of Running Queue.
+
+
+################################################################################
+#[1;37;40m As soon as we create a new process in another group
+[0;29;39m################################################################################
+
+################################################################################
+#[1;37;40m It should start switching to the next group again
+[0;29;39m################################################################################
+
+***CREATE command issued (PID: 9)***
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m7	[0;29;39mpsw: 35	p_table: 11	regs: 12 9 1	group: [1;35;40mGroup 2 Ready Queue[0;29;39m
+End of Running Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m3	[0;29;39mpsw: 35	p_table: 11	regs: 12 9 1	group: [1;35;40mGroup 2 Ready Queue[0;29;39m
+End of Running Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m7	[0;29;39mpsw: 35	p_table: 11	regs: 12 9 1	group: [1;35;40mGroup 2 Ready Queue[0;29;39m
+End of Running Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m3	[0;29;39mpsw: 35	p_table: 11	regs: 12 9 1	group: [1;35;40mGroup 2 Ready Queue[0;29;39m
+End of Running Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m9	[0;29;39mpsw: 1	p_table: 2	regs: 3 4 5	group: [1;35;40mGroup 0 Ready Queue[0;29;39m
+End of Running Queue.
+
+
+################################################################################
+#[1;37;40m Test LIST SCHED
+[0;29;39m################################################################################
+
+***LISTING command issued (READY)***
+Start of Group 0 Ready Queue.
+End of Group 0 Ready Queue.
+
+Start of Group 1 Ready Queue.
+End of Group 1 Ready Queue.
+
+Start of Group 2 Ready Queue.
+pid: [1;31;40m7	[0;29;39mpsw: 35	p_table: 11	regs: 12 9 1	group: [1;35;40mGroup 2 Ready Queue[0;29;39m
+pid: [1;31;40m3	[0;29;39mpsw: 35	p_table: 11	regs: 12 9 1	group: [1;35;40mGroup 2 Ready Queue[0;29;39m
+End of Group 2 Ready Queue.
+
+Start of Group 3 Ready Queue.
+End of Group 3 Ready Queue.
+
+
+***LISTING command issued (SCHED)***
+pid: [1;31;40m7	[0;29;39mpsw: 35	p_table: 11	regs: 12 9 1	group: [1;35;40mGroup 2 Ready Queue[0;29;39m
+
+################################################################################
+#[1;37;40m Now clear everything
+[0;29;39m################################################################################
+
+***EOLIFE command issued***
+
+***GO command issued***
+
+***EOLIFE command issued***
+
+***GO command issued***
+
+***EOLIFE command issued***
+
+################################################################################
+#[1;37;40m Test that it doesn't die on a go when there are no ready processes
+[0;29;39m################################################################################
+
+***GO command issued***
+Could not GO: No Ready Processes
+
+***LISTING command issued (ALL)***
+Start of New Queue.
+End of New Queue.
+
+Start of Waiting Queue.
+End of Waiting Queue.
+
+Start of Group 0 Ready Queue.
+End of Group 0 Ready Queue.
+
+Start of Group 1 Ready Queue.
+End of Group 1 Ready Queue.
+
+Start of Group 2 Ready Queue.
+End of Group 2 Ready Queue.
+
+Start of Group 3 Ready Queue.
+End of Group 3 Ready Queue.
+
+Start of Terminated Queue.
+pid: [1;31;40m6	[0;29;39mpsw: 33	p_table: 11	regs: 17 15 13	group: [1;35;40mGroup 1 Ready Queue[0;29;39m
+pid: [1;31;40m2	[0;29;39mpsw: 33	p_table: 11	regs: 17 15 13	group: [1;35;40mGroup 1 Ready Queue[0;29;39m
+pid: [1;31;40m4	[0;29;39mpsw: 12	p_table: 2	regs: 10 19 3	group: [1;35;40mGroup 3 Ready Queue[0;29;39m
+pid: [1;31;40m8	[0;29;39mpsw: 12	p_table: 2	regs: 10 19 3	group: [1;35;40mGroup 3 Ready Queue[0;29;39m
+pid: [1;31;40m5	[0;29;39mpsw: 33	p_table: 11	regs: 17 15 13	group: [1;35;40mGroup 0 Ready Queue[0;29;39m
+pid: [1;31;40m1	[0;29;39mpsw: 33	p_table: 11	regs: 17 15 13	group: [1;35;40mGroup 0 Ready Queue[0;29;39m
+pid: [1;31;40m9	[0;29;39mpsw: 1	p_table: 2	regs: 3 4 5	group: [1;35;40mGroup 0 Ready Queue[0;29;39m
+pid: [1;31;40m7	[0;29;39mpsw: 35	p_table: 11	regs: 12 9 1	group: [1;35;40mGroup 2 Ready Queue[0;29;39m
+pid: [1;31;40m3	[0;29;39mpsw: 35	p_table: 11	regs: 12 9 1	group: [1;35;40mGroup 2 Ready Queue[0;29;39m
+End of Terminated Queue.
+
+Start of Running Queue.
+End of Running Queue.
+
+
+################################################################################
+#[1;37;40m Test the EMPTY_TERM command
+[0;29;39m################################################################################
+
+***EMPTY_TERM command issued***
+
+***LISTING command issued (TERMINATED)***
+Start of Terminated Queue.
+End of Terminated Queue.
+
+
+################################################################################
+#[1;37;40m Try out the priority scheduler
+[0;29;39m################################################################################
+
+***INIT command issued (PRIORITY)***
+
+################################################################################
+#[1;37;40m Test that the default priority is 5
+[0;29;39m################################################################################
+
+***CREATE command issued (PID: 0)***
+
+***CREATE command issued (PID: 0)***
+
+***LISTING command issued (READY)***
+Start of Ready Queue.
+pid: [1;31;40m0	[0;29;39mpsw: 33	p_table: 11	regs: 17 15 13	priority: [1;36;40m5[0;29;39m	quantum_count: 0
+End of Ready Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m0	[0;29;39mpsw: 33	p_table: 11	regs: 17 15 13	priority: [1;36;40m5[0;29;39m	quantum_count: 1
+End of Running Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m0	[0;29;39mpsw: 33	p_table: 11	regs: 17 15 13	priority: [1;36;40m4[0;29;39m	quantum_count: 1
+End of Running Queue.
+
+
+################################################################################
+#[1;37;40m Test that process reduce in priority as they are run
+[0;29;39m################################################################################
+
+***CREATE command issued (PID: 1)***
+
+***CREATE command issued (PID: 1)***
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m1	[0;29;39mpsw: 23	p_table: 42	regs: 23 23 12	priority: [1;36;40m5[0;29;39m	quantum_count: 1
+End of Running Queue.
+
+
+***LISTING command issued (READY)***
+Start of Ready Queue.
+pid: [1;31;40m0	[0;29;39mpsw: 33	p_table: 11	regs: 17 15 13	priority: [1;36;40m3[0;29;39m	quantum_count: 1
+End of Ready Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m0	[0;29;39mpsw: 33	p_table: 11	regs: 17 15 13	priority: [1;36;40m3[0;29;39m	quantum_count: 2
+End of Running Queue.
+
+
+***LISTING command issued (READY)***
+Start of Ready Queue.
+pid: [1;31;40m1	[0;29;39mpsw: 23	p_table: 42	regs: 23 23 12	priority: [1;36;40m4[0;29;39m	quantum_count: 1
+End of Ready Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m1	[0;29;39mpsw: 23	p_table: 42	regs: 23 23 12	priority: [1;36;40m4[0;29;39m	quantum_count: 2
+End of Running Queue.
+
+
+***LISTING command issued (READY)***
+Start of Ready Queue.
+pid: [1;31;40m0	[0;29;39mpsw: 33	p_table: 11	regs: 17 15 13	priority: [1;36;40m2[0;29;39m	quantum_count: 2
+End of Ready Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m0	[0;29;39mpsw: 33	p_table: 11	regs: 17 15 13	priority: [1;36;40m3[0;29;39m	quantum_count: 0
+End of Running Queue.
+
+
+***LISTING command issued (READY)***
+Start of Ready Queue.
+pid: [1;31;40m1	[0;29;39mpsw: 23	p_table: 42	regs: 23 23 12	priority: [1;36;40m3[0;29;39m	quantum_count: 2
+End of Ready Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m1	[0;29;39mpsw: 23	p_table: 42	regs: 23 23 12	priority: [1;36;40m4[0;29;39m	quantum_count: 0
+End of Running Queue.
+
+
+***LISTING command issued (READY)***
+Start of Ready Queue.
+pid: [1;31;40m0	[0;29;39mpsw: 33	p_table: 11	regs: 17 15 13	priority: [1;36;40m2[0;29;39m	quantum_count: 0
+End of Ready Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m0	[0;29;39mpsw: 33	p_table: 11	regs: 17 15 13	priority: [1;36;40m2[0;29;39m	quantum_count: 1
+End of Running Queue.
+
+
+***LISTING command issued (READY)***
+Start of Ready Queue.
+pid: [1;31;40m1	[0;29;39mpsw: 23	p_table: 42	regs: 23 23 12	priority: [1;36;40m3[0;29;39m	quantum_count: 0
+End of Ready Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m1	[0;29;39mpsw: 23	p_table: 42	regs: 23 23 12	priority: [1;36;40m3[0;29;39m	quantum_count: 1
+End of Running Queue.
+
+
+***LISTING command issued (READY)***
+Start of Ready Queue.
+pid: [1;31;40m0	[0;29;39mpsw: 33	p_table: 11	regs: 17 15 13	priority: [1;36;40m1[0;29;39m	quantum_count: 1
+End of Ready Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m0	[0;29;39mpsw: 33	p_table: 11	regs: 17 15 13	priority: [1;36;40m2[0;29;39m	quantum_count: 0
+End of Running Queue.
+
+
+***LISTING command issued (READY)***
+Start of Ready Queue.
+pid: [1;31;40m1	[0;29;39mpsw: 23	p_table: 42	regs: 23 23 12	priority: [1;36;40m2[0;29;39m	quantum_count: 1
+End of Ready Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m1	[0;29;39mpsw: 23	p_table: 42	regs: 23 23 12	priority: [1;36;40m3[0;29;39m	quantum_count: 0
+End of Running Queue.
+
+
+***LISTING command issued (READY)***
+Start of Ready Queue.
+pid: [1;31;40m0	[0;29;39mpsw: 33	p_table: 11	regs: 17 15 13	priority: [1;36;40m1[0;29;39m	quantum_count: 0
+End of Ready Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m0	[0;29;39mpsw: 33	p_table: 11	regs: 17 15 13	priority: [1;36;40m2[0;29;39m	quantum_count: 0
+End of Running Queue.
+
+
+***LISTING command issued (READY)***
+Start of Ready Queue.
+pid: [1;31;40m1	[0;29;39mpsw: 23	p_table: 42	regs: 23 23 12	priority: [1;36;40m2[0;29;39m	quantum_count: 0
+End of Ready Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m1	[0;29;39mpsw: 23	p_table: 42	regs: 23 23 12	priority: [1;36;40m2[0;29;39m	quantum_count: 1
+End of Running Queue.
+
+
+***LISTING command issued (READY)***
+Start of Ready Queue.
+pid: [1;31;40m0	[0;29;39mpsw: 33	p_table: 11	regs: 17 15 13	priority: [1;36;40m1[0;29;39m	quantum_count: 0
+End of Ready Queue.
+
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m0	[0;29;39mpsw: 33	p_table: 11	regs: 17 15 13	priority: [1;36;40m2[0;29;39m	quantum_count: 0
+End of Running Queue.
+
+
+***LISTING command issued (READY)***
+Start of Ready Queue.
+pid: [1;31;40m1	[0;29;39mpsw: 23	p_table: 42	regs: 23 23 12	priority: [1;36;40m1[0;29;39m	quantum_count: 1
+End of Ready Queue.
+
+
+################################################################################
+#[1;37;40m Test that waiting increases priority
+[0;29;39m################################################################################
+
+################################################################################
+#[1;37;40m Also test that aging works Note that this takes longer than it would in a
+[0;29;39m################################################################################
+
+################################################################################
+#[1;37;40m real-life situation to run the non-interactive processes again because the
+[0;29;39m################################################################################
+
+################################################################################
+#[1;37;40m interactive process always unwaits immediately after it waits.  But even so,
+[0;29;39m################################################################################
+
+################################################################################
+#[1;37;40m it still should age eventually.
+[0;29;39m################################################################################
+
+***CREATE command issued (PID: 2)***
+
+***CREATE command issued (PID: 2)***
+
+***WAIT command issued***
+
+***UNWAIT command issued (PID: 0)***
+
+***GO command issued***
+
+***LISTING command issued (ALL)***
+Start of New Queue.
+End of New Queue.
+
+Start of Waiting Queue.
+End of Waiting Queue.
+
+Start of Ready Queue.
+pid: [1;31;40m1	[0;29;39mpsw: 23	p_table: 42	regs: 23 23 12	priority: [1;36;40m2[0;29;39m	quantum_count: 0
+pid: [1;31;40m0	[0;29;39mpsw: 33	p_table: 11	regs: 17 15 13	priority: [1;36;40m3[0;29;39m	quantum_count: 1
+End of Ready Queue.
+
+Start of Terminated Queue.
+End of Terminated Queue.
+
+Start of Running Queue.
+pid: [1;31;40m2	[0;29;39mpsw: 1	p_table: 2	regs: 3 4 5	priority: [1;36;40m5[0;29;39m	quantum_count: 1
+End of Running Queue.
+
+
+***WAIT command issued***
+
+***UNWAIT command issued (PID: 2)***
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m2	[0;29;39mpsw: 1	p_table: 2	regs: 3 4 5	priority: [1;36;40m6[0;29;39m	quantum_count: 2
+End of Running Queue.
+
+
+***LISTING command issued (READY)***
+Start of Ready Queue.
+pid: [1;31;40m1	[0;29;39mpsw: 23	p_table: 42	regs: 23 23 12	priority: [1;36;40m2[0;29;39m	quantum_count: 1
+pid: [1;31;40m0	[0;29;39mpsw: 33	p_table: 11	regs: 17 15 13	priority: [1;36;40m3[0;29;39m	quantum_count: 2
+End of Ready Queue.
+
+
+***WAIT command issued***
+
+***UNWAIT command issued (PID: 2)***
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m2	[0;29;39mpsw: 1	p_table: 2	regs: 3 4 5	priority: [1;36;40m7[0;29;39m	quantum_count: 3
+End of Running Queue.
+
+
+***LISTING command issued (READY)***
+Start of Ready Queue.
+pid: [1;31;40m1	[0;29;39mpsw: 23	p_table: 42	regs: 23 23 12	priority: [1;36;40m3[0;29;39m	quantum_count: 0
+pid: [1;31;40m0	[0;29;39mpsw: 33	p_table: 11	regs: 17 15 13	priority: [1;36;40m4[0;29;39m	quantum_count: 0
+End of Ready Queue.
+
+
+***WAIT command issued***
+
+***UNWAIT command issued (PID: 2)***
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m2	[0;29;39mpsw: 1	p_table: 2	regs: 3 4 5	priority: [1;36;40m8[0;29;39m	quantum_count: 4
+End of Running Queue.
+
+
+***LISTING command issued (READY)***
+Start of Ready Queue.
+pid: [1;31;40m1	[0;29;39mpsw: 23	p_table: 42	regs: 23 23 12	priority: [1;36;40m3[0;29;39m	quantum_count: 1
+pid: [1;31;40m0	[0;29;39mpsw: 33	p_table: 11	regs: 17 15 13	priority: [1;36;40m4[0;29;39m	quantum_count: 1
+End of Ready Queue.
+
+
+***WAIT command issued***
+
+***UNWAIT command issued (PID: 2)***
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m2	[0;29;39mpsw: 1	p_table: 2	regs: 3 4 5	priority: [1;36;40m9[0;29;39m	quantum_count: 5
+End of Running Queue.
+
+
+***LISTING command issued (READY)***
+Start of Ready Queue.
+pid: [1;31;40m1	[0;29;39mpsw: 23	p_table: 42	regs: 23 23 12	priority: [1;36;40m3[0;29;39m	quantum_count: 2
+pid: [1;31;40m0	[0;29;39mpsw: 33	p_table: 11	regs: 17 15 13	priority: [1;36;40m4[0;29;39m	quantum_count: 2
+End of Ready Queue.
+
+
+***WAIT command issued***
+
+***UNWAIT command issued (PID: 2)***
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m2	[0;29;39mpsw: 1	p_table: 2	regs: 3 4 5	priority: [1;36;40m10[0;29;39m	quantum_count: 6
+End of Running Queue.
+
+
+***LISTING command issued (READY)***
+Start of Ready Queue.
+pid: [1;31;40m1	[0;29;39mpsw: 23	p_table: 42	regs: 23 23 12	priority: [1;36;40m4[0;29;39m	quantum_count: 0
+pid: [1;31;40m0	[0;29;39mpsw: 33	p_table: 11	regs: 17 15 13	priority: [1;36;40m4[0;29;39m	quantum_count: 3
+End of Ready Queue.
+
+
+***WAIT command issued***
+
+***UNWAIT command issued (PID: 2)***
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m2	[0;29;39mpsw: 1	p_table: 2	regs: 3 4 5	priority: [1;36;40m10[0;29;39m	quantum_count: 7
+End of Running Queue.
+
+
+***LISTING command issued (READY)***
+Start of Ready Queue.
+pid: [1;31;40m1	[0;29;39mpsw: 23	p_table: 42	regs: 23 23 12	priority: [1;36;40m4[0;29;39m	quantum_count: 1
+pid: [1;31;40m0	[0;29;39mpsw: 33	p_table: 11	regs: 17 15 13	priority: [1;36;40m5[0;29;39m	quantum_count: 0
+End of Ready Queue.
+
+
+***WAIT command issued***
+
+***UNWAIT command issued (PID: 2)***
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m2	[0;29;39mpsw: 1	p_table: 2	regs: 3 4 5	priority: [1;36;40m10[0;29;39m	quantum_count: 8
+End of Running Queue.
+
+
+***LISTING command issued (READY)***
+Start of Ready Queue.
+pid: [1;31;40m1	[0;29;39mpsw: 23	p_table: 42	regs: 23 23 12	priority: [1;36;40m4[0;29;39m	quantum_count: 2
+pid: [1;31;40m0	[0;29;39mpsw: 33	p_table: 11	regs: 17 15 13	priority: [1;36;40m5[0;29;39m	quantum_count: 1
+End of Ready Queue.
+
+
+***WAIT command issued***
+
+***UNWAIT command issued (PID: 2)***
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m2	[0;29;39mpsw: 1	p_table: 2	regs: 3 4 5	priority: [1;36;40m10[0;29;39m	quantum_count: 9
+End of Running Queue.
+
+
+***LISTING command issued (READY)***
+Start of Ready Queue.
+pid: [1;31;40m1	[0;29;39mpsw: 23	p_table: 42	regs: 23 23 12	priority: [1;36;40m4[0;29;39m	quantum_count: 3
+pid: [1;31;40m0	[0;29;39mpsw: 33	p_table: 11	regs: 17 15 13	priority: [1;36;40m5[0;29;39m	quantum_count: 2
+End of Ready Queue.
+
+
+***WAIT command issued***
+
+***UNWAIT command issued (PID: 2)***
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m2	[0;29;39mpsw: 1	p_table: 2	regs: 3 4 5	priority: [1;36;40m10[0;29;39m	quantum_count: 0
+End of Running Queue.
+
+
+***LISTING command issued (READY)***
+Start of Ready Queue.
+pid: [1;31;40m1	[0;29;39mpsw: 23	p_table: 42	regs: 23 23 12	priority: [1;36;40m5[0;29;39m	quantum_count: 0
+pid: [1;31;40m0	[0;29;39mpsw: 33	p_table: 11	regs: 17 15 13	priority: [1;36;40m5[0;29;39m	quantum_count: 3
+End of Ready Queue.
+
+
+***WAIT command issued***
+
+***UNWAIT command issued (PID: 2)***
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m2	[0;29;39mpsw: 1	p_table: 2	regs: 3 4 5	priority: [1;36;40m10[0;29;39m	quantum_count: 1
+End of Running Queue.
+
+
+***LISTING command issued (READY)***
+Start of Ready Queue.
+pid: [1;31;40m1	[0;29;39mpsw: 23	p_table: 42	regs: 23 23 12	priority: [1;36;40m5[0;29;39m	quantum_count: 1
+pid: [1;31;40m0	[0;29;39mpsw: 33	p_table: 11	regs: 17 15 13	priority: [1;36;40m5[0;29;39m	quantum_count: 4
+End of Ready Queue.
+
+
+***WAIT command issued***
+
+***UNWAIT command issued (PID: 2)***
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m2	[0;29;39mpsw: 1	p_table: 2	regs: 3 4 5	priority: [1;36;40m10[0;29;39m	quantum_count: 2
+End of Running Queue.
+
+
+***LISTING command issued (READY)***
+Start of Ready Queue.
+pid: [1;31;40m1	[0;29;39mpsw: 23	p_table: 42	regs: 23 23 12	priority: [1;36;40m5[0;29;39m	quantum_count: 2
+pid: [1;31;40m0	[0;29;39mpsw: 33	p_table: 11	regs: 17 15 13	priority: [1;36;40m6[0;29;39m	quantum_count: 0
+End of Ready Queue.
+
+
+***WAIT command issued***
+
+***UNWAIT command issued (PID: 2)***
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m2	[0;29;39mpsw: 1	p_table: 2	regs: 3 4 5	priority: [1;36;40m10[0;29;39m	quantum_count: 3
+End of Running Queue.
+
+
+***LISTING command issued (READY)***
+Start of Ready Queue.
+pid: [1;31;40m1	[0;29;39mpsw: 23	p_table: 42	regs: 23 23 12	priority: [1;36;40m5[0;29;39m	quantum_count: 3
+pid: [1;31;40m0	[0;29;39mpsw: 33	p_table: 11	regs: 17 15 13	priority: [1;36;40m6[0;29;39m	quantum_count: 1
+End of Ready Queue.
+
+
+***WAIT command issued***
+
+***UNWAIT command issued (PID: 2)***
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m2	[0;29;39mpsw: 1	p_table: 2	regs: 3 4 5	priority: [1;36;40m10[0;29;39m	quantum_count: 4
+End of Running Queue.
+
+
+***LISTING command issued (READY)***
+Start of Ready Queue.
+pid: [1;31;40m1	[0;29;39mpsw: 23	p_table: 42	regs: 23 23 12	priority: [1;36;40m5[0;29;39m	quantum_count: 4
+pid: [1;31;40m0	[0;29;39mpsw: 33	p_table: 11	regs: 17 15 13	priority: [1;36;40m6[0;29;39m	quantum_count: 2
+End of Ready Queue.
+
+
+***WAIT command issued***
+
+***UNWAIT command issued (PID: 2)***
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m2	[0;29;39mpsw: 1	p_table: 2	regs: 3 4 5	priority: [1;36;40m10[0;29;39m	quantum_count: 5
+End of Running Queue.
+
+
+***LISTING command issued (READY)***
+Start of Ready Queue.
+pid: [1;31;40m1	[0;29;39mpsw: 23	p_table: 42	regs: 23 23 12	priority: [1;36;40m6[0;29;39m	quantum_count: 0
+pid: [1;31;40m0	[0;29;39mpsw: 33	p_table: 11	regs: 17 15 13	priority: [1;36;40m6[0;29;39m	quantum_count: 3
+End of Ready Queue.
+
+
+***WAIT command issued***
+
+***UNWAIT command issued (PID: 2)***
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m2	[0;29;39mpsw: 1	p_table: 2	regs: 3 4 5	priority: [1;36;40m10[0;29;39m	quantum_count: 6
+End of Running Queue.
+
+
+***LISTING command issued (READY)***
+Start of Ready Queue.
+pid: [1;31;40m1	[0;29;39mpsw: 23	p_table: 42	regs: 23 23 12	priority: [1;36;40m6[0;29;39m	quantum_count: 1
+pid: [1;31;40m0	[0;29;39mpsw: 33	p_table: 11	regs: 17 15 13	priority: [1;36;40m6[0;29;39m	quantum_count: 4
+End of Ready Queue.
+
+
+***WAIT command issued***
+
+***UNWAIT command issued (PID: 2)***
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m2	[0;29;39mpsw: 1	p_table: 2	regs: 3 4 5	priority: [1;36;40m10[0;29;39m	quantum_count: 7
+End of Running Queue.
+
+
+***LISTING command issued (READY)***
+Start of Ready Queue.
+pid: [1;31;40m1	[0;29;39mpsw: 23	p_table: 42	regs: 23 23 12	priority: [1;36;40m6[0;29;39m	quantum_count: 2
+pid: [1;31;40m0	[0;29;39mpsw: 33	p_table: 11	regs: 17 15 13	priority: [1;36;40m6[0;29;39m	quantum_count: 5
+End of Ready Queue.
+
+
+***WAIT command issued***
+
+***UNWAIT command issued (PID: 2)***
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m2	[0;29;39mpsw: 1	p_table: 2	regs: 3 4 5	priority: [1;36;40m10[0;29;39m	quantum_count: 8
+End of Running Queue.
+
+
+***LISTING command issued (READY)***
+Start of Ready Queue.
+pid: [1;31;40m1	[0;29;39mpsw: 23	p_table: 42	regs: 23 23 12	priority: [1;36;40m6[0;29;39m	quantum_count: 3
+pid: [1;31;40m0	[0;29;39mpsw: 33	p_table: 11	regs: 17 15 13	priority: [1;36;40m7[0;29;39m	quantum_count: 0
+End of Ready Queue.
+
+
+***WAIT command issued***
+
+***UNWAIT command issued (PID: 2)***
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m2	[0;29;39mpsw: 1	p_table: 2	regs: 3 4 5	priority: [1;36;40m10[0;29;39m	quantum_count: 9
+End of Running Queue.
+
+
+***LISTING command issued (READY)***
+Start of Ready Queue.
+pid: [1;31;40m1	[0;29;39mpsw: 23	p_table: 42	regs: 23 23 12	priority: [1;36;40m6[0;29;39m	quantum_count: 4
+pid: [1;31;40m0	[0;29;39mpsw: 33	p_table: 11	regs: 17 15 13	priority: [1;36;40m7[0;29;39m	quantum_count: 1
+End of Ready Queue.
+
+
+***WAIT command issued***
+
+***UNWAIT command issued (PID: 2)***
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m2	[0;29;39mpsw: 1	p_table: 2	regs: 3 4 5	priority: [1;36;40m10[0;29;39m	quantum_count: 0
+End of Running Queue.
+
+
+***LISTING command issued (READY)***
+Start of Ready Queue.
+pid: [1;31;40m1	[0;29;39mpsw: 23	p_table: 42	regs: 23 23 12	priority: [1;36;40m6[0;29;39m	quantum_count: 5
+pid: [1;31;40m0	[0;29;39mpsw: 33	p_table: 11	regs: 17 15 13	priority: [1;36;40m7[0;29;39m	quantum_count: 2
+End of Ready Queue.
+
+
+***WAIT command issued***
+
+***UNWAIT command issued (PID: 2)***
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m2	[0;29;39mpsw: 1	p_table: 2	regs: 3 4 5	priority: [1;36;40m10[0;29;39m	quantum_count: 1
+End of Running Queue.
+
+
+***LISTING command issued (READY)***
+Start of Ready Queue.
+pid: [1;31;40m1	[0;29;39mpsw: 23	p_table: 42	regs: 23 23 12	priority: [1;36;40m7[0;29;39m	quantum_count: 0
+pid: [1;31;40m0	[0;29;39mpsw: 33	p_table: 11	regs: 17 15 13	priority: [1;36;40m7[0;29;39m	quantum_count: 3
+End of Ready Queue.
+
+
+***WAIT command issued***
+
+***UNWAIT command issued (PID: 2)***
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m2	[0;29;39mpsw: 1	p_table: 2	regs: 3 4 5	priority: [1;36;40m10[0;29;39m	quantum_count: 2
+End of Running Queue.
+
+
+***LISTING command issued (READY)***
+Start of Ready Queue.
+pid: [1;31;40m1	[0;29;39mpsw: 23	p_table: 42	regs: 23 23 12	priority: [1;36;40m7[0;29;39m	quantum_count: 1
+pid: [1;31;40m0	[0;29;39mpsw: 33	p_table: 11	regs: 17 15 13	priority: [1;36;40m7[0;29;39m	quantum_count: 4
+End of Ready Queue.
+
+
+***WAIT command issued***
+
+***UNWAIT command issued (PID: 2)***
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m2	[0;29;39mpsw: 1	p_table: 2	regs: 3 4 5	priority: [1;36;40m10[0;29;39m	quantum_count: 3
+End of Running Queue.
+
+
+***LISTING command issued (READY)***
+Start of Ready Queue.
+pid: [1;31;40m1	[0;29;39mpsw: 23	p_table: 42	regs: 23 23 12	priority: [1;36;40m7[0;29;39m	quantum_count: 2
+pid: [1;31;40m0	[0;29;39mpsw: 33	p_table: 11	regs: 17 15 13	priority: [1;36;40m7[0;29;39m	quantum_count: 5
+End of Ready Queue.
+
+
+***WAIT command issued***
+
+***UNWAIT command issued (PID: 2)***
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m2	[0;29;39mpsw: 1	p_table: 2	regs: 3 4 5	priority: [1;36;40m10[0;29;39m	quantum_count: 4
+End of Running Queue.
+
+
+***LISTING command issued (READY)***
+Start of Ready Queue.
+pid: [1;31;40m1	[0;29;39mpsw: 23	p_table: 42	regs: 23 23 12	priority: [1;36;40m7[0;29;39m	quantum_count: 3
+pid: [1;31;40m0	[0;29;39mpsw: 33	p_table: 11	regs: 17 15 13	priority: [1;36;40m7[0;29;39m	quantum_count: 6
+End of Ready Queue.
+
+
+***WAIT command issued***
+
+***UNWAIT command issued (PID: 2)***
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m2	[0;29;39mpsw: 1	p_table: 2	regs: 3 4 5	priority: [1;36;40m10[0;29;39m	quantum_count: 5
+End of Running Queue.
+
+
+***LISTING command issued (READY)***
+Start of Ready Queue.
+pid: [1;31;40m1	[0;29;39mpsw: 23	p_table: 42	regs: 23 23 12	priority: [1;36;40m7[0;29;39m	quantum_count: 4
+pid: [1;31;40m0	[0;29;39mpsw: 33	p_table: 11	regs: 17 15 13	priority: [1;36;40m8[0;29;39m	quantum_count: 0
+End of Ready Queue.
+
+
+***WAIT command issued***
+
+***UNWAIT command issued (PID: 2)***
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m2	[0;29;39mpsw: 1	p_table: 2	regs: 3 4 5	priority: [1;36;40m10[0;29;39m	quantum_count: 6
+End of Running Queue.
+
+
+***LISTING command issued (READY)***
+Start of Ready Queue.
+pid: [1;31;40m1	[0;29;39mpsw: 23	p_table: 42	regs: 23 23 12	priority: [1;36;40m7[0;29;39m	quantum_count: 5
+pid: [1;31;40m0	[0;29;39mpsw: 33	p_table: 11	regs: 17 15 13	priority: [1;36;40m8[0;29;39m	quantum_count: 1
+End of Ready Queue.
+
+
+***WAIT command issued***
+
+***UNWAIT command issued (PID: 2)***
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m2	[0;29;39mpsw: 1	p_table: 2	regs: 3 4 5	priority: [1;36;40m10[0;29;39m	quantum_count: 7
+End of Running Queue.
+
+
+***LISTING command issued (READY)***
+Start of Ready Queue.
+pid: [1;31;40m1	[0;29;39mpsw: 23	p_table: 42	regs: 23 23 12	priority: [1;36;40m7[0;29;39m	quantum_count: 6
+pid: [1;31;40m0	[0;29;39mpsw: 33	p_table: 11	regs: 17 15 13	priority: [1;36;40m8[0;29;39m	quantum_count: 2
+End of Ready Queue.
+
+
+***WAIT command issued***
+
+***UNWAIT command issued (PID: 2)***
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m2	[0;29;39mpsw: 1	p_table: 2	regs: 3 4 5	priority: [1;36;40m10[0;29;39m	quantum_count: 8
+End of Running Queue.
+
+
+***LISTING command issued (READY)***
+Start of Ready Queue.
+pid: [1;31;40m1	[0;29;39mpsw: 23	p_table: 42	regs: 23 23 12	priority: [1;36;40m8[0;29;39m	quantum_count: 0
+pid: [1;31;40m0	[0;29;39mpsw: 33	p_table: 11	regs: 17 15 13	priority: [1;36;40m8[0;29;39m	quantum_count: 3
+End of Ready Queue.
+
+
+***WAIT command issued***
+
+***UNWAIT command issued (PID: 2)***
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m2	[0;29;39mpsw: 1	p_table: 2	regs: 3 4 5	priority: [1;36;40m10[0;29;39m	quantum_count: 9
+End of Running Queue.
+
+
+***LISTING command issued (READY)***
+Start of Ready Queue.
+pid: [1;31;40m1	[0;29;39mpsw: 23	p_table: 42	regs: 23 23 12	priority: [1;36;40m8[0;29;39m	quantum_count: 1
+pid: [1;31;40m0	[0;29;39mpsw: 33	p_table: 11	regs: 17 15 13	priority: [1;36;40m8[0;29;39m	quantum_count: 4
+End of Ready Queue.
+
+
+***WAIT command issued***
+
+***UNWAIT command issued (PID: 2)***
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m2	[0;29;39mpsw: 1	p_table: 2	regs: 3 4 5	priority: [1;36;40m10[0;29;39m	quantum_count: 0
+End of Running Queue.
+
+
+***LISTING command issued (READY)***
+Start of Ready Queue.
+pid: [1;31;40m1	[0;29;39mpsw: 23	p_table: 42	regs: 23 23 12	priority: [1;36;40m8[0;29;39m	quantum_count: 2
+pid: [1;31;40m0	[0;29;39mpsw: 33	p_table: 11	regs: 17 15 13	priority: [1;36;40m8[0;29;39m	quantum_count: 5
+End of Ready Queue.
+
+
+***WAIT command issued***
+
+***UNWAIT command issued (PID: 2)***
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m2	[0;29;39mpsw: 1	p_table: 2	regs: 3 4 5	priority: [1;36;40m10[0;29;39m	quantum_count: 1
+End of Running Queue.
+
+
+***LISTING command issued (READY)***
+Start of Ready Queue.
+pid: [1;31;40m1	[0;29;39mpsw: 23	p_table: 42	regs: 23 23 12	priority: [1;36;40m8[0;29;39m	quantum_count: 3
+pid: [1;31;40m0	[0;29;39mpsw: 33	p_table: 11	regs: 17 15 13	priority: [1;36;40m8[0;29;39m	quantum_count: 6
+End of Ready Queue.
+
+
+***WAIT command issued***
+
+***UNWAIT command issued (PID: 2)***
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m2	[0;29;39mpsw: 1	p_table: 2	regs: 3 4 5	priority: [1;36;40m10[0;29;39m	quantum_count: 2
+End of Running Queue.
+
+
+***LISTING command issued (READY)***
+Start of Ready Queue.
+pid: [1;31;40m1	[0;29;39mpsw: 23	p_table: 42	regs: 23 23 12	priority: [1;36;40m8[0;29;39m	quantum_count: 4
+pid: [1;31;40m0	[0;29;39mpsw: 33	p_table: 11	regs: 17 15 13	priority: [1;36;40m8[0;29;39m	quantum_count: 7
+End of Ready Queue.
+
+
+***WAIT command issued***
+
+***UNWAIT command issued (PID: 2)***
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m2	[0;29;39mpsw: 1	p_table: 2	regs: 3 4 5	priority: [1;36;40m10[0;29;39m	quantum_count: 3
+End of Running Queue.
+
+
+***LISTING command issued (READY)***
+Start of Ready Queue.
+pid: [1;31;40m1	[0;29;39mpsw: 23	p_table: 42	regs: 23 23 12	priority: [1;36;40m8[0;29;39m	quantum_count: 5
+pid: [1;31;40m0	[0;29;39mpsw: 33	p_table: 11	regs: 17 15 13	priority: [1;36;40m9[0;29;39m	quantum_count: 0
+End of Ready Queue.
+
+
+***WAIT command issued***
+
+***UNWAIT command issued (PID: 2)***
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m2	[0;29;39mpsw: 1	p_table: 2	regs: 3 4 5	priority: [1;36;40m10[0;29;39m	quantum_count: 4
+End of Running Queue.
+
+
+***LISTING command issued (READY)***
+Start of Ready Queue.
+pid: [1;31;40m1	[0;29;39mpsw: 23	p_table: 42	regs: 23 23 12	priority: [1;36;40m8[0;29;39m	quantum_count: 6
+pid: [1;31;40m0	[0;29;39mpsw: 33	p_table: 11	regs: 17 15 13	priority: [1;36;40m9[0;29;39m	quantum_count: 1
+End of Ready Queue.
+
+
+***WAIT command issued***
+
+***UNWAIT command issued (PID: 2)***
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m2	[0;29;39mpsw: 1	p_table: 2	regs: 3 4 5	priority: [1;36;40m10[0;29;39m	quantum_count: 5
+End of Running Queue.
+
+
+***LISTING command issued (READY)***
+Start of Ready Queue.
+pid: [1;31;40m1	[0;29;39mpsw: 23	p_table: 42	regs: 23 23 12	priority: [1;36;40m8[0;29;39m	quantum_count: 7
+pid: [1;31;40m0	[0;29;39mpsw: 33	p_table: 11	regs: 17 15 13	priority: [1;36;40m9[0;29;39m	quantum_count: 2
+End of Ready Queue.
+
+
+***WAIT command issued***
+
+***UNWAIT command issued (PID: 2)***
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m2	[0;29;39mpsw: 1	p_table: 2	regs: 3 4 5	priority: [1;36;40m10[0;29;39m	quantum_count: 6
+End of Running Queue.
+
+
+***LISTING command issued (READY)***
+Start of Ready Queue.
+pid: [1;31;40m1	[0;29;39mpsw: 23	p_table: 42	regs: 23 23 12	priority: [1;36;40m9[0;29;39m	quantum_count: 0
+pid: [1;31;40m0	[0;29;39mpsw: 33	p_table: 11	regs: 17 15 13	priority: [1;36;40m9[0;29;39m	quantum_count: 3
+End of Ready Queue.
+
+
+***WAIT command issued***
+
+***UNWAIT command issued (PID: 2)***
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m2	[0;29;39mpsw: 1	p_table: 2	regs: 3 4 5	priority: [1;36;40m10[0;29;39m	quantum_count: 7
+End of Running Queue.
+
+
+***LISTING command issued (READY)***
+Start of Ready Queue.
+pid: [1;31;40m1	[0;29;39mpsw: 23	p_table: 42	regs: 23 23 12	priority: [1;36;40m9[0;29;39m	quantum_count: 1
+pid: [1;31;40m0	[0;29;39mpsw: 33	p_table: 11	regs: 17 15 13	priority: [1;36;40m9[0;29;39m	quantum_count: 4
+End of Ready Queue.
+
+
+***WAIT command issued***
+
+***UNWAIT command issued (PID: 2)***
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m2	[0;29;39mpsw: 1	p_table: 2	regs: 3 4 5	priority: [1;36;40m10[0;29;39m	quantum_count: 8
+End of Running Queue.
+
+
+***LISTING command issued (READY)***
+Start of Ready Queue.
+pid: [1;31;40m1	[0;29;39mpsw: 23	p_table: 42	regs: 23 23 12	priority: [1;36;40m9[0;29;39m	quantum_count: 2
+pid: [1;31;40m0	[0;29;39mpsw: 33	p_table: 11	regs: 17 15 13	priority: [1;36;40m9[0;29;39m	quantum_count: 5
+End of Ready Queue.
+
+
+***WAIT command issued***
+
+***UNWAIT command issued (PID: 2)***
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m2	[0;29;39mpsw: 1	p_table: 2	regs: 3 4 5	priority: [1;36;40m10[0;29;39m	quantum_count: 9
+End of Running Queue.
+
+
+***LISTING command issued (READY)***
+Start of Ready Queue.
+pid: [1;31;40m1	[0;29;39mpsw: 23	p_table: 42	regs: 23 23 12	priority: [1;36;40m9[0;29;39m	quantum_count: 3
+pid: [1;31;40m0	[0;29;39mpsw: 33	p_table: 11	regs: 17 15 13	priority: [1;36;40m9[0;29;39m	quantum_count: 6
+End of Ready Queue.
+
+
+***WAIT command issued***
+
+***UNWAIT command issued (PID: 2)***
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m2	[0;29;39mpsw: 1	p_table: 2	regs: 3 4 5	priority: [1;36;40m10[0;29;39m	quantum_count: 0
+End of Running Queue.
+
+
+***LISTING command issued (READY)***
+Start of Ready Queue.
+pid: [1;31;40m1	[0;29;39mpsw: 23	p_table: 42	regs: 23 23 12	priority: [1;36;40m9[0;29;39m	quantum_count: 4
+pid: [1;31;40m0	[0;29;39mpsw: 33	p_table: 11	regs: 17 15 13	priority: [1;36;40m9[0;29;39m	quantum_count: 7
+End of Ready Queue.
+
+
+***WAIT command issued***
+
+***UNWAIT command issued (PID: 2)***
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m2	[0;29;39mpsw: 1	p_table: 2	regs: 3 4 5	priority: [1;36;40m10[0;29;39m	quantum_count: 1
+End of Running Queue.
+
+
+***LISTING command issued (READY)***
+Start of Ready Queue.
+pid: [1;31;40m1	[0;29;39mpsw: 23	p_table: 42	regs: 23 23 12	priority: [1;36;40m9[0;29;39m	quantum_count: 5
+pid: [1;31;40m0	[0;29;39mpsw: 33	p_table: 11	regs: 17 15 13	priority: [1;36;40m9[0;29;39m	quantum_count: 8
+End of Ready Queue.
+
+
+***WAIT command issued***
+
+***UNWAIT command issued (PID: 2)***
+
+***GO command issued***
+
+***LISTING command issued (RUNNING)***
+Start of Running Queue.
+pid: [1;31;40m0	[0;29;39mpsw: 33	p_table: 11	regs: 17 15 13	priority: [1;36;40m10[0;29;39m	quantum_count: 0
+End of Running Queue.
+
+
+***LISTING command issued (READY)***
+Start of Ready Queue.
+pid: [1;31;40m1	[0;29;39mpsw: 23	p_table: 42	regs: 23 23 12	priority: [1;36;40m9[0;29;39m	quantum_count: 6
+pid: [1;31;40m2	[0;29;39mpsw: 1	p_table: 2	regs: 3 4 5	priority: [1;36;40m10[0;29;39m	quantum_count: 2
+End of Ready Queue.
+
+
+################################################################################
+#[1;37;40m Test the SET_PRIORITY command
+[0;29;39m################################################################################
+
+***CREATE command issued (PID: 3)***
+
+***CREATE command issued (PID: 3)***
+
+################################################################################
+#[1;37;40m Invalid priority
+[0;29;39m################################################################################
+
+***SET_PRIORITY command issued (PID: 3)***
+Could not SET_PRIORITY: Priority must be between 1 and 10
+
+***SET_PRIORITY command issued (PID: 3)***
+Could not SET_PRIORITY: Priority must be between 1 and 10
+
+################################################################################
+#[1;37;40m Value priority
+[0;29;39m################################################################################
+
+***SET_PRIORITY command issued (PID: 3)***
+
+***LISTING command issued (READY)***
+Start of Ready Queue.
+pid: [1;31;40m1	[0;29;39mpsw: 23	p_table: 42	regs: 23 23 12	priority: [1;36;40m9[0;29;39m	quantum_count: 6
+pid: [1;31;40m2	[0;29;39mpsw: 1	p_table: 2	regs: 3 4 5	priority: [1;36;40m10[0;29;39m	quantum_count: 2
+pid: [1;31;40m3	[0;29;39mpsw: 1	p_table: 32	regs: 43 4 5	priority: [1;36;40m3[0;29;39m	quantum_count: 0
+End of Ready Queue.
+
+
+################################################################################
+#[1;37;40m Invalid PID
+[0;29;39m################################################################################
+
+***SET_PRIORITY command issued (PID: 10)***
+Could not SET_PRIORITY: PID does not exist in ready queue
+

@@ -1,0 +1,132 @@
+# Initialize the manager
+INIT
+# Create more than 20 processes
+CREATE 33 11 17 15 13
+CREATE 35 11 12 9 1
+CREATE 12 2 10 19 3
+CREATE 26 15 6 12 16
+CREATE 11 18 7 9 2
+CREATE 30 12 3 7 15
+CREATE 29 2 2 18 9
+CREATE 17 18 16 11 2
+CREATE 29 23 1 19 4
+CREATE 37 23 4 15 10
+CREATE 13 1 11 0 16
+CREATE 23 12 10 16 1
+CREATE 5 0 4 7 16
+CREATE 5 21 9 13 17
+CREATE 24 20 2 5 14
+CREATE 17 9 4 3 10
+CREATE 37 8 16 18 8
+CREATE 34 3 11 14 19
+CREATE 32 10 16 8 19
+CREATE 12 1 6 14 19
+CREATE 45 20 14 18 7
+# Reset the manager
+INIT
+# Create some processes to play with
+CREATE 1 22 2 17 12
+CREATE 2 6 1 0 6
+CREATE 41 15 9 4 19
+CREATE 40 4 11 17 17
+CREATE 21 6 15 9 7
+CREATE 17 6 17 13 6
+# Test if two go's in a row cause an error
+GO
+GO
+# Reset the manager
+INIT
+# Test go with no ready process gives an error
+GO
+# Test that everything goes where it should
+INIT
+LIST ALL
+CREATE 33 11 17 15 13
+CREATE 35 11 12 9 1
+CREATE 12 2 10 19 3
+CREATE 26 15 6 12 16
+CREATE 11 18 7 9 2
+CREATE 30 12 3 7 15
+GO
+LIST ALL
+WAIT
+LIST ALL
+UNWAIT 1
+LIST ALL
+GO
+EOQUANTUM
+LIST ALL
+GO
+EOLIFE
+LIST ALL
+# Reset
+INIT
+# EOQUANTUM, WAIT, and EOLIFE should give an error on empty running queue
+EOQUANTUM
+EOLIFE
+WAIT
+# UNWAIT should give an error on empty wait queue
+UNWAIT 1
+CREATE 33 11 17 15 13
+GO
+WAIT
+LIST WAITING
+# UNWAIT non-waited PID should give error
+UNWAIT 2
+CREATE 35 11 12 9 1
+UNWAIT 2
+# Reset
+INIT
+# Create a process with an already existing PID
+# We have to do this manually (it can't be done with the test generator)
+# Test it for being in each queue
+# Ready
+CREATE 1 1 1 1 1
+LIST RUNNING
+CREATE 1 1 1 1 1
+LIST RUNNING
+# Waiting
+GO
+WAIT
+LIST WAITING
+CREATE 1 1 1 1 1
+UNWAIT 3
+# Running
+GO
+LIST RUNNING
+CREATE 1 1 1 1 1
+# Terminated
+EOLIFE
+LIST TERMINATED
+CREATE 1 1 1 1 1
+# We can't exactly test New :)
+# Do something more real life
+INIT
+CREATE 33 11 17 15 13
+CREATE 35 11 12 9 1
+GO
+EOQUANTUM
+CREATE 12 2 10 19 3
+GO
+WAIT
+GO
+EOLIFE
+UNWAIT 2
+LIST ALL
+LIST SCHED
+# Test the list sched works correctly on empty ready queue
+INIT
+LIST SCHED
+# Test that we can unwait processes that aren't at the top of the queue
+INIT
+CREATE 33 11 17 15 13
+CREATE 35 11 12 9 1
+CREATE 12 2 10 19 3
+GO
+WAIT
+GO
+WAIT
+GO
+WAIT
+UNWAIT 2
+LIST ALL
