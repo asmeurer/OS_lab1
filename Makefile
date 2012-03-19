@@ -26,6 +26,12 @@ scheduler_testgenerator.o: scheduler_testgenerator.c definitions.h queuemanager.
 textcolor.o: textcolor.c
 	gcc -Wall -c textcolor.c -o textcolor.o
 
+ipc_queuemanager.o: ipc_queuemanager.c ipc_queuemanager.h definitions.h
+	gcc -Wall -c ipc_queuemanager.c -o ipc_queuemanager.o
+
+ipc.o: ipc.c ipc_queuemanager.h ipc.h definitions.h
+	gcc -Wall -c ipc.c -o ipc.c
+
 clean:
 	-rm -f *.o
 
