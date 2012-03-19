@@ -126,6 +126,7 @@ void list_sched(){
 	int i = 0;
 	enum QUEUES temp_current_group;
     if (scheduler == GROUP){
+		/*Save current group*/
 		temp_current_group = current_group;
         temp = get_process(current_group);
         while (i < 4){
@@ -142,6 +143,7 @@ void list_sched(){
 			}
 			i++;
 		}
+		/*Reset current group*/
 		current_group = temp_current_group;
     }
     else{
