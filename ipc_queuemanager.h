@@ -1,4 +1,4 @@
-/* The Queue manager header file.
+/* The IPC Queue manager header file.
 
    Group 2
    Aaron Meurer
@@ -6,8 +6,8 @@
    Sheng Lundquist
 */
 
-#ifndef QUEUE_MANAGER_H
-#define QUEUE_MANAGER_H
+#ifndef IPC_QUEUE_MANAGER_H
+#define IPC_QUEUE_MANAGER_H
 
 #include "definitions.h"
 void init(enum SCHEDS current_scheduler);

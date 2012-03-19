@@ -1,4 +1,4 @@
-/* The Queue manager!
+/* The IPC Queue manager!
 
    Group 2
    Aaron Meurer
@@ -6,7 +6,7 @@
    Sheng Lundquist
 */
 
-#include "queuemanager.h"
+#include "ipc_queuemanager.h"
 
 struct process_control_block _new[1];
 struct process_control_block _waiting[MAX_PROCESSES];
