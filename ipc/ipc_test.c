@@ -16,9 +16,28 @@
 #include <stdlib.h>
 #include <string.h>
 
-void printmessage(struct message MESSAGE){
-    printf("message: ");
+void list_MQ(enum MESSAGE_QUEUES queuelist){
+    struct queue_message_t *structqueue = get_message(queuelist);
+    struct message *temp = structqueue->head;
+    printf("Start of %s message queue.", queuelist);
+
+    while(temp){
+        printmessage(*temp);
+	temp = temp->prev;
+    }	
 }
+
+void printmessage(struct message MESSAGE){
+    int i=0;	
+    printf("message: \n");
+    for(i = 0; i<0;i++){
+	printf("%c", MESSAGE.string[i]);
+    }	    
+}
+
+
+
+
 
 /*
 **
@@ -142,19 +161,19 @@ int main(int argc, char *argv[]) {
             else if (!strcmp(command, "HAS_MESSAGE")){
                 error = fscanf(file, " %s", &dest);
                 if(error == 1){
-                    printf("\n***HAS_MESSAGE command issued***");
+                    printf("\n***HAS_MESSAGE command issued***\n");
                     error = has_message(atoi(dest));
                     if(error == ERROR_QUEUE_EMPTY){
                         printf("FALSE");
                     }
                     else if(error == ERROR_QUEUE_NOT_EXIST){
-                        printf("Queue specified does not exist");
+                        printf("Queue specified does not exist\n");
                     }
                     else if(error == ERROR_SUCCESS){
-                        printf("TRUE");
+                        printf("TRUE\n");
                     }
                 }else{
-                    printf("Usage: HAS_MESSAGE <queuename> ");
+                    printf("Usage: HAS_MESSAGE <queuename> \n");
                 }
             }
 
@@ -165,13 +184,13 @@ int main(int argc, char *argv[]) {
 
                     error = send(atoi(source), atoi(dest), message);
                     if(error == ERROR_QUEUE_FULL){
-                        printf("Destination queue full");
+                        printf("Destination queue full\n");
                     }
                     else if(error == ERROR_QUEUE_NOT_EXIST){
-                        printf("Destination queue does not exist");
+                        printf("Destination queue does not exist\n");
                     }
                     else if(error == ERROR_MAX_STRING_LENGTH){
-                        printf("The message length was too long.");
+                        printf("The message length was too long.\n");
                     }
                 }
                 else{
@@ -184,14 +203,14 @@ int main(int argc, char *argv[]) {
                     printf("\n***RETRIEVE command issued ***\n");
                     /*error = retrieve(dest); */
                     if(error == ERROR_QUEUE_EMPTY){
-                        printf("Queue does not exist");
+                        printf("Queue does not exist\n");
                     }
                     else if(error == ERROR_QUEUE_NOT_EXIST){
-                        printf("Queue does not exist");
+                        printf("Queue does not exist\n");
                     }
                 }
                 else{
-                    printf("Usage: RETRIEVE <destination> ");
+                    printf("Usage: RETRIEVE <destination>\n ");
 
                 }
             }
