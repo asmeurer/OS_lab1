@@ -8,9 +8,11 @@
 
 #ifndef IPC_H
 #define IPC_H
-#include "ipc_definitions.h"
 
-int send(enum message_queue_enum source_queue, enum message_queue_enum dest_queue, char* message_string);
+#include "ipc_definitions.h"
+#include "ipc_queuemanager.h"
+
+int send(enum MESSAGE_QUEUES source_queue, enum MESSAGE_QUEUES dest_queue, char* message_string);
 int retrieve(enum message_queue_enum dest_queue, char* buffer);
 
 #endif

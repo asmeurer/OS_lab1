@@ -26,29 +26,22 @@ int message_len(char* message_string){
 }
 
 
-int send(enum MESSAGE_QUEUES dest_queue, int source, char* message_string){
-    int error;
+int send(enum MESSAGE_QUEUES source_queue, enum MESSAGE_QUEUES dest_queue, char* message_string){
     if (message_len(message_string) == ERROR_MAX_STRING_LENGTH){
 		return ERROR_MAX_STRING_LENGTH;
 	}
-	error = enqueue(dest_queue, source, int destination, char *string);
-	
-	
-	
-    struct message temp = dequeue(from_queue);
-    /*Nothing in queue, recoverable*/
-    if(temp.pid == ERROR_QUEUE_EMPTY){
-        return ERROR_QUEUE_EMPTY;
-    }
-    int error = enqueue(to_queue, temp.pid, temp.psw, temp.page_table, temp.regs, temp.priority, temp.quantum_count, temp.group);
-    /*Queue full, recoverable error*/
-    if(error == ERROR_QUEUE_FULL){
-        return ERROR_QUEUE_FULL;
-    }
-    return ERROR_SUCCESS;
+	return enqueue(source, destination, message_string);
 }
 
 int retrieve(enum message_queue_enum dest_queue, char* buffer){
+	struct message temp = dequeue(dest_queue);
+	if (temp.source = -1){
+		return ERROR_QUEUE_EMPTY;
+	}
+	else{
+		buffer = temp.string;
+		return ERROR_SUCCESS;
+	}
 	
 }
 
