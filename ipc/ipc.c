@@ -7,6 +7,7 @@
 */
 #include "ipc.h"
 
+/*Array is an array of 10 integers of 0 for not initalized and 1 for initalized*/
 void init(int array[]){
 	int i;
 	for (i = 0; i < 10; i++){
