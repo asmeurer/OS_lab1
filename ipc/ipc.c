@@ -44,4 +44,3 @@ int retrieve(enum MESSAGE_QUEUES dest_queue, char* buffer){
 	}
 	
 }
-
