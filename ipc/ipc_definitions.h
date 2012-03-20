@@ -12,11 +12,7 @@
 #ifndef IPC_DEF_H
 #define IPC_DEF_H
 
-#define MAX_QUANTUM 5
 #define null 0
-#define NUM_REGS 3
-#define MAX_PROCESSES 20
-#define MAX_PRIORITY 10
 #define MAX_MESSAGES 5
 #define MESSAGE_SIZE 256
 
@@ -24,8 +20,9 @@
 #define ERROR_SUCCESS 0
 #define ERROR_QUEUE_EMPTY -1
 #define ERROR_QUEUE_FULL -2
-#define ERROR_QUEUE_NOT_EXIST -3
-#define ERROR_MAX_STRING_LENGTH -4
+#define ERROR_SOURCE_QUEUE_NOT_EXIST -3
+#define ERROR_DEST_QUEUE_NOT_EXIST -4
+#define ERROR_MAX_STRING_LENGTH -5
 
 enum MESSAGE_QUEUES {
     ZERO,

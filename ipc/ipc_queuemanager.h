@@ -11,7 +11,7 @@
 
 #include "ipc_definitions.h"
 
-void init(enum MESSAGE_QUEUES message_queue_enum);
+void init_queue(enum MESSAGE_QUEUES message_queue_enum);
 struct queue_message_t *get_message(enum MESSAGE_QUEUES message_queue_enum);
 struct message *find_nonempty(struct queue_message_t *queue);
 int enqueue(enum MESSAGE_QUEUES source, enum MESSAGE_QUEUES destination, char *string);

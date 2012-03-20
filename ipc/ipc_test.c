@@ -61,7 +61,14 @@ int main(int argc, char *argv[]) {
     char source[15];
     char message[256];
     char args[10][10];
-    char line[80];
+    char line[LINE_MAX];
+    int init_num[10];
+    char init_arg[50];
+    char *end_temp;
+    unsigned long temp_val;
+    int i = 0;
+    int j = 0;
+    
     FILE *file;
     if (argc == 1){
         file = stdin;
@@ -87,10 +94,47 @@ int main(int argc, char *argv[]) {
             /* printf("%s\n", command); */
 
             if (!strcmp(command, "INIT_IPC")) {
-                error = fscanf(file, " %s", args[0]);
-
+                fgets(line, LINE_MAX, file);
+                printf("\n!!!!!!!!!!!!!!!!\nLINE VALUE: CHECK IF PARAMETERS OF INIT\nLine: %s\n!!!!!!!!!!!!!!!!!!!!!!!\n", line);
+				error = 1;
+				
+				/*Initialize init_num as -1*/
+				for(i = 0; i < 10; i++){
+					init_num[i] = -1;
+				}
+				
+				/*Initial split of line*/
+				init_arg = strtok(line, " ");
+				/*If no arguments*/
+				if (init_arg = NULL){
+					error = 0;
+				}
+                while (init_arg != NULL){
+					/*End pointer for strtoul*/
+					end_temp = init_arg
+					/*Set for strtoul*/
+					errno = 0;
+					/*Convert string value to unsigned long*/
+					temp_val = strtoul(init_arg, &end_temp, 10);
+					/*Check if errno is set off for not a number, or if more than 10 arguments*/
+					if (errno != 0 || i >= 10){
+						error = 0;
+						break;
+					}
+					/*Store value*/
+					init_num[i] = (int)temp_val;
+					i++;
+					/*Next token*/
+					init_arg = strtok(NULL, " ");
+				}
+                
                 if (error == 1){
-                    init();
+					deinit();
+					i = 0;
+					while(i < 10 || init_num[i] != -1){
+						init_queue(init_num[i]);
+						i++;
+					}
                 }
                 else{
                     printf("Usage: INIT <manager1 | manager2| ...| managerN >>\n");
