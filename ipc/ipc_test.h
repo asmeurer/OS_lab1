@@ -6,13 +6,8 @@
    Sheng Lundquist
 */
 
-#include "definitions.h"
+#include"ipc_definitions.h"
 #include<stdio.h>
-#include<string.h>
-#include<stdlib.h>
 
-void printmessage(struct message);
-
-
-
-#endif
+void printmessage(struct message MESSAGE);
+char *fgetstring(FILE* fFile);

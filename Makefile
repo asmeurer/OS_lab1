@@ -38,6 +38,9 @@ ipc/ipc_queuemanager.o: ipc/ipc_queuemanager.c ipc/ipc_queuemanager.h process_ma
 ipc/ipc.o: ipc/ipc.c ipc/ipc_queuemanager.h ipc/ipc.h process_manager/definitions.h
 	$(CC) $(FLAGS) -c ipc/ipc.c -o ipc/ipc.o
 
+ipc_test.o: ipc/ipc_test.c ipc/ipc_test.h ../shared/textcolor.c ipc/ipc_definitions.h ipc/ipc_queuemanager.h ipc/ipc.c ipc/ipc.h
+	$(CC) $(FLAGS) ipc/ipc_test.c -o ipc/ipc_test.o
+
 clean:
 	-rm -f process_manager/*.o ipc/*o shared/*.o
 
