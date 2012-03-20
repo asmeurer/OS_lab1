@@ -45,19 +45,20 @@ struct message
 {
     int source;
     int destination;
-    char string[256];
+    char string[MESSAGE_SIZE];
     struct message *next;
     struct message *prev;
     int empty;
-}
+};
 
-    struct queue_message_t
-    {
-        struct message *head;
-        struct message *tail;
-        int size;
-        struct message *top;
-    }
+
+struct queue_message_t
+{
+    struct message *head;
+    struct message *tail;
+    int size;
+    struct message *top;
+};
 
 
 #endif
