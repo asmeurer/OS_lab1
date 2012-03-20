@@ -11,6 +11,7 @@
 
 #include "ipc_definitions.h"
 
+void deinit();
 void init_queue(enum MESSAGE_QUEUES message_queue_enum);
 struct queue_message_t *get_message(enum MESSAGE_QUEUES message_queue_enum);
 struct message *find_nonempty(struct queue_message_t *queue);
@@ -19,5 +20,6 @@ void clear(struct message *process);
 struct message *find_message(enum MESSAGE_QUEUES message_queue_enum, int pid);
 struct message dequeue(enum MESSAGE_QUEUES message_queue_enum);
 struct message delete(enum MESSAGE_QUEUES message_queue_enum, struct message *temp);
+int has_message(enum MESSAGE_QUEUES check);
 
 #endif

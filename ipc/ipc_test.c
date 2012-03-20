@@ -55,7 +55,6 @@ char *fgetstring(FILE* fFile){
 
 int main(int argc, char *argv[]) {
     int error = 0;
-    int choice[10];
     char command[20];
     char dest[15];
     char source[15];
@@ -63,12 +62,11 @@ int main(int argc, char *argv[]) {
     char args[10][10];
     char line[LINE_MAX];
     int init_num[10];
-    char init_arg[50];
+    char *init_arg;
     char *end_temp;
     unsigned long temp_val;
     int i = 0;
-    int j = 0;
-    
+
     FILE *file;
     if (argc == 1){
         file = stdin;
@@ -97,21 +95,21 @@ int main(int argc, char *argv[]) {
                 fgets(line, LINE_MAX, file);
                 printf("\n!!!!!!!!!!!!!!!!\nLINE VALUE: CHECK IF PARAMETERS OF INIT\nLine: %s\n!!!!!!!!!!!!!!!!!!!!!!!\n", line);
 				error = 1;
-				
+
 				/*Initialize init_num as -1*/
 				for(i = 0; i < 10; i++){
 					init_num[i] = -1;
 				}
-				
+
 				/*Initial split of line*/
 				init_arg = strtok(line, " ");
 				/*If no arguments*/
-				if (init_arg = NULL){
+				if (init_arg == NULL){
 					error = 0;
 				}
                 while (init_arg != NULL){
 					/*End pointer for strtoul*/
-					end_temp = init_arg
+					end_temp = init_arg;
 					/*Set for strtoul*/
 					errno = 0;
 					/*Convert string value to unsigned long*/
@@ -127,7 +125,7 @@ int main(int argc, char *argv[]) {
 					/*Next token*/
 					init_arg = strtok(NULL, " ");
 				}
-                
+
                 if (error == 1){
 					deinit();
 					i = 0;
@@ -189,15 +187,18 @@ int main(int argc, char *argv[]) {
                     printf("\n***HAS_MESSAGE command issued***");
                     error = has_message(atoi(dest));
                     if(error == ERROR_QUEUE_EMPTY){
-                        printf("FALSE");
+                        printf("FALSE\n");
                     }
-                    else if(error == ERROR_QUEUE_NOT_EXIST){
-                        printf("Queue specified does not exist");
+                    else if(error == ERROR_DEST_QUEUE_NOT_EXIST){
+                        printf("Queue specified does not exist\n");
                     }
                     else if(error == ERROR_SUCCESS){
-                        printf("TRUE");
+                        printf("TRUE\n");
+                    } else {
+                        printf("Unexpected error!\n");
                     }
-                }else{
+
+                } else {
                     printf("Usage: HAS_MESSAGE <queuename> ");
                 }
             }
@@ -211,12 +212,19 @@ int main(int argc, char *argv[]) {
                     if(error == ERROR_QUEUE_FULL){
                         printf("Destination queue full");
                     }
-                    else if(error == ERROR_QUEUE_NOT_EXIST){
+                    else if (error == ERROR_SOURCE_QUEUE_NOT_EXIST) {
+                        printf("Source queue does not exist\n");
+                    }
+                    else if(error == ERROR_DEST_QUEUE_NOT_EXIST){
                         printf("Destination queue does not exist");
                     }
                     else if(error == ERROR_MAX_STRING_LENGTH){
                         printf("The message length was too long.");
                     }
+                    else {
+                        printf("Unexpected error!\n");
+                    }
+
                 }
                 else{
                     printf("Usage: SEND <source destination message>\n");
@@ -230,8 +238,10 @@ int main(int argc, char *argv[]) {
                     if(error == ERROR_QUEUE_EMPTY){
                         printf("Queue does not exist");
                     }
-                    else if(error == ERROR_QUEUE_NOT_EXIST){
+                    else if(error == ERROR_DEST_QUEUE_NOT_EXIST){
                         printf("Queue does not exist");
+                    } else {
+                        printf("Unexpected Error!\n");
                     }
                 }
                 else{

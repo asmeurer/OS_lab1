@@ -7,18 +7,10 @@
 */
 #include "ipc.h"
 
-/*Array is an array of 10 integers of 0 for not initalized and 1 for initalized*/
-void init(int array[]){
-	int i;
-	for (i = 0; i < 10; i++){
-		init_queue(i, array[i]);
-	}
-}
-
 int message_len(char* message_string){
 	int i;
 	int overflow = 1;
-	
+
 	for(i = 0; i < MESSAGE_SIZE; i++){
 		if (message_string[i] == '\0'){
 			overflow = 0;
@@ -54,5 +46,5 @@ int retrieve(enum MESSAGE_QUEUES dest_queue, char* buffer){
 		buffer = temp.string;
 		return ERROR_SUCCESS;
 	}
-	
+
 }
