@@ -1,3 +1,6 @@
+.DEFAULT_GOAL := all
+.PHONY := clean check-syntax all
+
 SOURCES:=$(shell find . -name "*.c" | sed 's/\.\///g')
 
 CC=cc
