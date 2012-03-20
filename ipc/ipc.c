@@ -26,12 +26,12 @@ int message_len(char* message_string){
 }
 
 
-int send(enum MESSAGE_QUEUES source_queue, enum MESSAGE_QUEUES dest_queue, char* message_string){
+int send(enum MESSAGE_QUEUES dest_queue, int source, char* message_string){
     int error;
     if (message_len(message_string) == ERROR_MAX_STRING_LENGTH){
 		return ERROR_MAX_STRING_LENGTH;
 	}
-	error = enqueue(dest_queue, int source, int destination, char *string)
+	error = enqueue(dest_queue, source, int destination, char *string);
 	
 	
 	

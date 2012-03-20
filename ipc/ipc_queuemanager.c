@@ -267,7 +267,7 @@ struct message dequeue(enum MESSAGE_QUEUES message_queue_enum){
     struct queue_message_t *queue = get_message(message_queue_enum);
     /*If queue is empty*/
     if (queue->head == null){
-        error_message.pid = ERROR_QUEUE_EMPTY;
+        error_message.source = ERROR_QUEUE_EMPTY;
         return error_message;
     }
 
@@ -285,60 +285,4 @@ struct message dequeue(enum MESSAGE_QUEUES message_queue_enum){
     }
     clear(temp);
     return(ret);
-}
-
-struct message *find_process(enum QUEUES queue_enum, int id){
-    struct queue_message_t *queue = get_message(queue_enum);
-
-    struct message *temp = queue->tail;
-    while(temp != null){
-        if(id == temp->pid){
-            return temp;
-        }
-        temp = temp->next;
-    }
-    return null;
-}
-
-/**
- * @param queue The queue that it is deleating from
- * @param temp The process control block that is being deleted
- */
-struct message delete(enum QUEUES queue_enum, struct message *temp){
-    struct queue_message_t *queue = get_message(queue_enum);
-
-    if (queue->head == null && queue->tail == null) {
-        /* The queue is empty */
-        error_process.pid = ERROR_QUEUE_EMPTY;
-        return error_process;
-    }
-
-    /*If process doesn't exist*/
-    if (temp == null){
-        error_process.pid = ERROR_PROCESS_NOT_EXIST;
-        return error_process;
-    }
-    struct message ret = *temp;
-    /*If entry is only one in queue*/
-    if(temp->next == null && temp->prev == null){
-        queue->head = null;
-        queue->tail = null;
-    }
-    /*If entry is at tail*/
-    else if(temp->prev == null){
-        queue->tail = temp->next;
-        queue->tail->prev = null;
-    }
-    /*If entry is at head*/
-    else if(temp->next == null){
-        queue->head = temp->prev;
-        queue->head->next = null;
-    }
-    /*If entry is in the middle*/
-    else{
-        temp->prev->next = temp->next;
-        temp->next->prev = temp->prev;
-    }
-    clear(temp);
-    return (ret);
 }

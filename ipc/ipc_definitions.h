@@ -44,21 +44,23 @@ enum MESSAGE_QUEUES {
 
 struct message
 {
+
     enum MESSAGE_QUEUES source;
     enum MESSAGE_QUEUES destination;
     char string[MESSAGE_SIZE];
     struct message *next;
     struct message *prev;
     int empty;
-}
+};
+
 
 struct queue_message_t
 {
-	struct message *head;
-	struct message *tail;
-	int size;
-	struct message *top;
-}
+    struct message *head;
+    struct message *tail;
+    int size;
+    struct message *top;
+};
 
 
 #endif
