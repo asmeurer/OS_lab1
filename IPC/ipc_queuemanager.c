@@ -7,7 +7,7 @@
 */
 
 #include"ipc_queuemanager.h"
-#include"definitions.h"
+#include"ipc_definitions.h"
 
 struct message _0[MAX_MESSAGES];
 struct message _1[MAX_MESSAGES];
