@@ -292,7 +292,7 @@ int enqueue(enum MESSAGE_QUEUES source, enum MESSAGE_QUEUES destination, char *s
     return(ERROR_SUCCESS);
 }
 
-/*Process must exist for clear function*/
+/*message must exist for clear function*/
 void clear(struct message *m){
     int i = 0;
     m->source = -1;
@@ -303,7 +303,7 @@ void clear(struct message *m){
     m->next = null;
     m->prev = null;
     /*Set as empty*/
-    m->empty = 0;
+    m->empty = 1;
 }
 
 
@@ -317,9 +317,9 @@ struct message dequeue(enum MESSAGE_QUEUES message_queue_enum){
     }
 
     if (queue->initialized == 0){
-		error_message.source = ERROR_DEST_QUEUE_NOT_EXIST;
-		return error_message;
-	}
+        error_message.source = ERROR_DEST_QUEUE_NOT_EXIST;
+        return error_message;
+    }
 
     struct message ret = *queue->head;
     struct message *temp = queue->head;
