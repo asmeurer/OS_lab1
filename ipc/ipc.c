@@ -7,12 +7,34 @@
 */
 #include "ipc.h"
 
-int 
+int message_len(char* message_string){
+	int i;
+	int overflow = 1;
+	
+	for(i = 0; i < MESSAGE_SIZE; i++){
+		if (message_string[i] == '\0'){
+			overflow = 0;
+			break;
+		}
+	}
+	if (overflow){
+		return ERROR_MAX_STRING_LENGTH;
+	}
+	else{
+		return i;
+	}
+}
 
 
-int send(enum message_queue_enum source_queue, enum message_queue_enum dest_queue, char* message_string){
-    
-    
+int send(enum MESSAGE_QUEUES source_queue, enum MESSAGE_QUEUES dest_queue, char* message_string){
+    int error;
+    if (message_len(message_string) == ERROR_MAX_STRING_LENGTH){
+		return ERROR_MAX_STRING_LENGTH;
+	}
+	error = enqueue(dest_queue, int source, int destination, char *string)
+	
+	
+	
     struct message temp = dequeue(from_queue);
     /*Nothing in queue, recoverable*/
     if(temp.pid == ERROR_QUEUE_EMPTY){

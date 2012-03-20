@@ -44,9 +44,9 @@ enum MESSAGE_QUEUES {
 
 struct message
 {
-    int source;
-    int destination;
-    char string[256];
+    enum MESSAGE_QUEUES source;
+    enum MESSAGE_QUEUES destination;
+    char string[MESSAGE_SIZE];
     struct message *next;
     struct message *prev;
     int empty;
