@@ -11,10 +11,12 @@
 #include "../shared/textcolor.c"
 #include "ipc_definitions.h"
 #include "ipc_queuemanager.h"
+#include "ipc.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
-
-void printmessage(struct message){
-    int i =0;
+void printmessage(struct message MESSAGE){
     printf("message: ");
 }
 
@@ -126,7 +128,7 @@ int main(int argc, char *argv[]) {
 
                     }
                     else if (!strcmp(args[0], "NINE")){
-                        LIST();
+
                     }
                     else{
                         printf("Usage: LIST <queuename>\n");
@@ -160,7 +162,7 @@ int main(int argc, char *argv[]) {
                 if (error == 1){
                     printf("\n***SEND command issued ***\n");
 
-                    error = send(source, dest, message);
+                    error = send(atoi(source), atoi(dest), message);
                     if(error == ERROR_QUEUE_FULL){
                         printf("Destination queue full");
                     }
@@ -190,17 +192,6 @@ int main(int argc, char *argv[]) {
                 else{
                     printf("Usage: RETRIEVE <destination> ");
 
-                }
-            }
-            else if (!strcmp(command, "WAIT")) {
-                printf("\n***WAIT command issued***\n");
-                error = wait_();
-                if (error == ERROR_QUEUE_EMPTY){
-                    printf("Could not WAIT: No running processes\n");
-                }
-                else if (error == ERROR_QUEUE_FULL){
-                    printf("FATAL ERROR: %s\n", error_to_string(error));
-                    exit(-1);
                 }
             }
             else if (!strcmp(command, "#")) {
