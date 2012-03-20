@@ -316,9 +316,9 @@ struct message dequeue(enum MESSAGE_QUEUES message_queue_enum){
     }
 
     if (queue->initialized == 0){
-		error_message.source = ERROR_DEST_QUEUE_NOT_EXIST;
-		return error_message;
-	}
+        error_message.source = ERROR_DEST_QUEUE_NOT_EXIST;
+        return error_message;
+    }
 
     struct message ret = *queue->head;
     struct message *temp = queue->head;
