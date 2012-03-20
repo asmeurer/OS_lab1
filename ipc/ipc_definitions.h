@@ -12,11 +12,7 @@
 #ifndef IPC_DEF_H
 #define IPC_DEF_H
 
-#define MAX_QUANTUM 5
 #define null 0
-#define NUM_REGS 3
-#define MAX_PROCESSES 20
-#define MAX_PRIORITY 10
 #define MAX_MESSAGES 5
 #define MESSAGE_SIZE 256
 
