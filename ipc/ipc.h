@@ -12,7 +12,8 @@
 #include "ipc_definitions.h"
 #include "ipc_queuemanager.h"
 
+
 int send(enum MESSAGE_QUEUES source_queue, enum MESSAGE_QUEUES dest_queue, char* message_string);
-int retrieve(enum message_queue_enum dest_queue, char* buffer);
+int retrieve(enum MESSAGE_QUEUES dest_queue, char* buffer);
 
 #endif
