@@ -98,7 +98,7 @@ struct message error_message  =
  .empty = 0
 };
 
-void init(enum MESSAGE_QUEUES message_queue_enum) {
+void init_queue(enum MESSAGE_QUEUES message_queue_enum) {
     int i = 0;
 
     switch (message_queue_enum) {
@@ -214,8 +214,18 @@ struct message *find_nonempty(struct queue_message_t *queue) {
 
 int enqueue(enum MESSAGE_QUEUES source, enum MESSAGE_QUEUES destination, char *string) {
     /* Enqueue */
-    struct queue_message_t *queue = get_message(destination);
-    struct message *newmessage = find_nonempty(queue);
+    struct queue_message_t *dest_queue = get_message(destination);
+    struct queue_message_t *source_queue = get_message(source);
+    
+    if (dest_queue->initialized == 0){
+		return ERROR_DEST_QUEUE_NOT_EXIST;
+	}
+	else if (source_queue->initialized == 0){
+		return ERROR_SOURCE_QUEUE_NOT_EXIST;
+	}
+   
+    
+    struct message *newmessage = find_nonempty(dest_queue);
     int i = 0;
 
     if (!newmessage) {
@@ -232,15 +242,15 @@ int enqueue(enum MESSAGE_QUEUES source, enum MESSAGE_QUEUES destination, char *s
         }
     }
 
-    if (queue->tail) {
+    if (dest_queue->tail) {
         /* The queue already has elements */
-        newmessage->next = queue->tail;
-        queue->tail->prev = newmessage;
+        newmessage->next = dest_queue->tail;
+        dest_queue->tail->prev = newmessage;
     } else {
         /* This is the first element of the queue */
-        queue->head = newmessage;
+        dest_queue->head = newmessage;
     }
-    queue->tail = newmessage;
+    dest_queue->tail = newmessage;
     newmessage->empty = 0;
 
     return(ERROR_SUCCESS);
@@ -269,6 +279,11 @@ struct message dequeue(enum MESSAGE_QUEUES message_queue_enum){
         error_message.source = ERROR_QUEUE_EMPTY;
         return error_message;
     }
+    
+    if (queue->initialized == 0){
+		error_message.source = ERROR_DEST_QUEUE_NOT_EXIST;
+		return error_message;
+	}
 
     struct message ret = *queue->head;
     struct message *temp = queue->head;
