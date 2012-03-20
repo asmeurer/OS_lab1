@@ -240,6 +240,7 @@ struct queue_message_t *get_message(enum MESSAGE_QUEUES message_queue_enum) {
 struct message *find_nonempty(struct queue_message_t *queue) {
     int i = 0;
     for (i = 0; i < queue->size; i++) {
+        /*If not empty*/
         if (queue->top[i].empty == 1) {
             return &queue->top[i];
         }

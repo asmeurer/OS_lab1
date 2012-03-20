@@ -191,7 +191,7 @@ int main(int argc, char *argv[]) {
             }
 
             else if (!strcmp(command, "SEND")) {
-                error = fscanf(file, " %d %d %s", &source, &dest, &message);
+                error = fscanf(file, " %d %d %s", &source, &dest, message);
                 if (error == 3){
                     printf("\n***SEND command issued ***\n");
 
@@ -218,7 +218,7 @@ int main(int argc, char *argv[]) {
                 }
             }
             else if (!strcmp(command, "RETRIEVE")) {
-                error = fscanf(file,"  %s", &dest);
+                error = fscanf(file,"  %d", &dest);
                 if(error == 1){
                     printf("\n***RETRIEVE command issued ***\n");
                     /*error = retrieve(dest); */
