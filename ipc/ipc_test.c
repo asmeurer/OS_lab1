@@ -53,6 +53,7 @@ char *fgetstring(FILE* fFile){
 
 int main(int argc, char *argv[]) {
     int error = 0;
+    int choice[10];
     char command[20];
     char dest[15];
     char source[15];
