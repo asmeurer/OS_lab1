@@ -163,34 +163,34 @@ int main(int argc, char *argv[]) {
                 if (error == 1){
                     printf("\n***LISTING command issued (%s)***\n", args[0]);
                     if (!strcmp(args[0], "ZERO")){
-
+			list_MQ(0);
                     }
                     else if (!strcmp(args[0], "ONE")){
-
+			list_MQ(1);
                     }
                     else if (!strcmp(args[0], "TWO")){
-
+			list_MQ(2);
                     }
                     else if (!strcmp(args[0], "THREE")){
-
+			list_MQ(3);
                     }
                     else if (!strcmp(args[0], "FOUR")){
-
+			list_MQ(4);
                     }
                     else if (!strcmp(args[0], "FIVE")){
-
+			list_MQ(5);
                     }
                     else if (!strcmp(args[0], "SIX")){
-
+			list_MQ(6);
                     }
                     else if (!strcmp(args[0], "SEVEN")){
-
+			list_MQ(7);
                     }
                     else if (!strcmp(args[0], "EIGHT")){
-
+			list_MQ(8);
                     }
                     else if (!strcmp(args[0], "NINE")){
-
+			list_MQ(9);
                     }
                     else{
                         printf("Usage: LIST <queuename>\n");
