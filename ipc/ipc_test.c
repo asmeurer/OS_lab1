@@ -19,25 +19,21 @@
 void list_MQ(enum MESSAGE_QUEUES queuelist){
     struct queue_message_t *structqueue = get_message(queuelist);
     struct message *temp = structqueue->head;
-    printf("Start of %s message queue.", queuelist);
+    printf("Start of %d message queue.", queuelist);
 
     while(temp){
         printmessage(*temp);
 	temp = temp->prev;
-    }	
+    }
 }
 
 void printmessage(struct message MESSAGE){
-    int i=0;	
+    int i=0;
     printf("message: \n");
     for(i = 0; i<0;i++){
 	printf("%c", MESSAGE.string[i]);
-    }	    
+    }
 }
-
-
-
-
 
 /*
 **
