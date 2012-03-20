@@ -251,15 +251,15 @@ int enqueue(enum MESSAGE_QUEUES source, enum MESSAGE_QUEUES destination, char *s
     /* Enqueue */
     struct queue_message_t *dest_queue = get_message(destination);
     struct queue_message_t *source_queue = get_message(source);
-    
+
     if (dest_queue->initialized == 0){
 		return ERROR_DEST_QUEUE_NOT_EXIST;
 	}
 	else if (source_queue->initialized == 0){
 		return ERROR_SOURCE_QUEUE_NOT_EXIST;
 	}
-   
-    
+
+
     struct message *newmessage = find_nonempty(dest_queue);
     int i = 0;
 
@@ -314,7 +314,7 @@ struct message dequeue(enum MESSAGE_QUEUES message_queue_enum){
         error_message.source = ERROR_QUEUE_EMPTY;
         return error_message;
     }
-    
+
     if (queue->initialized == 0){
 		error_message.source = ERROR_DEST_QUEUE_NOT_EXIST;
 		return error_message;
@@ -340,9 +340,9 @@ int has_message(enum MESSAGE_QUEUES check){
 
 	struct queue_message_t *queue = get_message(check);
 	if(queue->head == null){
-		return (ERROR_QUEUE_FULL);
-	}	
+		return (ERROR_QUEUE_EMPTY);
+	}
 	else{
 		return (ERROR_SUCCESS);
-	}	
+	}
 }

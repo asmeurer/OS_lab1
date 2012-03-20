@@ -93,46 +93,46 @@ int main(int argc, char *argv[]) {
 
             if (!strcmp(command, "INIT_IPC")) {
                 fgets(line, LINE_MAX, file);
-                printf("\n!!!!!!!!!!!!!!!!\nLINE VALUE: CHECK IF PARAMETERS OF INIT\nLine: %s\n!!!!!!!!!!!!!!!!!!!!!!!\n", line);
-				error = 1;
+                error = 1;
 
-				/*Initialize init_num as -1*/
-				for(i = 0; i < 10; i++){
-					init_num[i] = -1;
-				}
+                /*Initialize init_num as -1*/
+                for(i = 0; i < 10; i++){
+                    init_num[i] = -1;
+                }
 
-				/*Initial split of line*/
-				init_arg = strtok(line, " ");
-				/*If no arguments*/
-				if (init_arg == NULL){
-					error = 0;
-				}
-                while (init_arg != NULL){
-					/*End pointer for strtoul*/
-					end_temp = init_arg;
-					/*Set for strtoul*/
-					errno = 0;
-					/*Convert string value to unsigned long*/
-					temp_val = strtoul(init_arg, &end_temp, 10);
-					/*Check if errno is set off for not a number, or if more than 10 arguments*/
-					if (errno != 0 || i >= 10){
-						error = 0;
-						break;
-					}
-					/*Store value*/
-					init_num[i] = (int)temp_val;
-					i++;
-					/*Next token*/
-					init_arg = strtok(NULL, " ");
-				}
+                /*Initial split of line*/
+                init_arg = strtok(line, " ");
+                /*If no arguments*/
+                if (init_arg == NULL){
+                    error = 0;
+                }
+                i = 0;
+                while (init_arg != NULL) {
+/*End pointer for strtoul*/
+                    end_temp = init_arg;
+                    /*Set for strtoul*/
+                    errno = 0;
+                    /*Convert string value to unsigned long*/
+                    temp_val = strtoul(init_arg, &end_temp, 10);
+                    /*Check if errno is set off for not a number, or if more than 10 arguments*/
+                    if (errno != 0 || i >= 10){
+                        error = 0;
+                        break;
+                    }
+                    /*Store value*/
+                    init_num[i] = (int)temp_val;
+                    i++;
+                    /*Next token*/
+                    init_arg = strtok(NULL, " ");
+                }
 
                 if (error == 1){
-					deinit();
-					i = 0;
-					while(i < 10 || init_num[i] != -1){
-						init_queue(init_num[i]);
-						i++;
-					}
+                    deinit();
+                    i = 0;
+                    while(i < 10 || init_num[i] != -1){
+                        init_queue(init_num[i]);
+                        i++;
+                    }
                 }
                 else{
                     printf("Usage: INIT <manager1 | manager2| ...| managerN >>\n");
@@ -195,7 +195,7 @@ int main(int argc, char *argv[]) {
                     else if(error == ERROR_SUCCESS){
                         printf("TRUE\n");
                     } else {
-                        printf("Unexpected error!\n");
+                        printf("Unexpected error in HAS_MESSAGE (%d)!\n", error);
                     }
 
                 } else {
@@ -222,7 +222,7 @@ int main(int argc, char *argv[]) {
                         printf("The message length was too long.");
                     }
                     else {
-                        printf("Unexpected error!\n");
+                        printf("Unexpected error in SEND (%d)!\n", error);
                     }
 
                 }
@@ -241,7 +241,7 @@ int main(int argc, char *argv[]) {
                     else if(error == ERROR_DEST_QUEUE_NOT_EXIST){
                         printf("Queue does not exist");
                     } else {
-                        printf("Unexpected Error!\n");
+                        printf("Unexpected Error RETRIEVE (%d)!\n", error);
                     }
                 }
                 else{
