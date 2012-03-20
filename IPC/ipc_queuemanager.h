@@ -9,7 +9,7 @@
 #ifndef IPC_QUEUE_MANAGER_H
 #define IPC_QUEUE_MANAGER_H
 
-#include "definitions.h"
+#include "ipc_definitions.h"
 void init(enum SCHEDS current_scheduler);
 struct queue_message_t *get_process(enum MESSAGE_QUEUES message_queue_enum);
 struct message *find_nonempty(struct queue_message_t *queue);
