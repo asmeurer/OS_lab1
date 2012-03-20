@@ -27,17 +27,16 @@ void list_MQ(enum MESSAGE_QUEUES queuelist){
 
     while(temp){
         printmessage(*temp);
-	temp = temp->prev;
+        temp = temp->prev;
     }
     printf("End of message queue %d.\n", queuelist);
 }
 
 void printmessage(struct message MESSAGE){
-    int i=0;
-    printf("message: \n");
-    for(i = 0; i<0;i++){
-	printf("%c", MESSAGE.string[i]);
-    }
+    printf("\n");
+    printf("source: %d\n", MESSAGE.source);
+    printf("destination: %d\n", MESSAGE.destination);
+    printf("message: %s\n", MESSAGE.string);
 }
 
 /*
@@ -90,6 +89,7 @@ int main(int argc, char *argv[]) {
     FILE *file;
     if (argc == 1){
         file = stdin;
+        printf("Type HELP to see the list of commands\n");
     }
     else if (argc == 2){
         file = fopen(argv[1], "r");
@@ -128,7 +128,7 @@ int main(int argc, char *argv[]) {
                 }
                 i = 0;
                 while (init_arg != NULL) {
-/*End pointer for strtoul*/
+                    /*End pointer for strtoul*/
                     end_temp = init_arg;
                     /*Set for strtoul*/
                     errno = 0;
@@ -230,12 +230,15 @@ int main(int argc, char *argv[]) {
             }
 
             else if (!strcmp(command, "SEND")) {
-                error = fscanf(file, " %d %d %s", &source, &dest, &message);
+                error = fscanf(file, " %d %d %[^\n]", &source, &dest, message);
                 if (error == 3){
                     printf("\n***SEND command issued ***\n");
+                    printf("message: %s\n", message);
 
                     error = send(source, dest, message);
-                    if(error == ERROR_QUEUE_FULL){
+                    if (error == ERROR_SUCCESS) {
+                        printf("Send successful\n");
+                    } else if(error == ERROR_QUEUE_FULL){
                         printf("Destination queue full\n");
                     }
                     else if (error == ERROR_SOURCE_QUEUE_NOT_EXIST) {
@@ -260,8 +263,12 @@ int main(int argc, char *argv[]) {
                 error = fscanf(file,"  %s", &dest);
                 if(error == 1){
                     printf("\n***RETRIEVE command issued ***\n");
-                    /*error = retrieve(dest); */
-                    if(error == ERROR_QUEUE_EMPTY){
+                    error = retrieve(dest, message);
+
+                    if (error == ERROR_SUCCESS) {
+                        printf("Message retrieved successfully.\n");
+                        printf("%s\n", message);
+                    } else if (error == ERROR_QUEUE_EMPTY){
                         printf("Queue does not exist\n");
                     }
                     else if(error == ERROR_DEST_QUEUE_NOT_EXIST){
