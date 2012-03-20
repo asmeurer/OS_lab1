@@ -19,12 +19,13 @@
 void list_MQ(enum MESSAGE_QUEUES queuelist){
     struct queue_message_t *structqueue = get_message(queuelist);
     struct message *temp = structqueue->head;
-    printf("Start of %d message queue.", queuelist);
+    printf("Start of message queue %d.\n", queuelist);
 
     while(temp){
         printmessage(*temp);
 	temp = temp->prev;
     }
+    printf("End of message queue %d.\n", queuelist);
 }
 
 void printmessage(struct message MESSAGE){
@@ -71,8 +72,8 @@ char *fgetstring(FILE* fFile){
 int main(int argc, char *argv[]) {
     int error = 0;
     char command[20];
-    char dest[15];
-    char source[15];
+    int dest;
+    int source;
     char message[256];
     char args[10][10];
     char line[LINE_MAX];
@@ -155,41 +156,13 @@ int main(int argc, char *argv[]) {
 
             }
             else if (!strcmp(command, "LIST")) {
-                error = fscanf(file, " %s", args[0]);
+                error = fscanf(file, " %d", &dest);
                 if (error == 1){
                     printf("\n***LISTING command issued (%s)***\n", args[0]);
-                    if (!strcmp(args[0], "ZERO")){
-
-                    }
-                    else if (!strcmp(args[0], "ONE")){
-
-                    }
-                    else if (!strcmp(args[0], "TWO")){
-
-                    }
-                    else if (!strcmp(args[0], "THREE")){
-
-                    }
-                    else if (!strcmp(args[0], "FOUR")){
-
-                    }
-                    else if (!strcmp(args[0], "FIVE")){
-
-                    }
-                    else if (!strcmp(args[0], "SIX")){
-
-                    }
-                    else if (!strcmp(args[0], "SEVEN")){
-
-                    }
-                    else if (!strcmp(args[0], "EIGHT")){
-
-                    }
-                    else if (!strcmp(args[0], "NINE")){
-
-                    }
-                    else{
-                        printf("Usage: LIST <queuename>\n");
+                    if (dest < 0 || dest > 9){
+                        printf("The queue must be 0-9\n");
+                    }else{
+                        list_MQ(dest);
                     }
                 }
                 else{
@@ -197,10 +170,10 @@ int main(int argc, char *argv[]) {
                 }
             }
             else if (!strcmp(command, "HAS_MESSAGE")){
-                error = fscanf(file, " %s", &dest);
+                error = fscanf(file, " %d", &dest);
                 if(error == 1){
                     printf("\n***HAS_MESSAGE command issued***\n");
-                    error = has_message(atoi(dest));
+                    error = has_message(dest);
                     if(error == ERROR_QUEUE_EMPTY){
                         printf("FALSE\n");
                     }
@@ -218,11 +191,11 @@ int main(int argc, char *argv[]) {
             }
 
             else if (!strcmp(command, "SEND")) {
-                error = fscanf(file, " %s %s %s\n", &source, &dest, &message);
-                if (error == 1){
+                error = fscanf(file, " %d %d %s", &source, &dest, &message);
+                if (error == 3){
                     printf("\n***SEND command issued ***\n");
 
-                    error = send(atoi(source), atoi(dest), message);
+                    error = send(source, dest, message);
                     if(error == ERROR_QUEUE_FULL){
                         printf("Destination queue full\n");
                     }
