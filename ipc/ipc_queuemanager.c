@@ -305,3 +305,14 @@ struct message dequeue(enum MESSAGE_QUEUES message_queue_enum){
     clear(temp);
     return(ret);
 }
+
+int has_message(enum MESSAGE_QUEUES check){
+
+	struct queue_message_t *queue = get_message(check);
+	if(queue->head == null){
+		return (ERROR_QUEUE_FULL);
+	}	
+	else{
+		return (ERROR_SUCCESS);
+	}	
+}

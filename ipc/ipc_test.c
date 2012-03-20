@@ -140,17 +140,17 @@ int main(int argc, char *argv[]) {
                 }
             }
             else if (!strcmp(command, "HAS_MESSAGE")){
-                error = fscanf(file, " %s", &messagequeue);
+                error = fscanf(file, " %s", &dest);
                 if(error == 1){
                     printf("\n***HAS_MESSAGE command issued***");
-                    error = has_message(messagequeue);
+                    error = has_message(atoi(dest));
                     if(error == ERROR_QUEUE_EMPTY){
                         printf("FALSE");
                     }
                     else if(error == ERROR_QUEUE_NOT_EXIST){
                         printf("Queue specified does not exist");
                     }
-                    else{
+                    else if(error == ERROR_SUCCESS{
                         printf("TRUE");
                     }
                 }else{
