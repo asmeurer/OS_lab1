@@ -99,73 +99,85 @@ struct message error_message  =
  .empty = 0
 };
 
-void init(enum SCHEDS current_scheduler) {
+void init(enum MESSAGE_QUEUES message_queue_enum) {
     int i = 0;
 
-    zero.head = null;
-    zero.tail = null;
-    for (i = 0; i < zero.size; i++) {
-        clear(&zero.top[i]);
+    switch (message_queue_enum) {
+    case ZERO:
+        zero.head = null;
+        zero.tail = null;
+        for (i = 0; i < zero.size; i++) {
+            clear(&zero.top[i]);
+        }
+        break;
+    case ONE:
+            one.head = null;
+        one.tail = null;
+        for (i = 0; i < one.size; i++) {
+            clear(&one.top[i]);
+        }
+        break;
+    case TWO:
+        two.head = null;
+        two.tail = null;
+        for (i = 0; i < two.size; i++) {
+            clear(&two.top[i]);
+        }
+        break;
+    case THREE:
+        three.head = null;
+        three.tail = null;
+        for (i = 0; i < three.size; i++) {
+            clear(&three.top[i]);
+        }
+        break;
+    case FOUR:
+        four.head = null;
+        four.tail = null;
+        for (i = 0; i < four.size; i++) {
+            clear(&four.top[i]);
+        }
+        break;
+    case FIVE:
+        five.head = null;
+        five.tail = null;
+        for (i = 0; i < five.size; i++) {
+            clear(&five.top[i]);
+        }
+        break;
+    case SIX:
+        six.head = null;
+        six.tail = null;
+        for (i = 0; i < six.size; i++) {
+            clear(&six.top[i]);
+        }
+        break;
+    case SEVEN:
+        seven.head = null;
+        seven.tail = null;
+        for (i = 0; i < seven.size; i++) {
+            clear(&seven.top[i]);
+        }
+        break;
+    case EIGHT:
+        eight.head = null;
+        eight.tail = null;
+        for (i = 0; i < eight.size; i++) {
+            clear(&eight.top[i]);
+        }
+        break;
+    case NINE:
+        nine.head = null;
+        nine.tail = null;
+        for (i = 0; i < nine.size; i++) {
+            clear(&nine.top[i]);
+        }
+        break;
     }
-
-    one.head = null;
-    one.tail = null;
-    for (i = 0; i < one.size; i++) {
-        clear(&one.top[i]);
-    }
-
-    two.head = null;
-    two.tail = null;
-    for (i = 0; i < two.size; i++) {
-        clear(&two.top[i]);
-    }
-
-    three.head = null;
-    three.tail = null;
-    for (i = 0; i < three.size; i++) {
-        clear(&three.top[i]);
-    }
-
-    four.head = null;
-    four.tail = null;
-    for (i = 0; i < four.size; i++) {
-        clear(&four.top[i]);
-    }
-
-    five.head = null;
-    five.tail = null;
-    for (i = 0; i < five.size; i++) {
-        clear(&five.top[i]);
-    }
-
-    six.head = null;
-    six.tail = null;
-    for (i = 0; i < six.size; i++) {
-        clear(&six.top[i]);
-    }
-
-    seven.head = null;
-    seven.tail = null;
-    for (i = 0; i < seven.size; i++) {
-        clear(&seven.top[i]);
-    }
-
-    eight.head = null;
-    eight.tail = null;
-    for (i = 0; i < eight.size; i++) {
-        clear(&eight.top[i]);
-    }
-
-    nine.head = null;
-    nine.tail = null;
-    for (i = 0; i < nine.size; i++) {
-        clear(&nine.top[i]);
-    }
-
 }
 
-struct queue_message_t *get_process(enum MESSAGE_QUEUES message_queue_enum) {
-    switch (queue_enum) {
+struct queue_message_t *get_message(enum MESSAGE_QUEUES message_queue_enum) {
+    switch (message_queue_enum) {
     case ONE:
         return &one;
     case TWO:
@@ -201,70 +213,66 @@ struct message *find_nonempty(struct queue_message_t *queue) {
     return null;
 }
 
-int enqueue(enum QUEUES queue_enum, int pid, int psw, int page_table, int *regs, int priority, int quantum_count, int group) {
+int enqueue(enum MESSAGE_QUEUES message_queue_enum, int source, int destination, char *string) {
     /* Enqueue */
-    struct queue_t *queue = get_process(queue_enum);
-    struct process_control_block *newprocess = find_nonempty(queue);
+    struct queue_message_t *queue = get_message(message_queue_enum);
+    struct message *newmessage = find_nonempty(queue);
     int i = 0;
 
-    if (!newprocess) {
+    if (!newmessage) {
         /* The queue is full */
         return(ERROR_QUEUE_FULL);
     }
 
-    newprocess->pid = pid;
-    newprocess->psw = psw;
-    newprocess->page_table = page_table;
-    for (i = 0; i < NUM_REGS; i++) {
-        newprocess->regs[i] = regs[i];
+    newmessage->source = source;
+    newmessage->destination = destination;
+    for (i = 0; i < MESSAGE_SIZE; i++) {
+        newmessage->string[i] = string[i];
+        if (string[i] == '\0') {
+            break;
+        }
     }
-    newprocess->priority = priority;
-    newprocess->quantum_count = quantum_count;
-    newprocess->group = group;
 
     if (queue->tail) {
         /* The queue already has elements */
-        newprocess->next = queue->tail;
-        queue->tail->prev = newprocess;
+        newmessage->next = queue->tail;
+        queue->tail->prev = newmessage;
     } else {
         /* This is the first element of the queue */
-        queue->head = newprocess;
+        queue->head = newmessage;
     }
-    queue->tail = newprocess;
-    newprocess->empty = 0;
+    queue->tail = newmessage;
+    newmessage->empty = 0;
 
     return(ERROR_SUCCESS);
 }
 
 /*Process must exist for clear function*/
-void clear(struct process_control_block *process){
+void clear(struct message *m){
     int i = 0;
-    process->pid = 0;
-    process->psw = 0;
-    process->page_table = 0;
-    for (i = 0; i < NUM_REGS; i++) {
-        process->regs[i] = 0;
+    m->source = -1;
+    m->destination = -1;
+    for (i = 0; i < MESSAGE_SIZE; i++) {
+        m->string[i] = 0;
     }
-    process->next = null;
-    process->prev = null;
+    m->next = null;
+    m->prev = null;
     /*Set as empty*/
-    process->empty = 1;
-    process->priority = 0;
-    process->quantum_count = 0;
+    m->empty = 0;
 }
 
 
-struct process_control_block dequeue(enum QUEUES queue_enum){
+struct message dequeue(enum MESSAGE_QUEUES message_queue_enum){
 
-    struct queue_t *queue = get_process(queue_enum);
+    struct queue_message_t *queue = get_message(message_queue_enum);
     /*If queue is empty*/
     if (queue->head == null){
-        error_process.pid = ERROR_QUEUE_EMPTY;
-        return error_process;
+        error_message.pid = ERROR_QUEUE_EMPTY;
+        return error_message;
     }
 
-    struct process_control_block ret = *queue->head;
-    struct process_control_block *temp = queue->head;
+    struct message ret = *queue->head;
+    struct message *temp = queue->head;
     /*If entry is only one in queue*/
     if(queue->head->prev == null){
         queue->head = null;
@@ -279,10 +287,10 @@ struct process_control_block dequeue(enum QUEUES queue_enum){
     return(ret);
 }
 
-struct process_control_block *find_process(enum QUEUES queue_enum, int id){
-    struct queue_t *queue = get_process(queue_enum);
+struct message *find_process(enum QUEUES queue_enum, int id){
+    struct queue_message_t *queue = get_message(queue_enum);
 
-    struct process_control_block *temp = queue->tail;
+    struct message *temp = queue->tail;
     while(temp != null){
         if(id == temp->pid){
             return temp;
@@ -296,8 +304,8 @@ struct process_control_block *find_process(enum QUEUES queue_enum, int id){
  * @param queue The queue that it is deleating from
  * @param temp The process control block that is being deleted
  */
-struct process_control_block delete(enum QUEUES queue_enum, struct process_control_block *temp){
-    struct queue_t *queue = get_process(queue_enum);
+struct message delete(enum QUEUES queue_enum, struct message *temp){
+    struct queue_message_t *queue = get_message(queue_enum);
 
     if (queue->head == null && queue->tail == null) {
         /* The queue is empty */
@@ -310,7 +318,7 @@ struct process_control_block delete(enum QUEUES queue_enum, struct process_contr
         error_process.pid = ERROR_PROCESS_NOT_EXIST;
         return error_process;
     }
-    struct process_control_block ret = *temp;
+    struct message ret = *temp;
     /*If entry is only one in queue*/
     if(temp->next == null && temp->prev == null){
         queue->head = null;
