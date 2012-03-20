@@ -159,7 +159,7 @@ int main(int argc, char *argv[]) {
             }
 
             else if (!strcmp(command, "SEND")) {
-                error = fscanf(file, " %s %s %s", &source, &dest, &message);
+                error = fscanf(file, " %s %s %s\n", &source, &dest, &message);
                 if (error == 1){
                     printf("\n***SEND command issued ***\n");
 

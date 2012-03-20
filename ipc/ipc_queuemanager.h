@@ -19,5 +19,6 @@ void clear(struct message *process);
 struct message *find_message(enum MESSAGE_QUEUES message_queue_enum, int pid);
 struct message dequeue(enum MESSAGE_QUEUES message_queue_enum);
 struct message delete(enum MESSAGE_QUEUES message_queue_enum, struct message *temp);
+int has_message(enum MESSAGE_QUEUES check);
 
 #endif
