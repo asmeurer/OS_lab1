@@ -23,70 +23,80 @@ struct queue_message_t zero =
 {.head = null,
  .tail = null,
  .size = MAX_MESSAGES,
- .top = _0
+ .top = _0,
+ .initialized = 0
 };
 
 struct queue_message_t one =
 {.head = null,
  .tail = null,
  .size = MAX_MESSAGES,
- .top = _1
+ .top = _1,
+ .initialized = 0
 };
 
 struct queue_message_t two =
 {.head = null,
  .tail = null,
  .size = MAX_MESSAGES,
- .top = _2
+ .top = _2,
+ .initialized = 0
 };
 
 struct queue_message_t three =
 {.head = null,
  .tail = null,
  .size = MAX_MESSAGES,
- .top = _3
+ .top = _3,
+ .initialized = 0
 };
 
 struct queue_message_t four =
 {.head = null,
  .tail = null,
  .size = MAX_MESSAGES,
- .top = _4
+ .top = _4,
+ .initialized = 0
 };
 
 struct queue_message_t five =
 {.head = null,
  .tail = null,
  .size = MAX_MESSAGES,
- .top = _5
+ .top = _5,
+ .initialized = 0
 };
 
 struct queue_message_t six =
 {.head = null,
  .tail = null,
  .size = MAX_MESSAGES,
- .top = _6
+ .top = _6,
+ .initialized = 0
 };
 
 struct queue_message_t seven =
 {.head = null,
  .tail = null,
  .size = MAX_MESSAGES,
- .top = _7
+ .top = _7,
+ .initialized = 0
 };
 
 struct queue_message_t eight =
 {.head = null,
  .tail = null,
  .size = MAX_MESSAGES,
- .top = _8
+ .top = _8,
+ .initialized = 0
 };
 
 struct queue_message_t nine =
 {.head = null,
  .tail = null,
  .size = MAX_MESSAGES,
- .top = _9
+ .top = _9,
+ .initialized = 0
 };
 
 struct message error_message  =
@@ -108,6 +118,7 @@ void init(enum MESSAGE_QUEUES message_queue_enum) {
         for (i = 0; i < zero.size; i++) {
             clear(&zero.top[i]);
         }
+        zero.initialized = 1;
         break;
     case ONE:
             one.head = null;
@@ -115,6 +126,7 @@ void init(enum MESSAGE_QUEUES message_queue_enum) {
         for (i = 0; i < one.size; i++) {
             clear(&one.top[i]);
         }
+        one.initialized = 1;
         break;
     case TWO:
         two.head = null;
@@ -122,6 +134,7 @@ void init(enum MESSAGE_QUEUES message_queue_enum) {
         for (i = 0; i < two.size; i++) {
             clear(&two.top[i]);
         }
+        two.initialized = 1;
         break;
     case THREE:
         three.head = null;
@@ -129,6 +142,7 @@ void init(enum MESSAGE_QUEUES message_queue_enum) {
         for (i = 0; i < three.size; i++) {
             clear(&three.top[i]);
         }
+        three.initialized = 1;
         break;
     case FOUR:
         four.head = null;
@@ -136,6 +150,7 @@ void init(enum MESSAGE_QUEUES message_queue_enum) {
         for (i = 0; i < four.size; i++) {
             clear(&four.top[i]);
         }
+        four.initialized = 1;
         break;
     case FIVE:
         five.head = null;
@@ -143,6 +158,7 @@ void init(enum MESSAGE_QUEUES message_queue_enum) {
         for (i = 0; i < five.size; i++) {
             clear(&five.top[i]);
         }
+        five.initialized = 1;
         break;
     case SIX:
         six.head = null;
@@ -150,6 +166,7 @@ void init(enum MESSAGE_QUEUES message_queue_enum) {
         for (i = 0; i < six.size; i++) {
             clear(&six.top[i]);
         }
+        six.initialized = 1;
         break;
     case SEVEN:
         seven.head = null;
@@ -157,6 +174,7 @@ void init(enum MESSAGE_QUEUES message_queue_enum) {
         for (i = 0; i < seven.size; i++) {
             clear(&seven.top[i]);
         }
+        seven.initialized = 1;
         break;
     case EIGHT:
         eight.head = null;
@@ -164,6 +182,7 @@ void init(enum MESSAGE_QUEUES message_queue_enum) {
         for (i = 0; i < eight.size; i++) {
             clear(&eight.top[i]);
         }
+        eight.initialized = 1;
         break;
     case NINE:
         nine.head = null;
@@ -171,6 +190,7 @@ void init(enum MESSAGE_QUEUES message_queue_enum) {
         for (i = 0; i < nine.size; i++) {
             clear(&nine.top[i]);
         }
+        nine.initialized = 1;
         break;
     }
 }
