@@ -213,9 +213,9 @@ struct message *find_nonempty(struct queue_message_t *queue) {
     return null;
 }
 
-int enqueue(enum MESSAGE_QUEUES message_queue_enum, enum MESSAGE_QUEUES source, enum MESSAGE_QUEUES destination, char *string) {
+int enqueue(enum MESSAGE_QUEUES source, enum MESSAGE_QUEUES destination, char *string) {
     /* Enqueue */
-    struct queue_message_t *queue = get_message(message_queue_enum);
+    struct queue_message_t *queue = get_message(destination);
     struct message *newmessage = find_nonempty(queue);
     int i = 0;
 
