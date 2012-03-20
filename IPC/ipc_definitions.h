@@ -24,6 +24,7 @@
 #define ERROR_QUEUE_EMPTY -1
 #define ERROR_QUEUE_FULL -2
 #define ERROR_QUEUE_NOT_EXIST -3
+#define ERROR_MAX_STRING_LENGTH -4
 
 enum MESSAGE_QUEUES {
     ONE,
@@ -49,13 +50,13 @@ struct message
     int empty;
 }
 
-    struct queue_message_t
-    {
-        struct message *head;
-        struct message *tail;
-        int size;
-        struct message *top;
-    }
+struct queue_message_t
+{
+	struct message *head;
+	struct message *tail;
+	int size;
+	struct message *top;
+}
 
 
 #endif
