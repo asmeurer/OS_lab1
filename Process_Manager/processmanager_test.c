@@ -9,7 +9,7 @@
 #include "processmanager_test.h"
 #include "processmanager.h"
 #include "queuemanager.h"
-#include "textcolor.c"
+#include "../textcolor.c"
 
 void printprocess(struct process_control_block process) {
     int i = 0;
