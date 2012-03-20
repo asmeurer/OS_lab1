@@ -6,78 +6,94 @@
    Sheng Lundquist
 */
 
-#include "ipc_queuemanager.h"
+#include"ipc_queuemanager.h"
+#include"definitions.h"
 
-struct process_control_block _new[1];
-struct process_control_block _waiting[MAX_PROCESSES];
-struct process_control_block _ready0[MAX_PROCESSES];
-struct process_control_block _ready1[MAX_PROCESSES];
-struct process_control_block _ready2[MAX_PROCESSES];
-struct process_control_block _ready3[MAX_PROCESSES];
-struct process_control_block _terminated[MAX_PROCESSES];
-struct process_control_block _running[1];
+struct message _0[MAX_MESSAGES];
+struct message _1[MAX_MESSAGES];
+struct message _2[MAX_MESSAGES];
+struct message _3[MAX_MESSAGES];
+struct message _4[MAX_MESSAGES];
+struct message _5[MAX_MESSAGES];
+struct message _6[MAX_MESSAGES];
+struct message _7[MAX_MESSAGES];
+struct message _8[MAX_MESSAGES];
+struct message _9[MAX_MESSAGES];
 
-struct queue_t new =
+struct queue_message_t zero =
 {.head = null,
  .tail = null,
- .size = 1,
- .top = _new
+ .size = MAX_MESSAGES,
+ .top = _0
 };
 
-struct queue_t waiting =
+struct queue_message_t one =
 {.head = null,
  .tail = null,
- .size = MAX_PROCESSES,
- .top = _waiting
+ .size = MAX_MESSAGES,
+ .top = _1
 };
 
-struct queue_t ready0 =
+struct queue_message_t two =
 {.head = null,
  .tail = null,
- .size = MAX_PROCESSES,
- .top = _ready0
+ .size = MAX_MESSAGES,
+ .top = _2
 };
 
-struct queue_t ready1 =
+struct queue_message_t three =
 {.head = null,
  .tail = null,
- .size = MAX_PROCESSES,
- .top = _ready1
+ .size = MAX_MESSAGES,
+ .top = _3
 };
 
-struct queue_t ready2 =
+struct queue_message_t four =
 {.head = null,
  .tail = null,
- .size = MAX_PROCESSES,
- .top = _ready2
+ .size = MAX_MESSAGES,
+ .top = _4
 };
 
-struct queue_t ready3 =
+struct queue_message_t five =
 {.head = null,
  .tail = null,
- .size = MAX_PROCESSES,
- .top = _ready3
+ .size = MAX_MESSAGES,
+ .top = _5
 };
 
-struct queue_t terminated =
+struct queue_message_t six =
 {.head = null,
  .tail = null,
- .size = MAX_PROCESSES,
- .top = _terminated
+ .size = MAX_MESSAGES,
+ .top = _6
 };
 
-struct queue_t running =
+struct queue_message_t seven =
 {.head = null,
  .tail = null,
- .size = 1,
- .top = _running
+ .size = MAX_MESSAGES,
+ .top = _7
 };
 
-struct process_control_block error_process =
-{.pid = -1,
- .psw = 0,
- .page_table = 0,
- .regs = {0, 0, 0},
+struct queue_message_t eight =
+{.head = null,
+ .tail = null,
+ .size = MAX_MESSAGES,
+ .top = _8
+};
+
+struct queue_message_t nine =
+{.head = null,
+ .tail = null,
+ .size = MAX_MESSAGES,
+ .top = _9
+};
+
+struct message error_message  =
+{.source = -1,
+ .destination = -1,
+ .string = "",
  .next = null,
  .prev = null,
  .empty = 0
@@ -85,91 +101,97 @@ struct process_control_block error_process =
 
 void init(enum SCHEDS current_scheduler) {
     int i = 0;
-    process_counter = 0;
-    pid_counter = 0;
-    /* Set this to -1 because the first time we run, the running queue is
-     * empty, but we still want to increment it each time the running queue
-     * is empty (to avoid starvation from waits). */
-    global_quantum_count = -1;
-    current_group = READY0;
 
-    new.head = null;
-    new.tail = null;
-    for (i = 0; i < new.size; i++) {
-        clear(&new.top[i]);
-    }
-    waiting.head = null;
-    waiting.tail = null;
-    for (i = 0; i < waiting.size; i++) {
-        clear(&waiting.top[i]);
-    }
-    ready0.head = null;
-    ready0.tail = null;
-    for (i = 0; i < ready0.size; i++) {
-        clear(&ready0.top[i]);
+    zero.head = null;
+    zero.tail = null;
+    for (i = 0; i < zero.size; i++) {
+        clear(&zero.top[i]);
     }
 
-
-    ready1.head = null;
-    ready1.tail = null;
-    for (i = 0; i < ready1.size; i++) {
-        clear(&ready1.top[i]);
-    }
-    ready2.head = null;
-    ready2.tail = null;
-    for (i = 0; i < ready2.size; i++) {
-        clear(&ready2.top[i]);
-    }
-    ready3.head = null;
-    ready3.tail = null;
-    for (i = 0; i < ready3.size; i++) {
-        clear(&ready3.top[i]);
+    one.head = null;
+    one.tail = null;
+    for (i = 0; i < one.size; i++) {
+        clear(&one.top[i]);
     }
 
-    if(current_scheduler == GROUP){
-        scheduler = GROUP;
-    } else {
-        scheduler = PRIORITY;
+    two.head = null;
+    two.tail = null;
+    for (i = 0; i < two.size; i++) {
+        clear(&two.top[i]);
     }
 
-    terminated.head = null;
-    terminated.tail = null;
-    for (i = 0; i < terminated.size; i++) {
-        clear(&terminated.top[i]);
+    three.head = null;
+    three.tail = null;
+    for (i = 0; i < three.size; i++) {
+        clear(&three.top[i]);
     }
-    running.head = null;
-    running.tail = null;
-    for (i = 0; i < running.size; i++) {
-        clear(&running.top[i]);
+
+    four.head = null;
+    four.tail = null;
+    for (i = 0; i < four.size; i++) {
+        clear(&four.top[i]);
     }
+
+    five.head = null;
+    five.tail = null;
+    for (i = 0; i < five.size; i++) {
+        clear(&five.top[i]);
+    }
+
+    six.head = null;
+    six.tail = null;
+    for (i = 0; i < six.size; i++) {
+        clear(&six.top[i]);
+    }
+
+    seven.head = null;
+    seven.tail = null;
+    for (i = 0; i < seven.size; i++) {
+        clear(&seven.top[i]);
+    }
+
+    eight.head = null;
+    eight.tail = null;
+    for (i = 0; i < eight.size; i++) {
+        clear(&eight.top[i]);
+    }
+
+    nine.head = null;
+    nine.tail = null;
+    for (i = 0; i < nine.size; i++) {
+        clear(&nine.top[i]);
+    }
+
 }
 
-struct queue_t *get_process(enum QUEUES queue_enum) {
+struct queue_message_t *get_process(enum MESSAGE_QUEUES message_queue_enum) {
     switch (queue_enum) {
-    case NEW:
-        return &new;
-    case WAITING:
-        return &waiting;
-    case READY0:
-        return &ready0;
-    case READY1:
-        return &ready1;
-    case READY2:
-        return &ready2;
-    case READY3:
-        return &ready3;
-    case TERMINATED:
-        return &terminated;
-    case RUNNING:
-        return &running;
+    case ONE:
+        return &one;
+    case TWO:
+        return &two;
+    case THREE:
+        return &three;
+    case FOUR:
+        return &four;
+    case FIVE:
+        return &five;
+    case SIX:
+        return &six;
+    case SEVEN:
+        return &seven;
+    case EIGHT:
+        return &eight;
+    case NINE:
+        return &nine;
     default:
         /* This will never be reached, but it silences a warning from the
          * compiler. */
-        return &new;
+        return &zero;
     }
 }
 
-struct process_control_block *find_nonempty(struct queue_t *queue) {
+struct message *find_nonempty(struct queue_message_t *queue) {
     int i = 0;
     for (i = 0; i < queue->size; i++) {
         if (queue->top[i].empty == 1) {
