@@ -18,6 +18,7 @@
 #define MAX_PROCESSES 20
 #define MAX_PRIORITY 10
 #define MAX_MESSAGES 5
+#define MESSAGE_SIZE 256
 
 /*Global Error Codes*/
 #define ERROR_SUCCESS 0
@@ -27,6 +28,7 @@
 #define ERROR_MAX_STRING_LENGTH -4
 
 enum MESSAGE_QUEUES {
+    ZERO,
     ONE,
     TWO,
     THREE,
