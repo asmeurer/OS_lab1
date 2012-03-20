@@ -150,7 +150,7 @@ int main(int argc, char *argv[]) {
                     else if(error == ERROR_QUEUE_NOT_EXIST){
                         printf("Queue specified does not exist");
                     }
-                    else if(error == ERROR_SUCCESS{
+                    else if(error == ERROR_SUCCESS){
                         printf("TRUE");
                     }
                 }else{
