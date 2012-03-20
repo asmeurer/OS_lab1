@@ -39,13 +39,9 @@ enum MESSAGE_QUEUES {
     SEVEN,
     EIGHT,
     NINE
-}
-    message_queue_enum;
+} message_queue_enum;
 
-
-struct message
-{
-
+struct message {
     enum MESSAGE_QUEUES source;
     enum MESSAGE_QUEUES destination;
     char string[MESSAGE_SIZE];
@@ -54,14 +50,12 @@ struct message
     int empty;
 };
 
-
-struct queue_message_t
-{
+struct queue_message_t {
     struct message *head;
     struct message *tail;
     int size;
     struct message *top;
+    int initialized;
 };
-
 
 #endif
