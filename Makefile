@@ -41,6 +41,9 @@ ipc/ipc.o: ipc/ipc.c ipc/ipc_queuemanager.h ipc/ipc.h process_manager/definition
 ipc/ipc_test.o: ipc/ipc_test.c ipc/ipc_test.h shared/textcolor.c ipc/ipc_definitions.h ipc/ipc_queuemanager.h ipc/ipc.c ipc/ipc.h
 	$(CC) $(FLAGS) ipc/ipc_test.c -o ipc/ipc_test.o
 
+ipc_testgenerator.o: ipc/ipc_testgenerator.c ipc/ipc_definitions.h
+	$(CC) $(FLAGS) ipc/ipc_testgenerator.c -o ipc/ipc_testgenerator.o
+
 clean:
 	-rm -f process_manager/*.o ipc/*o shared/*.o
 
