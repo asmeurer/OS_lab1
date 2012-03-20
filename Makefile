@@ -23,8 +23,8 @@ process_manager/processmanager_test.o: textcolor.c process_manager/processmanage
 process_manager/scheduler_testgenerator.o: process_manager/scheduler_testgenerator.c process_manager/definitions.h process_manager/queuemanager.o process_manager/processmanager.o
 	cc -Wall process_manager/scheduler_testgenerator.c -o process_manager/scheduler_testgenerator.o
 
-textcolor.o: textcolor.c
-	cc -Wall -c textcolor.c -o textcolor.o
+shared/textcolor.o: shared/textcolor.c
+	cc -Wall -c shared/textcolor.c -o shared/textcolor.o
 
 ipc/ipc_queuemanager.o: ipc/ipc_queuemanager.c ipc/ipc_queuemanager.h process_manager/definitions.h
 	cc -Wall -c ipc/ipc_queuemanager.c -o ipc/ipc_queuemanager.o
