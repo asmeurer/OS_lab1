@@ -113,6 +113,7 @@ int main(int argc, char *argv[]) {
     FILE *file;
     if (argc == 1){
         file = stdin;
+        printf("The Group 2 IPC Test runner!\n");
         printf("Type HELP to see the list of commands\n");
     }
     else if (argc == 2){
@@ -363,12 +364,13 @@ int main(int argc, char *argv[]) {
                 printf("################################################################################\n");
             }
             else if(!strcmp(command, "HELP")){
-                printf("\n ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
-                printf("COMMANDS: INIT_IPC <manager1 | manager2 | ... | managerN>\n");
-                printf("LIST <queuename>\n");
-                printf("HAS_MESSAGE <queuename>\n");
-                printf("SEND <source destination message>\n");
-                printf("RETRIEVE <destination>\n");
+                printf("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
+                printf("Queues are referenced by number, from 0 to 9.\n\n");
+                printf("COMMANDS: INIT_IPC manager1 | manager2 | ... | managerN\n");
+                printf("LIST [queuename] (if no queuename is given, it will list all)\n");
+                printf("HAS_MESSAGE queuename\n");
+                printf("SEND source destination message\n");
+                printf("RETRIEVE destination\n");
                 printf("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
             }
             else {
