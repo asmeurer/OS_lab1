@@ -19,7 +19,7 @@
 void list_MQ(enum MESSAGE_QUEUES queuelist){
     struct queue_message_t *structqueue = get_message(queuelist);
     struct message *temp = structqueue->head;
-    printf("Start of %d message queue.", queuelist);
+    printf("Start of message queue %d.", queuelist);
 
     while(temp){
         printmessage(*temp);
@@ -141,14 +141,15 @@ int main(int argc, char *argv[]) {
                     /*Next token*/
                     init_arg = strtok(NULL, " ");
                 }
-
                 if (error == 1){
                     deinit();
                     i = 0;
-                    while(i < 10 || init_num[i] != -1){
+                    while(i < 10 && init_num[i] != -1){
+			printf("Message Queue %d initialized. ", init_num[i]);
                         init_queue(init_num[i]);
                         i++;
                     }
+		    printf("\n");
                 }
                 else{
                     printf("Usage: INIT <manager1 | manager2| ...| managerN >>\n");
