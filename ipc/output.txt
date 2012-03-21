@@ -1,0 +1,195 @@
+
+################################################################################
+#[1;37;40m Init 4 managers
+[0;29;39m################################################################################
+Message Queue 0 initialized.
+Message Queue 3 initialized.
+Message Queue 5 initialized.
+Message Queue 7 initialized.
+
+
+Start of message queue 0.
+End of message queue 0.
+
+Queue 1 Not Initialized.
+
+Queue 2 Not Initialized.
+
+Start of message queue 3.
+End of message queue 3.
+
+Queue 4 Not Initialized.
+
+Start of message queue 5.
+End of message queue 5.
+
+Queue 6 Not Initialized.
+
+Start of message queue 7.
+End of message queue 7.
+
+Queue 8 Not Initialized.
+
+Queue 9 Not Initialized.
+
+################################################################################
+#[1;37;40m Retrieve empty queue throws error
+[0;29;39m################################################################################
+
+***RETRIEVE command issued ***
+Queue is empty
+
+################################################################################
+#[1;37;40m Retrieve non-initialized queue throws error
+[0;29;39m################################################################################
+
+***RETRIEVE command issued ***
+Queue does not exist
+
+################################################################################
+#[1;37;40m Send with non-initialized source queue throws error
+[0;29;39m################################################################################
+
+***SEND command issued ***
+message: hi
+Source queue does not exist
+
+################################################################################
+#[1;37;40m Send with non-initialized destination queue throws error
+[0;29;39m################################################################################
+
+***SEND command issued ***
+message: hi
+Destination queue does not exist
+
+################################################################################
+#[1;37;40m Send to self throws error
+[0;29;39m################################################################################
+
+***SEND command issued ***
+message: hi
+Source and destination cannot be the same.
+
+################################################################################
+#[1;37;40m Fill up queues 3 and 5
+[0;29;39m################################################################################
+
+***SEND command issued ***
+message: hello world 11
+Send successful
+
+***SEND command issued ***
+message: hello world 12
+Send successful
+
+***SEND command issued ***
+message: hello world 13
+Send successful
+
+***SEND command issued ***
+message: hello world 14
+Send successful
+
+***SEND command issued ***
+message: hello world 15
+Send successful
+
+***SEND command issued ***
+message: hello world 21
+Send successful
+
+***SEND command issued ***
+message: hello world 22
+Send successful
+
+***SEND command issued ***
+message: hello world 23
+Send successful
+
+***SEND command issued ***
+message: hello world 24
+Send successful
+
+***SEND command issued ***
+message: hello world 25
+Send successful
+
+Start of message queue 3.
+source: 0  |  destination: 3  |  message: hello world 21  |
+source: 5  |  destination: 3  |  message: hello world 22  |
+source: 7  |  destination: 3  |  message: hello world 23  |
+source: 0  |  destination: 3  |  message: hello world 24  |
+source: 0  |  destination: 3  |  message: hello world 25  |
+End of message queue 3.
+
+
+Start of message queue 5.
+source: 0  |  destination: 5  |  message: hello world 11  |
+source: 3  |  destination: 5  |  message: hello world 12  |
+source: 7  |  destination: 5  |  message: hello world 13  |
+source: 0  |  destination: 5  |  message: hello world 14  |
+source: 0  |  destination: 5  |  message: hello world 15  |
+End of message queue 5.
+
+
+################################################################################
+#[1;37;40m Sending to full queue throws error
+[0;29;39m################################################################################
+
+***SEND command issued ***
+message: hello world 6
+Destination queue full
+
+################################################################################
+#[1;37;40m Retrieve messages from queue 3
+[0;29;39m################################################################################
+
+***RETRIEVE command issued ***
+Message retrieved successfully.
+hello world 21
+
+***RETRIEVE command issued ***
+Message retrieved successfully.
+hello world 22
+
+***RETRIEVE command issued ***
+Message retrieved successfully.
+hello world 23
+
+***RETRIEVE command issued ***
+Message retrieved successfully.
+hello world 24
+
+***RETRIEVE command issued ***
+Message retrieved successfully.
+hello world 25
+
+################################################################################
+#[1;37;40m Init clears everything
+[0;29;39m################################################################################
+Message Queue 1 initialized.
+Message Queue 2 initialized.
+
+
+Queue 0 Not Initialized.
+
+Start of message queue 1.
+End of message queue 1.
+
+Start of message queue 2.
+End of message queue 2.
+
+Queue 3 Not Initialized.
+
+Queue 4 Not Initialized.
+
+Queue 5 Not Initialized.
+
+Queue 6 Not Initialized.
+
+Queue 7 Not Initialized.
+
+Queue 8 Not Initialized.
+
+Queue 9 Not Initialized.
+
