@@ -35,3 +35,10 @@ RETRIEVE 3
 # Init clears everything
 INIT_IPC 1 2
 LIST
+# Has message doesn't work for non-initialized queue
+HAS_MESSAGE 3
+# Has message for empty initialized queue
+HAS_MESSAGE 1
+# Has message for non-empty queue
+SEND 1 2 a message
+HAS_MESSAGE 2
