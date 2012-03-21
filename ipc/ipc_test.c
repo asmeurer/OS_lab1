@@ -119,13 +119,17 @@ int main(int argc, char *argv[]) {
     else if (argc == 2){
         file = fopen(argv[1], "r");
         if (file == NULL) {
+            textcolor(BRIGHT, RED, BLACK);
             printf("Could not open file %s: %s\n", argv[1], strerror(errno));
+            textcolor(RESET, -1, -1);
             exit(errno);
         }
     }
     else{
+        textcolor(BRIGHT, RED, BLACK);
         printf("Usage:\n./ipc_test.o (to read from stdin)\n");
         printf("./ipc_test.o <filename> (to read from filename)\n");
+        textcolor(RESET, -1, -1);
         exit(-1);
     }
 
@@ -206,7 +210,9 @@ int main(int argc, char *argv[]) {
 
                 }
                 else{
+                    textcolor(BRIGHT, RED, BLACK);
                     printf("Usage: INIT_IPC <manager1 | manager2| ...| managerN >\n");
+                    textcolor(RESET, -1, -1);
                 }
 
             }
@@ -273,7 +279,9 @@ int main(int argc, char *argv[]) {
                         printf("\n");
                     }
                     else{
+                        textcolor(BRIGHT, RED, BLACK);
                         printf("Usage: LIST || LIST <manager1 | manager2| ...| managerN >\n");
+                        textcolor(RESET, -1, -1);
                     }
                 }
             }
@@ -286,15 +294,21 @@ int main(int argc, char *argv[]) {
                         printf("FALSE\n");
                     }
                     else if(error == ERROR_DEST_QUEUE_NOT_EXIST){
+                        textcolor(BRIGHT, RED, BLACK);
                         printf("Queue specified does not exist\n");
+                        textcolor(RESET, -1, -1);
                     }
                     else if(error == ERROR_SUCCESS){
                         printf("TRUE\n");
                     } else {
+                        textcolor(BRIGHT, RED, BLACK);
                         printf("Unexpected error in HAS_MESSAGE (%d)!\n", error);
+                        textcolor(RESET, -1, -1);
                     }
                 }else{
+                    textcolor(BRIGHT, RED, BLACK);
                     printf("Usage: HAS_MESSAGE <queuename> \n");
+                    textcolor(RESET, -1, -1);
                 }
             }
 
@@ -309,22 +323,35 @@ int main(int argc, char *argv[]) {
                         printf("Queue %d sent %s to %d.\n", source, message, dest);
                         printf("Send successful\n");
                     } else if(error == ERROR_QUEUE_FULL){
+                        textcolor(BRIGHT, RED, BLACK);
                         printf("Destination queue full\n");
+                        textcolor(RESET, -1, -1);
                     }
                     else if (error == ERROR_SOURCE_QUEUE_NOT_EXIST) {
+                        textcolor(BRIGHT, RED, BLACK);
                         printf("Source queue does not exist\n");
+                        textcolor(RESET, -1, -1);
                     }
                     else if(error == ERROR_DEST_QUEUE_NOT_EXIST){
+                        textcolor(BRIGHT, RED, BLACK);
                         printf("Destination queue does not exist\n");
+                        textcolor(RESET, -1, -1);
                     }
                     else if(error == ERROR_MAX_STRING_LENGTH){
+                        textcolor(BRIGHT, RED, BLACK);
                         printf("The message length was too long.\n");
+                        textcolor(RESET, -1, -1);
                     }
                     else if(error == ERROR_SEND_TO_SELF){
+                        textcolor(BRIGHT, RED, BLACK);
                         printf("Source and destination cannot be the same.\n");
+                        textcolor(RESET, -1, -1);
                     }
                     else {
+                        textcolor(BRIGHT, RED, BLACK);
                         printf("Unexpected error in SEND (%d)!\n", error);
+                        textcolor(RESET, -1, -1);
+
                     }
 
                 }
@@ -342,16 +369,24 @@ int main(int argc, char *argv[]) {
                         printf("Message retrieved successfully.\n");
                         printf("%s\n", message);
                     } else if (error == ERROR_QUEUE_EMPTY){
+                        textcolor(BRIGHT, RED, BLACK);
                         printf("Queue is empty.\n");
+                        textcolor(RESET, -1, -1);
                     }
                     else if(error == ERROR_DEST_QUEUE_NOT_EXIST){
+                        textcolor(BRIGHT, RED, BLACK);
                         printf("Queue does not exist\n");
+                        textcolor(RESET, -1, -1);
                     } else {
+                        textcolor(BRIGHT, RED, BLACK);
                         printf("Unexpected Error RETRIEVE (%d)!\n", error);
+                        textcolor(RESET, -1, -1);
                     }
                 }
                 else{
+                    textcolor(BRIGHT, RED, BLACK);
                     printf("Usage: RETRIEVE <destination>\n ");
+                    textcolor(RESET, -1, -1);
 
                 }
             }
@@ -374,7 +409,9 @@ int main(int argc, char *argv[]) {
                 printf("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
             }
             else {
+                textcolor(BRIGHT, RED, BLACK);
                 printf("Unrecognized command: %s\n", command);
+                textcolor(RESET, -1, -1);
             }
         }
         else if (error == EOF) {
