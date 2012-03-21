@@ -127,7 +127,7 @@ int main(int argc, char *argv[]) {
                 while (init_arg != NULL) {
                     /*End pointer for strtoul*/
                     end_temp = init_arg;
-                    
+
                     /*Loop through each character in string checking if it is a digit*/
                     for(i = 0; i < strlen(init_arg) - 1; i++){
 						if (!isdigit(init_arg[i])){
@@ -139,7 +139,7 @@ int main(int argc, char *argv[]) {
 						break;
 					}
 					i = 0;
-                    
+
                     /*Set for strtoul*/
                     errno = 0;
                     /*Convert string value to unsigned long*/
@@ -149,9 +149,9 @@ int main(int argc, char *argv[]) {
                         error = 0;
                         break;
                     }
-                    if (temp_val < 0 || temp_val >= 10){
+                    if (temp_val >= 10){
 						error = 0;
-						break;						
+						break;
 					}
                     /*Store value*/
                     init_num[i] = (int)temp_val;
