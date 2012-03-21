@@ -18,8 +18,8 @@
 
 
 /**
- * Function to print a queue
- * @param queuelist The queue to list out
+ * Function to print a queue.
+ * @param queuelist The queue to list out.
  */
 void list_MQ(enum MESSAGE_QUEUES queuelist){
     struct queue_message_t *structqueue = get_message(queuelist);
@@ -42,8 +42,8 @@ void list_all_MQ(){
 
 
 /**
- * Function to print out a specific message block
- * @param MESSAGE The message to be printed
+ * Function to print out a specific message block.
+ * @param MESSAGE The message to be printed.
  */
 void printmessage(struct message MESSAGE){
     printf("\n");
@@ -54,10 +54,10 @@ void printmessage(struct message MESSAGE){
 
 
 /**
- * Gets a string from the file
- * @param fFile The file to read the string from
- * @return The string that was in the file
-*/
+ * Gets a string from the file.
+ * @param fFile The file to read the string from.
+ * @return The string that was in the file.
+ */
 char *fgetstring(FILE* fFile){
     char c = 0;
     char *name = NULL;
@@ -87,10 +87,10 @@ char *fgetstring(FILE* fFile){
 
 
 /**
- * The main function
- * @param argc The number of command line arguments
- * @param argv The array of arguments
- * @return Returns 0
+ * The main function.
+ * @param argc The number of command line arguments.
+ * @param argv The array of arguments.
+ * @return Returns 0.
  */
 int main(int argc, char *argv[]) {
     int error = 0;
@@ -199,14 +199,14 @@ int main(int argc, char *argv[]) {
 
             }
             else if (!strcmp(command, "LIST")) {
-		fgets(line, LINE_MAX, file);
+                fgets(line, LINE_MAX, file);
                 error = fscanf(file, " %d", &dest);
-		if (error == 1){
+                if (error == 1){
                     printf("\n***LISTING command issued (%s)***\n", args[0]);
                     if (dest < 0 || dest > 9){
                         printf("The queue must be 0-9\n");
-		    }
-		    else{
+                    }
+                    else{
                         list_MQ(dest);
                     }
                 }
