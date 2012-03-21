@@ -15,6 +15,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 
 void list_MQ(enum MESSAGE_QUEUES queuelist){
     struct queue_message_t *structqueue = get_message(queuelist);
@@ -126,15 +127,32 @@ int main(int argc, char *argv[]) {
                 while (init_arg != NULL) {
                     /*End pointer for strtoul*/
                     end_temp = init_arg;
+                    
+                    /*Loop through each character in string checking if it is a digit*/
+                    for(i = 0; i < strlen(init_arg); i++){
+						if (!isdigit(init_arg[i])){
+							error = 0;
+							break;
+						}
+					}
+                    if(error == 0){
+						break;
+					}
+					i = 0;
+                    
                     /*Set for strtoul*/
                     errno = 0;
                     /*Convert string value to unsigned long*/
                     temp_val = strtoul(init_arg, &end_temp, 10);
                     /*Check if errno is set off for not a number, or if more than 10 arguments*/
-                    if (errno != 0 || i >= 10){
+                    if (errno == EINVAL || i >= 10){
                         error = 0;
                         break;
                     }
+                    if (temp_val < 0 || temp_val >= 10){
+						error = 0;
+						break;						
+					}
                     /*Store value*/
                     init_num[i] = (int)temp_val;
                     i++;
@@ -145,7 +163,9 @@ int main(int argc, char *argv[]) {
                 if (error == 1){
                     deinit();
                     i = 0;
-                    while(i < 10 || init_num[i] != -1){
+                    /*The first -1 should be where it stops*/
+                    while(i < 10 && init_num[i] != -1){
+                        printf("%d\n", init_num[i]);
                         init_queue(init_num[i]);
                         i++;
                     }
