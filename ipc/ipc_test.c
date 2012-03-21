@@ -6,7 +6,6 @@
  *    Sheng Lundquist
  */
 
-
 #include "ipc_test.h"
 #include "../shared/textcolor.c"
 #include "ipc_definitions.h"
@@ -16,6 +15,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
+
+/*  */
 
 void list_MQ(enum MESSAGE_QUEUES queuelist){
     struct queue_message_t *structqueue = get_message(queuelist);
@@ -30,11 +31,11 @@ void list_MQ(enum MESSAGE_QUEUES queuelist){
 }
 
 void list_all_MQ(){
-	int i=0;
-	for(i=0;i < 10; i++){
-		list_MQ(i);
-	}
-}	
+    int i=0;
+    for(i=0;i < 10; i++){
+        list_MQ(i);
+    }
+}
 
 void printmessage(struct message MESSAGE){
     printf("\n");
@@ -137,15 +138,15 @@ int main(int argc, char *argv[]) {
 
                     /*Loop through each character in string checking if it is a digit*/
                     for(i = 0; i < strlen(init_arg) - 1; i++){
-						if (!isdigit(init_arg[i])){
-							error = 0;
-							break;
-						}
-					}
+                        if (!isdigit(init_arg[i])){
+                            error = 0;
+                            break;
+                        }
+                    }
                     if(error == 0){
-						break;
-					}
-					i = 0;
+                        break;
+                    }
+                    i = 0;
 
                     /*Set for strtoul*/
                     errno = 0;
@@ -157,9 +158,9 @@ int main(int argc, char *argv[]) {
                         break;
                     }
                     if (temp_val >= 10){
-						error = 0;
-						break;
-					}
+                        error = 0;
+                        break;
+                    }
                     /*Store value*/
                     init_num[i] = (int)temp_val;
                     i++;
@@ -171,11 +172,11 @@ int main(int argc, char *argv[]) {
                     i = 0;
                     /*The first -1 should be where it stops*/
                     while(i < 10 && init_num[i] != -1){
-			printf("Message Queue %d initialized. ", init_num[i]);
+                        printf("Message Queue %d initialized. ", init_num[i]);
                         init_queue(init_num[i]);
                         i++;
                     }
-		    printf("\n");
+                    printf("\n");
                 }
                 else{
                     printf("Usage: INIT_IPC <manager1 | manager2| ...| managerN >\n");
@@ -189,8 +190,8 @@ int main(int argc, char *argv[]) {
                     if (dest < 0 || dest > 9){
                         printf("The queue must be 0-9\n");
                     }else if(dest == NULL){
-			list_all_MQ();	    
-		    }else{
+                        list_all_MQ();
+                    }else{
                         list_MQ(dest);
                     }
                 }
@@ -301,4 +302,3 @@ int main(int argc, char *argv[]) {
 
     return(0);
 }
-
