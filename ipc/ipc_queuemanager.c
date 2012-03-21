@@ -110,16 +110,16 @@ struct message error_message  =
 
 
 void deinit(){
-	zero.initialized = 0;
-	one.initialized = 0;
-	two.initialized = 0;
-	three.initialized = 0;
-	four.initialized = 0;
-	five.initialized = 0;
-	six.initialized = 0;
-	seven.initialized = 0;
-	eight.initialized = 0;
-	nine.initialized = 0;
+    zero.initialized = 0;
+    one.initialized = 0;
+    two.initialized = 0;
+    three.initialized = 0;
+    four.initialized = 0;
+    five.initialized = 0;
+    six.initialized = 0;
+    seven.initialized = 0;
+    eight.initialized = 0;
+    nine.initialized = 0;
 }
 
 
@@ -253,11 +253,11 @@ int enqueue(enum MESSAGE_QUEUES source, enum MESSAGE_QUEUES destination, char *s
     struct queue_message_t *source_queue = get_message(source);
 
     if (dest_queue->initialized == 0){
-		return ERROR_DEST_QUEUE_NOT_EXIST;
-	}
-	else if (source_queue->initialized == 0){
-		return ERROR_SOURCE_QUEUE_NOT_EXIST;
-	}
+        return ERROR_DEST_QUEUE_NOT_EXIST;
+    }
+    else if (source_queue->initialized == 0){
+        return ERROR_SOURCE_QUEUE_NOT_EXIST;
+    }
 
 
     struct message *newmessage = find_nonempty(dest_queue);
@@ -338,12 +338,17 @@ struct message dequeue(enum MESSAGE_QUEUES message_queue_enum){
 
 int has_message(enum MESSAGE_QUEUES check){
 
-	struct queue_message_t *queue = get_message(check);
-	if(queue->head == null){
-	/* If the head is null there is nothing in the queue. */
-		return (ERROR_QUEUE_EMPTY);
-	}
-	else{
-		return (ERROR_SUCCESS);
-	}
+    struct queue_message_t *queue = get_message(check);
+
+    if (queue->initialized == 0){
+        return ERROR_DEST_QUEUE_NOT_EXIST;
+    }
+
+    if(queue->head == null){
+        /* If the head is null there is nothing in the queue. */
+        return (ERROR_QUEUE_EMPTY);
+    }
+    else{
+        return (ERROR_SUCCESS);
+    }
 }
