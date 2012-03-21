@@ -25,14 +25,14 @@ void list_MQ(enum MESSAGE_QUEUES queuelist){
         printmessage(*temp);
         temp = temp->prev;
     }
-    printf("End of message queue %d.\n", queuelist);
+    printf("\nEnd of message queue %d.\n", queuelist);
 }
 
 void printmessage(struct message MESSAGE){
     printf("\n");
-    printf("source: %d\n", MESSAGE.source);
-    printf("destination: %d\n", MESSAGE.destination);
-    printf("message: %s\n", MESSAGE.string);
+    printf("source: %d  |  ", MESSAGE.source);
+    printf("destination: %d  |  ", MESSAGE.destination);
+    printf("message: %s  |\n", MESSAGE.string);
 }
 
 /*
@@ -256,7 +256,7 @@ int main(int argc, char *argv[]) {
                 printf("COMMANDS: INIT_IPC <manager1 | manager2 | ... | managerN>    LIST <queuename>\n");
                 printf("HAS_MESSAGE <queuename>     SEND <source destination message>\n");
                 printf("RETRIEVE <destination> \n");
-                printf("\n ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
+                printf("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
             }
             else {
                 printf("Unrecognized command: %s\n", command);
