@@ -20,7 +20,7 @@ int main() {
     int input;
     FILE *output = NULL;
     char *mode = "a";
-    char outputFilename[] = "ipc_tests";
+    char outputFilename[] = "ipc/ipc_tests";
     char string[256];
     int source;
     int destination;
@@ -48,7 +48,7 @@ int main() {
         printf("Enter an option: ");
         scanf("%d", &input);
 
-        switch(input){
+        switch(input) {
         case 0:
             printf("What comment would you like to add? ");
             scanf("\n%[^\n]", string);
@@ -56,8 +56,17 @@ int main() {
 
             break;
         case 1:
-            printf("Which message managers would you like to initialize ()? ");
-            /* TODO */
+            fprintf(output, "INIT_IPC");
+            while (1) {
+                printf("Which message managers would you like to initialize (0-9, End)? ");
+                scanf("\n%c", string);
+                if (string[0] == 'e' || string[0] == 'E') {
+                    break;
+                }
+                fprintf(output, " %d", atoi(string));
+            }
+            fprintf(output, "\n");
+
             break;
 
         case 2:
@@ -78,7 +87,7 @@ int main() {
             printf("What should the destination manager be? ");
             scanf("\n%d", &destination);
             printf("What should the message be? ");
-            scanf("\n%s%[^\n]", &string);
+            scanf("\n%[^\n]s", &string);
             fprintf(output, "SEND %d %d %s\n", source, destination, string);
 
             break;
