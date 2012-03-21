@@ -24,6 +24,11 @@
 #define ERROR_DEST_QUEUE_NOT_EXIST -4
 #define ERROR_MAX_STRING_LENGTH -5
 
+/* This makes it easier to reference the message queues in external
+ * functions.  Since the numbering of enum elements coincides exactly with
+ * their integer names, you can interchange the enum name and the integer
+ * value at any time.  */
+
 enum MESSAGE_QUEUES {
     ZERO,
     ONE,
@@ -37,6 +42,9 @@ enum MESSAGE_QUEUES {
     NINE
 } message_queue_enum;
 
+/* This is similar to the process manager queue manager.  This is the struct
+ * for the message itself (the queue elements). */
+
 struct message {
     enum MESSAGE_QUEUES source;
     enum MESSAGE_QUEUES destination;
@@ -45,6 +53,8 @@ struct message {
     struct message *prev;
     int empty;
 };
+
+/* This is the struct for the message queue. */
 
 struct queue_message_t {
     struct message *head;

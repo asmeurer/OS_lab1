@@ -8,6 +8,11 @@
 
 #include"ipc_queuemanager.h"
 
+/* This is the same as our queuemanager from the process manager, except the
+ * queue elements are now queue_message_t (see ipc_definitions.h).  */
+
+/* Boilerplate initialization (since we can't use malloc) */
+
 struct message _0[MAX_MESSAGES];
 struct message _1[MAX_MESSAGES];
 struct message _2[MAX_MESSAGES];
@@ -109,6 +114,18 @@ struct message error_message  =
 };
 
 
+/* "Initialized has no real meaning in the sense of the memory existing,
+ * since we just create the memory at boot time.  However, it does have
+ * meaning relating to assertions about the message being cleared.  For
+ * example, garbage from an old message might still be left in the memory,
+ * posing a potential security threat.
+
+ Therefore, the way that init works (in the test runner) is that it first
+ calls deinit(), which zeros out the initialized flags of everything, and then
+ it calls init() on each queue to be initialized.  This is lazy
+ deinitialization, but it's OK because all of the queue manager functions
+ will refuse to work if the input queue has initialized set to 0. */
+
 void deinit(){
     zero.initialized = 0;
     one.initialized = 0;
@@ -122,11 +139,11 @@ void deinit(){
     nine.initialized = 0;
 }
 
-
 void init_queue(enum MESSAGE_QUEUES message_queue_enum) {
     int i = 0;
 
     switch (message_queue_enum) {
+
     case ZERO:
         zero.head = null;
         zero.tail = null;
@@ -135,6 +152,7 @@ void init_queue(enum MESSAGE_QUEUES message_queue_enum) {
         }
         zero.initialized = 1;
         break;
+
     case ONE:
         one.head = null;
         one.tail = null;
@@ -143,6 +161,7 @@ void init_queue(enum MESSAGE_QUEUES message_queue_enum) {
         }
         one.initialized = 1;
         break;
+
     case TWO:
         two.head = null;
         two.tail = null;
@@ -151,6 +170,7 @@ void init_queue(enum MESSAGE_QUEUES message_queue_enum) {
         }
         two.initialized = 1;
         break;
+
     case THREE:
         three.head = null;
         three.tail = null;
@@ -159,6 +179,7 @@ void init_queue(enum MESSAGE_QUEUES message_queue_enum) {
         }
         three.initialized = 1;
         break;
+
     case FOUR:
         four.head = null;
         four.tail = null;
@@ -167,6 +188,7 @@ void init_queue(enum MESSAGE_QUEUES message_queue_enum) {
         }
         four.initialized = 1;
         break;
+
     case FIVE:
         five.head = null;
         five.tail = null;
@@ -175,6 +197,7 @@ void init_queue(enum MESSAGE_QUEUES message_queue_enum) {
         }
         five.initialized = 1;
         break;
+
     case SIX:
         six.head = null;
         six.tail = null;
@@ -183,6 +206,7 @@ void init_queue(enum MESSAGE_QUEUES message_queue_enum) {
         }
         six.initialized = 1;
         break;
+
     case SEVEN:
         seven.head = null;
         seven.tail = null;
@@ -191,6 +215,7 @@ void init_queue(enum MESSAGE_QUEUES message_queue_enum) {
         }
         seven.initialized = 1;
         break;
+
     case EIGHT:
         eight.head = null;
         eight.tail = null;
@@ -199,6 +224,7 @@ void init_queue(enum MESSAGE_QUEUES message_queue_enum) {
         }
         eight.initialized = 1;
         break;
+
     case NINE:
         nine.head = null;
         nine.tail = null;
@@ -209,6 +235,10 @@ void init_queue(enum MESSAGE_QUEUES message_queue_enum) {
         break;
     }
 }
+
+/* Simple function to convert the enum to the actual data type.  All the
+ * public functions take the enum as arguments, so this is mainly for
+ * internal use within the queue manager.*/
 
 struct queue_message_t *get_message(enum MESSAGE_QUEUES message_queue_enum) {
     switch (message_queue_enum) {
@@ -237,6 +267,8 @@ struct queue_message_t *get_message(enum MESSAGE_QUEUES message_queue_enum) {
     }
 }
 
+/* Find a blank spot in the memory to do use for enqueue. */
+
 struct message *find_nonempty(struct queue_message_t *queue) {
     int i = 0;
     for (i = 0; i < queue->size; i++) {
@@ -246,6 +278,8 @@ struct message *find_nonempty(struct queue_message_t *queue) {
     }
     return null;
 }
+
+/* Enqueue  */
 
 int enqueue(enum MESSAGE_QUEUES source, enum MESSAGE_QUEUES destination, char *string) {
     /* Enqueue */
