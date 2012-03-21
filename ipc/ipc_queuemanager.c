@@ -280,8 +280,6 @@ struct message *find_nonempty(struct queue_message_t *queue) {
     return null;
 }
 
-/* Enqueue  */
-
 int enqueue(enum MESSAGE_QUEUES source, enum MESSAGE_QUEUES destination, char *string) {
     /* Enqueue */
     struct queue_message_t *dest_queue = get_message(destination);
@@ -326,7 +324,8 @@ int enqueue(enum MESSAGE_QUEUES source, enum MESSAGE_QUEUES destination, char *s
     return(ERROR_SUCCESS);
 }
 
-/*message must exist for clear function*/
+/* The message must exist for clear function. */
+
 void clear(struct message *m){
     int i = 0;
     m->source = -1;
@@ -341,8 +340,7 @@ void clear(struct message *m){
 }
 
 
-struct message dequeue(enum MESSAGE_QUEUES message_queue_enum){
-
+struct message dequeue(enum MESSAGE_QUEUES message_queue_enum) {
     struct queue_message_t *queue = get_message(message_queue_enum);
     /*If queue is empty*/
     if (queue->head == null){
@@ -370,6 +368,10 @@ struct message dequeue(enum MESSAGE_QUEUES message_queue_enum){
     clear(temp);
     return(ret);
 }
+
+/* Check if the queue is empty (basically).  It must be initialized as well
+ * (due to lazy deinitialization, a queue might appear to be non-empty when it
+ * really should be).  */
 
 int has_message(enum MESSAGE_QUEUES check){
 
