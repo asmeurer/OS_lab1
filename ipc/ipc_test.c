@@ -305,6 +305,7 @@ int main(int argc, char *argv[]) {
 
                     error = send(source, dest, message);
                     if (error == ERROR_SUCCESS) {
+			printf("Queue %d sent %s to %d.\n", source, message, dest);    
                         printf("Send successful\n");
                     } else if(error == ERROR_QUEUE_FULL){
                         printf("Destination queue full\n");
@@ -340,7 +341,7 @@ int main(int argc, char *argv[]) {
                         printf("Message retrieved successfully.\n");
                         printf("%s\n", message);
                     } else if (error == ERROR_QUEUE_EMPTY){
-                        printf("Queue is empty\n");
+                        printf("Queue is empty.\n");
                     }
                     else if(error == ERROR_DEST_QUEUE_NOT_EXIST){
                         printf("Queue does not exist\n");
