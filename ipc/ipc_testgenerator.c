@@ -87,7 +87,7 @@ int main() {
             printf("What should the destination manager be? ");
             scanf("\n%d", &destination);
             printf("What should the message be? ");
-            scanf("\n%[^\n]s", &string);
+            scanf("\n%[^\n]s", string);
             fprintf(output, "SEND %d %d %s\n", source, destination, string);
 
             break;
