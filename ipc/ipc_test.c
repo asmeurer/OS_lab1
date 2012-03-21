@@ -105,6 +105,7 @@ int main(int argc, char *argv[]) {
     char *end_temp;
     unsigned long temp_val;
     int i = 0;
+    int j = 0;
 
     FILE *file;
     if (argc == 1){
@@ -143,7 +144,7 @@ int main(int argc, char *argv[]) {
                 /*Initial split of line*/
                 init_arg = strtok(line, " ");
                 /*If no arguments*/
-                if (init_arg == NULL){
+                if (strcmp(init_arg, "\n") == 0){
                     error = 0;
                 }
                 i = 0;
@@ -152,17 +153,17 @@ int main(int argc, char *argv[]) {
                     end_temp = init_arg;
 
                     /*Loop through each character in string checking if it is a digit*/
-                    for(i = 0; i < strlen(init_arg) - 1; i++){
-                        if (!isdigit(init_arg[i])){
-                            error = 0;
-                            break;
-                        }
-                    }
+                    for(j = 0; j < strlen(init_arg) - 1; j++){
+						if (!isdigit(init_arg[j])){
+							error = 0;
+							break;
+						}
+					}
                     if(error == 0){
-                        break;
-                    }
-                    i = 0;
-
+						break;
+					}
+					
+                    
                     /*Set for strtoul*/
                     errno = 0;
                     /*Convert string value to unsigned long*/
@@ -187,11 +188,13 @@ int main(int argc, char *argv[]) {
                     i = 0;
                     /*The first -1 should be where it stops*/
                     while(i < 10 && init_num[i] != -1){
-                        printf("Message Queue %d initialized. ", init_num[i]);
+
+                        printf("Message Queue %d initialized.\n", init_num[i]);
                         init_queue(init_num[i]);
                         i++;
                     }
                     printf("\n");
+
                 }
                 else{
                     printf("Usage: INIT_IPC <manager1 | manager2| ...| managerN >\n");
