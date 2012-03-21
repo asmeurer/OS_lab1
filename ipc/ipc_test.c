@@ -19,24 +19,20 @@
 void list_MQ(enum MESSAGE_QUEUES queuelist){
     struct queue_message_t *structqueue = get_message(queuelist);
     struct message *temp = structqueue->head;
-<<<<<<< HEAD
     printf("Start of %d message queue.", queuelist);
-=======
-    printf("Start of message queue %d.\n", queuelist);
->>>>>>> 6baeb01ef7144cd8bb35fd9f84d43e69f918e6b9
 
     while(temp){
         printmessage(*temp);
         temp = temp->prev;
     }
-    printf("End of message queue %d.\n", queuelist);
+    printf("\nEnd of message queue %d.\n", queuelist);
 }
 
 void printmessage(struct message MESSAGE){
     printf("\n");
-    printf("source: %d\n", MESSAGE.source);
-    printf("destination: %d\n", MESSAGE.destination);
-    printf("message: %s\n", MESSAGE.string);
+    printf("source: %d  |  ", MESSAGE.source);
+    printf("destination: %d  |  ", MESSAGE.destination);
+    printf("message: %s  |\n", MESSAGE.string);
 }
 
 /*
@@ -163,45 +159,10 @@ int main(int argc, char *argv[]) {
                 error = fscanf(file, " %d", &dest);
                 if (error == 1){
                     printf("\n***LISTING command issued (%s)***\n", args[0]);
-<<<<<<< HEAD
-                    if (!strcmp(args[0], "ZERO")){
-			list_MQ(0);
-                    }
-                    else if (!strcmp(args[0], "ONE")){
-			list_MQ(1);
-                    }
-                    else if (!strcmp(args[0], "TWO")){
-			list_MQ(2);
-                    }
-                    else if (!strcmp(args[0], "THREE")){
-			list_MQ(3);
-                    }
-                    else if (!strcmp(args[0], "FOUR")){
-			list_MQ(4);
-                    }
-                    else if (!strcmp(args[0], "FIVE")){
-			list_MQ(5);
-                    }
-                    else if (!strcmp(args[0], "SIX")){
-			list_MQ(6);
-                    }
-                    else if (!strcmp(args[0], "SEVEN")){
-			list_MQ(7);
-                    }
-                    else if (!strcmp(args[0], "EIGHT")){
-			list_MQ(8);
-                    }
-                    else if (!strcmp(args[0], "NINE")){
-			list_MQ(9);
-                    }
-                    else{
-                        printf("Usage: LIST <queuename>\n");
-=======
                     if (dest < 0 || dest > 9){
                         printf("The queue must be 0-9\n");
                     }else{
                         list_MQ(dest);
->>>>>>> 6baeb01ef7144cd8bb35fd9f84d43e69f918e6b9
                     }
                 }
                 else{
@@ -295,7 +256,7 @@ int main(int argc, char *argv[]) {
                 printf("COMMANDS: INIT_IPC <manager1 | manager2 | ... | managerN>    LIST <queuename>\n");
                 printf("HAS_MESSAGE <queuename>     SEND <source destination message>\n");
                 printf("RETRIEVE <destination> \n");
-                printf("\n ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
+                printf("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
             }
             else {
                 printf("Unrecognized command: %s\n", command);

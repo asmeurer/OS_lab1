@@ -340,6 +340,7 @@ int has_message(enum MESSAGE_QUEUES check){
 
 	struct queue_message_t *queue = get_message(check);
 	if(queue->head == null){
+	/* If the head is null there is nothing in the queue. */
 		return (ERROR_QUEUE_EMPTY);
 	}
 	else{
