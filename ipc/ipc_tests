@@ -33,4 +33,5 @@ RETRIEVE 3
 RETRIEVE 3
 RETRIEVE 3
 # Init clears everything
+INIT_IPC 1 2
 LIST

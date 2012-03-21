@@ -101,7 +101,7 @@ int main(int argc, char *argv[]) {
     char command[20];
     int dest;
     int source;
-    char message[256];
+    char message[MESSAGE_SIZE];
     char line[LINE_MAX];
     int init_num[10];
     char *init_arg;
@@ -314,6 +314,9 @@ int main(int argc, char *argv[]) {
                     else if(error == ERROR_MAX_STRING_LENGTH){
                         printf("The message length was too long.\n");
                     }
+                    else if(error == ERROR_SEND_TO_SELF){
+						printf("Source and destination cannot be the same.\n");
+					}
                     else {
                         printf("Unexpected error in SEND (%d)!\n", error);
                     }
@@ -333,7 +336,7 @@ int main(int argc, char *argv[]) {
                         printf("Message retrieved successfully.\n");
                         printf("%s\n", message);
                     } else if (error == ERROR_QUEUE_EMPTY){
-                        printf("Queue does not exist\n");
+                        printf("Queue is empty\n");
                     }
                     else if(error == ERROR_DEST_QUEUE_NOT_EXIST){
                         printf("Queue does not exist\n");

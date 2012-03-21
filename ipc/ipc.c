@@ -54,6 +54,7 @@ int send(enum MESSAGE_QUEUES source_queue, enum MESSAGE_QUEUES dest_queue, char*
     return enqueue(source_queue, dest_queue, message_string);
 }
 
+
 /**
  * Function to retrieve a message from a queue.
  * @param dest_queue The enum for the queue to pull the message from (The enum
@@ -70,7 +71,13 @@ int retrieve(enum MESSAGE_QUEUES dest_queue, char* buffer){
         return ERROR_DEST_QUEUE_NOT_EXIST;
     }
     else{
-        buffer = temp.string;
+		int i = 0;
+		for (i = 0; i < MESSAGE_SIZE; i++) {
+			buffer[i] = temp.string[i];
+			if (buffer[i] == '\0') {
+				break;
+			}
+		}
         return ERROR_SUCCESS;
     }
 

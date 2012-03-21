@@ -372,14 +372,16 @@ void clear(struct message *m){
 struct message dequeue(enum MESSAGE_QUEUES message_queue_enum){
 
     struct queue_message_t *queue = get_message(message_queue_enum);
-    /*If queue is empty*/
-    if (queue->head == null){
-        error_message.source = ERROR_QUEUE_EMPTY;
-        return error_message;
-    }
+
 
     if (queue->initialized == 0){
         error_message.source = ERROR_DEST_QUEUE_NOT_EXIST;
+        return error_message;
+    }
+
+    /*If queue is empty*/
+    if (queue->head == null){
+        error_message.source = ERROR_QUEUE_EMPTY;
         return error_message;
     }
 
