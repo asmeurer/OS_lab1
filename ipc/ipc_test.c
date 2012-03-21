@@ -118,7 +118,7 @@ int main(int argc, char *argv[]) {
     else if (argc == 2){
         file = fopen(argv[1], "r");
         if (file == NULL) {
-            printf("Could not open file %s\n", argv[1]);
+            printf("Could not open file %s: %s\n", argv[1], strerror(errno));
             exit(errno);
         }
     }

@@ -66,9 +66,11 @@ int retrieve(enum MESSAGE_QUEUES dest_queue, char* buffer){
     if (temp.source == ERROR_QUEUE_EMPTY){
         return ERROR_QUEUE_EMPTY;
     }
+
     else if(temp.source == ERROR_DEST_QUEUE_NOT_EXIST){
         return ERROR_DEST_QUEUE_NOT_EXIST;
     }
+
     else{
         buffer = temp.string;
         return ERROR_SUCCESS;
