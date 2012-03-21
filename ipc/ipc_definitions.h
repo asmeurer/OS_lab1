@@ -23,6 +23,7 @@
 #define ERROR_SOURCE_QUEUE_NOT_EXIST -3
 #define ERROR_DEST_QUEUE_NOT_EXIST -4
 #define ERROR_MAX_STRING_LENGTH -5
+#define ERROR_SEND_TO_SELF -6
 
 /* This makes it easier to reference the message queues in external
  * functions.  Since the numbering of enum elements coincides exactly with

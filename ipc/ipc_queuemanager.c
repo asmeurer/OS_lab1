@@ -402,6 +402,10 @@ struct message dequeue(enum MESSAGE_QUEUES message_queue_enum){
 
 /**
  * A function to check if a queue has a message
+ *
+ * The queue must be initialized as well (due to lazy deinitialization, a queue might appear to be non-empty when it
+ * really should be). 
+ *
  * @param check The queue to check if a message exists
  * @return Returns error codes according to ipc_definitions.h
  */

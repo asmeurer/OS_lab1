@@ -5,12 +5,13 @@
    Oran Wallace
    Sheng Lundquist
 */
+
 #include "ipc.h"
 
 /**
- * Function to find the message length
- * @param message_string The string to find the length
- * @return The length of the string, an error otherwise
+ * Function to find the message length.
+ * @param message_string The string to find the length.
+ * @return The length of the string, an error otherwise (i.e., it does not end in the null terminator).
  */
 int message_len(char* message_string){
     int i;
@@ -31,16 +32,21 @@ int message_len(char* message_string){
 }
 
 /**
- * Function to send a message to the destination queue
- * @param source_queue The enum for the message source (The enum matches with the integer value)
- * @param dest_queue The enum for the message destination (The enum matches with the integer value)
- * @param message_string The string message to be sent
- * @return Returns an error code according to ipc_definitions.h
+ * Function to send a message to the destination queue.
+ * @param source_queue The enum for the message source (The enum matches with the integer value).
+ * @param dest_queue The enum for the message destination (The enum matches with the integer value).
+ * @param message_string The string message to be sent.
+ * @return Returns an error code according to ipc_definitions.h.
  */
 int send(enum MESSAGE_QUEUES source_queue, enum MESSAGE_QUEUES dest_queue, char* message_string){
+    if (source_queue == dest_queue) {
+        return ERROR_SEND_TO_SELF;
+    }
+
     if (message_len(message_string) == ERROR_MAX_STRING_LENGTH){
         return ERROR_MAX_STRING_LENGTH;
     }
+
     /*Returns queue full, source/destination queue not exist*/
     return enqueue(source_queue, dest_queue, message_string);
 }
