@@ -16,6 +16,11 @@
 #include<stdlib.h>
 #include"ipc_definitions.h"
 
+
+/**
+ * The main function to the test generator
+ * @return Returns 0
+ */
 int main() {
     int input;
     FILE *output = NULL;

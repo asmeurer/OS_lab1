@@ -126,6 +126,9 @@ struct message error_message  =
  deinitialization, but it's OK because all of the queue manager functions
  will refuse to work if the input queue has initialized set to 0. */
 
+/**
+ * Function to reset the deinit flag for each queue
+ */
 void deinit(){
     zero.initialized = 0;
     one.initialized = 0;
@@ -139,6 +142,10 @@ void deinit(){
     nine.initialized = 0;
 }
 
+/**
+ * Function to clear and set the initilized flag for the specified queue
+ * @param message_queue_enum The queue to be initialized
+ */
 void init_queue(enum MESSAGE_QUEUES message_queue_enum) {
     int i = 0;
 
@@ -236,10 +243,13 @@ void init_queue(enum MESSAGE_QUEUES message_queue_enum) {
     }
 }
 
-/* Simple function to convert the enum to the actual data type.  All the
- * public functions take the enum as arguments, so this is mainly for
- * internal use within the queue manager.*/
-
+/**
+ * Simple function to convert the enum to the actual data type.
+ * All the public functions take the enum as arguments, so this is mainly for
+ * internal use within the queue manager.
+ * @param message_queue_enum The enumerator to be converted
+ * @return Returns the data structure for the queue
+ */
 struct queue_message_t *get_message(enum MESSAGE_QUEUES message_queue_enum) {
     switch (message_queue_enum) {
     case ONE:
@@ -267,8 +277,11 @@ struct queue_message_t *get_message(enum MESSAGE_QUEUES message_queue_enum) {
     }
 }
 
-/* Find a blank spot in the memory to do use for enqueue. */
-
+/**
+ * Find a blank spot in the memory to do use for enqueue.
+ * @param queue The queue to find the blank spot in memory
+ * @return Returns the blank spot in memory, null if the queue is full
+ */
 struct message *find_nonempty(struct queue_message_t *queue) {
     int i = 0;
     for (i = 0; i < queue->size; i++) {
@@ -280,8 +293,13 @@ struct message *find_nonempty(struct queue_message_t *queue) {
     return null;
 }
 
-/* Enqueue  */
-
+/**
+ * Enqueues a message structure into a queue
+ * @param source The enum for the message source (The enum matches with the integer value)
+ * @param destination The enum for the message destination (The enum matches with the integer value)
+ * @param string The string message to be sent
+ * @return Returns an error code according to ipc_definitions.h
+ */
 int enqueue(enum MESSAGE_QUEUES source, enum MESSAGE_QUEUES destination, char *string) {
     /* Enqueue */
     struct queue_message_t *dest_queue = get_message(destination);
@@ -326,7 +344,12 @@ int enqueue(enum MESSAGE_QUEUES source, enum MESSAGE_QUEUES destination, char *s
     return(ERROR_SUCCESS);
 }
 
-/*message must exist for clear function*/
+
+/**
+ * Clears a message block. The message block must exist for the clear function
+ * when passed.
+ * @param m The message block to be cleared
+ */
 void clear(struct message *m){
     int i = 0;
     m->source = -1;
@@ -341,6 +364,11 @@ void clear(struct message *m){
 }
 
 
+/**
+ * Dequeues a message structure from a queue
+ * @param message_queue_enum The enum for the queue (The enum matches with the integer value)
+ * @return Returns the message block that was dequeued. The source field of the message returns error codes.
+ */
 struct message dequeue(enum MESSAGE_QUEUES message_queue_enum){
 
     struct queue_message_t *queue = get_message(message_queue_enum);
@@ -371,6 +399,12 @@ struct message dequeue(enum MESSAGE_QUEUES message_queue_enum){
     return(ret);
 }
 
+
+/**
+ * A function to check if a queue has a message
+ * @param check The queue to check if a message exists
+ * @return Returns error codes according to ipc_definitions.h
+ */
 int has_message(enum MESSAGE_QUEUES check){
 
     struct queue_message_t *queue = get_message(check);

@@ -17,6 +17,11 @@
 #include <string.h>
 #include <ctype.h>
 
+
+/**
+ * Function to print a queue
+ * @param queuelist The queue to list out
+ */
 void list_MQ(enum MESSAGE_QUEUES queuelist){
     struct queue_message_t *structqueue = get_message(queuelist);
     struct message *temp = structqueue->head;
@@ -29,6 +34,11 @@ void list_MQ(enum MESSAGE_QUEUES queuelist){
     printf("\nEnd of message queue %d.\n", queuelist);
 }
 
+
+/**
+ * Function to print out a specific message block
+ * @param MESSAGE The message to be printed
+ */
 void printmessage(struct message MESSAGE){
     printf("\n");
     printf("source: %d  |  ", MESSAGE.source);
@@ -36,10 +46,11 @@ void printmessage(struct message MESSAGE){
     printf("message: %s  |\n", MESSAGE.string);
 }
 
-/*
-**
-*Gets a string from the file
-*@return The string that was in the file
+
+/**
+ * Gets a string from the file
+ * @param fFile The file to read the string from
+ * @return The string that was in the file
 */
 char *fgetstring(FILE* fFile){
     char c = 0;
@@ -69,6 +80,12 @@ char *fgetstring(FILE* fFile){
 
 
 
+/**
+ * The main function
+ * @param argc The number of command line arguments
+ * @param argv The array of arguments
+ * @return Returns 0
+ */
 int main(int argc, char *argv[]) {
     int error = 0;
     char command[20];
