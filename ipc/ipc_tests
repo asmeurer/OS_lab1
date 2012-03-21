@@ -1,0 +1,36 @@
+# Init 4 managers
+INIT_IPC 0 3 5 7
+LIST
+# Retrieve empty queue throws error
+RETRIEVE 0
+# Retrieve non-initialized queue throws error
+RETRIEVE 9
+# Send with non-initialized source queue throws error
+SEND 2 7 hi
+# Send with non-initialized destination queue throws error
+SEND 0 6 hi
+# Send to self throws error
+SEND 0 0 hi
+# Fill up queues 3 and 5
+SEND 0 5 hello world 11
+SEND 3 5 hello world 12
+SEND 7 5 hello world 13
+SEND 0 5 hello world 14
+SEND 0 5 hello world 15
+SEND 0 3 hello world 21
+SEND 5 3 hello world 22
+SEND 7 3 hello world 23
+SEND 0 3 hello world 24
+SEND 0 3 hello world 25
+LIST 3
+LIST 5
+# Sending to full queue throws error
+SEND 0 3 hello world 6
+# Retrieve messages from queue 3
+RETRIEVE 3
+RETRIEVE 3
+RETRIEVE 3
+RETRIEVE 3
+RETRIEVE 3
+# Init clears everything
+LIST
