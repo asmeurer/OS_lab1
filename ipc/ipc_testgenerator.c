@@ -63,7 +63,7 @@ int main() {
         case 1:
             fprintf(output, "INIT_IPC");
             while (1) {
-                printf("Which message managers would you like to initialize (0-9, End)? ");
+                printf("Which message managers would you like to initialize (0-9, E)? ");
                 scanf("\n%c", string);
                 if (string[0] == 'e' || string[0] == 'E') {
                     break;
