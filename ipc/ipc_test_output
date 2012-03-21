@@ -37,81 +37,91 @@ Queue 9 Not Initialized.
 [0;29;39m################################################################################
 
 ***RETRIEVE command issued ***
-Queue is empty
-
+[1;31;40mQueue is empty.
+[0;29;39m
 ################################################################################
 #[1;37;40m Retrieve non-initialized queue throws error
 [0;29;39m################################################################################
 
 ***RETRIEVE command issued ***
-Queue does not exist
-
+[1;31;40mQueue does not exist
+[0;29;39m
 ################################################################################
 #[1;37;40m Send with non-initialized source queue throws error
 [0;29;39m################################################################################
 
 ***SEND command issued ***
 message: hi
-Source queue does not exist
-
+[1;31;40mSource queue does not exist
+[0;29;39m
 ################################################################################
 #[1;37;40m Send with non-initialized destination queue throws error
 [0;29;39m################################################################################
 
 ***SEND command issued ***
 message: hi
-Destination queue does not exist
-
+[1;31;40mDestination queue does not exist
+[0;29;39m
 ################################################################################
 #[1;37;40m Send to self throws error
 [0;29;39m################################################################################
 
 ***SEND command issued ***
 message: hi
-Source and destination cannot be the same.
-
+[1;31;40mSource and destination cannot be the same.
+[0;29;39m
 ################################################################################
 #[1;37;40m Fill up queues 3 and 5
 [0;29;39m################################################################################
 
 ***SEND command issued ***
 message: hello world 11
+Queue 0 sent hello world 11 to 5.
 Send successful
 
 ***SEND command issued ***
 message: hello world 12
+Queue 3 sent hello world 12 to 5.
 Send successful
 
 ***SEND command issued ***
 message: hello world 13
+Queue 7 sent hello world 13 to 5.
 Send successful
 
 ***SEND command issued ***
 message: hello world 14
+Queue 0 sent hello world 14 to 5.
 Send successful
 
 ***SEND command issued ***
 message: hello world 15
+Queue 0 sent hello world 15 to 5.
 Send successful
 
 ***SEND command issued ***
 message: hello world 21
+Queue 0 sent hello world 21 to 3.
 Send successful
 
 ***SEND command issued ***
 message: hello world 22
+Queue 5 sent hello world 22 to 3.
 Send successful
 
 ***SEND command issued ***
 message: hello world 23
+Queue 7 sent hello world 23 to 3.
 Send successful
 
 ***SEND command issued ***
 message: hello world 24
+Queue 0 sent hello world 24 to 3.
 Send successful
 
 ***SEND command issued ***
 message: hello world 25
+Queue 0 sent hello world 25 to 3.
 Send successful
 
 Start of message queue 3.
@@ -138,8 +148,8 @@ End of message queue 5.
 
 ***SEND command issued ***
 message: hello world 6
-Destination queue full
-
+[1;31;40mDestination queue full
+[0;29;39m
 ################################################################################
 #[1;37;40m Retrieve messages from queue 3
 [0;29;39m################################################################################
@@ -192,4 +202,30 @@ Queue 7 Not Initialized.
 Queue 8 Not Initialized.
 
 Queue 9 Not Initialized.
+
+################################################################################
+#[1;37;40m Has message doesn't work for non-initialized queue
+[0;29;39m################################################################################
+
+***HAS_MESSAGE command issued***
+[1;31;40mQueue specified does not exist
+[0;29;39m
+################################################################################
+#[1;37;40m Has message for empty initialized queue
+[0;29;39m################################################################################
+
+***HAS_MESSAGE command issued***
+FALSE
+
+################################################################################
+#[1;37;40m Has message for non-empty queue
+[0;29;39m################################################################################
+
+***SEND command issued ***
+message: a message
+Queue 1 sent a message to 2.
+Send successful
+
+***HAS_MESSAGE command issued***
+TRUE
 
