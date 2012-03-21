@@ -159,16 +159,16 @@ int main(int argc, char *argv[]) {
                     /*Next token*/
                     init_arg = strtok(NULL, " ");
                 }
-
                 if (error == 1){
                     deinit();
                     i = 0;
                     /*The first -1 should be where it stops*/
                     while(i < 10 && init_num[i] != -1){
-                        printf("%d\n", init_num[i]);
+			printf("Message Queue %d initialized. ", init_num[i]);
                         init_queue(init_num[i]);
                         i++;
                     }
+		    printf("\n");
                 }
                 else{
                     printf("Usage: INIT <manager1 | manager2| ...| managerN >>\n");
