@@ -143,10 +143,8 @@ int main(int argc, char *argv[]) {
 
                 /*Initial split of line*/
                 init_arg = strtok(line, " ");
-                printf("init_arg: %s", init_arg);
                 /*If no arguments*/
-                if (init_arg == NULL){
-                    printf("Test\n");
+                if (strcmp(init_arg, "\n") == 0){
                     error = 0;
                 }
                 i = 0;
@@ -155,7 +153,6 @@ int main(int argc, char *argv[]) {
                     end_temp = init_arg;
 
                     /*Loop through each character in string checking if it is a digit*/
-<<<<<<< HEAD
                     for(j = 0; j < strlen(init_arg) - 1; j++){
 						if (!isdigit(init_arg[j])){
 							error = 0;
@@ -167,19 +164,6 @@ int main(int argc, char *argv[]) {
 					}
 					
                     
-=======
-                    for(i = 0; i < strlen(init_arg) - 1; i++){
-                        if (!isdigit(init_arg[i])){
-                            error = 0;
-                            break;
-                        }
-                    }
-                    if(error == 0){
-                        break;
-                    }
-                    i = 0;
-
->>>>>>> 51973cb6a6183c83ad6c3a3a2b1586b1df7eb9ff
                     /*Set for strtoul*/
                     errno = 0;
                     /*Convert string value to unsigned long*/
@@ -204,19 +188,13 @@ int main(int argc, char *argv[]) {
                     i = 0;
                     /*The first -1 should be where it stops*/
                     while(i < 10 && init_num[i] != -1){
-<<<<<<< HEAD
-					printf("Message Queue %d initialized.\n", init_num[i]);
-                        init_queue(init_num[i]);
-                        i++;
-                    }
-					printf("\n");
-=======
-                        printf("Message Queue %d initialized. ", init_num[i]);
+
+                        printf("Message Queue %d initialized.\n", init_num[i]);
                         init_queue(init_num[i]);
                         i++;
                     }
                     printf("\n");
->>>>>>> 51973cb6a6183c83ad6c3a3a2b1586b1df7eb9ff
+
                 }
                 else{
                     printf("Usage: INIT_IPC <manager1 | manager2| ...| managerN >\n");
