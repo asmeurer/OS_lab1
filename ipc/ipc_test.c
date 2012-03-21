@@ -162,8 +162,8 @@ int main(int argc, char *argv[]) {
                     if(error == 0){
 						break;
 					}
-					
-                    
+
+
                     /*Set for strtoul*/
                     errno = 0;
                     /*Convert string value to unsigned long*/
@@ -301,9 +301,11 @@ int main(int argc, char *argv[]) {
             }
             else if(!strcmp(command, "HELP")){
                 printf("\n ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
-                printf("COMMANDS: INIT_IPC <manager1 | manager2 | ... | managerN>    LIST <queuename>\n");
-                printf("HAS_MESSAGE <queuename>     SEND <source destination message>\n");
-                printf("RETRIEVE <destination> \n");
+                printf("COMMANDS: INIT_IPC <manager1 | manager2 | ... | managerN>\n");
+                printf("LIST <queuename>\n");
+                printf("HAS_MESSAGE <queuename>\n");
+                printf("SEND <source destination message>\n");
+                printf("RETRIEVE <destination>\n");
                 printf("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
             }
             else {
