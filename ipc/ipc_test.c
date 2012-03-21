@@ -24,9 +24,9 @@
 void list_MQ(enum MESSAGE_QUEUES queuelist){
     struct queue_message_t *structqueue = get_message(queuelist);
     if (structqueue->initialized == 0){
-		printf("\nQueue %d Not Initialized.\n", queuelist);
-		return;
-	}
+        printf("\nQueue %d Not Initialized.\n", queuelist);
+        return;
+    }
 
     struct message *temp = structqueue->head;
     printf("\nStart of message queue %d.\n", queuelist);
@@ -161,14 +161,14 @@ int main(int argc, char *argv[]) {
 
                     /*Loop through each character in string checking if it is a digit*/
                     for(j = 0; j < strlen(init_arg) - 1; j++){
-						if (!isdigit(init_arg[j])){
-							error = 0;
-							break;
-						}
-					}
+                        if (!isdigit(init_arg[j])){
+                            error = 0;
+                            break;
+                        }
+                    }
                     if(error == 0){
-						break;
-					}
+                        break;
+                    }
 
 
                     /*Set for strtoul*/
@@ -210,7 +210,7 @@ int main(int argc, char *argv[]) {
 
             }
             else if (!strcmp(command, "LIST")) {
-				fgets(line, LINE_MAX, file);
+                fgets(line, LINE_MAX, file);
                 error = 1;
 
                 /*Initialize init_num as -1*/
@@ -225,56 +225,56 @@ int main(int argc, char *argv[]) {
                     list_all_MQ();
                 }
                 else{
-					i = 0;
-					while (init_arg != NULL) {
-						/*End pointer for strtoul*/
-						end_temp = init_arg;
+                    i = 0;
+                    while (init_arg != NULL) {
+                        /*End pointer for strtoul*/
+                        end_temp = init_arg;
 
-						/*Loop through each character in string checking if it is a digit*/
-						for(j = 0; j < strlen(init_arg) - 1; j++){
-							if (!isdigit(init_arg[j])){
-								error = 0;
-								break;
-							}
-						}
-						if(error == 0){
-							break;
-						}
+                        /*Loop through each character in string checking if it is a digit*/
+                        for(j = 0; j < strlen(init_arg) - 1; j++){
+                            if (!isdigit(init_arg[j])){
+                                error = 0;
+                                break;
+                            }
+                        }
+                        if(error == 0){
+                            break;
+                        }
 
 
-						/*Set for strtoul*/
-						errno = 0;
-						/*Convert string value to unsigned long*/
-						temp_val = strtoul(init_arg, &end_temp, 10);
-						/*Check if errno is set off for not a number, or if more than 10 arguments*/
-						if (errno == EINVAL || i >= 10){
-							error = 0;
-							break;
-						}
-						/*Check for more than 10 arguments*/
-						if (temp_val >= 10){
-							error = 0;
-							break;
-						}
-						/*Store value*/
-						init_num[i] = (int)temp_val;
-						i++;
-						/*Next token*/
-						init_arg = strtok(NULL, " ");
-					}
-					if (error == 1){
-						i = 0;
-						/*The first -1 should be where it stops*/
-						while(i < 10 && init_num[i] != -1){
-							list_MQ(init_num[i]);
-							i++;
-						}
-						printf("\n");
-					}
-					else{
-						printf("Usage: LIST || LIST <manager1 | manager2| ...| managerN >\n");
-					}
-				}
+                        /*Set for strtoul*/
+                        errno = 0;
+                        /*Convert string value to unsigned long*/
+                        temp_val = strtoul(init_arg, &end_temp, 10);
+                        /*Check if errno is set off for not a number, or if more than 10 arguments*/
+                        if (errno == EINVAL || i >= 10){
+                            error = 0;
+                            break;
+                        }
+                        /*Check for more than 10 arguments*/
+                        if (temp_val >= 10){
+                            error = 0;
+                            break;
+                        }
+                        /*Store value*/
+                        init_num[i] = (int)temp_val;
+                        i++;
+                        /*Next token*/
+                        init_arg = strtok(NULL, " ");
+                    }
+                    if (error == 1){
+                        i = 0;
+                        /*The first -1 should be where it stops*/
+                        while(i < 10 && init_num[i] != -1){
+                            list_MQ(init_num[i]);
+                            i++;
+                        }
+                        printf("\n");
+                    }
+                    else{
+                        printf("Usage: LIST || LIST <manager1 | manager2| ...| managerN >\n");
+                    }
+                }
             }
             else if (!strcmp(command, "HAS_MESSAGE")){
                 error = fscanf(file, " %d", &dest);
@@ -305,7 +305,7 @@ int main(int argc, char *argv[]) {
 
                     error = send(source, dest, message);
                     if (error == ERROR_SUCCESS) {
-			printf("Queue %d sent %s to %d.\n", source, message, dest);    
+                        printf("Queue %d sent %s to %d.\n", source, message, dest);
                         printf("Send successful\n");
                     } else if(error == ERROR_QUEUE_FULL){
                         printf("Destination queue full\n");
@@ -320,8 +320,8 @@ int main(int argc, char *argv[]) {
                         printf("The message length was too long.\n");
                     }
                     else if(error == ERROR_SEND_TO_SELF){
-						printf("Source and destination cannot be the same.\n");
-					}
+                        printf("Source and destination cannot be the same.\n");
+                    }
                     else {
                         printf("Unexpected error in SEND (%d)!\n", error);
                     }
