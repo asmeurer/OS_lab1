@@ -171,7 +171,7 @@ int main(int argc, char *argv[]) {
 		    printf("\n");
                 }
                 else{
-                    printf("Usage: INIT <manager1 | manager2| ...| managerN >>\n");
+                    printf("Usage: INIT_IPC <manager1 | manager2| ...| managerN >\n");
                 }
 
             }
