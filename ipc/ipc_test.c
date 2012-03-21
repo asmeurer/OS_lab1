@@ -78,6 +78,7 @@ char *fgetstring(FILE* fFile){
 
 int main(int argc, char *argv[]) {
     int error = 0;
+    int test = 0;
     char command[20];
     int dest;
     int source;
@@ -183,19 +184,19 @@ int main(int argc, char *argv[]) {
 
             }
             else if (!strcmp(command, "LIST")) {
+		fgets(line, LINE_MAX, file);    
                 error = fscanf(file, " %d", &dest);
-                if (error == 1){
+		if (error == 1){
                     printf("\n***LISTING command issued (%s)***\n", args[0]);
                     if (dest < 0 || dest > 9){
-                        printf("The queue must be 0-9\n");
-                    }else if(dest == NULL){
-			list_all_MQ();	    
-		    }else{
+                        printf("The queue must be 0-9\n");	    
+		    }
+		    else{
                         list_MQ(dest);
                     }
                 }
                 else{
-                    printf("Usage: LIST <queuemanager> | LIST ");
+                    printf("Usage: LIST <messagequeue> | LIST ");
                 }
             }
             else if (!strcmp(command, "HAS_MESSAGE")){
