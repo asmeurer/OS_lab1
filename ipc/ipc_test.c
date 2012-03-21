@@ -117,6 +117,10 @@ int main(int argc, char *argv[]) {
     }
     else if (argc == 2){
         file = fopen(argv[1], "r");
+        if (file == NULL) {
+            printf("Could not open file %s\n", argv[1]);
+            exit(errno);
+        }
     }
     else{
         printf("Usage:\n./ipc_test.o (to read from stdin)\n");
@@ -236,8 +240,8 @@ int main(int argc, char *argv[]) {
 						if(error == 0){
 							break;
 						}
-						
-						
+
+
 						/*Set for strtoul*/
 						errno = 0;
 						/*Convert string value to unsigned long*/
