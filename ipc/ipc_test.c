@@ -129,7 +129,7 @@ int main(int argc, char *argv[]) {
                     end_temp = init_arg;
                     
                     /*Loop through each character in string checking if it is a digit*/
-                    for(i = 0; i < strlen(init_arg); i++){
+                    for(i = 0; i < strlen(init_arg) - 1; i++){
 						if (!isdigit(init_arg[i])){
 							error = 0;
 							break;
