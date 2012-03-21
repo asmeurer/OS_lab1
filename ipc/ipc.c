@@ -73,13 +73,13 @@ int retrieve(enum MESSAGE_QUEUES dest_queue, char* buffer){
     }
 
     else{
-		int i = 0;
-		for (i = 0; i < MESSAGE_SIZE; i++) {
-			buffer[i] = temp.string[i];
-			if (buffer[i] == '\0') {
-				break;
-			}
-		}
+        int i = 0;
+        for (i = 0; i < MESSAGE_SIZE; i++) {
+            buffer[i] = temp.string[i];
+            if (buffer[i] == '\0') {
+                break;
+            }
+        }
         return ERROR_SUCCESS;
     }
 
