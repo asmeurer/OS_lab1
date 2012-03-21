@@ -29,6 +29,13 @@ void list_MQ(enum MESSAGE_QUEUES queuelist){
     printf("\nEnd of message queue %d.\n", queuelist);
 }
 
+void list_all_MQ(){
+	int i=0;
+	for(i=0;i < 10; i++){
+		list_MQ(i);
+	}
+}	
+
 void printmessage(struct message MESSAGE){
     printf("\n");
     printf("source: %d  |  ", MESSAGE.source);
@@ -181,12 +188,14 @@ int main(int argc, char *argv[]) {
                     printf("\n***LISTING command issued (%s)***\n", args[0]);
                     if (dest < 0 || dest > 9){
                         printf("The queue must be 0-9\n");
-                    }else{
+                    }else if(dest == NULL){
+			list_all_MQ();	    
+		    }else{
                         list_MQ(dest);
                     }
                 }
                 else{
-                    printf("Usage: LIST <queuename>\n");
+                    printf("Usage: LIST <queuemanager> | LIST ");
                 }
             }
             else if (!strcmp(command, "HAS_MESSAGE")){
@@ -292,3 +301,4 @@ int main(int argc, char *argv[]) {
 
     return(0);
 }
+
