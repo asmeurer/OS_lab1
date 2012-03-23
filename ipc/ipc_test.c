@@ -24,7 +24,6 @@
 void list_MQ(enum MESSAGE_QUEUES queuelist){
     struct queue_message_t *structqueue = get_message(queuelist);
     if (structqueue->initialized == 0){
-        printf("\nQueue %d Not Initialized.\n", queuelist);
         return;
     }
 
