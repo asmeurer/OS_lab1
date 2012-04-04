@@ -13,24 +13,24 @@
 
 void init_mem(){
 
-	int i,j;
-	/* Setting the LRU counter to 0, which will be updated by hardware */
-	global_LRU_counter = 0;
+    int i,j;
+    /* Setting the LRU counter to 0, which will be updated by hardware */
+    global_LRU_counter = 0;
 
-	/* Setting each index of the table of page tables  to 0 to init it */
+    /* Setting each index of the table of page tables  to 0 to init it */
 
-	for(i = 0;i < MAX_PROCESSES; i++){
-		for(j = 0; j < MAX_PAGES_PER_PROCESS; j++){
-		page_tables[i][j].phy_add = 0;
-		page_tables[i][j].back_addr = 0;
-		page_tables[i][j].bits = 0;
-		}
-	}
-	
-	for(i = 0; i < USER_PHY_MEM_NUM_FRAMES; i++){
-		phy_mem[i].LRU = 0;
-		phy_mem[i].mapped = 0;
-	}
+    for(i = 0;i < MAX_PROCESSES; i++){
+        for(j = 0; j < MAX_PAGES_PER_PROCESS; j++){
+            page_tables[i][j].phy_addr = 0;
+            page_tables[i][j].back_addr = 0;
+            page_tables[i][j].bits = 0;
+        }
+    }
+
+    for(i = 0; i < USER_PHY_MEM_NUM_FRAMES; i++){
+        phy_mem[i].LRU = 0;
+        phy_mem[i].mapped = 0;
+    }
 
     for(i = 0; i < USER_PHY_MEM_NUM_FRAMES; i++){
         phy_mem[i].LRU = 0;
@@ -44,32 +44,41 @@ void init_mem(){
 
 int alloc_pt (int num_pages){
 
-	int page_table_id, phy_address, i;
+    int page_table_id, i;
 
-	for(i = 0; i < MAX_PROCESSES; i++){
+    for(i = 0; i < MAX_PROCESSES; i++){
 
-		if(page_tables[i][0].bits & P_BITMASK){
-			page_table_id = i;
-			break;
-		}
-	}
+        if(page_tables[i][0].bits & P_BITMASK){
+            page_table_id = i;
+            break;
+        }
+    }
 
-	for(i = 0; i< num_pages; i++){
-		page_tables[page_tables_id][i] =  page_tables[page_table_id][i].bits | P_BITMASK;
-	}
+    for(i = 0; i< num_pages; i++){
+        page_tables[page_table_id][i].bits =  page_tables[page_table_id][i].bits | P_BITMASK;
+    }
+    return ERROR_SUCCESS;
+
 }
 
 
 /* This function is to find a free frame in physical memory */
 
 byte lru_lookup(){
-	int i; 
+    byte i;
 
-	for (i = 0; i < USER_PHY_MEM_NUM_FRAMES; i++){
-		if(phys_mem[i].LRU == 0 ){
-			return i;
-		}
-	}
+    int smallest = phy_mem[0].LRU;
+    int smallest_index = 0;
+
+    for (i = 1; i < USER_PHY_MEM_NUM_FRAMES; i++){
+        if(phy_mem[i].LRU < smallest ){
+            smallest = phy_mem[i].LRU;
+            smallest_index = i;
+
+        }
+    }
+    return i;
+
 }
 
 /* Find a free memory slot in the backing store.  This will correspond to a 0
@@ -228,7 +237,7 @@ int write_backing_store(){
   int page_fault (int page_table_index, int page_num);
 //Returns either index of phy_mem or error code
 
- */
+*/
 /*
   typedef struct{
   byte phy_addr;
