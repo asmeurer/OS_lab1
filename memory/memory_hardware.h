@@ -1,0 +1,3 @@
+/**
+ * Memory hardware emulation header
+ */
