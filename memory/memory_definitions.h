@@ -1,12 +1,12 @@
 /**
  * Memory Definitions Header
  */
- 
+
 #ifndef MEM_DEF_H
 #define MEM_DEF_H
- 
+
 #define null = 0;
- 
+
 //Backing store memory in KB
 #define BACK_STORE_SIZE (64 * 1024)
 //Physical memory in KB
@@ -43,14 +43,14 @@
 typedef unsigned char byte;
 
 typedef struct{
-	byte phy_add;
-	short back_addr;
-	byte bits;
+    byte phy_addr;
+    short back_addr;
+    byte bits;
 }page_table_entry;
 
 typedef struct{
-	unsigned int LRU;
-	page_table_entry* mapped;
+    unsigned int LRU;
+    page_table_entry* mapped;
 }phy_mem_frame;
 
 //Page table allocated space for OS

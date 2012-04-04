@@ -32,6 +32,9 @@ process_manager/scheduler_testgenerator.o: process_manager/scheduler_testgenerat
 shared/textcolor.o: shared/textcolor.c
 	$(CC) $(FLAGS) -c shared/textcolor.c -o shared/textcolor.o
 
+shared/binary.o: shared/binary.c
+	$(CC) $(FLAGS) -c shared/binary.c -o shared/binary.o
+
 ipc/ipc_queuemanager.o: ipc/ipc_queuemanager.c ipc/ipc_queuemanager.h process_manager/definitions.h
 	$(CC) $(FLAGS) -c ipc/ipc_queuemanager.c -o ipc/ipc_queuemanager.o
 
@@ -43,6 +46,13 @@ ipc/ipc_test.o: ipc/ipc_test.c ipc/ipc_test.h shared/textcolor.c ipc/ipc_definit
 
 ipc/ipc_testgenerator.o: ipc/ipc_testgenerator.c ipc/ipc_definitions.h
 	$(CC) $(FLAGS) ipc/ipc_testgenerator.c -o ipc/ipc_testgenerator.o
+
+memory_manager.o: memory/memory_manager.c memory/memory_manager.h \
+  memory/memory_definitions.h
+	$(CC) $(FLAGS) -c memory/memory_manager.c -o memory/memory_manager.o
+
+memory_hardware.o: memory/memory_hardware.c memory/memory_hardware.h
+	$(CC) $(FLAGS) -c memory/memory_hardware.c -o memory/memory_hardware.h
 
 clean:
 	-rm -f process_manager/*.o ipc/*o shared/*.o
