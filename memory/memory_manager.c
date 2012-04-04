@@ -90,7 +90,7 @@ int dealloc_pt (int page_table_index){
 
 		}if(page_tables[page_table_index][i] & BVM_BITMASK) {	
 		/* If the page is not in physical memory it must be in the backing store */
-			set_back_addr_empty( page_tables[page_table_index][i] );
+			set_back_addr_empty( page_tables[page_table_index][i].back_addr );
 		   
 		}
 
