@@ -57,6 +57,11 @@ memory/memory_hardware.o: memory/memory_hardware.c memory/memory_hardware.h
 memory/memory_test.o: memory/memory_test.c
 	$(CC) $(FLAGS) memory/memory_test.c -o memory/memory_test.o
 
+memory/memory_free_empty_test.o: memory/memory_free_empty_test.c \
+  memory/../shared/binary.c memory/memory_manager.c \
+  memory/memory_manager.h memory/memory_definitions.h
+	$(CC) $(FLAGS) memory/memory_free_empty_test.c -o memory/memory_free_empty_test.o
+
 clean:
 	-rm -f process_manager/*.o ipc/*o shared/*.o memory/*.o
 
