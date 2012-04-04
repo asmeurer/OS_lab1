@@ -34,22 +34,32 @@ void init_mem(){
 	}
 }
 
+/* This funtion looks through the page table looking at the first valid bit of each page entry
+ * until it finds one then. Once a free slot in the array is found it sets the valid bit for each page
+ * requested. 
+ */
 int alloc_pt (int num_pages){
 
-	int page_table_id, phy_address, i;
+	int page_table_id, phy_address, i, error;
 
 	for(i = 0; i < MAX_PROCESSES; i++){
 
 		if(page_tables[i][0].bits & P_BITMASK){
 			page_table_id = i;
 			break;
-		}
+		}else{
+			error = -7;
+			return error;
+		}	
 	}
 
 	for(i = 0; i< num_pages; i++){
 		page_tables[page_tables_id][i] =  page_tables[page_table_id][i].bits | P_BITMASK;
 	}
+
+	
 }
+
 
 
 /* This function is to find a free frame in physical memory */
@@ -58,7 +68,7 @@ byte lru_lookup(){
 	int i; 
 
 	for (i = 0; i < USER_PHY_MEM_NUM_FRAMES; i++){
-		if(phys_mem[i].LRU == 0 ){
+		if(phys_mem[i].LRU == 0){
 			return i;
 		}
 	}
