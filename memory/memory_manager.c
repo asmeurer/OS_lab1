@@ -40,24 +40,64 @@ void init_mem(){
  */
 int alloc_pt (int num_pages){
 
-	int page_table_id, phy_address, i, error;
+	int page_table_id=0, phy_address, i;
+
+	/* Check to see if the amount of pages given is past the maximum amount allowed for a process */
+	if(num_pages > MAX_PAGES_PER_PROCESS){
+		return -8;
+	}	
 
 	for(i = 0; i < MAX_PROCESSES; i++){
-
-		if(page_tables[i][0].bits & P_BITMASK){
+		if(!(page_tables[i][0].bits & P_BITMASK)){
 			page_table_id = i;
 			break;
-		}else{
-			error = -7;
-			return error;
-		}	
+		}
 	}
-
+	/* If page_table_id is 0 then every row of the page table has been examined and they
+	 * are all full, thu the max process limit has been reached */
+	if(page_table_id == 0){
+		return -7;
+		
+	}
 	for(i = 0; i< num_pages; i++){
-		page_tables[page_tables_id][i] =  page_tables[page_table_id][i].bits | P_BITMASK;
+		page_tables[page_tables_id][i].bits =  page_tables[page_table_id][i].bits | P_BITMASK;
 	}
 
-	
+	return page_table_id;
+}
+
+int dealloc_pt (int page_table_index){
+
+	int i;
+
+	if( page_table_index > MAX_PAGES_PER_PROCESS ){
+		return -9;
+	}
+
+	/* Checks to see if the first entry is 0, if so the page table hasnt been allocated */
+	if(!(page_tables[page_table_index][0].bits & P_BITMASK)){
+		return -1;				
+	}
+
+	for(i = 0; i < MAX_PAGES_PER_PROCESS; i++){
+
+		/* Check to see if the page is in physical memory */
+		if(page_tables[page_table_index][i] & P_BITMASK){
+				
+                	phy_mem[page_tables[page_table_index][i].phy_add].LRU = 0;
+			phy_mem[page_tables[page_table_index][i].phy_add].mapped = null;
+
+		}else{	
+		/* If the page is not in physical memory it must be in the backing store */
+			set_back_addr_empty( page_tables[page_table_index][i].bits );
+		   
+		}
+
+		/* Resetting all values realting to the page in the page table */
+		page_tables[page_table_index][i].phy_addr = 0;
+		page_tables[page_table_index][i].back_addr = 0;
+		page_tables[page_table_index][i].bits = 0;
+	}
 }
 
 
