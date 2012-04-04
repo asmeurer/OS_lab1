@@ -8,6 +8,6 @@
 
  */
 
+#include "memory_hardware.h"
+
 unsigned int counter = 0;
-
-
