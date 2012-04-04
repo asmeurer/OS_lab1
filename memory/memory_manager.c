@@ -174,12 +174,27 @@ int page_fault (int page_table_index, int page_num){
     //Put new page into memory
     //Map phy_mem to that page table
     phy_mem[lru_index].mapped = &page_tables[page_table_index][page_num];
+    //Time stamp the LRU count to that address
+    global_LRU_counter++;
+    checkoverflow();
+    phy_mem[lru_index].LRU = global_LRU_counter;
     //Update page table
     page_tables[page_table_index][page_num].phy_addr = lru_index;
     //Set phy mem valid bit
     page_tables[page_table_index][page_num].bits = page_tables[page_table_index][page_num].bits | PMV_BITMASK;
 
     return ERROR_SUCCESS;
+}
+
+void checkoverflow(){
+	int i;
+	//If about to overflow, reset each frame in phy mem's LRU and the LRU global counter
+	if (global_LRU_counter >= 0xFFFFFFFF){
+		for(i = 0; i < PHY_MEM_NUM_FRAME; i++){
+			phy_mem[i].LRU = 0;
+		}
+		global_LRU_counter = 1;
+	}
 }
 
 int write_backing_store(){
