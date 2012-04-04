@@ -1,7 +1,7 @@
 /**
  * Memory Definitions Header
  */
-
+ 
 #ifndef MEM_DEF_H
 #define MEM_DEF_H
 
@@ -16,7 +16,7 @@
 
 
 #define null = 0;
-
+ 
 //Backing store memory in KB
 #define BACK_STORE_SIZE (64 * 1024)
 //Physical memory in KB
@@ -30,7 +30,7 @@
 
 //OS and User physical memory in KB
 #define OS_PHY_MEM_SIZE (OS_PHY_MEM_NUM_FRAMES * PAGE_SIZE)
-#define USER_PHY_MEM_SIZE (PHY_MEM_SIZE - OS_PHY_MEM_SIZE)
+#define USER_PHY_MEM_SIZE (PHY_MEM_NUM_SIZE - OS_PHY_MEM_SIZE)
 
 //OS and User physical memory number frames
 #define OS_PHY_MEM_NUM_FRAMES 20
@@ -53,14 +53,14 @@
 typedef unsigned char byte;
 
 typedef struct{
-    byte phy_addr;
-    short back_addr;
-    byte bits;
+	byte phy_add;
+	short back_addr;
+	byte bits;
 }page_table_entry;
 
 typedef struct{
-    unsigned int LRU;
-    page_table_entry* mapped;
+	unsigned int LRU;
+	page_table_entry* mapped;
 }phy_mem_frame;
 
 //Page table allocated space for OS

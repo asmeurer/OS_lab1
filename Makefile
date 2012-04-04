@@ -54,6 +54,9 @@ memory_manager.o: memory/memory_manager.c memory/memory_manager.h \
 memory_hardware.o: memory/memory_hardware.c memory/memory_hardware.h
 	$(CC) $(FLAGS) -c memory/memory_hardware.c -o memory/memory_hardware.h
 
+memory_test.o: memory/memory_test.c
+	$(CC) $(FLAGS) memory/memory_test.c -o memory/memory_test.o
+
 clean:
 	-rm -f process_manager/*.o ipc/*o shared/*.o
 
