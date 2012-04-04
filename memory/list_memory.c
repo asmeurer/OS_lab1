@@ -6,25 +6,40 @@
 
 void list_backing_store() {
     int i;
+    int j;
+    int k;
     char str[sizeof(byte)*8 + 1];
     const int backing_store_free_size = BACK_STORE_NUM_FRAME/8;
     const int num_cols = 128;   /* Should be a multiple of 8.  128 will
                                        * give a perfect square. */
 
-    printf("      0");
+    printf("     |");
     for (i = 0; i < num_cols; i++) {
-        if (i && !((i + 1) % 8) && i + 1 != num_cols) {
-            printf("%7d|", i + 1);
+        if (i && !((i + 1) % 8)) {
+            printf("%-8d|", i - 7);
         }
     }
 
     for (i = 0; i < backing_store_free_size; i++) {
         if (!(i % (num_cols/8))) {
+            if (!(i % 5 * num_cols/8)) {
+                printf("\n");
+                for (j = 0; j < 5; j++) {
+                    printf("-");
+                }
+                for (k = 0; k < num_cols/8; k++) {
+                    printf("+");
+                    for (j = 0; j < 8; j++) {
+                        printf("-");
+                    }
+                }
+                printf("+");
+            }
             printf("\n");
-            printf("%5d ", i*8);
+            printf("%5d|", i*8);
         }
         itodots(backing_store_free[i], str);
-        printf("%s", str);
+        printf("%s|", str);
     }
     printf("\n");
 }
