@@ -1,13 +1,14 @@
 /**
  * Memory Test Interface
- * 
+ *
  *	Group 2
  *	Aaron Meurer
  *	Oran Wallace
  *	Sheng Lundquist
  */
 
-
+#include <stdio.h>
+#include "memory_test.c"
 
 
 int main(int argc, char *argv[]) {
