@@ -20,7 +20,7 @@
 
 //OS and User physical memory in KB
 #define OS_PHY_MEM_SIZE (OS_PHY_MEM_NUM_FRAMES * PAGE_SIZE)
-#define USER_PHY_MEM_SIZE (PHY_MEM_NUM_SIZE - OS_PHY_MEM_SIZE)
+#define USER_PHY_MEM_SIZE (PHY_MEM_SIZE - OS_PHY_MEM_SIZE)
 
 //OS and User physical memory number frames
 #define OS_PHY_MEM_NUM_FRAMES 20
