@@ -13,6 +13,9 @@ int dealloc_pt (int page_table_index);
 int page_fault (int page_table_index, int page_num);
 //Returns either index of phy_mem or error code
 int lru_lookup();
+short find_empty_back_addr();
+int set_back_addr_empty(short addr);
+int set_back_addr_full(short addr);
 
 
 
