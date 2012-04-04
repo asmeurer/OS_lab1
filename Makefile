@@ -32,6 +32,9 @@ process_manager/scheduler_testgenerator.o: process_manager/scheduler_testgenerat
 shared/textcolor.o: shared/textcolor.c
 	$(CC) $(FLAGS) -c shared/textcolor.c -o shared/textcolor.o
 
+shared/binary.o: shared/binary.c
+	$(CC) $(FLAGS) -c shared/binary.c -o shared/binary.o
+
 ipc/ipc_queuemanager.o: ipc/ipc_queuemanager.c ipc/ipc_queuemanager.h process_manager/definitions.h
 	$(CC) $(FLAGS) -c ipc/ipc_queuemanager.c -o ipc/ipc_queuemanager.o
 
