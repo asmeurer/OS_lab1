@@ -14,7 +14,7 @@ void init_mem(){
 
     for(i = 0;i < MAX_PROCESSES; i++){
         for(j = 0; j < MAX_PAGES_PER_PROCESS; j++){
-            page_tables[i][j].phy_add = 0;
+            page_tables[i][j].phy_addr = 0;
             page_tables[i][j].back_addr = 0;
             page_tables[i][j].bits = 0;
         }
@@ -32,7 +32,7 @@ void init_mem(){
 
 int alloc_pt (int num_pages){
 
-
+    return 0;
 
 }
 
@@ -125,63 +125,66 @@ int set_back_addr_full(short addr) {
 }
 
 int page_fault (int page_table_index, int page_num){
-	//TODO: Check to make sure page_table_index and page_num exist
-	//Check first page number init
-	//Will return 0 if 4th bit in bits not set
-	if(!(page_tables[page_table_index][0].bits & P_BITMASK)){
-		return ERROR_PAGE_TABLE_NOT_INIT;
-	}
-	//Check if page number init
-	if(!(page_tables[page_table_index][page_num].bits & P_BITMASK)){
-		return ERROR_PAGE_NOT_INIT;
-	}
-	//Check if that page already exists in phy memory
-	if(page_tables[page_table_index][page_num].bits & PMV_BITMASK){
-		return ERROR_HARDWARE_ALREADY_IN_PHY_MEM;
-	}
-	
-	//TODO: figure out what error codes lru_lookup will return
-	//Check for errors in lru_lookup
-	byte lru_index = lru_lookup();
-	
-	
-	phy_mem_frame *victimized = phy_mem[lru_index].mapped;
-	
-	//If something in memory slot
-	if (victimized != null){
-		//If victimized page is not in backing store
-		if(!(victimized->bits & BMV_BITMASK)){
-			//Put into backing store, make refrence to it
-			victimized->back_addr = find_empty_back_addr();
-			if(set_back_addr_full(victimized->back_addr == ERROR_BACKING_FULL){
-				return ERROR_BACKING_FULL;
-			}
-			//Write to backing store
-			write_backing_store();
-			//Set backing memory valid bit
-			victimized->bits = victimized->bits | BMV_BITMASK;
-		}else{
-			//If victimized page is in backing store, check dirty bit
-			//Dirty bit is set
-			if(victimized->bits & D_BITMASK){
-				//Write to backing store
-				write_backing_store();
-			}
-		}
-		//unset phy mem valid bit for victimized
-		victimized->bits = victimized->bits & ~PMV_BITMASK;
-	}
-	//Put new page into memory
-	//Map phy_mem to that page table
-	phy_mem[lru_index].mapped = &page_tables[page_table_index][page_num];
-	//Update page table
-	page_tables[page_table_index][page_num].phy_addr = lru_index;
-	//Set phy mem valid bit
-	page_tables[page_table_index][page_num].bit = page_tables[page_table_index][page_num].bit | PMV_BITMASK;
+    //TODO: Check to make sure page_table_index and page_num exist
+    //Check first page number init
+    //Will return 0 if 4th bit in bits not set
+    if(!(page_tables[page_table_index][0].bits & P_BITMASK)){
+        return ERROR_PAGE_TABLE_NOT_INIT;
+    }
+    //Check if page number init
+    if(!(page_tables[page_table_index][page_num].bits & P_BITMASK)){
+        return ERROR_PAGE_NOT_INIT;
+    }
+    //Check if that page already exists in phy memory
+    if(page_tables[page_table_index][page_num].bits & PMV_BITMASK){
+        return ERROR_HARDWARE_ALREADY_IN_PHY_MEM;
+    }
+
+    //TODO: figure out what error codes lru_lookup will return
+    //Check for errors in lru_lookup
+    byte lru_index = lru_lookup();
+
+
+    page_table_entry *victimized = phy_mem[lru_index].mapped;
+
+    //If something in memory slot
+    if (victimized != null){
+        //If victimized page is not in backing store
+        if(!(victimized->bits & BMV_BITMASK)){
+            //Put into backing store, make refrence to it
+            victimized->back_addr = find_empty_back_addr();
+            if(set_back_addr_full(victimized->back_addr == ERROR_BACKING_FULL)) {
+                return ERROR_BACKING_FULL;
+            }
+            //Write to backing store
+            write_backing_store();
+            //Set backing memory valid bit
+            victimized->bits = victimized->bits | BMV_BITMASK;
+        }else{
+            //If victimized page is in backing store, check dirty bit
+            //Dirty bit is set
+            if(victimized->bits & D_BITMASK){
+                //Write to backing store
+                write_backing_store();
+            }
+        }
+        //unset phy mem valid bit for victimized
+        victimized->bits = victimized->bits & ~PMV_BITMASK;
+    }
+    //Put new page into memory
+    //Map phy_mem to that page table
+    phy_mem[lru_index].mapped = &page_tables[page_table_index][page_num];
+    //Update page table
+    page_tables[page_table_index][page_num].phy_addr = lru_index;
+    //Set phy mem valid bit
+    page_tables[page_table_index][page_num].bits = page_tables[page_table_index][page_num].bits | PMV_BITMASK;
+
+    return ERROR_SUCCESS;
 }
 
 int write_backing_store(){
-	/*Stub to write to backing store*/
+    /*Stub to write to backing store*/
+    return 0;
 }
 
 /*

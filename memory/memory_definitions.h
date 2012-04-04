@@ -15,7 +15,7 @@
 #define ERROR_BACKING_FULL -6
 #define ERROR_HARDWARE_ALREADY_IN_PHY_MEM -7
 
-#define null = 0;
+#define null 0
 
 //Backing store memory in KB
 #define BACK_STORE_SIZE (64 * 1024)
@@ -53,14 +53,14 @@
 typedef unsigned char byte;
 
 typedef struct{
-	byte phy_add;
-	short back_addr;
-	byte bits;
+    byte phy_addr;
+    short back_addr;
+    byte bits;
 }page_table_entry;
 
 typedef struct{
-	unsigned int LRU;
-	page_table_entry* mapped;
+    unsigned int LRU;
+    page_table_entry* mapped;
 }phy_mem_frame;
 
 //Page table allocated space for OS
