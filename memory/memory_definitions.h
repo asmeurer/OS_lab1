@@ -13,7 +13,7 @@
 #define ERROR_ADDR_OUT_OF_BOUNDS -4
 #define ERROR_BACKING_EMPTY -5
 #define ERROR_BACKING_FULL -6
-
+#define ERROR_HARDWARE_ALREADY_IN_PHY_MEM -7
 
 #define null = 0;
 
