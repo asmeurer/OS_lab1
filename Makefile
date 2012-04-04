@@ -62,6 +62,9 @@ memory/aaron_tests.o: memory/aaron_tests.c \
   memory/memory_manager.h memory/memory_definitions.h
 	$(CC) $(FLAGS) memory/aaron_tests.c -o memory/aaron_tests.o
 
+list_memory.o: memory/list_memory.c memory/memory_definitions.h
+	$(CC) $(FLAGS) -c memory/list_memory.c -o memory/list_memory.o
+
 clean:
 	-rm -f process_manager/*.o ipc/*o shared/*.o memory/*.o
 
