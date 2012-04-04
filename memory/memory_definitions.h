@@ -2,7 +2,10 @@
  * Memory Definitions Header
  */
  
+#ifndef MEM_DEF_H
+#define MEM_DEF_H
  
+#define null = 0;
  
 //Backing store memory in KB
 #define BACK_STORE_SIZE (64 * 1024)
@@ -51,13 +54,15 @@ typedef struct{
 }phy_mem_frame;
 
 //Page table allocated space for OS
-page_table_entry OS_page_tables[MAX_PROCESSES][MAX_PAGES_PER_PROCESS];
+page_table_entry page_tables[MAX_PROCESSES][MAX_PAGES_PER_PROCESS];
 
 //Phy memory bookkeeping
-unsigned int phy_mem_frame[USER_PHY_MEM_NUM_FRAMES];
+phy_mem_frame phy_mem[USER_PHY_MEM_NUM_FRAMES];
 
 //A byte array, where each bit in the byte represents 8 frames in the backing store
 byte backing_store_free[BACK_STORE_NUM_FRAME/8];
 
 //Global counter for LRU that hardware will update
 unsigned int global_LRU_counter;
+
+#endif
