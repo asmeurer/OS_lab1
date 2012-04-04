@@ -5,6 +5,16 @@
 #ifndef MEM_DEF_H
 #define MEM_DEF_H
 
+//Error Codes
+#define ERROR_SUCCESS 0
+#define ERROR_PAGE_TABLE_NOT_INIT -1
+#define ERROR_PAGE_NOT_INIT -2
+#define ERROR_NO_FREE_MEMORY -3
+#define ERROR_ADDR_OUT_OF_BOUNDS -4
+#define ERROR_BACKING_EMPTY -5
+#define ERROR_BACKING_FULL -6
+
+
 #define null = 0;
 
 //Backing store memory in KB
