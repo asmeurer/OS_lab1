@@ -52,7 +52,7 @@ memory/memory_manager.o: memory/memory_manager.c memory/memory_manager.h \
 	$(CC) $(FLAGS) -c memory/memory_manager.c -o memory/memory_manager.o
 
 memory/memory_hardware.o: memory/memory_hardware.c memory/memory_hardware.h
-	$(CC) $(FLAGS) -c memory/memory_hardware.c -o memory/memory_hardware.h
+	$(CC) $(FLAGS) -c memory/memory_hardware.c -o memory/memory_hardware.o
 
 memory/memory_test.o: memory/memory_test.c
 	$(CC) $(FLAGS) memory/memory_test.c -o memory/memory_test.o
