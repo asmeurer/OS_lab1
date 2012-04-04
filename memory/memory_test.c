@@ -44,7 +44,8 @@ int main(int argc, char *argv[]) {
 	int error = 0;
 	char command[20];
 	char line[LINE_MAX];
-
+	char *init_arg;
+    
 	FILE *file;
 	if (argc == 1){
 		file = stdin;
@@ -97,7 +98,7 @@ int main(int argc, char *argv[]) {
 				init_arg = strtok(line, " ");
 				/*If there exists arguments*/
 				if (strcmp(init_arg, "\n") != 0){
-					list_all_MQ();
+
 				}
 				else{
 					textcolor(BRIGHT, RED, BLACK);

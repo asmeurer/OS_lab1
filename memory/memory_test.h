@@ -11,5 +11,6 @@
 #include "../shared/textcolor.c"
 #include <string.h>
 #include <ctype.h>
+#include <limits.h>
 
 #endif
