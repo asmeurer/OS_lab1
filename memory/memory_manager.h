@@ -17,6 +17,4 @@ short find_empty_back_addr();
 int set_back_addr_empty(short addr);
 int set_back_addr_full(short addr);
 
-
-
 #endif
