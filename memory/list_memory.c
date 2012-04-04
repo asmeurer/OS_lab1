@@ -8,11 +8,16 @@ void list_backing_store() {
     int i;
     char str[sizeof(byte)*8 + 1];
     const int backing_store_free_size = BACK_STORE_NUM_FRAME/8;
+    const int num_cols = 128 + 8*8;   /* Should be a multiple of 8.  128 will
+                                       * give a perfect square. */
 
     for (i = 0; i < backing_store_free_size; i++) {
-        if (i && !(i % 16)) {
+        if (!(i % (num_cols/8))) {
+            if (i) {
                 printf("\n");
             }
+            printf("%5d ", i*8);
+        }
         itodots(backing_store_free[i], str);
         printf("%s", str);
     }
