@@ -14,6 +14,4 @@ int page_fault (int page_table_index, int page_num);
 //Returns either index of phy_mem or error code
 int lru_lookup();
 
-
-
 #endif
