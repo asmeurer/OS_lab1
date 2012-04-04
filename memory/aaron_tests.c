@@ -1,9 +1,37 @@
 #include <stdio.h>
 #include "../shared/binary.c"
 #include "memory_manager.c"
+#include "list_memory.c"
 
-int main()
-{
+void list_memory_test();
+void free_empty_test();
+
+int main() {
+    list_memory_test();
+
+    return 0;
+}
+
+void list_memory_test() {
+    int i;
+    char str[sizeof(byte)*8 + 1];
+
+    for (i = 0; i < BACK_STORE_SIZE/8; i++) {
+        backing_store_free[i] = 0;
+    }
+
+    set_back_addr_full(0);
+    set_back_addr_full(129);
+    set_back_addr_full(400);
+
+    itodots(10, str);
+    printf("%s\n", str);
+
+    list_backing_store();
+}
+
+
+void free_empty_test(){
     char str[sizeof(int)*8 + 1];
 
     int b = 0b10000000;

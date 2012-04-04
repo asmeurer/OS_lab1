@@ -9,7 +9,7 @@ void itobin(int n, char *str) {
     int i;
     const int bytes_in_int = 8*sizeof(int);
 
-    for (i = 0; i < 8*sizeof(int); i++){
+    for (i = 0; i < bytes_in_int; i++){
         if (n & 1){
             str[bytes_in_int - 1 - place] = '1';
         } else {
@@ -18,5 +18,5 @@ void itobin(int n, char *str) {
         n >>= 1;
         place++;
     }
-    str[8*sizeof(int)] = '\0';
+    str[bytes_in_int] = '\0';
 }
