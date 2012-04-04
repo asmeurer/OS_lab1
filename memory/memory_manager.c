@@ -42,24 +42,32 @@ void init_mem(){
     }
 }
 
+/* This funtion looks through the page table looking at the first valid bit of each page entry
+ * until it finds one then. Once a free slot in the array is found it sets the valid bit for each page
+ * requested.
+ */
 int alloc_pt (int num_pages){
 
-    int page_table_id, i;
+	int page_table_id, i, error;
 
     for(i = 0; i < MAX_PROCESSES; i++){
 
-        if(page_tables[i][0].bits & P_BITMASK){
-            page_table_id = i;
-            break;
-        }
-    }
+		if(page_tables[i][0].bits & P_BITMASK){
+			page_table_id = i;
+			break;
+		}else{
+			error = ERROR_HARDWARE_ALREADY_IN_PHY_MEM;
+			return error;
+		}
+	}
 
-    for(i = 0; i< num_pages; i++){
-        page_tables[page_table_id][i].bits =  page_tables[page_table_id][i].bits | P_BITMASK;
-    }
+	for(i = 0; i< num_pages; i++){
+		page_tables[page_table_id][i].bits =  page_tables[page_table_id][i].bits | P_BITMASK;
+	}
     return ERROR_SUCCESS;
 
 }
+
 
 
 /* This function is to find a free frame in physical memory */
