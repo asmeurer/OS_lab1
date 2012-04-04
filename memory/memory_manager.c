@@ -39,16 +39,19 @@ int page_fault (int page_table_index, int page_num){
 			}
 			//Dirty bit set
 			else{
-				overwrite_backing_store(victimized.backing_store);
+				overwrite_backing_store(victimized.back_addr);
 			}
 		}
-		
-		
 	}
-	//
 	
 	
 	
+	
+	
+}
+
+int overwrite_backing_store(short back_addr){
+	/*Stub to write to backing store in case of dirty bit with victimize*/
 }
 
 /*
