@@ -107,7 +107,7 @@ short find_empty_back_addr() {
     /* We have the byte that has a 0 in it, now find where the first 0 is.
      * To check this, we create a bitmask 0b1000000 and shift it right until
      * we find the first 1 bit. */
-    shift_mask = 0b1000000;
+    shift_mask = 0b10000000;
     for (suffix = 0; suffix < 8; suffix++){
         if (not_byte & shift_mask) {
             break;
@@ -134,7 +134,7 @@ int set_back_addr_empty(short addr) {
     prefix = addr >> 3;
     suffix = addr & 0x7;
     /* Create the bitmask for the suffix */
-    suffix_bitmask = 1 << suffix;
+    suffix_bitmask = 1 << (7 - suffix);
 
     if (~backing_store_free[prefix] & suffix_bitmask) {
         /* The memory was already set to empty */
@@ -157,7 +157,7 @@ int set_back_addr_full(short addr) {
     prefix = addr >> 3;
     suffix = addr & 0x7;
     /* Create the bitmask for the suffix */
-    suffix_bitmask = 1 << suffix;
+    suffix_bitmask = 1 << (7 - suffix);
 
     if (backing_store_free[prefix] & suffix_bitmask) {
         /* The memory was already set to full */
