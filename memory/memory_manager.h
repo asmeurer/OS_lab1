@@ -4,7 +4,8 @@
 
 #ifndef MEM_MAN_H
 #define MEM_MAN_H
-#include "memory_definitions.h"
+#include "memory_definitons.h"
+
 //Initialize OS_page_table
 void init_mem();
 
@@ -17,5 +18,7 @@ short find_empty_back_addr();
 int set_back_addr_empty(short addr);
 int set_back_addr_full(short addr);
 int write_backing_store();
+
+
 
 #endif

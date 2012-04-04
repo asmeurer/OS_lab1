@@ -7,18 +7,30 @@
 
 #include "memory_manager.h"
 
+/* Inits all memory manager data structures, this includes the page table, the
+ * physical memory array for LRU look up and finally the array to keep track of the
+ * backing store */
+
 void init_mem(){
 
-    int i,j;
-    global_LRU_counter = 0;
+	int i,j;
+	/* Setting the LRU counter to 0, which will be updated by hardware */
+	global_LRU_counter = 0;
 
-    for(i = 0;i < MAX_PROCESSES; i++){
-        for(j = 0; j < MAX_PAGES_PER_PROCESS; j++){
-            page_tables[i][j].phy_addr = 0;
-            page_tables[i][j].back_addr = 0;
-            page_tables[i][j].bits = 0;
-        }
-    }
+	/* Setting each index of the table of page tables  to 0 to init it */
+
+	for(i = 0;i < MAX_PROCESSES; i++){
+		for(j = 0; j < MAX_PAGES_PER_PROCESS; j++){
+		page_tables[i][j].phy_add = 0;
+		page_tables[i][j].back_addr = 0;
+		page_tables[i][j].bits = 0;
+		}
+	}
+	
+	for(i = 0; i < USER_PHY_MEM_NUM_FRAMES; i++){
+		phy_mem[i].LRU = 0;
+		phy_mem[i].mapped = 0;
+	}
 
     for(i = 0; i < USER_PHY_MEM_NUM_FRAMES; i++){
         phy_mem[i].LRU = 0;
@@ -32,10 +44,33 @@ void init_mem(){
 
 int alloc_pt (int num_pages){
 
-    return 0;
+	int page_table_id, phy_address, i;
 
+	for(i = 0; i < MAX_PROCESSES; i++){
+
+		if(page_tables[i][0].bits & P_BITMASK){
+			page_table_id = i;
+			break;
+		}
+	}
+
+	for(i = 0; i< num_pages; i++){
+		page_tables[page_tables_id][i] =  page_tables[page_table_id][i].bits | P_BITMASK;
+	}
 }
 
+
+/* This function is to find a free frame in physical memory */
+
+byte lru_lookup(){
+	int i; 
+
+	for (i = 0; i < USER_PHY_MEM_NUM_FRAMES; i++){
+		if(phys_mem[i].LRU == 0 ){
+			return i;
+		}
+	}
+}
 
 /* Find a free memory slot in the backing store.  This will correspond to a 0
  * bit in the backing_store_free byte array. */
@@ -192,9 +227,8 @@ int write_backing_store(){
   int dealloc_pt (int page_table_index);
   int page_fault (int page_table_index, int page_num);
 //Returns either index of phy_mem or error code
-int lru_lookup();
-*/
 
+ */
 /*
   typedef struct{
   byte phy_addr;
