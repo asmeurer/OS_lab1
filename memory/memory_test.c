@@ -44,7 +44,10 @@ int main(int argc, char *argv[]) {
 	int error = 0;
 	char command[20];
 	char line[LINE_MAX];
-	char *init_arg;
+	int int_arg;
+	int int_arg2;
+    char* init_arg;
+    int j;
     
 	FILE *file;
 	if (argc == 1){
@@ -80,16 +83,152 @@ int main(int argc, char *argv[]) {
 			/* printf("%s\n", command); */
 
 			if (!strcmp(command, "INIT_MEM")) {
-
+				//TODO: Call init_mem
 			}
 			else if (!strcmp(command, "ALLOC_PT")) {
-
+				fgets(line, LINE_MAX, file);
+				error = 1;
+				/*Initial split of line*/
+				init_arg = strtok(line, "\n");
+				/*If there exists arguments*/
+				if (init_arg != NULL){
+					error = 0;
+					/*Loop through each character in string checking if it is a digit*/
+					for(j = 1; j < strlen(init_arg) - 1; j++){
+						if (!isdigit(init_arg[j])){
+							error = 1;
+							break;
+						}
+					}
+					if (error == 0){
+						int_arg = atoi(init_arg);
+						printf("ALLOC_PT called with %d pages\n", int_arg);
+						//TODO: Call ALLOC_PT with int_arg and return page table id
+					}
+				}
+				if (error == 1){
+					textcolor(BRIGHT, RED, BLACK);
+					printf("Usage: ALLOC_PT <page_table_size>\n");
+					textcolor(RESET, -1, -1);
+				}
 			}
 			else if (!strcmp(command, "DEALLOC_PT")){
-
+				fgets(line, LINE_MAX, file);
+				error = 1;
+				/*Initial split of line*/
+				init_arg = strtok(line, "\n");
+				/*If there exists arguments*/
+				if (init_arg != NULL){
+					error = 0;
+					/*Loop through each character in string checking if it is a digit*/
+					for(j = 1; j < strlen(init_arg) - 1; j++){
+						if (!isdigit(init_arg[j])){
+							error = 1;
+							break;
+						}
+					}
+					if (error == 0){
+						int_arg = atoi(init_arg);
+						if (int_arg >= MAX_PROCESSES){
+								printf("Page table id must be between 0 and %d\n", MAX_PROCESSES - 1);
+						}
+						else{
+							printf("DEALLOC_PT %d called\n", int_arg);
+							//TODO: Call ALLOC_PT with int_arg
+						}
+					}
+				}
+				if (error == 1){
+					textcolor(BRIGHT, RED, BLACK);
+					printf("Usage: DEALLOC <page_table_id>\n");
+					textcolor(RESET, -1, -1);
+				}
+			}
+			else if (!strcmp(command, "PAGE_HIT")) {
+				fgets(line, LINE_MAX, file);
+				error = 1;
+				/*Initial split of line*/
+				init_arg = strtok(line, " ");
+				/*If there exists arguments*/
+				if (init_arg != NULL){
+					error = 0;
+					/*Loop through each character in string checking if it is a digit*/
+					for(j = 0; j < strlen(init_arg); j++){
+						if (!isdigit(init_arg[j])){
+							error = 1;
+							break;
+						}
+					}
+					if (error == 0){
+						int_arg = atoi(init_arg);
+						if (int_arg >= MAX_PROCESSES){
+								printf("Page table id must be between 0 and %d\n", MAX_PROCESSES - 1);
+						}
+						else{
+							init_arg = strtok(NULL, "\n");
+							/*Loop through each character in string checking if it is a digit*/
+							for(j = 0; j < strlen(init_arg); j++){
+								if (!isdigit(init_arg[j])){
+									error = 1;
+									break;
+								}
+							}
+							if (error == 0){
+								int_arg2 = atoi(init_arg);
+								printf("PAGE_HIT called on page_table_id %d on page %d\n", int_arg, int_arg2);
+								//TODO: Call PAGE_HIT with int_arg and int_arg2
+							}
+						}
+					}
+				}
+				if (error == 1){
+					textcolor(BRIGHT, RED, BLACK);
+					printf("Usage: PAGE_HIT <page_table_id> <page_num>\n");
+					textcolor(RESET, -1, -1);
+				}
 			}
 			else if (!strcmp(command, "PAGE_FAULT")) {
-
+				fgets(line, LINE_MAX, file);
+				error = 1;
+				/*Initial split of line*/
+				init_arg = strtok(line, " ");
+				/*If there exists arguments*/
+				if (init_arg != NULL){
+					error = 0;
+					/*Loop through each character in string checking if it is a digit*/
+					for(j = 0; j < strlen(init_arg); j++){
+						if (!isdigit(init_arg[j])){
+							error = 1;
+							break;
+						}
+					}
+					if (error == 0){
+						int_arg = atoi(init_arg);
+						if (int_arg >= MAX_PROCESSES){
+								printf("Page table id must be between 0 and %d\n", MAX_PROCESSES - 1);
+						}
+						else{
+							init_arg = strtok(NULL, "\n");
+							/*Loop through each character in string checking if it is a digit*/
+							for(j = 0; j < strlen(init_arg); j++){
+								if (!isdigit(init_arg[j])){
+									error = 1;
+									break;
+								}
+							}
+							if (error == 0){
+								int_arg2 = atoi(init_arg);
+								printf("PAGE_FAULT called on page_table_id %d on page %d\n", int_arg, int_arg2);
+								//TODO: Call PAGE_FAULT with int_arg and int_arg2
+							}
+						}
+					}
+				}
+				if (error == 1){
+					textcolor(BRIGHT, RED, BLACK);
+					printf("Usage: PAGE_FAULT <page_table_id> <page_num>\n");
+					textcolor(RESET, -1, -1);
+				}
 			}
 			else if (!strcmp(command, "LIST")) {
 				fgets(line, LINE_MAX, file);
@@ -98,11 +237,47 @@ int main(int argc, char *argv[]) {
 				init_arg = strtok(line, " ");
 				/*If there exists arguments*/
 				if (strcmp(init_arg, "\n") != 0){
-
+					if (!strcmp(init_arg, "USER\n")){
+						printf("LIST USER called\n");
+						error = 0;
+					}
+					else if (!strcmp(init_arg, "SYSTEM\n")){
+						printf("LIST SYSTEM called\n");
+						error = 0;
+					}
+					//No arguments for pagetable
+					else if (!strcmp(init_arg, "PAGETABLE\n")){
+						error = 1;
+					}
+					else if (!strcmp(init_arg, "PAGETABLE")){
+						error = 0;
+						//Reads until end of line
+						init_arg = strtok(NULL, "\n");
+						/*Loop through each character in string checking if it is a digit*/
+						for(j = 0; j < strlen(init_arg); j++){
+							if (!isdigit(init_arg[j])){
+								error = 1;
+								break;
+							}
+						}
+						if (error == 0){
+							int_arg = atoi(init_arg);
+							if (int_arg >= MAX_PROCESSES){
+								printf("Page table id must be between 0 and %d\n", MAX_PROCESSES - 1);
+							}
+							else{
+								printf("LIST PAGETABLE %d called\n", int_arg);
+								//TODO: Call list with int_arg
+							}
+						}	
+					}
+					else{
+						error = 1;
+					}
 				}
-				else{
+				if (error == 1){
 					textcolor(BRIGHT, RED, BLACK);
-					printf("Usage: LIST <manager1 | manager2| ...| managerN >\n");
+					printf("Usage: LIST <USER | SYSTEM | PAGETABLE [page_table_id]>\n");
 					textcolor(RESET, -1, -1);
 				}
 			}
