@@ -66,6 +66,7 @@ int alloc_pt (int num_pages){
 	return page_table_id;
 }
 
+/* This function deallocate a page table from its index */
 int dealloc_pt (int page_table_index){
 
 	int i;
@@ -82,14 +83,14 @@ int dealloc_pt (int page_table_index){
 	for(i = 0; i < MAX_PAGES_PER_PROCESS; i++){
 
 		/* Check to see if the page is in physical memory */
-		if(page_tables[page_table_index][i] & P_BITMASK){
+		if(page_tables[page_table_index][i] & PVM_BITMASK){
 				
                 	phy_mem[page_tables[page_table_index][i].phy_add].LRU = 0;
 			phy_mem[page_tables[page_table_index][i].phy_add].mapped = null;
 
-		}else{	
+		}if(page_tables[page_table_index][i] & BVM_BITMASK) {	
 		/* If the page is not in physical memory it must be in the backing store */
-			set_back_addr_empty( page_tables[page_table_index][i].bits );
+			set_back_addr_empty( page_tables[page_table_index][i] );
 		   
 		}
 
