@@ -59,6 +59,7 @@ void list_backing_store() {
     for (i = 0; i < backing_store_free_size; i++) {
         if (!(i % (num_cols/8))) {
             if (!(i % row_division * num_cols/8)) {
+                printf("\n");
                 print_row_separator(row_division, num_cols);
             }
             printf("\n");
@@ -67,6 +68,7 @@ void list_backing_store() {
         itodots(backing_store_free[i], str);
         printf("%s|", str);
     }
+    printf("\n");
     print_row_separator(row_division, num_cols);
     printf("\n");
 }
@@ -96,7 +98,6 @@ void print_row_separator(int row_division, int num_cols) {
     int j;
     int k;
 
-    printf("\n");
     printf("+");
 
     for (j = 0; j < 5; j++) {

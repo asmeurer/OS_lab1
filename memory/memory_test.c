@@ -269,6 +269,8 @@ int main(int argc, char *argv[]) {
                 if (strcmp(init_arg, "\n") != 0){
                     if (!strcmp(init_arg, "USER\n")){
                         printf("LIST USER called\n");
+                        printf("Backing store:\n");
+                        list_backing_store();
                         error = 0;
                     }
                     else if (!strcmp(init_arg, "SYSTEM\n")){
