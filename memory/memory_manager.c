@@ -212,6 +212,10 @@ int set_back_addr_full(short addr) {
     }
 }
 
+int get_phy_mem_left();{
+	
+}
+
 int page_fault (int page_table_index, int page_num){
     //TODO: Check to make sure page_table_index and page_num exist
     //Check first page number init
