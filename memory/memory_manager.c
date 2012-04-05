@@ -212,6 +212,22 @@ int set_back_addr_full(short addr) {
     }
 }
 
+/*Note: page table must have at least the USER_PHY_MEM_NUM_FRAMES allocated */
+int fill_phy_mem(int page_table_id){
+	int i;
+	if(!(page_tables[page_table_id][0].bits & P_BITMASK)){
+		return ERROR_PAGE_TABLE_NOT_INIT;
+	}
+	if(!(page_tables[page_table_id][USER_PHY_MEM_NUM_FRAMES-1].bits & P_BITMASK)){
+		return ERROR_PT_NOT_ENOUGH_PAGES;
+	}
+	for (i = 0; i < USER_PHY_MEM_NUM_FRAMES; i++){
+		page_fault(page_table_id, i);
+	}
+	return ERROR_SUCCESS;
+}
+
+
 int page_fault (int page_table_index, int page_num){
     //TODO: Check to make sure page_table_index and page_num exist
     //Check first page number init
@@ -240,7 +256,7 @@ int page_fault (int page_table_index, int page_num){
         if(!(victimized->bits & BMV_BITMASK)){
             //Put into backing store, make refrence to it
             victimized->back_addr = find_empty_back_addr();
-            if(set_back_addr_full(victimized->back_addr == ERROR_BACKING_FULL)) {
+            if(set_back_addr_full(victimized->back_addr) == ERROR_BACKING_FULL) {
                 return ERROR_BACKING_FULL;
             }
             //Write to backing store

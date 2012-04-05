@@ -180,6 +180,53 @@ int main(int argc, char *argv[]) {
 					textcolor(RESET, -1, -1);
 				}
 			}
+			else if (!strcmp(command, "FILL_PHY_MEM")){
+				fgets(line, LINE_MAX, file);
+				error = 1;
+				/*Initial split of line*/
+				init_arg = strtok(line, "\n");
+				/*If there exists arguments*/
+				if (init_arg != NULL){
+					error = 0;
+					/*Loop through each character in string checking if it is a digit*/
+					for(j = 1; j < strlen(init_arg) - 1; j++){
+						if (!isdigit(init_arg[j])){
+							error = 1;
+							break;
+						}
+					}
+					if (error == 0){
+						int_arg = atoi(init_arg);
+						if (int_arg >= MAX_PROCESSES){
+								printf("Page table id must be between 0 and %d\n", MAX_PROCESSES - 1);
+						}
+						else{
+							printf("FILL_PHY_MEM %d called\n", int_arg);
+							return_error = fill_phy_mem(int_arg);
+							if(return_error == ERROR_PT_NOT_ENOUGH_PAGES){
+								printf("Page table must have %d pages allocated to fill phy mem\n", USER_PHY_MEM_NUM_FRAMES);
+							}else if(return_error == ERROR_PAGE_TABLE_NOT_INIT){
+								printf("The page table has not been initialized.\n");
+							} 
+							else if(return_error == ERROR_SUCCESS){
+								printf("Physical Memory Filled With Pages from Page Table %d\n", int_arg);
+							}
+							else{
+								textcolor(BRIGHT, RED, BLACK);
+								printf("Unexpected error in FILL_PHY_MEM (%d)!\n", return_error);
+								textcolor(RESET, -1, -1);
+							}
+
+
+						}
+					}
+				}
+				if (error == 1){
+					textcolor(BRIGHT, RED, BLACK);
+					printf("Usage: FILL_PHY_MEM <page_table_id>\n");
+					textcolor(RESET, -1, -1);
+				}
+			}
 			else if (!strcmp(command, "PAGE_HIT")) {
 				fgets(line, LINE_MAX, file);
 				error = 1;
@@ -271,7 +318,7 @@ int main(int argc, char *argv[]) {
 								}
 								else{
 									textcolor(BRIGHT, RED, BLACK);
-									printf("Unexpected error in HAS_MESSAGE (%d)!\n", error);
+									printf("Unexpected error in PAGE_FAULT (%d)!\n", return_error);
 									textcolor(RESET, -1, -1);
 								}
 							}
