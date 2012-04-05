@@ -54,7 +54,8 @@ memory/memory_manager.o: memory/memory_manager.c memory/memory_manager.h \
 memory/memory_hardware.o: memory/memory_hardware.c memory/memory_hardware.h
 	$(CC) $(FLAGS) -c memory/memory_hardware.c -o memory/memory_hardware.o
 
-memory/memory_test.o: memory/memory_test.c
+memory/memory_test.o: memory/memory_test.c memory/memory_test.h \
+  memory/memory_definitions.h memory/../shared/textcolor.c
 	$(CC) $(FLAGS) memory/memory_test.c -o memory/memory_test.o
 
 memory/aaron_tests.o: memory/aaron_tests.c memory/../shared/binary.c \
@@ -62,8 +63,8 @@ memory/aaron_tests.o: memory/aaron_tests.c memory/../shared/binary.c \
   memory/memory_definitions.h memory/list_memory.c
 	$(CC) $(FLAGS) memory/aaron_tests.c -o memory/aaron_tests.o
 
-memory/memory_test.o: memory/memory_test.c memory/memory_test.h \
-  memory/memory_definitions.h memory/../shared/textcolor.c
+memory/list_memory.o: memory/list_memory.c memory/memory_definitions.h \
+  memory/list_memory.h memory/../shared/textcolor.c
 	$(CC) $(FLAGS) -c memory/list_memory.c -o memory/list_memory.o
 
 clean:
