@@ -8,12 +8,6 @@
 */
 
 #include "memory_test.h"
-#include "memory_manager.c"
-#include "memory_definitions.h"
-#include "list_memory.h"
-#include <stdio.h>
-#include <stdlib.h>
-
 
 /**
  * Gets a string from the file.
@@ -174,9 +168,6 @@ int main(int argc, char *argv[]) {
 									printf("The page table has not been initialized.\n");
 									textcolor(RESET, -1, -1);
 							}
-
-
-
 						}
 					}
 				}
@@ -222,8 +213,6 @@ int main(int argc, char *argv[]) {
 								printf("Unexpected error in FILL_PHY_MEM (%d)!\n", return_error);
 								textcolor(RESET, -1, -1);
 							}
-
-
 						}
 					}
 				}
@@ -407,9 +396,20 @@ int main(int argc, char *argv[]) {
 						error = 1;
 					}
 				}
+				else{
+					list_backing_store();
+					list_phy_mem();
+					for(j = 0; j < MAX_PROCESSES; j++){
+						//Check if page table is init
+						if(page_tables[j][0].bits & P_BITMASK){
+							list_page_table(j);
+						}
+					}
+					error = 0;
+				}
 				if (error == 1){
 					textcolor(BRIGHT, RED, BLACK);
-					printf("Usage: LIST <USER | SYSTEM | PAGETABLE [page_table_id]>\n");
+					printf("Usage: LIST [USER | SYSTEM | PAGETABLE page_table_id]\n");
 					textcolor(RESET, -1, -1);
 				}
 			}
@@ -423,7 +423,14 @@ int main(int argc, char *argv[]) {
 			}
 			else if(!strcmp(command, "HELP")){
 				printf("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
-
+                printf("COMMANDS:\n");
+                printf("INIT_MEM\n");
+                printf("ALLOC_PT <page_table_size>\n");
+                printf("DEALLOC <page_table_id>\n");
+                printf("FILL_PHY_MEM <page_table_id>\n");
+				printf("PAGE_HIT <page_table_id> <page_num>\n");
+				printf("PAGE_FAULT <page_table_id> <page_num>\n");
+                printf("LIST [USER | SYSTEM | PAGETABLE page_table_id]\n");
 				printf("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
 			}
 			else {
