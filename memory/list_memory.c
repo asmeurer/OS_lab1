@@ -13,8 +13,9 @@ void list_backing_store() {
                                        * give a perfect square. */
     const int row_division = 5; /* The number of rows to include before a row
                                  * divider. */
-
-    printf("     |");
+    print_row_separator(row_division, num_cols);
+    printf("\n");
+    printf("|     |");
     for (i = 0; i < num_cols; i++) {
         if (i && !((i + 1) % 8)) {
             printf("%-8d|", i - 7);
@@ -27,7 +28,7 @@ void list_backing_store() {
                 print_row_separator(row_division, num_cols);
             }
             printf("\n");
-            printf("%5d|", i*8);
+            printf("|%5d|", i*8);
         }
         itodots(backing_store_free[i], str);
         printf("%s|", str);
@@ -57,6 +58,8 @@ void print_row_separator(int row_division, int num_cols) {
     int j;
     int k;
     printf("\n");
+    printf("+");
+
     for (j = 0; j < 5; j++) {
         printf("-");
     }
