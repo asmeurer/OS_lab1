@@ -67,7 +67,7 @@ int alloc_pt (int num_pages){
 	for(i = 0; i< num_pages; i++){
 		page_tables[page_table_id][i].bits = page_tables[page_table_id][i].bits | P_BITMASK;
 	}
-
+	
 	return page_table_id;
 }
 
