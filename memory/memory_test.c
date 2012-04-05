@@ -259,7 +259,25 @@ int main(int argc, char *argv[]) {
 							if (error == 0){
 								int_arg2 = atoi(init_arg);
 								printf("PAGE_HIT called on page_table_id %d on page %d\n", int_arg, int_arg2);
-								//TODO: Call PAGE_HIT with int_arg and int_arg2
+								return_error HW_page_hit(int page_table_index, int page_num);
+								if(return_error == ERROR_PAGE_TABLE_NOT_INIT){
+									printf("Page Table %d Not Initialized\n", int_arg);
+								}
+								else if (return_error == ERROR_PAGE_NOT_INIT){
+									printf("Page %d Not Initialized\n", int_arg2);
+								}
+								else if (return_error == ERROR_HARDWARE_NOT_IN_PHY_MEM){
+									printf("Hardware Error, Page %d not in physical memory\n", int_arg2);
+								}
+								else if (return_error == ERROR_SUCCESS){
+									printf("Page %d hit\n", int_arg2);
+								}
+								else{
+									textcolor(BRIGHT, RED, BLACK);
+									printf("Unexpected error in PAGE_HIT (%d)!\n", return_error);
+									textcolor(RESET, -1, -1);
+								}
+								
 							}
 						}
 					}
