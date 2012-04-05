@@ -10,6 +10,7 @@
 #include "memory_test.h"
 #include "memory_manager.c"
 #include "memory_definitions.h"
+#include "list_memory.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -292,6 +293,8 @@ int main(int argc, char *argv[]) {
 				if (strcmp(init_arg, "\n") != 0){
 					if (!strcmp(init_arg, "USER\n")){
 						printf("LIST USER called\n");
+                        printf("Backing store:\n");
+                        list_backing_store();
 						error = 0;
 					}
 					else if (!strcmp(init_arg, "SYSTEM\n")){
