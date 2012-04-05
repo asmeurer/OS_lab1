@@ -154,7 +154,17 @@ int main(int argc, char *argv[]) {
 						}
 						else{
 							printf("DEALLOC_PT %d called\n", int_arg);
-							//TODO: Call ALLOC_PT with int_arg
+							return_error = dealloc_pt(int_arg);
+
+
+							if(return_error >= 0){
+								printf("Page table ID: %d has been deallocated.\n", int_arg);
+							}else if(return_error == -1){
+									printf("The page table has not been initialized.\n");
+							} 
+							
+
+
 						}
 					}
 				}
