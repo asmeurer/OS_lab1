@@ -36,7 +36,7 @@ void list_memory_test() {
 void free_empty_test(){
     char str[sizeof(int)*8 + 1];
 
-    int b = 0b10000000;
+    int b = 0x80;
 
     int i;
     for (i = 0; i < BACK_STORE_SIZE/8; i++) {
@@ -48,7 +48,7 @@ void free_empty_test(){
     printf("free memory: %d (%s)\n", i, str);
     printf("error: %d\n", ERROR_NO_FREE_MEMORY);
 
-    backing_store_free[1] = (byte)0b11011111;
+    backing_store_free[1] = (byte)0xdf;
 
     itobin(~backing_store_free[1], str);
     printf("~backing_store_free[1]\n");

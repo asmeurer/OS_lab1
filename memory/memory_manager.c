@@ -135,7 +135,7 @@ short find_empty_back_addr() {
     int shift_mask;
 
     for (prefix = 0; prefix < backing_store_free_size; prefix++) {
-        if (backing_store_free[prefix] != 0b11111111) {
+        if (backing_store_free[prefix] != 0xff) {
             found = 1;
             not_byte = ~backing_store_free[prefix];
             break;
@@ -150,7 +150,7 @@ short find_empty_back_addr() {
     /* We have the byte that has a 0 in it, now find where the first 0 is.
      * To check this, we create a bitmask 0b1000000 and shift it right until
      * we find the first 1 bit. */
-    shift_mask = 0b10000000;
+    shift_mask = 0x80;
     for (suffix = 0; suffix < 8; suffix++){
         if (not_byte & shift_mask) {
             break;
