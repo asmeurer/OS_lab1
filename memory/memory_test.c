@@ -259,7 +259,7 @@ int main(int argc, char *argv[]) {
 							if (error == 0){
 								int_arg2 = atoi(init_arg);
 								printf("PAGE_HIT called on page_table_id %d on page %d\n", int_arg, int_arg2);
-								return_error HW_page_hit(int page_table_index, int page_num);
+								return_error = HW_page_hit(int_arg, int_arg2);
 								if(return_error == ERROR_PAGE_TABLE_NOT_INIT){
 									printf("Page Table %d Not Initialized\n", int_arg);
 								}
