@@ -370,6 +370,7 @@ int main(int argc, char *argv[]) {
 					}
 					else if (!strcmp(init_arg, "SYSTEM\n")){
 						printf("LIST SYSTEM called\n");
+						list_phy_mem();
 						error = 0;
 					}
 					//No arguments for pagetable
