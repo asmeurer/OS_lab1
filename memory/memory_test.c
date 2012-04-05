@@ -114,7 +114,13 @@ int main(int argc, char *argv[]) {
 					int_arg = atoi(init_arg);
 					return_error = alloc_pt(int_arg);
 					printf("ALLOC_PT called with %d pages.\n", int_arg);
-					if(return_error >= 0){
+					if(int_arg == 0){
+						textcolor(BRIGHT, RED, BLACK);
+						printf("A page table cannot have 0 pages.\n");
+						textcolor(RESET, -1, -1);
+					}
+
+					if(return_error >= 0 && int_arg != 0){
 						printf("The page table ID is: %d.\n", return_error);
 
 					}else{
