@@ -62,11 +62,11 @@ memory/memory_test.o: memory/memory_test.c memory/memory_test.h \
 
 memory/aaron_tests.o: memory/aaron_tests.c memory/../shared/binary.c \
   memory/memory_manager.c memory/memory_manager.h \
-  memory/memory_definitions.h memory/list_memory.c
+  memory/memory_definitions.h memory/list_memory.c memory/list_memory.h memory/list_memory.o
 	$(CC) $(FLAGS) memory/aaron_tests.c -o memory/aaron_tests.o
 
-memory/list_memory.o: memory/list_memory.c memory/memory_definitions.h \
-  memory/list_memory.h memory/../shared/textcolor.c
+memory/list_memory.o:memory/list_memory.c memory/memory_definitions.h \
+  memory/list_memory.h
 	$(CC) $(FLAGS) -c memory/list_memory.c -o memory/list_memory.o
 
 clean:
