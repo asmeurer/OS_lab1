@@ -51,11 +51,10 @@ int main(int argc, char *argv[]) {
 	char line[LINE_MAX];
 	int int_arg;
 	int int_arg2;
-	int return_error;
     char* init_arg;
     int j;
     int return_error = 0;
-    
+
 	FILE *file;
 	if (argc == 1){
 		file = stdin;
@@ -80,7 +79,7 @@ int main(int argc, char *argv[]) {
 	}
 
 	init_mem();
-	
+
 	while(1) {
 		/*printf("***reading the file***\n");*/
 		if (file == stdin) {
@@ -116,16 +115,16 @@ int main(int argc, char *argv[]) {
 					printf("ALLOC_PT called with %d pages.\n", int_arg);
 					if(return_error >= 0){
 						printf("The page table ID is: %d.\n", return_error);
-			
+
 					}else{
 						if(return_error == -9){
 							printf("The max process limit was reached.\n");
 						}else if(return_error == -10){
 							printf("The max page limit per process was reached.\n");
-						}						
+						}
 					}
 
-				
+
 				}
 				if (error == 1){
 					textcolor(BRIGHT, RED, BLACK);
@@ -294,7 +293,7 @@ int main(int argc, char *argv[]) {
 									printf("Page Table %d Not Initialized\n", int_arg);
 								}
 							}
-						}	
+						}
 					}
 					else{
 						error = 1;
@@ -335,4 +334,3 @@ int main(int argc, char *argv[]) {
 
 	return(0);
 }
-
