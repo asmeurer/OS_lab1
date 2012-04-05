@@ -8,6 +8,10 @@
 */
 
 #include "memory_test.h"
+#include "memory_manager.c"
+#include <stdio.h>
+#include <stdlib.h>
+
 
 /**
  * Gets a string from the file.
@@ -83,8 +87,10 @@ int main(int argc, char *argv[]) {
 			/* printf("%s\n", command); */
 
 			if (!strcmp(command, "INIT_MEM")) {
-				//TODO: Call init_mem
+				init_mem();
+				printf("Memory has been initialized.");
 			}
+
 			else if (!strcmp(command, "ALLOC_PT")) {
 				fgets(line, LINE_MAX, file);
 				error = 1;
@@ -104,6 +110,7 @@ int main(int argc, char *argv[]) {
 						int_arg = atoi(init_arg);
 						printf("ALLOC_PT called with %d pages\n", int_arg);
 						//TODO: Call ALLOC_PT with int_arg and return page table id
+						alloc_pt(int_arg);
 					}
 				}
 				if (error == 1){
