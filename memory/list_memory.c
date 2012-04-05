@@ -34,11 +34,45 @@ int list_page_table(int page_table_id){
 			printf("0x----");
 		}
 		i++;
+		if(i == MAX_PAGES_PER_PROCESS){
+			break;
+		}
 	}
 	printf("\n");
 	return ERROR_SUCCESS;
 }
 
+void list_phy_mem(){
+	int i, j, k;
+	printf("\n********************************************************\n");
+	printf("Physical Memory");
+	printf("\n********************************************************");
+	for(i = 0; i < USER_PHY_MEM_NUM_FRAMES; i++){
+		printf("\nFrame number: %03d	", i);
+		printf("LRU Stamp: 0x%08X		", phy_mem[i].LRU);
+		printf("PTID/Page#: ");
+		if(phy_mem[i].mapped == null){
+			printf("Not Exist");
+		}
+		else{
+			//Iterate processes
+			for(j = 0; j < MAX_PROCESSES; j++){
+				//Iterate pages
+				for(k = 0; k < MAX_PAGES_PER_PROCESS; k++){
+					//If page not set, break to next process
+					if(!(page_tables[j][k].bits & P_BITMASK)){
+						break;
+					}
+					//Check if pointers match
+					if(&page_tables[j][k] == phy_mem[i].mapped){
+						printf("%2d / %4d", j, k);
+					}
+				}
+			}
+		}
+	}
+	printf("\n");
+}
 
 void list_backing_store() {
     int i;
