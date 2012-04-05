@@ -62,7 +62,7 @@ memory/aaron_tests.o: memory/aaron_tests.c memory/../shared/binary.c \
   memory/memory_definitions.h memory/list_memory.c
 	$(CC) $(FLAGS) memory/aaron_tests.c -o memory/aaron_tests.o
 
-memory_test.o: memory/memory_test.c memory/memory_test.h \
+memory/memory_test.o: memory/memory_test.c memory/memory_test.h \
   memory/memory_definitions.h memory/../shared/textcolor.c
 	$(CC) $(FLAGS) -c memory/list_memory.c -o memory/list_memory.o
 
