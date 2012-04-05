@@ -4,38 +4,38 @@
 #include "memory_definitions.h"
 #include "list_memory.h"
 int list_page_table(int page_table_id){
-    int i = 0;
-    //Check if page table is init
-    if(!(page_tables[page_table_id][0].bits & P_BITMASK)){
-        return ERROR_PAGE_TABLE_NOT_INIT;
-    }
-    printf("\n********************************************************\n");
-    printf("Page Table %d", page_table_id);
-    printf("\n********************************************************");
-    //Loop until page not init
-    while(page_tables[page_table_id][i].bits & P_BITMASK){
-        printf("\nPage %d:    Physical: ", i);
-        //Physical memory valid bit set
-        if (page_tables[page_table_id][i].bits & PMV_BITMASK){
-            printf("%x", page_tables[page_table_id][i].phy_addr);
-        }
-        //Physical memory valid bit not set
-        else{
-            printf("Not In Memory");
-        }
-        printf("    Backing: ");
-        //Backing memory valid bit set
-        if (page_tables[page_table_id][i].bits & BMV_BITMASK){
-            printf("%x", page_tables[page_table_id][i].back_addr);
-        }
-        //Backing memory valid bit not set
-        else{
-            printf("Not In Memory");
-        }
-        i++;
-    }
-    printf("\n");
-    return ERROR_SUCCESS;
+	int i = 0;
+	//Check if page table is init
+	if(!(page_tables[page_table_id][0].bits & P_BITMASK)){
+		return ERROR_PAGE_TABLE_NOT_INIT;
+	}
+	printf("\n********************************************************\n");
+	printf("Page Table %d", page_table_id);
+	printf("\n********************************************************");
+	//Loop until page not init
+	while(page_tables[page_table_id][i].bits & P_BITMASK){
+		printf("\nPage %4d:	Physical: ", i);
+		//Physical memory valid bit set
+		if (page_tables[page_table_id][i].bits & PMV_BITMASK){
+			printf("0x%02X", page_tables[page_table_id][i].phy_addr);
+		}
+		//Physical memory valid bit not set
+		else{
+			printf("0x--");
+		}
+		printf("	Backing: ");
+		//Backing memory valid bit set
+		if (page_tables[page_table_id][i].bits & BMV_BITMASK){
+			printf("0x%04X", page_tables[page_table_id][i].back_addr);
+		}
+		//Backing memory valid bit not set
+		else{
+			printf("0x----");
+		}
+		i++;
+	}
+	printf("\n");
+	return ERROR_SUCCESS;
 }
 
 
