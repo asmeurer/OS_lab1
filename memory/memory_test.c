@@ -54,6 +54,7 @@ int main(int argc, char *argv[]) {
 	int return_error;
     char* init_arg;
     int j;
+    int return_error = 0;
     
 	FILE *file;
 	if (argc == 1){
@@ -78,6 +79,8 @@ int main(int argc, char *argv[]) {
 		exit(-1);
 	}
 
+	init_mem();
+	
 	while(1) {
 		/*printf("***reading the file***\n");*/
 		if (file == stdin) {
@@ -286,6 +289,10 @@ int main(int argc, char *argv[]) {
 							else{
 								printf("LIST PAGETABLE %d called\n", int_arg);
 								//TODO: Call list with int_arg
+								return_error = list_page_table(int_arg);
+								if(return_error == ERROR_PAGE_TABLE_NOT_INIT){
+									printf("Page Table %d Not Initialized\n", int_arg);
+								}
 							}
 						}	
 					}

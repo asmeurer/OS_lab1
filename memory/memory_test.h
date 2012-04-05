@@ -12,5 +12,7 @@
 #include <string.h>
 #include <ctype.h>
 #include <limits.h>
-
+#include "list_memory.h"
+#include "memory_manager.h"
+#include "memory_hardware.h"
 #endif
