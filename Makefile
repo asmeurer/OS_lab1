@@ -3,7 +3,7 @@
 
 SOURCES:=$(shell find . -name "*.c" | sed 's/\.\///g')
 
-CC=gcc
+CC=cc
 FLAGS=-Wall
 
 all: $(patsubst %.c,%.o,$(SOURCES))
