@@ -4,38 +4,38 @@
 #include "memory_definitions.h"
 #include "list_memory.h"
 int list_page_table(int page_table_id){
-	int i = 0;
-	//Check if page table is init
-	if(!(page_tables[page_table_id][0].bits & P_BITMASK)){
-		return ERROR_PAGE_TABLE_NOT_INIT;
-	}
-	printf("\n********************************************************\n");
-	printf("Page Table %d", page_table_id);
-	printf("\n********************************************************");
-	//Loop until page not init
-	while(page_tables[page_table_id][i].bits & P_BITMASK){
-		printf("\nPage %d:	Physical: ", i);
-		//Physical memory valid bit set
-		if (page_tables[page_table_id][i].bits & PMV_BITMASK){
-			printf("%x", page_tables[page_table_id][i].phy_addr);
-		}
-		//Physical memory valid bit not set
-		else{
-			printf("Not In Memory");
-		}
-		printf("	Backing: ");
-		//Backing memory valid bit set
-		if (page_tables[page_table_id][i].bits & BMV_BITMASK){
-			printf("%x", page_tables[page_table_id][i].back_addr);
-		}
-		//Backing memory valid bit not set
-		else{
-			printf("Not In Memory");
-		}
-		i++;
-	}
-	printf("\n");
-	return ERROR_SUCCESS;
+    int i = 0;
+    //Check if page table is init
+    if(!(page_tables[page_table_id][0].bits & P_BITMASK)){
+        return ERROR_PAGE_TABLE_NOT_INIT;
+    }
+    printf("\n********************************************************\n");
+    printf("Page Table %d", page_table_id);
+    printf("\n********************************************************");
+    //Loop until page not init
+    while(page_tables[page_table_id][i].bits & P_BITMASK){
+        printf("\nPage %d:    Physical: ", i);
+        //Physical memory valid bit set
+        if (page_tables[page_table_id][i].bits & PMV_BITMASK){
+            printf("%x", page_tables[page_table_id][i].phy_addr);
+        }
+        //Physical memory valid bit not set
+        else{
+            printf("Not In Memory");
+        }
+        printf("    Backing: ");
+        //Backing memory valid bit set
+        if (page_tables[page_table_id][i].bits & BMV_BITMASK){
+            printf("%x", page_tables[page_table_id][i].back_addr);
+        }
+        //Backing memory valid bit not set
+        else{
+            printf("Not In Memory");
+        }
+        i++;
+    }
+    printf("\n");
+    return ERROR_SUCCESS;
 }
 
 
@@ -44,7 +44,7 @@ void list_backing_store() {
     char str[sizeof(byte)*8 + 1];
     const int backing_store_free_size = BACK_STORE_NUM_FRAME/8;
     const int num_cols = 128;   /* Should be a multiple of 8.  128 will
-                                       * give a perfect square. */
+                                 * give a perfect square. */
     const int row_division = 5; /* The number of rows to include before a row
                                  * divider. */
     print_row_separator(row_division, num_cols);
