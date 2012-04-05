@@ -119,11 +119,11 @@ int main(int argc, char *argv[]) {
 					}else{
 						if(return_error == -9){
 							textcolor(BRIGHT, RED, BLACK);
-							printf("%d is .\n");
+							printf("Max process limit reached.\n");
 							textcolor(RESET, -1, -1);
 						}else if(return_error == -10){
 							textcolor(BRIGHT, RED, BLACK);
-							printf("The max page limit per process was reached.\n");
+						printf("%c is over the page limit for a process.\n", init_arg);
 							textcolor(RESET, -1, -1);
 						}
 					}
