@@ -9,6 +9,7 @@
 
 #include "memory_test.h"
 #include "memory_manager.c"
+#include "memory_definitions.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -50,6 +51,7 @@ int main(int argc, char *argv[]) {
 	char line[LINE_MAX];
 	int int_arg;
 	int int_arg2;
+	int return_error;
     char* init_arg;
     int j;
     
@@ -88,7 +90,7 @@ int main(int argc, char *argv[]) {
 
 			if (!strcmp(command, "INIT_MEM")) {
 				init_mem();
-				printf("Memory has been initialized.");
+				printf("Memory has been initialized.\n");
 			}
 
 			else if (!strcmp(command, "ALLOC_PT")) {
@@ -106,12 +108,21 @@ int main(int argc, char *argv[]) {
 							break;
 						}
 					}
-					if (error == 0){
-						int_arg = atoi(init_arg);
-						printf("ALLOC_PT called with %d pages\n", int_arg);
-						//TODO: Call ALLOC_PT with int_arg and return page table id
-						alloc_pt(int_arg);
+					int_arg = atoi(init_arg);
+					return_error = alloc_pt(int_arg);
+					printf("ALLOC_PT called with %d pages.\n", int_arg);
+					if(return_error >= 0){
+						printf("The page table ID is: %d.\n", return_error);
+			
+					}else{
+						if(return_error == -9){
+							printf("The max process limit was reached.\n");
+						}else if(return_error == -10){
+							printf("The max page limit per process was reached.\n");
+						}						
 					}
+
+				
 				}
 				if (error == 1){
 					textcolor(BRIGHT, RED, BLACK);
