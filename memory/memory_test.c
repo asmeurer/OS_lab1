@@ -118,12 +118,15 @@ int main(int argc, char *argv[]) {
 
 					}else{
 						if(return_error == -9){
-							printf("The max process limit was reached.\n");
+							textcolor(BRIGHT, RED, BLACK);
+							printf("%d is .\n");
+							textcolor(RESET, -1, -1);
 						}else if(return_error == -10){
+							textcolor(BRIGHT, RED, BLACK);
 							printf("The max page limit per process was reached.\n");
+							textcolor(RESET, -1, -1);
 						}
 					}
-
 
 				}
 				if (error == 1){
@@ -153,14 +156,16 @@ int main(int argc, char *argv[]) {
 								printf("Page table id must be between 0 and %d\n", MAX_PROCESSES - 1);
 						}
 						else{
-							printf("DEALLOC_PT %d called\n", int_arg);
+							printf("DEALLOC_PT called for Page table ID: %d\n", int_arg);
 							return_error = dealloc_pt(int_arg);
 
 
 							if(return_error >= 0){
 								printf("Page table ID: %d has been deallocated.\n", int_arg);
 							}else if(return_error == -1){
+									textcolor(BRIGHT, RED, BLACK);
 									printf("The page table has not been initialized.\n");
+									textcolor(RESET, -1, -1);
 							} 
 							
 

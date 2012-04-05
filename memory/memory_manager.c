@@ -47,7 +47,7 @@ int alloc_pt (int num_pages){
     int page_table_id=-1, i;
 
     /* Check to see if the amo1unt of pages given is past the maximum amount allowed for a process */
-    if(num_pages >= MAX_PAGES_PER_PROCESS){
+    if(num_pages > MAX_PAGES_PER_PROCESS){
         return ERROR_MAX_PAGE_LIMIT; // WHAT SHOULD THIS BE?
     }
 
