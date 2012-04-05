@@ -44,7 +44,7 @@ void list_backing_store() {
     int i;
     char str[sizeof(byte)*8 + 1];
     const int backing_store_free_size = BACK_STORE_NUM_FRAME/8;
-    const int num_cols = 128;   /* Should be a multiple of 8.  128 will
+    const int num_cols = 80;   /* Should be a multiple of 8.  128 will
                                  * give a perfect square. */
     const int row_division = 5; /* The number of rows to include before a row
                                  * divider. */
