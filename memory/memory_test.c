@@ -120,11 +120,11 @@ int main(int argc, char *argv[]) {
 					}else{
 						if(return_error == -9){
 							textcolor(BRIGHT, RED, BLACK);
-							printf("%d is .\n", int_arg);
+							printf("Max process limit reached.\n");
 							textcolor(RESET, -1, -1);
 						}else if(return_error == -10){
 							textcolor(BRIGHT, RED, BLACK);
-							printf("The max page limit per process was reached.\n");
+						printf("%s is over the page limit for a process.\n", init_arg);
 							textcolor(RESET, -1, -1);
 						}
 					}
@@ -207,7 +207,7 @@ int main(int argc, char *argv[]) {
 								printf("Page table must have %d pages allocated to fill phy mem\n", USER_PHY_MEM_NUM_FRAMES);
 							}else if(return_error == ERROR_PAGE_TABLE_NOT_INIT){
 								printf("The page table has not been initialized.\n");
-							} 
+							}
 							else if(return_error == ERROR_SUCCESS){
 								printf("Physical Memory Filled With Pages from Page Table %d\n", int_arg);
 							}
