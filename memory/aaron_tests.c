@@ -19,9 +19,15 @@ void list_memory_test() {
         backing_store_free[i] = 0;
     }
 
-    set_back_addr_full(0);
-    set_back_addr_full(129);
-    set_back_addr_full(400);
+    printf("backing store size: %d\n", BACK_STORE_SIZE);
+    printf("backing store num frame: %d\n", BACK_STORE_NUM_FRAME);
+
+    for (i = 0; i < BACK_STORE_NUM_FRAME; i++) {
+
+        if (!(i % 17) || !(i % 13)) {
+            set_back_addr_full(i);
+        }
+    }
 
     list_backing_store();
 }

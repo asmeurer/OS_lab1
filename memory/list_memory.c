@@ -37,6 +37,10 @@ void list_backing_store() {
     printf("\n");
 }
 
+void list_physical_memory() {
+    return;
+}
+
 void itodots(int n, char *str) {
     int place = 0;
     int i;
@@ -57,6 +61,7 @@ void itodots(int n, char *str) {
 void print_row_separator(int row_division, int num_cols) {
     int j;
     int k;
+
     printf("\n");
     printf("+");
 
