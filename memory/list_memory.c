@@ -44,7 +44,7 @@ void list_backing_store() {
     int i;
     char str[sizeof(byte)*8 + 1];
     const int backing_store_free_size = BACK_STORE_NUM_FRAME/8;
-    const int num_cols = 80;   /* Should be a multiple of 8.  128 will
+    const int num_cols = 128 - 8*0;   /* Should be a multiple of 8.  128 will
                                  * give a perfect square. */
     const int row_division = 5; /* The number of rows to include before a row
                                  * divider. */
@@ -59,7 +59,7 @@ void list_backing_store() {
 
     for (i = 0; i < backing_store_free_size; i++) {
         if (!(i % (num_cols/8))) {
-            if (!(i % row_division * num_cols/8)) {
+            if (!(i*8/num_cols % row_division)) {
                 printf("\n");
                 print_row_separator(row_division, num_cols);
             }
@@ -71,7 +71,7 @@ void list_backing_store() {
         printf("|");
     }
     printf("\n");
-    print_row_separator(row_division, num_cols);
+    print_row_separator(row_division, BACK_STORE_NUM_FRAME % num_cols ? BACK_STORE_NUM_FRAME % num_cols : num_cols);
     printf("\n");
 }
 
