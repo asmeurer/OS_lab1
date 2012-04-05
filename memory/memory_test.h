@@ -8,7 +8,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <errno.h>
-#include "../shared/textcolor.c"
+#include "../shared/textcolor.h"
 #include <string.h>
 #include <ctype.h>
 #include <limits.h>

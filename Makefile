@@ -29,7 +29,7 @@ process_manager/processmanager_test.o: shared/textcolor.c process_manager/proces
 process_manager/scheduler_testgenerator.o: process_manager/scheduler_testgenerator.c process_manager/definitions.h process_manager/queuemanager.o process_manager/processmanager.o
 	$(CC) $(FLAGS) process_manager/scheduler_testgenerator.c -o process_manager/scheduler_testgenerator.o
 
-shared/textcolor.o: shared/textcolor.c
+shared/textcolor.o: shared/textcolor.c shared/textcolor.h
 	$(CC) $(FLAGS) -c shared/textcolor.c -o shared/textcolor.o
 
 shared/binary.o: shared/binary.c
@@ -55,18 +55,19 @@ memory/memory_hardware.o: memory/memory_hardware.c memory/memory_hardware.h
 	$(CC) $(FLAGS) -c memory/memory_hardware.c -o memory/memory_hardware.o
 
 memory/memory_test.o: memory/memory_test.c memory/memory_test.h \
-  memory/memory_definitions.h memory/../shared/textcolor.c \
+  memory/memory_definitions.h memory/../shared/textcolor.h \
   memory/list_memory.h memory/memory_manager.h memory/memory_hardware.h \
-  memory/memory_manager.c memory/list_memory.c
-	$(CC) $(FLAGS) memory/memory_test.c memory/list_memory.o -o memory/memory_test.o
+  memory/memory_manager.c
+	$(CC) $(FLAGS) memory/memory_test.c memory/list_memory.o shared/textcolor.o -o memory/memory_test.o
 
 memory/aaron_tests.o: memory/aaron_tests.c memory/../shared/binary.c \
   memory/memory_manager.c memory/memory_manager.h \
-  memory/memory_definitions.h memory/list_memory.c memory/list_memory.h memory/list_memory.o
-	$(CC) $(FLAGS) memory/aaron_tests.c -o memory/aaron_tests.o
+  memory/memory_definitions.h memory/list_memory.c memory/list_memory.h \
+  memory/../shared/textcolor.h shared/textcolor.o
+	$(CC) $(FLAGS) memory/aaron_tests.c shared/textcolor.o -o memory/aaron_tests.o
 
-memory/list_memory.o:memory/list_memory.c memory/memory_definitions.h \
-  memory/list_memory.h
+memory/list_memory.o: memory/list_memory.c memory/memory_definitions.h \
+  memory/list_memory.h memory/../shared/textcolor.h
 	$(CC) $(FLAGS) -c memory/list_memory.c -o memory/list_memory.o
 
 clean:

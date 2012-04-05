@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include "memory_definitions.h"
 #include "list_memory.h"
+
 int list_page_table(int page_table_id){
 	int i = 0;
 	//Check if page table is init
@@ -66,7 +67,8 @@ void list_backing_store() {
             printf("|%5d|", i*8);
         }
         itodots(backing_store_free[i], str);
-        printf("%s|", str);
+        print_colored_dots(str);
+        printf("|");
     }
     printf("\n");
     print_row_separator(row_division, num_cols);
@@ -77,6 +79,8 @@ void list_physical_memory() {
     return;
 }
 
+/* Convert a number n into dots, where . is a 0 and * is a 1 from the binary
+ * representation of n. */
 void itodots(int n, char *str) {
     int place = 0;
     int i;
@@ -92,6 +96,26 @@ void itodots(int n, char *str) {
         place++;
     }
     str[bytes_in_byte] = '\0';
+}
+
+/* Print dots from the itodots in color */
+void print_colored_dots(char *str) {
+    int i;
+    const int bytes_in_byte = 8*sizeof(byte);
+
+    for (i = 0; i < bytes_in_byte; i++) {
+        if (str[i] == '*') {
+            textcolor(BRIGHT, WHITE, BLACK);
+            printf("%c", str[i]);
+            textcolor(RESET, -1, -1);
+        } else if (str[i] == '.') {
+            textcolor(BRIGHT, RED, BLACK);
+            printf("%c", str[i]);
+            textcolor(RESET, -1, -1);
+        } else {
+            printf("%c", str[i]);
+        }
+    }
 }
 
 void print_row_separator(int row_division, int num_cols) {

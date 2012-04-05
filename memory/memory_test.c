@@ -120,7 +120,7 @@ int main(int argc, char *argv[]) {
 					}else{
 						if(return_error == -9){
 							textcolor(BRIGHT, RED, BLACK);
-							printf("%d is .\n");
+							printf("%d is .\n", int_arg);
 							textcolor(RESET, -1, -1);
 						}else if(return_error == -10){
 							textcolor(BRIGHT, RED, BLACK);
@@ -167,8 +167,8 @@ int main(int argc, char *argv[]) {
 									textcolor(BRIGHT, RED, BLACK);
 									printf("The page table has not been initialized.\n");
 									textcolor(RESET, -1, -1);
-							} 
-							
+							}
+
 
 
 						}
