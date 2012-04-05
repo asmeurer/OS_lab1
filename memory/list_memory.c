@@ -26,7 +26,7 @@ int list_page_table(int page_table_id){
 		printf("	Backing: ");
 		//Backing memory valid bit set
 		if (page_tables[page_table_id][i].bits & BMV_BITMASK){
-			printf("%x", page_tables[page_table_id][i].back_addr);
+			printfg("%x", page_tables[page_table_id][i].back_addr);
 		}
 		//Backing memory valid bit not set
 		else{

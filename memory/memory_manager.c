@@ -58,17 +58,17 @@ int alloc_pt (int num_pages){
         }
     }
 
-    if(page_table_id == -1){
-        /* If page_table_id is 0 then every row of the page table has been examined and they
-         * are all full, thu the max process limit has been reached */
-        return ERROR_MAX_PROCESSES_REACHED;
-    }
-
-    for(i = 0; i< num_pages; i++){
-        page_tables[page_table_id][i].bits = page_tables[page_table_id][i].bits | P_BITMASK;
-    }
-
-    return page_table_id;
+	if(page_table_id == -1){
+		/* If page_table_id is 0 then every row of the page table has been examined and they
+		* are all full, thu the max process limit has been reached */
+		return ERROR_MAX_PROCESSES_REACHED;
+	}
+	
+	for(i = 0; i< num_pages; i++){
+		page_tables[page_table_id][i].bits = page_tables[page_table_id][i].bits | P_BITMASK;
+	}
+	
+	return page_table_id;
 }
 
 /* This function deallocate a page table from its index */
