@@ -2,9 +2,6 @@
  * Memory OS Manager
  */
 
-//Remove this after
-#include <stdio.h>
-
 #include "memory_manager.h"
 
 /* Inits all memory manager data structures, this includes the page table, the
