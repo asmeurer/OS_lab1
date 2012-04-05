@@ -6,6 +6,7 @@
 #define MEM_MAN_H
 #include "memory_definitions.h"
 
+
 //Initialize OS_page_table
 void init_mem();
 

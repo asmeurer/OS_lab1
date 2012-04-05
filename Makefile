@@ -54,8 +54,10 @@ memory/memory_manager.o: memory/memory_manager.c memory/memory_manager.h \
 memory/memory_hardware.o: memory/memory_hardware.c memory/memory_hardware.h
 	$(CC) $(FLAGS) -c memory/memory_hardware.c -o memory/memory_hardware.o
 
-memory/memory_test.o: memory/memory_test.c
-	$(CC) $(FLAGS) memory/memory_test.c -o memory/memory_test.o
+memory/memory_test.o: memory/memory_test.c memory/memory_test.h \
+ memory/memory_definitions.h memory/../shared/textcolor.c \
+ memory/list_memory.h memory/memory_manager.h memory/memory_hardware.h
+	$(CC) $(FLAGS) memory/memory_test.c memory/memory_hardware.o memory/memory_manager.o memory/list_memory.o -o memory/memory_test.o
 
 memory/aaron_tests.o: memory/aaron_tests.c memory/../shared/binary.c \
   memory/memory_manager.c memory/memory_manager.h \
