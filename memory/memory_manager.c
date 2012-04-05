@@ -63,11 +63,11 @@ int alloc_pt (int num_pages){
 		* are all full, thu the max process limit has been reached */
 		return ERROR_MAX_PROCESSES_REACHED;
 	}
-	
+
 	for(i = 0; i< num_pages; i++){
 		page_tables[page_table_id][i].bits = page_tables[page_table_id][i].bits | P_BITMASK;
 	}
-	
+
 	return page_table_id;
 }
 
@@ -210,10 +210,6 @@ int set_back_addr_full(short addr) {
         backing_store_free[prefix] = backing_store_free[prefix] | suffix_bitmask;
         return ERROR_SUCCESS;
     }
-}
-
-int get_phy_mem_left();{
-	
 }
 
 int page_fault (int page_table_index, int page_num){
