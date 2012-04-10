@@ -69,7 +69,7 @@ memory/test_gen.o: memory/test_gen.c
 	$(CC) $(FLAGS) memory/test_gen.c -o memory/test_gen.o
 
 clean:
-	-rm -f process_manager/*.o ipc/*o shared/*.o memory/*.o
+	-rm -f process_manager/*.o ipc/*o shared/*.o memory/*.o nul
 
 check-syntax:
 	$(CC) -o nul $(FLAGS) -S $(CHK_SOURCES)
