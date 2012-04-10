@@ -244,8 +244,7 @@ int page_fault (int page_table_index, int page_num){
         return ERROR_HARDWARE_ALREADY_IN_PHY_MEM;
     }
 
-    //TODO: figure out what error codes lru_lookup will return
-    //Check for errors in lru_lookup
+    //Find lru frame
     byte lru_index = lru_lookup();
 
     page_table_entry *victimized = phy_mem[lru_index].mapped;
