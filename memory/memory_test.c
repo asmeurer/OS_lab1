@@ -353,13 +353,17 @@ int main(int argc, char *argv[]) {
 				if (strcmp(init_arg, "\n") != 0){
 					if (!strcmp(init_arg, "USER\n")){
 						printf("LIST USER called\n");
-                        printf("Backing store:\n");
-                        list_backing_store();
+						list_phy_mem();
 						error = 0;
 					}
 					else if (!strcmp(init_arg, "SYSTEM\n")){
 						printf("LIST SYSTEM called\n");
-						list_phy_mem();
+						list_system();
+						error = 0;
+					}
+					else if (!strcmp(init_arg, "BS\n")){
+						printf("LIST BS (Backing Store) called\n");
+						list_backing_store();
 						error = 0;
 					}
 					//No arguments for pagetable
@@ -399,6 +403,7 @@ int main(int argc, char *argv[]) {
 				else{
 					list_backing_store();
 					list_phy_mem();
+					list_system();
 					for(j = 0; j < MAX_PROCESSES; j++){
 						//Check if page table is init
 						if(page_tables[j][0].bits & P_BITMASK){
