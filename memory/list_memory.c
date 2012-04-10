@@ -45,7 +45,7 @@ int list_page_table(int page_table_id){
 void list_phy_mem(){
 	int i, j, k;
 	printf("\n********************************************************\n");
-	printf("Physical Memory");
+	printf("User Physical Memory");
 	printf("\n********************************************************");
 	for(i = 0; i < USER_PHY_MEM_NUM_FRAMES; i++){
 		printf("\nFrame number: %03d	", i);
@@ -109,8 +109,30 @@ void list_backing_store() {
     printf("\n");
 }
 
-void list_physical_memory() {
-    return;
+void list_system(){
+	int i;
+	printf("\n********************************************************\n");
+	printf("System Physical Memory");
+	printf("\n********************************************************");
+	for(i = 0; i < OS_PHY_MEM_NUM_FRAMES; i++){
+		printf("\nFrame number: %03d	", i + USER_PHY_MEM_NUM_FRAMES);
+		if(i < 16){
+			printf("Page table %d", i);
+			if(page_tables[i][0].bits & P_BITMASK){
+				printf(" allocated");
+			}
+			else{
+				printf(" not allocated");
+			}
+		}
+		else if(i == 16){
+			printf("Reserved for LRU table and Backing Store Free Table");
+		}
+		else{
+			printf("Reserved for other OS memory");
+		}
+	}
+	printf("\n");
 }
 
 /* Convert a number n into dots, where . is a 0 and * is a 1 from the binary
@@ -169,3 +191,5 @@ void print_row_separator(int row_division, int num_cols) {
     }
     printf("+");
 }
+
+
