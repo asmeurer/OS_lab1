@@ -60,12 +60,6 @@ memory/memory_test.o: memory/memory_test.c memory/memory_test.h \
   memory/memory_manager.c
 	$(CC) $(FLAGS) memory/memory_test.c memory/memory_manager.o memory/list_memory.o memory/memory_hardware.o shared/textcolor.o -o memory/memory_test.o
 
-memory/aaron_tests.o: memory/aaron_tests.c memory/../shared/binary.c \
-  memory/memory_manager.c memory/memory_manager.h \
-  memory/memory_definitions.h memory/list_memory.c memory/list_memory.h \
-  memory/../shared/textcolor.h shared/textcolor.o
-	$(CC) $(FLAGS) memory/aaron_tests.c shared/textcolor.o -o memory/aaron_tests.o
-
 memory/list_memory.o: memory/list_memory.c memory/memory_definitions.h \
   memory/list_memory.h memory/../shared/textcolor.h
 	$(CC) $(FLAGS) -c memory/list_memory.c -o memory/list_memory.o
