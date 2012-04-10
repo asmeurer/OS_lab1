@@ -1,0 +1,60 @@
+# Test init memory command
+INIT_MEM
+# Test allocate page table command
+ALLOC_PT 25
+# Test allocate page throws error for max pages
+ALLOC_PT 1025
+# Test that there is a max amount of page tables
+ALLOC_PT 1
+ALLOC_PT 1
+ALLOC_PT 1
+ALLOC_PT 1
+ALLOC_PT 1
+ALLOC_PT 1
+ALLOC_PT 1
+ALLOC_PT 1
+ALLOC_PT 1
+ALLOC_PT 1
+ALLOC_PT 1
+ALLOC_PT 1
+ALLOC_PT 1
+ALLOC_PT 1
+ALLOC_PT 1
+ALLOC_PT 1
+# Test that list page table works correctly
+LIST PAGETABLE 0
+# Test that init command clears memory.
+INIT_MEM
+LIST PAGETABLE 0
+# Test that dealloc works
+ALLOC_PT 1
+DEALLOC_PT 0
+# Test user cant dealloc uninitalized page table
+DEALLOC_PT 0
+# Test filling up the physical memory
+ALLOC_PT 240
+ALLOC_PT 240
+FILL_PHY_MEM 0
+FILL_PHY_MEM 1
+LIST PAGETABLE 0
+# Test that page fault command works
+PAGE_FAULT 0 0
+LIST PAGETABLE 0
+# Test user cant page fault a page already in phy memory
+PAGE_FAULT 0 0
+# Test user cant page fault invalid page table/page
+PAGE_FAULT 0 999
+PAGE_FAULT 11 0
+# Demostrate LRU implementation works
+INIT_MEM
+ALLOC_PT 250
+ALLOC_PT 250
+FILL_PHY_MEM 0
+FILL_PHY_MEM 1
+# Now physical memory is full and memory is in backing store
+LIST PAGETABLE 1
+# Page 0 has now been (simulated) accessed 
+PAGE_HIT 1 0
+# Bring page 0 from page table 0 into memory.
+PAGE_FAULT 0 0
+LIST PAGETABLE 1
