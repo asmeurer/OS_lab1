@@ -57,7 +57,7 @@ memory/memory_hardware.o: memory/memory_hardware.c memory/memory_hardware.h
 memory/memory_test.o: memory/memory_test.c memory/memory_test.h \
   memory/memory_definitions.h memory/../shared/textcolor.h \
   memory/list_memory.h memory/memory_manager.h memory/memory_hardware.h \
-  memory/memory_manager.c
+  memory/memory_manager.c shared/textcolor.c
 	$(CC) $(FLAGS) memory/memory_test.c memory/memory_manager.o memory/list_memory.o memory/memory_hardware.o shared/textcolor.o -o memory/memory_test.o
 
 memory/list_memory.o: memory/list_memory.c memory/memory_definitions.h \
