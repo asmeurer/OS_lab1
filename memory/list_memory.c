@@ -5,73 +5,73 @@
 #include "list_memory.h"
 
 int list_page_table(int page_table_id){
-	int i = 0;
-	//Check if page table is init
-	if(!(page_tables[page_table_id][0].bits & P_BITMASK)){
-		return ERROR_PAGE_TABLE_NOT_INIT;
-	}
-	printf("\n********************************************************\n");
-	printf("Page Table %d", page_table_id);
-	printf("\n********************************************************");
-	//Loop until page not init
-	while(page_tables[page_table_id][i].bits & P_BITMASK){
-		printf("\nPage %4d:	Physical: ", i);
-		//Physical memory valid bit set
-		if (page_tables[page_table_id][i].bits & PMV_BITMASK){
-			printf("0x%02X", page_tables[page_table_id][i].phy_addr);
-		}
-		//Physical memory valid bit not set
-		else{
-			printf("0x--");
-		}
-		printf("	Backing: ");
-		//Backing memory valid bit set
-		if (page_tables[page_table_id][i].bits & BMV_BITMASK){
-			printf("0x%04X", page_tables[page_table_id][i].back_addr);
-		}
-		//Backing memory valid bit not set
-		else{
-			printf("0x----");
-		}
-		i++;
-		if(i == MAX_PAGES_PER_PROCESS){
-			break;
-		}
-	}
-	printf("\n");
-	return ERROR_SUCCESS;
+    int i = 0;
+    /* Check if page table is init */
+    if(!(page_tables[page_table_id][0].bits & P_BITMASK)){
+        return ERROR_PAGE_TABLE_NOT_INIT;
+    }
+    printf("\n********************************************************\n");
+    printf("Page Table %d", page_table_id);
+    printf("\n********************************************************");
+    /* Loop until page not init */
+    while(page_tables[page_table_id][i].bits & P_BITMASK){
+        printf("\nPage %4d:    Physical: ", i);
+        /* Physical memory valid bit set */
+        if (page_tables[page_table_id][i].bits & PMV_BITMASK){
+            printf("0x%02X", page_tables[page_table_id][i].phy_addr);
+        }
+        /* Physical memory valid bit not set */
+        else{
+            printf("0x--");
+        }
+        printf("    Backing: ");
+        /* Backing memory valid bit set */
+        if (page_tables[page_table_id][i].bits & BMV_BITMASK){
+            printf("0x%04X", page_tables[page_table_id][i].back_addr);
+        }
+        /* Backing memory valid bit not set */
+        else{
+            printf("0x----");
+        }
+        i++;
+        if(i == MAX_PAGES_PER_PROCESS){
+            break;
+        }
+    }
+    printf("\n");
+    return ERROR_SUCCESS;
 }
 
 void list_phy_mem(){
-	int i, j, k;
-	printf("\n********************************************************\n");
-	printf("User Physical Memory");
-	printf("\n********************************************************");
-	for(i = 0; i < USER_PHY_MEM_NUM_FRAMES; i++){
-		printf("\nFrame number: %03d	", i);
-		printf("LRU Stamp: 0x%08X		", phy_mem[i].LRU);
-		printf("PTID/Page#: ");
-		if(phy_mem[i].mapped == null){
-			printf("Not Exist");
-		}
-		else{
-			//Iterate processes
-			for(j = 0; j < MAX_PROCESSES; j++){
-				//Iterate pages
-				for(k = 0; k < MAX_PAGES_PER_PROCESS; k++){
-					//If page not set, break to next process
-					if(!(page_tables[j][k].bits & P_BITMASK)){
-						break;
-					}
-					//Check if pointers match
-					if(&page_tables[j][k] == phy_mem[i].mapped){
-						printf("%2d / %4d", j, k);
-					}
-				}
-			}
-		}
-	}
-	printf("\n");
+    int i, j, k;
+    printf("\n********************************************************\n");
+    printf("User Physical Memory");
+    printf("\n********************************************************");
+    for(i = 0; i < USER_PHY_MEM_NUM_FRAMES; i++){
+        printf("\nFrame number: %03d    ", i);
+        printf("LRU Stamp: 0x%08X        ", phy_mem[i].LRU);
+        printf("PTID/Page#: ");
+        if(phy_mem[i].mapped == null){
+            printf("Not Exist");
+        }
+        else{
+            /* Iterate processes */
+            for(j = 0; j < MAX_PROCESSES; j++){
+                /* Iterate pages */
+                for(k = 0; k < MAX_PAGES_PER_PROCESS; k++){
+                    /* If page not set, break to next process */
+                    if(!(page_tables[j][k].bits & P_BITMASK)){
+                        break;
+                    }
+                    /* Check if pointers match */
+                    if(&page_tables[j][k] == phy_mem[i].mapped){
+                        printf("%2d / %4d", j, k);
+                    }
+                }
+            }
+        }
+    }
+    printf("\n");
 }
 
 void list_backing_store() {
@@ -110,29 +110,29 @@ void list_backing_store() {
 }
 
 void list_system(){
-	int i;
-	printf("\n********************************************************\n");
-	printf("System Physical Memory");
-	printf("\n********************************************************");
-	for(i = 0; i < OS_PHY_MEM_NUM_FRAMES; i++){
-		printf("\nFrame number: %03d	", i + USER_PHY_MEM_NUM_FRAMES);
-		if(i < 16){
-			printf("Page table %d", i);
-			if(page_tables[i][0].bits & P_BITMASK){
-				printf(" allocated");
-			}
-			else{
-				printf(" not allocated");
-			}
-		}
-		else if(i == 16){
-			printf("Reserved for LRU table and Backing Store Free Table");
-		}
-		else{
-			printf("Reserved for other OS memory");
-		}
-	}
-	printf("\n");
+    int i;
+    printf("\n********************************************************\n");
+    printf("System Physical Memory");
+    printf("\n********************************************************");
+    for(i = 0; i < OS_PHY_MEM_NUM_FRAMES; i++){
+        printf("\nFrame number: %03d    ", i + USER_PHY_MEM_NUM_FRAMES);
+        if(i < 16){
+            printf("Page table %d", i);
+            if(page_tables[i][0].bits & P_BITMASK){
+                printf(" allocated");
+            }
+            else{
+                printf(" not allocated");
+            }
+        }
+        else if(i == 16){
+            printf("Reserved for LRU table and Backing Store Free Table");
+        }
+        else{
+            printf("Reserved for other OS memory");
+        }
+    }
+    printf("\n");
 }
 
 /* Convert a number n into dots, where . is a 0 and * is a 1 from the binary
@@ -191,5 +191,3 @@ void print_row_separator(int row_division, int num_cols) {
     }
     printf("+");
 }
-
-
