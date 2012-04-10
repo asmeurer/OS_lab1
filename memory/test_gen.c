@@ -97,7 +97,7 @@ int main() {
             scanf("\n%d", &id);
 	    printf("What is the page number?");
 	    scanf("\n%d", &pagenum);
-            fprintf(output, "PAGE_FAULT %d %d \n", id, pagenum );
+            fprintf(output, "PAGE_FAULT %d %d\n", id, pagenum );
 
             break;
 	case 6:

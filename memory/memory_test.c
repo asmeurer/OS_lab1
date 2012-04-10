@@ -318,13 +318,19 @@ int main(int argc, char *argv[]) {
 								//TODO: Call PAGE_FAULT with int_arg and int_arg2
 								return_error = page_fault (int_arg, int_arg2);
 								if (return_error == ERROR_PAGE_TABLE_NOT_INIT){
+									textcolor(BRIGHT, RED, BLACK);
 									printf("Page Table %d Not Initialized\n", int_arg);
+									textcolor(RESET, -1, -1);
 								}
 								else if (return_error == ERROR_PAGE_NOT_INIT){
+									textcolor(BRIGHT, RED, BLACK);
 									printf("Page %d Not Initialized\n", int_arg2);
+									textcolor(RESET, -1, -1);
 								}
 								else if(return_error == ERROR_HARDWARE_ALREADY_IN_PHY_MEM){
+									textcolor(BRIGHT, RED, BLACK);
 									printf("Hardware Error, Page %d already in physical memory\n", int_arg2);
+									textcolor(RESET, -1 , -1);
 								}
 								else if(return_error == ERROR_SUCCESS){
 									printf("Page %d brought into memory\n", int_arg2);
@@ -387,7 +393,9 @@ int main(int argc, char *argv[]) {
 								//TODO: Call list with int_arg
 								return_error = list_page_table(int_arg);
 								if(return_error == ERROR_PAGE_TABLE_NOT_INIT){
+									textcolor(BRIGHT, RED, BLACK);
 									printf("Page Table %d Not Initialized\n", int_arg);
+									textcolor(RESET, -1, -1);
 								}
 							}
 						}
