@@ -45,7 +45,7 @@ int alloc_pt (int num_pages){
 
     /* Check to see if the amount of pages given is past the maximum amount allowed for a process */
     if(num_pages > MAX_PAGES_PER_PROCESS){
-        return ERROR_MAX_PAGE_LIMIT; 
+        return ERROR_MAX_PAGE_LIMIT;
     }
 
     for(i = 0; i < MAX_PROCESSES; i++){
@@ -55,17 +55,17 @@ int alloc_pt (int num_pages){
         }
     }
 
-	if(page_table_id == -1){
-		/* If page_table_id is 0 then every row of the page table has been examined and they
-		* are all full, thu the max process limit has been reached */
-		return ERROR_MAX_PROCESSES_REACHED;
-	}
+    if(page_table_id == -1){
+        /* If page_table_id is 0 then every row of the page table has been examined and they
+         * are all full, thu the max process limit has been reached */
+        return ERROR_MAX_PROCESSES_REACHED;
+    }
 
-	for(i = 0; i< num_pages; i++){
-		page_tables[page_table_id][i].bits = page_tables[page_table_id][i].bits | P_BITMASK;
-	}
+    for(i = 0; i< num_pages; i++){
+        page_tables[page_table_id][i].bits = page_tables[page_table_id][i].bits | P_BITMASK;
+    }
 
-	return page_table_id;
+    return page_table_id;
 }
 
 /* This function deallocate a page table from its index */
