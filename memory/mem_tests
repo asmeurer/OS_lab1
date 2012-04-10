@@ -55,6 +55,6 @@ FILL_PHY_MEM 1
 LIST PAGETABLE 1
 # Page 0 has now been (simulated) accessed 
 PAGE_HIT 1 0
-# Bring page 0 from page table 0 into memory.
+# Bring page 0 from page table 0 into memory, the least accessed 
 PAGE_FAULT 0 0
 LIST PAGETABLE 1
