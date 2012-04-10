@@ -4,6 +4,12 @@
 #include "memory_definitions.h"
 #include "list_memory.h"
 
+
+/**
+ * Function to list a page table
+ * @param page_table_id The page table id to be listed
+ * @return Returns an error code
+ */
 int list_page_table(int page_table_id){
     int i = 0;
     /* Check if page table is init */
@@ -42,6 +48,9 @@ int list_page_table(int page_table_id){
     return ERROR_SUCCESS;
 }
 
+/**
+ * Function to list the physical memory
+ */
 void list_phy_mem(){
     int i, j, k;
     printf("\n********************************************************\n");
@@ -74,15 +83,17 @@ void list_phy_mem(){
     printf("\n");
 }
 
+/**
+ * Function to list the backing store
+ */
 void list_backing_store() {
     int i;
     char str[sizeof(byte)*8 + 1];
     const int backing_store_free_size = BACK_STORE_NUM_FRAME/8;
     const int num_cols = 128 - 8*1;   /* Should be a multiple of 8.  128 will
                                        * give a perfect square. */
-    const int row_division = 5; /* The number of rows to include before a row
-                                 * divider. */
-    print_row_separator(row_division, num_cols);
+    const int row_division = 5;
+    print_row_separator(num_cols);
     printf("\n");
     printf("|     |");
     for (i = 0; i < num_cols; i++) {
@@ -95,7 +106,7 @@ void list_backing_store() {
         if (!(i % (num_cols/8))) {
             if (!(i*8/num_cols % row_division)) {
                 printf("\n");
-                print_row_separator(row_division, num_cols);
+                print_row_separator(num_cols);
             }
             printf("\n");
             printf("|%5d|", i*8);
@@ -105,10 +116,13 @@ void list_backing_store() {
         printf("|");
     }
     printf("\n");
-    print_row_separator(row_division, BACK_STORE_NUM_FRAME % num_cols ? BACK_STORE_NUM_FRAME % num_cols : num_cols);
+    print_row_separator(BACK_STORE_NUM_FRAME % num_cols ? BACK_STORE_NUM_FRAME % num_cols : num_cols);
     printf("\n");
 }
 
+/**
+ * Function to list the system
+ */
 void list_system(){
     int i;
     printf("\n********************************************************\n");
@@ -136,8 +150,12 @@ void list_system(){
     printf("LRU Counter: 0x%08X\n", global_LRU_counter);
 }
 
-/* Convert a number n into dots, where . is a 0 and * is a 1 from the binary
- * representation of n. */
+/**
+ * Convert a number n into dots, where . is a 0 and * is a 1 from the binary
+ * representation of n.
+ * @param n Number to convert to dots
+ * @param str String output of the dots for the number
+ */
 void itodots(int n, char *str) {
     int place = 0;
     int i;
@@ -155,7 +173,10 @@ void itodots(int n, char *str) {
     str[bytes_in_byte] = '\0';
 }
 
-/* Print dots from the itodots in color */
+/**
+ * Print dots from the itodots in color
+ * @param str The output from itodots to be printed in color
+ */
 void print_colored_dots(char *str) {
     int i;
     const int bytes_in_byte = 8*sizeof(byte);
@@ -175,7 +196,11 @@ void print_colored_dots(char *str) {
     }
 }
 
-void print_row_separator(int row_division, int num_cols) {
+/**
+ * Prints a row of separators for the table
+ * @param num_cols Number of columns of dots
+ */
+void print_row_separator(int num_cols) {
     int j;
     int k;
 

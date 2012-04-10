@@ -13,6 +13,12 @@
 
 #include "memory_hardware.h"
 
+/**
+ * Function to emulate a hardware page hit
+ * @param page_table_index The page table index of the hit page
+ * @param page_num The page number of the hit page
+ * @return Returns an error code
+ */
 int HW_page_hit(int page_table_index, int page_num) {
     /* Check first page number init.  Will return 0 if 4th bit in bits not
      * set.  This works because the page table is initialized if and only if
