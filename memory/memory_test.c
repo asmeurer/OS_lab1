@@ -157,8 +157,10 @@ int main(int argc, char *argv[]) {
                     }
                     if (error == 0){
                         int_arg = atoi(init_arg);
-                        if (int_arg >= MAX_PROCESSES){
+                        if (int_arg >= MAX_PROCESSES) {
+                            textcolor(BRIGHT, RED, BLACK);
                             printf("Page table id must be between 0 and %d\n", MAX_PROCESSES - 1);
+                            textcolor(BRIGHT, -1, -1);
                         }
                         else{
                             printf("DEALLOC_PT called for Page table ID: %d\n", int_arg);
@@ -197,15 +199,21 @@ int main(int argc, char *argv[]) {
                     if (error == 0){
                         int_arg = atoi(init_arg);
                         if (int_arg >= MAX_PROCESSES){
+                            textcolor(BRIGHT, RED, BLACK);
                             printf("Page table id must be between 0 and %d\n", MAX_PROCESSES - 1);
+                            textcolor(BRIGHT, -1, -1);
                         }
                         else{
                             printf("FILL_PHY_MEM %d called\n", int_arg);
                             return_error = fill_phy_mem(int_arg);
                             if(return_error == ERROR_PT_NOT_ENOUGH_PAGES){
+                                textcolor(BRIGHT, RED, BLACK);
                                 printf("Page table must have %d pages allocated to fill phy mem\n", USER_PHY_MEM_NUM_FRAMES);
+                                textcolor(BRIGHT, -1, -1);
                             }else if(return_error == ERROR_PAGE_TABLE_NOT_INIT){
+                                textcolor(BRIGHT, RED, BLACK);
                                 printf("The page table has not been initialized.\n");
+                                textcolor(BRIGHT, -1, -1);
                             }
                             else if(return_error == ERROR_SUCCESS){
                                 printf("Physical Memory Filled With Pages from Page Table %d\n", int_arg);
@@ -242,7 +250,9 @@ int main(int argc, char *argv[]) {
                     if (error == 0){
                         int_arg = atoi(init_arg);
                         if (int_arg >= MAX_PROCESSES){
+                            textcolor(BRIGHT, RED, BLACK);
                             printf("Page table id must be between 0 and %d\n", MAX_PROCESSES - 1);
+                            textcolor(BRIGHT, -1, -1);
                         }
                         else{
                             init_arg = strtok(NULL, "\n");
@@ -258,13 +268,19 @@ int main(int argc, char *argv[]) {
                                 printf("PAGE_HIT called on page_table_id %d on page %d\n", int_arg, int_arg2);
                                 return_error = HW_page_hit(int_arg, int_arg2);
                                 if(return_error == ERROR_PAGE_TABLE_NOT_INIT){
+                                    textcolor(BRIGHT, RED, BLACK);
                                     printf("Page Table %d Not Initialized\n", int_arg);
+                                    textcolor(BRIGHT, -1, -1);
                                 }
                                 else if (return_error == ERROR_PAGE_NOT_INIT){
+                                    textcolor(BRIGHT, RED, BLACK);
                                     printf("Page %d Not Initialized\n", int_arg2);
+                                    textcolor(BRIGHT, -1, -1);
                                 }
                                 else if (return_error == ERROR_HARDWARE_NOT_IN_PHY_MEM){
+                                    textcolor(BRIGHT, RED, BLACK);
                                     printf("Hardware Error, Page %d not in physical memory\n", int_arg2);
+                                    textcolor(BRIGHT, -1, -1);
                                 }
                                 else if (return_error == ERROR_SUCCESS){
                                     printf("Page %d hit\n", int_arg2);
@@ -303,7 +319,9 @@ int main(int argc, char *argv[]) {
                     if (error == 0){
                         int_arg = atoi(init_arg);
                         if (int_arg >= MAX_PROCESSES){
+                            textcolor(BRIGHT, RED, BLACK);
                             printf("Page table id must be between 0 and %d\n", MAX_PROCESSES - 1);
+                            textcolor(BRIGHT, -1, -1);
                         }
                         else{
                             init_arg = strtok(NULL, "\n");
@@ -392,7 +410,9 @@ int main(int argc, char *argv[]) {
                         if (error == 0){
                             int_arg = atoi(init_arg);
                             if (int_arg >= MAX_PROCESSES){
+                                textcolor(BRIGHT, RED, BLACK);
                                 printf("Page table id must be between 0 and %d\n", MAX_PROCESSES - 1);
+                                textcolor(BRIGHT, -1, -1);
                             }
                             else{
                                 printf("LIST PAGETABLE %d called\n", int_arg);
