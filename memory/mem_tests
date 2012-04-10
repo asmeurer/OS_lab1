@@ -42,17 +42,12 @@ INIT_MEM
 ALLOC_PT 50
 FILL_PHY_MEM 0
 # Test user can use fill_phy_mem on uninitalized page table
+INIT_MEM
 FILL_PHY_MEM 0
 # Test for bound on PH id of fill_phy_mem
 INIT_MEM
 ALLOC_PT 10
 FILL_PHY_MEM 21
-# Test filling up the physical memory
-ALLOC_PT 240
-ALLOC_PT 240
-FILL_PHY_MEM 0
-FILL_PHY_MEM 1
-LIST PAGETABLE 0
 # Test that page fault command works
 PAGE_FAULT 0 0
 LIST PAGETABLE 0
@@ -90,7 +85,7 @@ LIST
 LIST SYSTEM
 LIST USER
 LRU_OVERFLOW
-PAGE_HIT 0 0
+PAGE_HIT 3 0
 LIST SYSTEM
 LIST USER
 # Test lru_overflor with page_fault
@@ -115,5 +110,4 @@ LIST USER
 # This makes page 1 of PT 0 the least access sequentially
 PAGE_FAULT 0 0
 # Now the page from PT 0 was brough into memory as well, and swapped with page 1 of PT 0
-LIST PAGETABLE 1
-LIST PAGETABLE 0
+LIST USER
