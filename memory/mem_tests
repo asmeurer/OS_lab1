@@ -32,6 +32,21 @@ DEALLOC_PT 0
 LIST PAGETABLE 0
 # Test user cant dealloc uninitalized page table
 DEALLOC_PT 0
+# Test fill_phy_mem command
+INIT_MEM
+ALLOC_PT 250
+FILL_PHY_MEM 0 
+LIST USER
+# Test user cant use fill_phy_mem with page table that doesnt have enough pages
+INIT_MEM
+ALLOC_PT 50
+FILL_PHY_MEM 0
+# Test user can use fill_phy_mem on uninitalized page table
+FILL_PHY_MEM 0
+# Test for bound on PH id of fill_phy_mem
+INIT_MEM
+ALLOC_PT 10
+FILL_PHY_MEM 21
 # Test filling up the physical memory
 ALLOC_PT 240
 ALLOC_PT 240
@@ -46,6 +61,46 @@ PAGE_FAULT 0 0
 # Test user cant page fault invalid page table/page
 PAGE_FAULT 0 999
 PAGE_FAULT 11 0
+# Test page_hit command works
+INIT_MEM
+ALLOC_PT 20
+PAGE_FAULT 0 0
+PAGE_HIT 0 0
+# Test page_hit throws errors on invalid page/PT
+PAGE_HIT 0 30
+PAGE_HIT 1 1
+# Test page_hit only works on physical memory 
+PAGE_HIT 0 1
+# Test user can only page_hit on PT id from 0-15
+PAGE_HIT 17 0
+# Test list system and backing store
+INIT_MEM
+ALLOC_PT 250
+ALLOC_PT 250
+ALLOC_PT 250
+ALLOC_PT 250
+FILL_PHY_MEM 0
+FILL_PHY_MEM 1
+FILL_PHY_MEM 2
+FILL_PHY_MEM 3
+LIST SYSTEM
+LIST BS
+LIST
+# Test lru_overflow command, for page hit
+LIST SYSTEM
+LIST USER
+LRU_OVERFLOW
+PAGE_HIT 0 0
+LIST SYSTEM
+LIST USER
+# Test lru_overflor with page_fault
+FILL_PHY_MEM 1
+LIST SYSTEM
+LIST USER
+LRU_OVERFLOW
+PAGE_FAULT 0 1
+LIST SYSTEM
+LIST USER
 # Demostrate LRU implementation works
 INIT_MEM
 ALLOC_PT 250
@@ -53,9 +108,10 @@ ALLOC_PT 250
 FILL_PHY_MEM 0
 FILL_PHY_MEM 1
 # Now physical memory is full and memory is in backing store
-LIST PAGETABLE 1
+LIST USER
 PAGE_HIT 1 0
 # Page 0 of PT 1 has not been (simulated) accessed
+LIST USER
 # This makes page 1 of PT 0 the least access sequentially 
 PAGE_FAULT 0 0
 # Now the page from PT 0 was brough into memory as well, and swapped with page 1 of PT 0
