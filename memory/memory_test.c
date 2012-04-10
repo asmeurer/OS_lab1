@@ -376,27 +376,27 @@ int main(int argc, char *argv[]) {
                 /*Initial split of line*/
                 init_arg = strtok(line, " ");
                 /*If there exists arguments*/
-                if (strcmp(init_arg, "\n") != 0){
-                    if (!strcmp(init_arg, "USER\n")){
+                if (strcmp(init_arg, "\n") != 0) {
+                    if (!strcmp(init_arg, "USER\n")) {
                         printf("LIST USER called\n");
                         list_phy_mem();
                         error = 0;
                     }
-                    else if (!strcmp(init_arg, "SYSTEM\n")){
+                    else if (!strcmp(init_arg, "SYSTEM\n")) {
                         printf("LIST SYSTEM called\n");
                         list_system();
                         error = 0;
                     }
-                    else if (!strcmp(init_arg, "BS\n")){
+                    else if (!strcmp(init_arg, "BS\n")) {
                         printf("LIST BS (Backing Store) called\n");
                         list_backing_store();
                         error = 0;
                     }
                     /* No arguments for pagetable */
-                    else if (!strcmp(init_arg, "PAGETABLE\n")){
+                    else if (!strcmp(init_arg, "PAGETABLE\n")) {
                         error = 1;
                     }
-                    else if (!strcmp(init_arg, "PAGETABLE")){
+                    else if (!strcmp(init_arg, "PAGETABLE")) {
                         error = 0;
                         /* Reads until end of line */
                         init_arg = strtok(NULL, "\n");
@@ -431,6 +431,8 @@ int main(int argc, char *argv[]) {
                     }
                 }
                 else{
+                    printf("LIST called\n");
+                    printf("Listing all...\n");
                     list_backing_store();
                     list_phy_mem();
                     list_system();
