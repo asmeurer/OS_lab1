@@ -22,7 +22,7 @@ int main() {
     int input;
     FILE *output = NULL;
     char *mode = "a";
-    char outputFilename[] = "mem_tests";
+    char outputFilename[] = "memory/mem_tests";
     char string[256];
     int pagenum;
     int number;
