@@ -468,7 +468,7 @@ int main(int argc, char *argv[]) {
                 printf("PAGE_HIT <page_table_id> <page_num>\n");
                 printf("PAGE_FAULT <page_table_id> <page_num>\n");
                 printf("LIST [USER | SYSTEM | BS | PAGETABLE page_table_id]\n");
-                printf("LRU_OVERFLOW");
+                printf("LRU_OVERFLOW\n");
                 printf("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
             }
             else {
