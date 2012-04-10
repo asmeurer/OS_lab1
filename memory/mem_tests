@@ -1,6 +1,0 @@
-# Test init memory command
-INIT_MEM
-# Test allocate page table command
-ALLOC_PT 50
-# Test allocate page throws error for max pages
-ALLOC_PT 1025
