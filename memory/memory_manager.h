@@ -21,7 +21,6 @@ int set_back_addr_full(short addr);
 int write_backing_store();
 void checkoverflow();
 int fill_phy_mem(int page_table_id);
-
-
+void set_LRU_overflow();
 
 #endif

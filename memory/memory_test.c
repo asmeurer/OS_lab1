@@ -46,9 +46,9 @@ int main(int argc, char *argv[]) {
 	char line[LINE_MAX];
 	int int_arg;
 	int int_arg2;
-    char* init_arg;
-    int j;
-    int return_error = 0;
+	char* init_arg;
+	int j;
+	int return_error = 0;
 
 	FILE *file;
 	if (argc == 1){
@@ -89,7 +89,11 @@ int main(int argc, char *argv[]) {
 				init_mem();
 				printf("Memory has been initialized.\n");
 			}
-
+			else if (!strcmp(command, "LRU_OVERFLOW")) {
+				set_LRU_overflow();
+				printf("Global LRU counter has been set to overflow.\n");
+				printf("Next physical memory refrence should reset LRU\n");
+			}
 			else if (!strcmp(command, "ALLOC_PT")) {
 				fgets(line, LINE_MAX, file);
 				error = 1;
@@ -118,13 +122,13 @@ int main(int argc, char *argv[]) {
 						printf("The page table ID is: %d.\n", return_error);
 
 					}else{
-						if(return_error == -9){
+						if(return_error == ERROR_MAX_PROCESSES_REACHED){
 							textcolor(BRIGHT, RED, BLACK);
 							printf("Max process limit reached.\n");
 							textcolor(RESET, -1, -1);
-						}else if(return_error == -10){
+						}else if(return_error == ERROR_MAX_PAGE_LIMIT){
 							textcolor(BRIGHT, RED, BLACK);
-						printf("%d is over the page limit for a process.\n", int_arg);
+							printf("%d is over the page limit for a process.\n", int_arg);
 							textcolor(RESET, -1, -1);
 						}
 					}
@@ -159,11 +163,9 @@ int main(int argc, char *argv[]) {
 						else{
 							printf("DEALLOC_PT called for Page table ID: %d\n", int_arg);
 							return_error = dealloc_pt(int_arg);
-
-
 							if(return_error >= 0){
 								printf("Page table ID: %d has been deallocated.\n", int_arg);
-							}else if(return_error == -1){
+							}else if(return_error == ERROR_PAGE_TABLE_NOT_INIT){
 									textcolor(BRIGHT, RED, BLACK);
 									printf("The page table has not been initialized.\n");
 									textcolor(RESET, -1, -1);
@@ -436,14 +438,15 @@ int main(int argc, char *argv[]) {
 			}
 			else if(!strcmp(command, "HELP")){
 				printf("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
-                printf("COMMANDS:\n");
-                printf("INIT_MEM\n");
-                printf("ALLOC_PT <page_table_size>\n");
-                printf("DEALLOC <page_table_id>\n");
-                printf("FILL_PHY_MEM <page_table_id>\n");
+				printf("COMMANDS:\n");
+				printf("INIT_MEM\n");
+				printf("ALLOC_PT <page_table_size>\n");
+				printf("DEALLOC <page_table_id>\n");
+				printf("FILL_PHY_MEM <page_table_id>\n");
 				printf("PAGE_HIT <page_table_id> <page_num>\n");
 				printf("PAGE_FAULT <page_table_id> <page_num>\n");
-                printf("LIST [USER | SYSTEM | PAGETABLE page_table_id]\n");
+				printf("LIST [USER | SYSTEM | BS | PAGETABLE page_table_id]\n");
+				printf("LRU_OVERFLOW");
 				printf("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
 			}
 			else {

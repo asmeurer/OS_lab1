@@ -25,6 +25,7 @@ int HW_page_hit(int page_table_index, int page_num){
     }
     byte addr = page_tables[page_table_index][page_num].phy_addr;
     global_LRU_counter++;
+    checkoverflow();
     phy_mem[addr].LRU = global_LRU_counter;
     return ERROR_SUCCESS;
 }

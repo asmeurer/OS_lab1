@@ -5,6 +5,7 @@
 #ifndef MEM_HW_H
 #define MEM_HW_H
 #include "memory_definitions.h"
+#include "memory_manager.h"
 
 //Emulation of a page hit in hardware
 //Will increment global counter

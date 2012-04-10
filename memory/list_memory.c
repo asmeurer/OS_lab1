@@ -133,6 +133,7 @@ void list_system(){
 		}
 	}
 	printf("\n");
+	printf("LRU Counter: 0x%08X\n", global_LRU_counter);
 }
 
 /* Convert a number n into dots, where . is a 0 and * is a 1 from the binary
