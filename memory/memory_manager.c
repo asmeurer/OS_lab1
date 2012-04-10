@@ -226,7 +226,6 @@ int fill_phy_mem(int page_table_id){
 
 
 int page_fault (int page_table_index, int page_num){
-	//TODO: Check to make sure page_table_index and page_num exist
 	//Check first page number init
 	//Will return 0 if 4th bit in bits not set
 	if(!(page_tables[page_table_index][0].bits & P_BITMASK)){
