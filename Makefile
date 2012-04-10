@@ -66,7 +66,7 @@ memory/list_memory.o: memory/list_memory.c memory/memory_definitions.h \
 	$(CC) $(FLAGS) -c memory/list_memory.c -o memory/list_memory.o
 
 memory/test_gen.o: memory/test_gen.c
-	$(CC) $(FLATS) memory/test_gen.c -o memory/test_gen.o
+	$(CC) $(FLAGS) memory/test_gen.c -o memory/test_gen.o
 
 clean:
 	-rm -f process_manager/*.o ipc/*o shared/*.o memory/*.o
