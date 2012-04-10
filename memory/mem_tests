@@ -1,3 +1,18 @@
+# Demostrate LRU implementation works, fill up the physical memory and bring some pages into backing store
+INIT_MEM
+ALLOC_PT 250
+ALLOC_PT 250
+FILL_PHY_MEM 0
+FILL_PHY_MEM 1
+# Now physical memory is full and memory is in backing store
+LIST USER
+PAGE_HIT 1 0
+# Page 0 of PT 1 has not been (simulated) accessed, and will now be the most resently used page
+LIST USER
+# This makes page 1 of PT 0 the least access sequentially
+PAGE_FAULT 0 0
+# Now the page from PT 0 was brough into memory as well, and swapped with page 1 of PT 0
+LIST USER
 # Test init memory command
 INIT_MEM
 # Test allocate page table command
@@ -95,19 +110,4 @@ LIST USER
 LRU_OVERFLOW
 PAGE_FAULT 0 1
 LIST SYSTEM
-LIST USER
-# Demostrate LRU implementation works
-INIT_MEM
-ALLOC_PT 250
-ALLOC_PT 250
-FILL_PHY_MEM 0
-FILL_PHY_MEM 1
-# Now physical memory is full and memory is in backing store
-LIST USER
-PAGE_HIT 1 0
-# Page 0 of PT 1 has not been (simulated) accessed
-LIST USER
-# This makes page 1 of PT 0 the least access sequentially
-PAGE_FAULT 0 0
-# Now the page from PT 0 was brough into memory as well, and swapped with page 1 of PT 0
 LIST USER
