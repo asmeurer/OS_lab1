@@ -14,14 +14,18 @@
 
 /* Boilerplate initialization (since we can't use malloc) */
 
-/* struct message error_message  = */
-/* {.source = -1, */
-/*  .destination = -1, */
-/*  .string = "", */
-/*  .next = null, */
-/*  .prev = null, */
-/*  .empty = 0 */
-/* }; */
+fcb error_file =
+{
+    .filename = "\0",
+    .bits = 0,
+    .dirHead = null,
+    .blockhead = null,
+    .blocktail = null,
+    .next = null,
+    .prev = null,
+    .device_num = -1            /* This is where any error codes will
+                                 * go. */
+};
 
 /**
  * Function to reset the deinit flag for the given queue.
@@ -85,24 +89,20 @@ int dir_enqueue(struct dir_queue_t *queue, fcb *file) {
  * @param message_queue_enum The enum for the queue (The enum matches with the integer value).
  * @return Returns the message block that was dequeued. The source field of the message returns error codes.
  */
-void *dequeue(struct queue_t queue){
+fcb *dir_dequeue(struct dir_queue_t *queue){
 
-    struct queue_message_t *queue = get_message(message_queue_enum);
-
-
-    if (queue->initialized == 0){
-        error_message.source = ERROR_DEST_QUEUE_NOT_EXIST;
-        return error_message;
+    if (queue->initialized == 0) {
+        error_file.device_num = ERROR_BAD_DIR_QUEUE;
+        return error_file;
     }
 
     /*If queue is empty*/
-    if (queue->head == null){
-        error_message.source = ERROR_QUEUE_EMPTY;
-        return error_message;
+    if (queue->head == null) {
+        error_file.device_num = ERROR_DIR_QUEUE_EMPTY;
+        return error_file;
     }
 
-    struct message ret = *queue->head;
-    struct message *temp = queue->head;
+    fcb ret = *queue->head;
     /*If entry is only one in queue*/
     if(queue->head->prev == null){
         queue->head = null;
@@ -113,46 +113,43 @@ void *dequeue(struct queue_t queue){
         queue->head = queue->head->prev;
         queue->head->next = null;
     }
-    clear(temp);
     return(ret);
 }
 
-void *delete(struct queue_t queue, void *to_delete)
+fcb *delete(struct dir_queue_t *queue, fcb *to_delete)
 {
-    struct queue_t *queue = get_process(queue_enum);
 
     if (queue->head == null && queue->tail == null) {
         /* The queue is empty */
-        error_process.pid = ERROR_QUEUE_EMPTY;
-        return error_process;
+        error_file.device_num = ERROR_DIR_QUEUE_EMPTY;
+        return error_file;
     }
 
     /*If process doesn't exist*/
-    if (temp == null){
-        error_process.pid = ERROR_PROCESS_NOT_EXIST;
-        return error_process;
+    if (to_delete == null){
+        error_file.device_num = ERROR_BAD_FILE_PTR;
+        return error_file;
     }
-    struct process_control_block ret = *temp;
+    fcb ret = *to_delete;
     /*If entry is only one in queue*/
-    if(temp->next == null && temp->prev == null){
+    if(to_delete->next == null && to_delete->prev == null){
         queue->head = null;
         queue->tail = null;
     }
     /*If entry is at tail*/
-    else if(temp->prev == null){
-        queue->tail = temp->next;
+    else if(to_delete->prev == null){
+        queue->tail = to_delete->next;
         queue->tail->prev = null;
     }
     /*If entry is at head*/
-    else if(temp->next == null){
-        queue->head = temp->prev;
+    else if(to_delete->next == null){
+        queue->head = to_delete->prev;
         queue->head->next = null;
     }
     /*If entry is in the middle*/
     else{
-        temp->prev->next = temp->next;
-        temp->next->prev = temp->prev;
+        to_delete->prev->next = to_delete->next;
+        to_delete->next->prev = to_delete->prev;
     }
-    clear(temp);
     return (ret);
 }
