@@ -24,6 +24,8 @@ typedef unsigned char byte;
 #define ERROR_BLOCK_NOT_IN_FILE -4
 #define ERROR_BUFFER_FULL -5
 #define ERROR_BUFFER_NOT_EXIST -6
+#define ERROR_ARG_NOT_INT -10
+
 
 /*Constants*/
 #define null 0
