@@ -7,16 +7,17 @@
  * Sheng Lundquist
  */
 
-int init_fs (){
+
+
+/* Mount: checks if the device has been inited and formated */
+mount (char fsname){
+	int i, error;
+	for(i = 0; i < device_array.length; i++){
+		if( device[i].fsname == fsname && (!(device[i].bits & DEVICE_FORMAT_BITMASK)) ){
+			// Do something?
+		return ERROR_SUCCES;
+		}		
+	}
+	return ERROR_NOT_INITIALIZED_OR_FORMATED; 	
 }
 
-int format(int device_num, char fs_name, int blocksize){
-	if(device_num < 0 || device_num >= MAX_DEVICE){
-		return ERROR_INVALID_DEVICE_NUM;
-	}
-	device format_me= device_array[device_num];
-	format_me.fs_name = fs_name;
-	format_me.blocksize = blocksize;
-	
-	
-}

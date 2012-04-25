@@ -18,7 +18,7 @@ typedef unsigned char byte;
 
 /* Error Codes */
 #define ERROR_SUCCESS 0
-#define ERROR_INVALID_DEVICE_NUM -1
+#define ERROR_NOT_INITIALIZED_OR_FORMATED 1
 
 /*Constants*/
 #define BUFFER_SIZE 5
@@ -29,14 +29,13 @@ typedef unsigned char byte;
 #define DEVICE_FORMAT_BITMASK 0x01
 #define DEVICE_MOUNTED_BITMASK 0x02
 #define NAME_LIMIT 11
-/*256 MB*/
-#define MEM_SIZE 262144
 
 /*Buffers*/
 short rBuffers [MAX_DEVICE][BUFFER_SIZE];
 short wBuffers [MAX_DEVICE][BUFFER_SIZE];
 byte rBufSize [MAX_DEVICE];
 byte wBufSize [MAX_DEVICE];
+
 
 /*FCB*/
 typedef struct{
@@ -54,12 +53,11 @@ typedef struct{
 /*Device*/
 typedef struct{
 	fcb* filehead;
-	/*Memory size divided by smallest allowed block, divided by 8 bits per byte*/
-	byte bitmap[MEM_SIZE / 32];
-	byte blocksize;
-	char fs_name;
+	byte* bitmap;
+	char devicename[NAME_LIMIT];
 	/*0 0 0 0 0 0 (Mounted) (Formated)*/
 	byte bits;
+	char fsname;
 }device;
 
 /*Device list*/
