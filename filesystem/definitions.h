@@ -19,6 +19,7 @@ typedef unsigned char byte;
 /* Error Codes */
 #define ERROR_SUCCESS 0
 #define ERROR_NOT_INITIALIZED_OR_FORMATED 1
+#define ERROR_DEVICE_NOT_KNOWN 2
 
 /*Constants*/
 #define BUFFER_SIZE 5
@@ -54,7 +55,7 @@ typedef struct{
 typedef struct{
 	fcb* filehead;
 	byte* bitmap;
-	char devicename[NAME_LIMIT];
+	char devicename;
 	/*0 0 0 0 0 0 (Mounted) (Formated)*/
 	byte bits;
 	char fsname;

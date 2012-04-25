@@ -7,7 +7,14 @@
  * Sheng Lundquist
  */
 
-
+init_fs (char device){
+	int i;
+	if(i > 5){
+		return ERROR_DEVICE_NOT_KNOWN;
+	}
+	device_array[device].devicename = device;
+	return ERROR_SUCCESS;
+}
 
 /* Mount: checks if the device has been inited and formated */
 mount (char fsname){
