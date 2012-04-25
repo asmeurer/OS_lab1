@@ -23,7 +23,7 @@ init_fs (int device){
 /* Mount: checks if the device has been inited and formated, if so mounts it. Otherwise, returns an error. */
 mount (char fsname){
 	int i, error;
-	for(i = 0; i < device_array.length; i++){
+	for(i = 0; i < MAX_DEVICE; i++){
 		if( device[i].fsname == fsname && (!(device[i].bits & DEVICE_FORMAT_BITMASK)) ){
 			device[i].buts | DEVICE_MOUNTED_BITMASK;
 		return ERROR_SUCCES;
@@ -32,8 +32,6 @@ mount (char fsname){
 	return ERROR_NOT_INITIALIZED_OR_FORMATED; 	
 }
 
-<<<<<<< HEAD
-=======
 int format(int device_num, char fs_name, int blocksize){
 	int i;
 	/*Check for correct num of devices*/
@@ -42,5 +40,4 @@ int format(int device_num, char fs_name, int blocksize){
 	}
 	return ERROR_NOT_INITIALIZED_OR_FORMATED; 	
 }
->>>>>>> 54282ffa809dbe1e18bf6c007fe539931cfab62c
 
