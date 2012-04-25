@@ -33,6 +33,9 @@ typedef unsigned char byte;
 #define ERROR_BAD_DIR_QUEUE -11
 #define ERROR_DIR_QUEUE_EMPTY -12
 #define ERROR_ARG_NOT_INT -13
+#define ERROR_BAD_BLOCK_PTR -14 /* Not to be confused with bad blocks */
+#define ERROR_BAD_BLOCK_QUEUE -15
+#define ERROR_BLOCK_QUEUE_EMPTY -16
 
 /*Constants*/
 #define null 0
@@ -65,24 +68,31 @@ typedef struct{
 buffer_slot buffers [NUM_BUFFERS][BUFFER_SIZE];
 
 /*Block Structure*/
-typedef struct{
-	short addr;
+struct block{
+	unsigned short addr;
 	struct block* next;
 	struct block* prev;
-}block;
+    byte error;
+};
+
+struct block;
+typedef struct block block;
 
 /*FCB*/
-typedef struct{
+struct fcb{
 	char filename[NAME_LIMIT];
 	/*0 0 0 0 0 0 (Write access) (Directory)*/
 	byte bits;
-	fcb* dirHead;
+	struct fcb* dirHead;
 	block* blockhead;
 	block* blocktail;
-	fcb* next;
-	fcb* prev;
+	struct fcb* next;
+	struct fcb* prev;
 	byte device_num;
-}fcb;
+};
+
+struct fcb;
+typedef struct fcb fcb;
 
 /*Device*/
 typedef struct{
