@@ -16,6 +16,8 @@
 
 typedef unsigned char byte;
 
+#define null 0
+
 /* Error Codes */
 #define ERROR_SUCCESS 0
 #define ERROR_INVALID_DEVICE_NUM -1
@@ -24,8 +26,11 @@ typedef unsigned char byte;
 #define ERROR_BLOCK_NOT_IN_FILE -4
 #define ERROR_BUFFER_FULL -5
 #define ERROR_BUFFER_NOT_EXIST -6
-#define ERROR_ARG_NOT_INT -10
-
+#define ERROR_NOT_INITIALIZED_OR_FORMATED -7
+#define ERROR_DEVICE_NOT_KNOWN -8
+#define ERROR_SOURCE_QUEUE_NOT_EXIST -9
+#define ERROR_BAD_FILE_PTR -10
+#define ERROR_ARG_NOT_INT -11
 
 /*Constants*/
 #define null 0
@@ -69,11 +74,11 @@ typedef struct{
 	char filename[NAME_LIMIT];
 	/*0 0 0 0 0 0 (Write access) (Directory)*/
 	byte bits;
-	struct fcb* dirHead;
+	fcb* dirHead;
 	block* blockhead;
 	block* blocktail;
-	struct fcb* next;
-	struct fcb* prev;
+	fcb* next;
+	fcb* prev;
 	byte device_num;
 }fcb;
 
@@ -86,6 +91,7 @@ typedef struct{
 	char fs_name;
 	/*0 0 0 0 0 0 (Mounted) (Formated)*/
 	byte bits;
+	char fsname;
 }device;
 
 /*Device list*/

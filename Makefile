@@ -68,6 +68,18 @@ memory/list_memory.o: memory/list_memory.c memory/memory_definitions.h \
 memory/test_gen.o: memory/test_gen.c
 	$(CC) $(FLAGS) memory/test_gen.c -o memory/test_gen.o
 
+filesystem/file_queuemanager.o: filesystem/file_queuemanager.c \
+  filesystem/file_queuemanager.h filesystem/definitions.h \
+  filesystem/file_hardware.h
+	$(CC) $(FLAGS) -c filesystem/file_queuemanager.c -o filesystem/file_queuemanager.o
+
+filesystem/file_hardware.o: filesystem/file_hardware.c filesystem/file_hardware.h
+	$(CC) $(FLAGS) -c filesystem/file_hardware.c -o filesystem/file_hardware.o
+
+filesystem/file_manager.o: filesystem/file_manager.c filesystem/file_manager.h \
+  filesystem/definitions.h
+	$(CC) $(FLAGS) -c filesystem/file_manager.c -o filesystem/file_manager.o
+
 clean:
 	-rm -f process_manager/*.o ipc/*o shared/*.o memory/*.o nul
 
