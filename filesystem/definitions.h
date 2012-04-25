@@ -36,6 +36,7 @@ typedef unsigned char byte;
 #define ERROR_BAD_BLOCK_PTR -14 /* Not to be confused with bad blocks */
 #define ERROR_BAD_BLOCK_QUEUE -15
 #define ERROR_BLOCK_QUEUE_EMPTY -16
+#define ERROR_BAD_FSNAME -17
 
 /*Constants*/
 #define null 0
@@ -66,7 +67,6 @@ typedef struct{
 
 /*Buffers*/
 buffer_slot buffers [NUM_BUFFERS][BUFFER_SIZE];
-
 
 struct block{
 	unsigned short addr;

@@ -73,12 +73,17 @@ filesystem/file_queuemanager.o: filesystem/file_queuemanager.c \
   filesystem/file_hardware.h
 	$(CC) $(FLAGS) -c filesystem/file_queuemanager.c -o filesystem/file_queuemanager.o
 
-filesystem/file_hardware.o: filesystem/file_hardware.c filesystem/file_hardware.h
+filesystem/file_hardware.o: filesystem/file_hardware.c filesystem/file_hardware.h \
+  filesystem/definitions.h
 	$(CC) $(FLAGS) -c filesystem/file_hardware.c -o filesystem/file_hardware.o
 
 filesystem/file_manager.o: filesystem/file_manager.c filesystem/file_manager.h \
   filesystem/definitions.h
 	$(CC) $(FLAGS) -c filesystem/file_manager.c -o filesystem/file_manager.o
+
+filesystem/file_test.o: filesystem/file_test.c filesystem/file_test.h \
+  filesystem/definitions.h filesystem/../shared/textcolor.h
+	$(CC) $(FLAGS) filesystem/file_test.c -o filesystem/file_test.o
 
 clean:
 	-rm -f process_manager/*.o ipc/*o shared/*.o memory/*.o nul
