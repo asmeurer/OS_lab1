@@ -84,7 +84,6 @@ int main(int argc, char *argv[]) {
 		exit(-1);
 	}
 
-	init_mem();
 
 	while(1) {
 		/*printf("***reading the file***\n");*/
@@ -97,7 +96,7 @@ int main(int argc, char *argv[]) {
 			/* printf("%s\n", command); */
 
 			if (!strcmp(command, "INIT_FS")) {
-				init_mem();
+				//init_mem();
 				printf("File System has been initialized.\n");
 			}
 			else if (!strcmp(command, "FORMAT")) {
@@ -158,7 +157,7 @@ int main(int argc, char *argv[]) {
 					}
 					if (error == 0){
 						int_arg = atoi(init_arg);
-						
+
 					}
 				}
 				if (error == 1){
