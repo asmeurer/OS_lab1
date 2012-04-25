@@ -30,7 +30,7 @@ int mount (char fsname){
 		if( device[i].fsname == fsname && (!(device[i].bits & DEVICE_FORMAT_BITMASK)) ){
 			// Do something?
 		return ERROR_SUCCES;
-		}		
+		}
 	}
 	return ERROR_NOT_INITIALIZED_OR_FORMATED; 	
 	* */
@@ -42,6 +42,5 @@ int format(int device_num, char fs_name, int blocksize){
 	if(device_num < 0 || device_num >= MAX_DEVICE){
 		return ERROR_INVALID_DEVICE_NUM;
 	}
-	return ERROR_NOT_INITIALIZED_OR_FORMATED; 	
+	return ERROR_NOT_INITIALIZED_OR_FORMATED;
 }
-
