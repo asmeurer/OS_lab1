@@ -1,4 +1,4 @@
-/* The IPC Queue manager header file.
+/* The File system Queue manager header file.
 
    Group 2
    Aaron Meurer
@@ -6,20 +6,26 @@
    Sheng Lundquist
 */
 
-#ifndef IPC_QUEUE_MANAGER_H
-#define IPC_QUEUE_MANAGER_H
+#ifndef FILE_QUEUE_MANAGER_H
+#define FILE_QUEUE_MANAGER_H
 
-#include "ipc_definitions.h"
+#include "definitions.h"
+#include "file_hardware.h"
 
-void deinit();
-void init_queue(enum MESSAGE_QUEUES message_queue_enum);
-struct queue_message_t *get_message(enum MESSAGE_QUEUES message_queue_enum);
-struct message *find_nonempty(struct queue_message_t *queue);
-int enqueue(enum MESSAGE_QUEUES source, enum MESSAGE_QUEUES destination, char *string);
-void clear(struct message *process);
-struct message *find_message(enum MESSAGE_QUEUES message_queue_enum, int pid);
-struct message dequeue(enum MESSAGE_QUEUES message_queue_enum);
-struct message delete(enum MESSAGE_QUEUES message_queue_enum, struct message *temp);
-int has_message(enum MESSAGE_QUEUES check);
+
+/* This is the struct for the queues. */
+
+struct dir_queue_t {
+    fcb *head;
+    fcb *tail;
+    int size;
+    int initialized;
+};
+
+void dir_deinit(struct dir_queue_t *queue);
+void dir_init_queue(struct dir_queue_t *queue);
+int dir_enqueue(struct dir_queue_t *source, fcb *file);
+struct fcb *dir_dequeue(struct dir_queue_t *queue);
+struct fcb *dir_delete(struct dir_queue_t *queue, void *to_delete);
 
 #endif

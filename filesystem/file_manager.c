@@ -6,6 +6,7 @@
  * Oran Wallace
  * Sheng Lundquist
  */
+#include "file_manager.h"
 
 /* Init_fs: checks if the device is known, if so set the device name */
 init_fs (char device){
@@ -29,4 +30,15 @@ mount (char fsname){
 	return ERROR_NOT_INITIALIZED_OR_FORMATED; 	
 }
 
+<<<<<<< HEAD
+=======
+int format(int device_num, char fs_name, int blocksize){
+	int i;
+	/*Check for correct num of devices*/
+	if(device_num < 0 || device_num >= MAX_DEVICE){
+		return ERROR_INVALID_DEVICE_NUM;
+	}
+	return ERROR_NOT_INITIALIZED_OR_FORMATED; 	
+}
+>>>>>>> 54282ffa809dbe1e18bf6c007fe539931cfab62c
 
