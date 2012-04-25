@@ -32,6 +32,7 @@ typedef unsigned char byte;
 #define ERROR_BAD_FILE_PTR -10
 #define ERROR_BAD_DIR_QUEUE -11
 #define ERROR_DIR_QUEUE_EMPTY -12
+#define ERROR_ARG_NOT_INT -13
 
 /*Constants*/
 #define null 0
