@@ -24,8 +24,8 @@ struct dir_queue_t {
 
 void dir_deinit(struct dir_queue_t *queue);
 void dir_init_queue(struct dir_queue_t *queue);
-int dir_enqueue(struct dir_queue_t *source, fcb *file);
-struct fcb *dir_dequeue(struct dir_queue_t *queue);
-struct fcb *dir_delete(struct dir_queue_t *queue, void *to_delete);
+int dir_enqueue(struct dir_queue_t *queue, fcb *file);
+fcb *dir_dequeue(struct dir_queue_t *queue);
+fcb *dir_delete(struct dir_queue_t *queue, fcb *to_delete);
 
 #endif

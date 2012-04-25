@@ -30,6 +30,8 @@ typedef unsigned char byte;
 #define ERROR_DEVICE_NOT_KNOWN -8
 #define ERROR_SOURCE_QUEUE_NOT_EXIST -9
 #define ERROR_BAD_FILE_PTR -10
+#define ERROR_BAD_DIR_QUEUE -11
+#define ERROR_DIR_QUEUE_EMPTY -12
 
 /*Constants*/
 #define null 0
