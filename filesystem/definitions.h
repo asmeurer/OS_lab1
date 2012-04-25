@@ -11,16 +11,22 @@
  * Memory Definitions Header
  */
 
-#ifndef MEM_DEF_H
-#define MEM_DEF_H
+#ifndef FILE_DEF_H
+#define FILE_DEF_H
 
 typedef unsigned char byte;
 
 /* Error Codes */
 #define ERROR_SUCCESS 0
 #define ERROR_INVALID_DEVICE_NUM -1
+#define ERROR_DEVICE_MOUNTED -2
+#define ERROR_FILE_NOT_OPEN -3
+#define ERROR_BLOCK_NOT_IN_FILE -4
+#define ERROR_BUFFER_FULL -5
+#define ERROR_BUFFER_NOT_EXIST -6
 
 /*Constants*/
+#define null 0
 #define BUFFER_SIZE 5
 #define MAX_DEVICE 5
 #define MAX_OPEN 8
@@ -29,14 +35,32 @@ typedef unsigned char byte;
 #define DEVICE_FORMAT_BITMASK 0x01
 #define DEVICE_MOUNTED_BITMASK 0x02
 #define NAME_LIMIT 11
+#define NUM_BUFFERS 5
 /*256 MB*/
 #define MEM_SIZE 262144
 
+#define OPEN_NEW 1
+#define OPEN_R 2
+#define OPEN_RW 3
+#define READ 1
+#define WRITE 2
+
+/*Buffer struct*/
+typedef struct{
+	short addr;
+	byte access_type;
+	byte init;
+}buffer_slot;
+
 /*Buffers*/
-short rBuffers [MAX_DEVICE][BUFFER_SIZE];
-short wBuffers [MAX_DEVICE][BUFFER_SIZE];
-byte rBufSize [MAX_DEVICE];
-byte wBufSize [MAX_DEVICE];
+buffer_slot buffers [NUM_BUFFERS][BUFFER_SIZE];
+
+/*Block Structure*/
+typedef struct{
+	short addr;
+	struct block* next;
+	struct block* prev;
+}block;
 
 /*FCB*/
 typedef struct{
@@ -44,8 +68,8 @@ typedef struct{
 	/*0 0 0 0 0 0 (Write access) (Directory)*/
 	byte bits;
 	struct fcb* dirHead;
-	short* blockhead;
-	short* blocktail;
+	block* blockhead;
+	block* blocktail;
 	struct fcb* next;
 	struct fcb* prev;
 	byte device_num;
@@ -56,7 +80,7 @@ typedef struct{
 	fcb* filehead;
 	/*Memory size divided by smallest allowed block, divided by 8 bits per byte*/
 	byte bitmap[MEM_SIZE / 32];
-	byte blocksize;
+	byte numblock;
 	char fs_name;
 	/*0 0 0 0 0 0 (Mounted) (Formated)*/
 	byte bits;
@@ -65,7 +89,11 @@ typedef struct{
 /*Device list*/
 device device_array [MAX_DEVICE];
 
+typedef struct{
+	fcb* file;
+	byte open;
+}open_type;
 /*Open files array*/
-fcb open_files[MAX_OPEN];
+open_type open_files[MAX_OPEN];
 
 #endif
