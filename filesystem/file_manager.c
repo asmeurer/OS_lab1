@@ -8,9 +8,10 @@
  */
 #include "file_manager.h"
 
+/* Init_fs: checks if the device is known, if so set the device name */
 init_fs (char device){
 	int i;
-	if(i > 5){
+	if(i >= 5){
 		return ERROR_DEVICE_NOT_KNOWN;
 	}
 	device_array[device].devicename = device;
@@ -29,6 +30,8 @@ mount (char fsname){
 	return ERROR_NOT_INITIALIZED_OR_FORMATED; 	
 }
 
+<<<<<<< HEAD
+=======
 int format(int device_num, char fs_name, int blocksize){
 	int i;
 	/*Check for correct num of devices*/
@@ -37,4 +40,5 @@ int format(int device_num, char fs_name, int blocksize){
 	}
 	return ERROR_NOT_INITIALIZED_OR_FORMATED; 	
 }
+>>>>>>> 54282ffa809dbe1e18bf6c007fe539931cfab62c
 
