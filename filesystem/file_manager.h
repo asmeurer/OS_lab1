@@ -13,8 +13,13 @@
 
 #include "definitions.h"
 
-int init_fs ();
-int format(int device_num, char fs_name, int blocksize);
+int init_fs(int device);
+int format(int device_num, char fsname, int blocksize);
 int mount(char fsname);
+int create_file(char fsname, struct path file_path);
+int create_dir(char fsname, struct path file_path);
+int get_device(char fsname);
+
+
 
 #endif

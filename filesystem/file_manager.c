@@ -47,10 +47,19 @@ int format(int device_num, char fsname, int blocksize){
 	return ERROR_NOT_INITIALIZED_OR_FORMATED;
 }
 
-int create(char fsname)
+int create_file(char fsname, struct path file_path)
+{
+    struct path *next = &file_path;
+
+    while (
+    return 0;
+}
+
+int create_dir(char fsname, struct path file_path)
 {
     return 0;
 }
+
 
 /* Convert a filesystem character name to a device number */
 int get_device(char fsname)
