@@ -41,13 +41,14 @@ char *fgetstring(FILE* fFile){
 }
 
 int strToIntArg(char* string){
+	int i;
 	/*Loop through each character in string checking if it is a digit*/
-	for(j = 1; j < strlen(string) - 1; j++){
-		if (!isdigit(string[j])){
+	for(i = 1; i < strlen(string) - 1; i++){
+		if (!isdigit(string[i])){
 			return ERROR_ARG_NOT_INT;
 		}
 	}
-	return atoi(init_arg);
+	return atoi(string);
 }
 
 int main(int argc, char *argv[]) {
@@ -107,7 +108,7 @@ int main(int argc, char *argv[]) {
 				/*If there exists arguments*/
 				if (init_arg != NULL){
 					error = 0;
-					strToIntArg(init_arg)
+					strToIntArg(init_arg);
 				}
 				if (error == 1){
 					textcolor(BRIGHT, RED, BLACK);
@@ -157,24 +158,7 @@ int main(int argc, char *argv[]) {
 					}
 					if (error == 0){
 						int_arg = atoi(init_arg);
-						if (int_arg >= MAX_PROCESSES){
-							textcolor(BRIGHT, RED, BLACK);
-							printf("Page table id must be between 0 and %d\n", MAX_PROCESSES - 1);
-							textcolor(BRIGHT, -1, -1);
-						}
-						else{
-							init_arg = strtok(NULL, "\n");
-							/*Loop through each character in string checking if it is a digit*/
-							for(j = 0; j < strlen(init_arg); j++){
-								if (!isdigit(init_arg[j])){
-									error = 1;
-									break;
-								}
-							}
-							if (error == 0){
-								int_arg2 = atoi(init_arg);
-							}
-						}
+						
 					}
 				}
 				if (error == 1){
@@ -216,15 +200,6 @@ int main(int argc, char *argv[]) {
 						}
 						if (error == 0){
 							int_arg = atoi(init_arg);
-							if (int_arg >= MAX_PROCESSES){
-								textcolor(BRIGHT, RED, BLACK);
-								printf("Page table id must be between 0 and %d\n", MAX_PROCESSES - 1);
-								textcolor(BRIGHT, -1, -1);
-							}
-							else{
-								printf("LIST PAGETABLE %d called\n", int_arg);
-								/* TODO: Call list with int_arg */
-							}
 						}
 					}
 					else{

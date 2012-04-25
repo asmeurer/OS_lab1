@@ -67,19 +67,19 @@ typedef struct{
 /*Buffers*/
 buffer_slot buffers [NUM_BUFFERS][BUFFER_SIZE];
 
-/*Block Structure*/
+
 struct block{
 	unsigned short addr;
 	struct block* next;
 	struct block* prev;
     byte error;
 };
-
-struct block;
+/*Block Structure*/
 typedef struct block block;
 
 /*FCB*/
-struct fcb{
+
+struct fcb {
 	char filename[NAME_LIMIT];
 	/*0 0 0 0 0 0 (Write access) (Directory)*/
 	byte bits;
@@ -90,7 +90,6 @@ struct fcb{
 	struct fcb* prev;
 	byte device_num;
 };
-
 struct fcb;
 typedef struct fcb fcb;
 
