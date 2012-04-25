@@ -24,6 +24,8 @@ typedef unsigned char byte;
 #define ERROR_BLOCK_NOT_IN_FILE -4
 #define ERROR_BUFFER_FULL -5
 #define ERROR_BUFFER_NOT_EXIST -6
+#define ERROR_NOT_INITIALIZED_OR_FORMATED -7
+#define ERROR_DEVICE_NOT_KNOWN -8
 
 /*Constants*/
 #define null 0
@@ -84,6 +86,7 @@ typedef struct{
 	char fs_name;
 	/*0 0 0 0 0 0 (Mounted) (Formated)*/
 	byte bits;
+	char fsname;
 }device;
 
 /*Device list*/
