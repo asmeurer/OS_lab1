@@ -36,6 +36,7 @@ typedef unsigned char byte;
 #define ERROR_BAD_BLOCK_PTR -14 /* Not to be confused with bad blocks */
 #define ERROR_BAD_BLOCK_QUEUE -15
 #define ERROR_BLOCK_QUEUE_EMPTY -16
+#define ERROR_INVALID_BLOCK_SIZE -17
 
 /*Constants*/
 #define null 0
@@ -102,7 +103,6 @@ typedef struct{
 	char fs_name;
 	/*0 0 0 0 0 0 (Mounted) (Formated)*/
 	byte bits;
-	char fsname;
 }device;
 
 /*Device list*/
