@@ -86,8 +86,6 @@ int main(int argc, char *argv[]) {
 		exit(-1);
 	}
 
-	init_mem();
-
 	while(1) {
 		/*printf("***reading the file***\n");*/
 		if (file == stdin) {
