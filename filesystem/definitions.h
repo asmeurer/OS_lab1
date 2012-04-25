@@ -62,13 +62,4 @@ device device_array [MAX_DEVICE];
 /*Open files array*/
 fcb open_files[MAX_OPEN];
 
-/*Open files queue bookkeeping*/
-typedef struct{
-	fcb *head;
-	fcb *tail;
-	fcb *top;
-	int initialized;
-}open_files_t;
-
-
 #endif
