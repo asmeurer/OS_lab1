@@ -24,7 +24,7 @@ mount (char fsname){
 	for(i = 0; i < device_array.length; i++){
 		if( device[i].fsname == fsname && (!(device[i].bits & DEVICE_FORMAT_BITMASK)) ){
 			// Do something?
-		return ERROR_SUCCES;
+		return ERROR_SUCCESS;
 		}
 	}
 	return ERROR_NOT_INITIALIZED_OR_FORMATED;
