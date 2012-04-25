@@ -69,8 +69,11 @@ typedef struct{
 	struct block* prev;
 }block;
 
+
+typedef struct fcb_s fcb;
+
 /*FCB*/
-typedef struct{
+struct {
 	char filename[NAME_LIMIT];
 	/*0 0 0 0 0 0 (Write access) (Directory)*/
 	byte bits;
@@ -80,7 +83,7 @@ typedef struct{
 	fcb* next;
 	fcb* prev;
 	byte device_num;
-}fcb;
+}fcb_s;
 
 /*Device*/
 typedef struct{

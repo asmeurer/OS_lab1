@@ -8,17 +8,23 @@
  */
 #include "file_manager.h"
 
-init_fs (char device){
+int init_fs (){
 	int i;
-	if(i > 5){
-		return ERROR_DEVICE_NOT_KNOWN;
+	/*Unmount all devices*/
+	for (i = 0; i < MAX_DEVICE; i++){
+		device_array[i].bits = device_array[i].bits & (~DEVICE_MOUNTED_BITMASK);
 	}
-	device_array[device].devicename = device;
+	/*Clear open file array*/
+	for (i = 0; i < MAX_OPEN; i++){
+		open_files[i].open = 0;
+		open_files[i].file = null;
+	}
 	return ERROR_SUCCESS;
 }
 
 /* Mount: checks if the device has been inited and formated */
-mount (char fsname){
+int mount (char fsname){
+/*
 	int i, error;
 	for(i = 0; i < device_array.length; i++){
 		if( device[i].fsname == fsname && (!(device[i].bits & DEVICE_FORMAT_BITMASK)) ){
@@ -27,10 +33,11 @@ mount (char fsname){
 		}		
 	}
 	return ERROR_NOT_INITIALIZED_OR_FORMATED; 	
+	* */
+	return ERROR_SUCCESS;
 }
 
 int format(int device_num, char fs_name, int blocksize){
-	int i;
 	/*Check for correct num of devices*/
 	if(device_num < 0 || device_num >= MAX_DEVICE){
 		return ERROR_INVALID_DEVICE_NUM;
