@@ -8,7 +8,8 @@
  */
 #include "file_manager.h"
 
-int init_fs (){
+/* Init_fs: checks if the device is known, if so set the device name */
+int init_fs (int device){
 	int i;
 	/*Unmount all devices*/
 	for (i = 0; i < MAX_DEVICE; i++){
@@ -22,19 +23,20 @@ int init_fs (){
 	return ERROR_SUCCESS;
 }
 
-/* Mount: checks if the device has been inited and formated */
-int mount (char fsname){
+/* device[i].fsname == fsname && (!(device[i].bits & DEVICE_FORMAT_BITMASK)) ){
+			device[i].bits | DEVICE_MOUNTED_BITMASK; */
 
+/* Mount: checks if the device has been inited and formated, if so mounts it. Otherwise, returns an error. */
+int mount (char fsname){
 	int i, error;
 	for(i = 0; i < MAX_DEVICE; i++){
-		if( device[i].fsname == fsname && (!(device[i].bits & DEVICE_FORMAT_BITMASK)) ){
-			device[i].buts | DEVICE_MOUNTED_BITMASK;
-		return ERROR_SUCCESS;
+		if(device_array[i].fsname == fsname && (!(device_array[i].bits & DEVICE_FORMAT_BITMASK))){
+			device_array[i].bits | DEVICE_MOUNTED_BITMASK;
+			return ERROR_SUCCESS;
 		}		
 	}
+	
 	return ERROR_NOT_INITIALIZED_OR_FORMATED; 	
-	* */
-	return ERROR_SUCCESS;
 }
 
 int format(int device_num, char fs_name, int blocksize){
@@ -42,6 +44,6 @@ int format(int device_num, char fs_name, int blocksize){
 	if(device_num < 0 || device_num >= MAX_DEVICE){
 		return ERROR_INVALID_DEVICE_NUM;
 	}
-	return ERROR_NOT_INITIALIZED_OR_FORMATED;
+	return ERROR_NOT_INITIALIZED_OR_FORMATED; 	
 }
 

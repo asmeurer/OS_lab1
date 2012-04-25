@@ -15,5 +15,6 @@
 
 int init_fs ();
 int format(int device_num, char fs_name, int blocksize);
+int mount(char fsname);
 
 #endif
