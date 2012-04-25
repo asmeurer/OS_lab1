@@ -111,7 +111,7 @@ fcb *dir_dequeue(struct dir_queue_t *queue){
         return &error_file;
     }
 
-    fcb ret = *queue->head;
+    fcb *ret = queue->head;
     /*If entry is only one in queue*/
     if(queue->head->prev == null){
         queue->head = null;
@@ -124,7 +124,7 @@ fcb *dir_dequeue(struct dir_queue_t *queue){
     }
 
     queue->size--;
-    return(&ret);
+    return(ret);
 }
 
 fcb *dir_delete(struct dir_queue_t *queue, fcb *to_delete)
@@ -141,7 +141,7 @@ fcb *dir_delete(struct dir_queue_t *queue, fcb *to_delete)
         error_file.device_num = ERROR_BAD_FILE_PTR;
         return &error_file;
     }
-    fcb ret = *to_delete;
+    fcb *ret = to_delete;
     /*If entry is only one in queue*/
     if(to_delete->next == null && to_delete->prev == null){
         queue->head = null;
@@ -164,7 +164,7 @@ fcb *dir_delete(struct dir_queue_t *queue, fcb *to_delete)
     }
 
     queue->size--;
-    return (&ret);
+    return (ret);
 }
 
 /**
@@ -243,7 +243,7 @@ block *block_dequeue(struct block_queue_t *queue){
         return &error_block;
     }
 
-    block ret = *queue->head;
+    block *ret = queue->head;
     /*If entry is only one in queue*/
     if(queue->head->prev == null){
         queue->head = null;
@@ -256,7 +256,7 @@ block *block_dequeue(struct block_queue_t *queue){
     }
 
     queue->size--;
-    return(&ret);
+    return(ret);
 }
 
 block *block_delete(struct block_queue_t *queue, block *to_delete)
@@ -273,7 +273,7 @@ block *block_delete(struct block_queue_t *queue, block *to_delete)
         error_block.error = ERROR_BAD_BLOCK_PTR;
         return &error_block;
     }
-    block ret = *to_delete;
+    block *ret = to_delete;
     /*If entry is only one in queue*/
     if(to_delete->next == null && to_delete->prev == null){
         queue->head = null;
@@ -296,5 +296,5 @@ block *block_delete(struct block_queue_t *queue, block *to_delete)
     }
 
     queue->size--;
-    return (&ret);
+    return (ret);
 }
