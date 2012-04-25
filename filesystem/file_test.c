@@ -57,6 +57,8 @@ int main(int argc, char *argv[]) {
 	char line[LINE_MAX];
 	int int_arg;
 	int int_arg2;
+	char* str_arg;
+	char* str_arg2;
 	char* init_arg;
 	int j;
 	int return_error = 0;
@@ -97,7 +99,7 @@ int main(int argc, char *argv[]) {
 			/* printf("%s\n", command); */
 
 			if (!strcmp(command, "INIT_FS")) {
-				init_mem();
+				/*Call init_fs*/
 				printf("File System has been initialized.\n");
 			}
 			else if (!strcmp(command, "FORMAT")) {
@@ -108,11 +110,30 @@ int main(int argc, char *argv[]) {
 				/*If there exists arguments*/
 				if (init_arg != NULL){
 					error = 0;
-					strToIntArg(init_arg);
+					int_arg = strToIntArg(init_arg);
+					if(int_arg == ERROR_ARG_NOT_INT){
+						error = 1;
+					}
+					else{
+						init_arg = strtok(line, " ");
+						/*Check size of init_arg, if more than one character, error*/
+						/*-1 for null character*/
+						if ((sizeof(init_arg)/sizeof(char))-1 != 1){
+							error = 1;
+						}
+						else{
+							printf("Argument: %s\n", init_arg);
+							/*Grab rest of line*/
+							init_arg = strtok(line, "\n");
+							int_arg2 = strToIntArg(init_arg);
+						//	printf("Calling FORMAT with device %d, name %c, ");
+						}
+					}
 				}
+				
 				if (error == 1){
 					textcolor(BRIGHT, RED, BLACK);
-					printf("Usage: ALLOC_PT <page_table_size>\n");
+					printf("Usage: FORMAT <device_num> <fs_name> <blocksize>\n");
 					textcolor(RESET, -1, -1);
 				}
 			}
