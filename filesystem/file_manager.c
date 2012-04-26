@@ -105,8 +105,18 @@ int write(int filehandle, short block_number, int buf_ptr){
 	if(!(file->bits & FCB_DIR_BITMASK)){
 			return ERROR_FILE_IS_DIR;
 	}
+	
+	
+	//For setting the 
+	temp = file->block_queue->tail;
+	temp->addr = block_number;
+	
+	/*Check if the block is assosiated with another file */
+	
+	// TODO: make a function to 
+	
 	/*Check if buffer pointer is valid */
-	block_enqueue(file->block_queue, malloc_block());
+	//block_enqueue(file->block_queue, malloc_block());
 	// TODO: Import bit map stuff from memory manager 
 
 }
