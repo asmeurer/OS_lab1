@@ -128,7 +128,7 @@ typedef struct fcb fcb;
 typedef struct {
     fcb *root;
     byte bitmap[MAX_BLOCK_SIZE];
-    byte numblock;
+    int numblock;
     char fs_name;
     /*0 0 0 0 0 (Init) (Mounted) (Formatted)*/
     byte bits;
