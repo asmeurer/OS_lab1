@@ -155,12 +155,15 @@ READ 0 9999999 0
 # Attempt to read an empty block on the file
 READ 0 11 0
 # Attempt to fill buffer on a read
-READ 0 1 1
+READ 0 1 2
 READ 0 2 2
-READ 0 3 3
-READ 0 4 4
-READ 0 5 5
-READ 0 6 6
+READ 0 3 2
+READ 0 4 2
+READ 0 5 2
+READ 0 6 2
+LIST BUFFERS
+BUF_FLUSH 2
+LIST BUFFERS
 # Close file
 CLOSE 0
 # CLOSE TESTS
@@ -172,10 +175,23 @@ CLOSE 0
 # Attempt to close with an invalid filehandle
 CLOSE 10
 # DELETE TEST
-# Test if delete would correctly
+# Test if delete works correctly
 DELETE C/a
+LIST DIRECTORY
 # Attempt to delete a file that does not exist
 DELETE C/hello
 # Delete a file in a nested directory
 OPEN C/TEST/DIR/DIR1/DIR2/DIR3/DIR4/DIR5/DIR6/DIR7/deleteme NEW
 DELETE C/TEST/DIR/DIR1/DIR2/DIR3/DIR4/DIR5/DIR6/DIR7/deleteme
+# Demonstrate the directory stuff
+MKDIR C/TEST/DIR/DIR2
+MKDIR C/TEST/DIR/DIR3
+MKDIR C/TEST/DIR/DIR3/DIR1
+MKDIR C/TEST/DIR/DIR1/DIR2/DIR1
+MKDIR C/TEST/DIR/DIR1/DIR2/DIR2
+MKDIR C/TEST/DIR/DIR1/DIR2/DIR4
+MKDIR C/TEST/DIR/DIR1/DIR2/DIR5
+MKDIR C/TEST/DIR/DIR1/DIR2/DIR6
+MKDIR C/TEST/DIR/DIR1/DIR2/DIR7
+MKDIR C/TEST/DIR/DIR1/DIR2/DIR8
+LIST DIRECTORY

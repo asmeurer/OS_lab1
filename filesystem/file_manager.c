@@ -459,6 +459,7 @@ int read(int filehandle, unsigned int block_number, int buf_ptr){
     fcb *file;
 
     int i = 0;
+    int found = 0;
 
     /* Check the bounds of the filehandle */
     if (filehandle < 0 || filehandle >= MAX_OPEN) {
@@ -497,12 +498,15 @@ int read(int filehandle, unsigned int block_number, int buf_ptr){
             buffers[buf_ptr][i].addr = block_number;
             buffers[buf_ptr][i].access_type = READ;
             buffers[buf_ptr][i].device_num = file->device_num;
+            found = 1;
             break;
         }
-        if (i == BUFFER_SIZE){
-            return ERROR_BUFFER_FULL;
-        }
     }
+
+    if (!found) {
+        return ERROR_BUFFER_FULL;
+    }
+
     return ERROR_SUCCESS;
 }
 
