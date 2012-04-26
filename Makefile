@@ -83,11 +83,11 @@ filesystem/file_manager.o: filesystem/file_manager.c filesystem/file_manager.h \
 	$(CC) $(FLAGS) -c filesystem/file_manager.c -o filesystem/file_manager.o
 
 filesystem/file_test.o: filesystem/file_test.c filesystem/file_test.h \
-  filesystem/definitions.h filesystem/../shared/textcolor.h
+  filesystem/definitions.h filesystem/../shared/textcolor.h shared/textcolor.o
 	$(CC) $(FLAGS) filesystem/file_test.c shared/textcolor.o -o filesystem/file_test.o
 
 clean:
-	-rm -f process_manager/*.o ipc/*o shared/*.o memory/*.o nul
+	-rm -f process_manager/*.o ipc/*o shared/*.o memory/*.o filesystem/*.o nul
 
 check-syntax:
 	$(CC) -o nul $(FLAGS) -S $(CHK_SOURCES)
