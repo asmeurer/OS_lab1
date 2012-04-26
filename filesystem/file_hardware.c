@@ -99,3 +99,29 @@ struct dir_queue_t *malloc_dir_queue()
 {
     return malloc(sizeof(struct dir_queue_t));
 }
+
+/**
+ * Flushes the buffer corresponding to buf_ptr.
+ *
+ * This is currently the only way to actually clear the buffer.  This
+ * simulates the hardware finishing the operation for the buffer (read or
+ * write).  It called either manually in the test interface (to simulate this
+ * hardware event), or by certain filesystem manager functions, such as
+ * unmount, that require the buffers to be empty to complete (in reality, they
+ * would block on this event).
+ */
+int buf_flush(int buf_ptr)
+{
+    int i;
+    if (buf_ptr < 0 || buf_ptr >= NUM_BUFFERS) {
+        return ERROR_BUFFER_NOT_EXIST;
+    }
+
+    for (i = 0; i < BUFFER_SIZE; i++) {
+        buffers[buf_ptr][i].addr = 0;
+        buffers[buf_ptr][i].access_type = 0;
+        buffers[buf_ptr][i].init = 0;
+    }
+
+    return ERROR_SUCCESS;
+}

@@ -20,6 +20,7 @@ int format(int device_num, char fs_name, int blocksize);
 int mount(char fs_name);
 int unmount(char fs_name);
 fcb *get_file(int dev, path *file_path);
+int close(int filehandle);
 int open(char fs_name, path *file_path, int write);
 int write(int filehandle, unsigned short block_number, int buf_ptr);
 int read(int filehandle, unsigned short block_number, int buf_ptr);
@@ -32,6 +33,6 @@ void filename_copy(char *source, char *dest);
 unsigned short find_empty_block(int dev);
 int set_block_empty(int dev, unsigned short addr);
 int set_block_full(int dev, unsigned short addr);
-int close(int filehandle);
+
 
 #endif

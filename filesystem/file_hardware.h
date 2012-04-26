@@ -9,5 +9,6 @@ fcb *malloc_file();
 block *malloc_block();
 struct block_queue_t *malloc_block_queue();
 struct dir_queue_t *malloc_dir_queue();
+int buf_flush(int buf_ptr);
 
 #endif

@@ -133,7 +133,7 @@ typedef struct {
 } device;
 
 /* Device list*/
-device device_array [MAX_DEVICE];
+device device_array[MAX_DEVICE];
 
 /* Open File struct */
 typedef struct {
