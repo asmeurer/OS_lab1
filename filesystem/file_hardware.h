@@ -3,7 +3,6 @@
 
 #include <stdlib.h>
 #include "definitions.h"
-#include "file_queuemanager.h"
 
 void Free(void *ptr);
 fcb *malloc_file();

@@ -1,5 +1,3 @@
-#include "file_hardware.h"
-
 /* This is the simulation of the hardware.  Normally this would happen in the
  * device itself.  The data structures used here are "stored" on the device
  * itself, so we simulate that by calling malloc() and free().  We assume that
@@ -12,6 +10,10 @@
  * that file or block, which is "one the device".  The filesystem manager
  * then writes to these data structures normally, which is the equivalent of
  * "writing to the device". */
+
+#include "file_hardware.h"
+#include "definitions.h"
+#include "file_queuemanager.h"
 
 /**
  * Hardware simulation of free.

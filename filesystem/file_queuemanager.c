@@ -8,6 +8,7 @@
 
 #include "file_queuemanager.h"
 #include "definitions.h"
+#include "file_hardware.h"
 
 /* This is similar our queuemanager from the process manager and ipc, except the
  * queue elements are now fcb or blocks, and they take pointers (because the

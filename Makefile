@@ -76,7 +76,7 @@ filesystem/file_queuemanager.o: filesystem/file_queuemanager.c \
 
 filesystem/file_hardware.o: filesystem/file_hardware.c filesystem/file_hardware.h \
   filesystem/definitions.h filesystem/file_queuemanager.h filesystem/file_queuemanager.o
-	$(CC) $(FLAGS) -c filesystem/file_hardware.c filesystem/file_queuemanager.o -o filesystem/file_hardware.o
+	$(CC) $(FLAGS) -c filesystem/file_hardware.c -o filesystem/file_hardware.o
 
 filesystem/file_manager.o: filesystem/file_manager.c filesystem/file_manager.h \
   filesystem/definitions.h filesystem/file_hardware.h \
