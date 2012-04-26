@@ -112,8 +112,8 @@ int _format(int device_num, char fs_name, int blocksize){
         return ERROR_DEVICE_MOUNTED;
     }
     if(!(format_me->bits & DEVICE_INIT_BITMASK)){
-		return ERROR_DEVICE_NOT_KNOWN;
-	}
+        return ERROR_DEVICE_NOT_KNOWN;
+    }
 
     if (fs_name < 'A' || fs_name > 'Z') {
         return ERROR_BAD_FS_NAME;
@@ -138,7 +138,7 @@ int _format(int device_num, char fs_name, int blocksize){
 
     format_me->root = malloc_file();
     filename_copy(format_me->root->filename,"root");
-    format_me->root->bits = 0;
+    format_me->root->bits = 1;
     format_me->root->dirHead = malloc_dir_queue();
 
     dir_init_queue(format_me->root->dirHead);
@@ -210,7 +210,7 @@ int unmount(char fs_name){
         }
     }
 
-    device_array[dev].bits |= ~DEVICE_MOUNTED_BITMASK;
+    device_array[dev].bits &= ~DEVICE_MOUNTED_BITMASK;
     return ERROR_SUCCESS;
 }
 

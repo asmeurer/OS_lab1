@@ -25,7 +25,7 @@ FORMAT 0 hello 4
 # UNMOUNT TESTS
 # Test if unmount works correctly
 UNMOUNT C
-# Attempt to unmount an invalid file sysmte
+# Attempt to unmount an invalid file system
 UNMOUNT B
 # MOUNT TESTS
 # Test if mount works correctly
@@ -36,6 +36,7 @@ MOUNT B
 # MKDIR TESTS
 # Test mkdir works correctly
 MKDIR C/TEST
+LIST DIRECTORY
 # Test that a directory can be made inside another
 MKDIR C/TEST/DIR
 # Attempt to create a directory on a file system that does not exist
