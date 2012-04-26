@@ -90,7 +90,7 @@ enum rw {
 
 /* Buffer struct */
 typedef struct{
-    short addr;
+    unsigned short addr;
     enum rw access_type;
     byte init;
 } buffer_slot;
@@ -113,7 +113,7 @@ struct fcb {
     /*0 0 0 0 0 0 0 (Directory)*/
     byte bits;
     struct dir_queue_t* dirHead;
-    struct dir_queue_t* containing_dir;
+    struct dir_queue_t* parent_dir;
     struct block_queue_t *block_queue;
     struct fcb* next;
     struct fcb* prev;
