@@ -9,6 +9,15 @@
 
 #include "file_test.h"
 
+void list_devices(){
+	
+}
+
+
+
+
+
+
 /**
  * Gets a string from the file.
  * @param fFile The file to read the string from.

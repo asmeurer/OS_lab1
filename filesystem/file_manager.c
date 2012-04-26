@@ -22,11 +22,13 @@ int init_fs (int device){
     for (i = 0; i < MAX_DEVICE; i++){
         device_array[i].bits = device_array[i].bits & (~DEVICE_MOUNTED_BITMASK);
     }
+    /*TODO Flush buffers*/
     /*Clear open file array*/
     for (i = 0; i < MAX_OPEN; i++){
         open_files[i].bits = open_files[i].bits | (~OPEN_TYPE_OPEN_BITMASK);
         open_files[i].file = null;
     }
+    device_array[device].bits = device_array[device].bits | DEVICE_INIT_BITMASK;
     return ERROR_SUCCESS;
 }
 
@@ -99,6 +101,9 @@ int format(int device_num, char fs_name, int blocksize){
     if(format_me->bits & DEVICE_MOUNTED_BITMASK){
         return ERROR_DEVICE_MOUNTED;
     }
+    if(!(format_me->bits & DEVICE_INIT_BITMASK)){
+		return ERROR_DEVICE_NOT_KNOWN;
+	}
 
     if (fs_name < 'A' || fs_name > 'Z') {
         return ERROR_BAD_FS_NAME;
