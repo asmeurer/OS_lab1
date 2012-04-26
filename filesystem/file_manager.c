@@ -92,14 +92,14 @@ int mount(char fs_name){
  * @param blocksize The size of the blocks, in KB.  Must be one of 4, 8, or
  * 16.
  *
- * @return Returns ERROR_SUCCESS on success, else the error code.
+ * @return Returns the number of blocks on success, else the error code.
  */
-int format(int device_num, char fs_name, int blocksize){
+int _format(int device_num, char fs_name, int blocksize){
     /*Check for correct num of devices*/
     int i;
-    int error;
+    int error = 0;
 
-    if(blocksize != 4 || blocksize != 8 || blocksize != 16){
+    if (blocksize != 4 && blocksize != 8 && blocksize != 16){
         return ERROR_INVALID_BLOCK_SIZE;
     }
 
@@ -121,15 +121,19 @@ int format(int device_num, char fs_name, int blocksize){
 
     format_me->fs_name = fs_name;
     format_me->numblock = MEM_SIZE/(blocksize<<10);
+    if (format_me->root != null) {
 
-    error = delete_internal(device_num, format_me->root);
+        /* The device has been used since being formated last. */
+        error = delete_internal(device_num, format_me->root);
+
+    }
 
     if (error < 0) {
         return error;
     }
 
     /*Erase*/
-    for(i = 0; i < MEM_SIZE / 32; i++){
+    for(i = 0; i < MEM_SIZE / (blocksize << 10); i++){
         format_me->bitmap[i] = 0;
     }
     format_me->bits = format_me->bits | DEVICE_FORMAT_BITMASK;
@@ -224,6 +228,11 @@ int unmount(char fs_name){
  */
 fcb *get_file(int dev, path *file_path)
 {
+    if (!(device_array[dev].bits & DEVICE_FORMAT_BITMASK)) {
+        error_file.error = ERROR_NOT_INITIALIZED_OR_FORMATED;
+        return &error_file;
+    }
+
     /* This is very similar to the search inside create(), but we care about
      * different errors in this case. */
     struct path *next = file_path;
@@ -300,19 +309,24 @@ int close(int filehandle){
  * file.  In the implementation, it is just the index in the open file array.
  */
 int open(char fs_name, path *file_path, int write){
-    int dev = get_device(fs_name);
-    fcb *file = get_file(dev, file_path);
-    int i;
-    int found = 0;
 
+    int dev = get_device(fs_name);
     if (dev < 0) {
         /* There was an error in get_device() */
         return dev;
     }
 
+    fcb *file = get_file(dev, file_path);
+    int i;
+    int found = 0;
+
     if (file->error < 0) {
         /* There was an error with get_file() */
         return file->error;
+    }
+
+    if (file->bits & FCB_DIR_BITMASK) {
+        return ERROR_FILE_IS_DIR;
     }
 
     /* Find and empty open file slot */
@@ -603,12 +617,18 @@ int delete_internal(int dev, fcb *file)
     /* If the file is a directory, delete it if and only if it is empty. */
     if (file->bits | FCB_DIR_BITMASK) {
         if (file->dirHead == null) {
-            /* The directory is empty.  Just delete it. */
-            file = dir_delete(file->parent_dir, file);
-            if (file->error < 0) {
-                return file->error;
+            if (file->parent_dir == null) {
+                /* The root directory */
+                Free(file);
+            } else {
+                /* The directory is empty.  Just delete it. */
+                file = dir_delete(file->parent_dir, file);
+
+                if (file->error < 0) {
+                    return file->error;
+                }
+                Free(file);
             }
-            Free(file);
         } else {
             /* We have to support recursively deleting a directory (unlike we
              * originally planned), because format() needs to be able to do
@@ -715,7 +735,7 @@ void filename_copy(char *source, char *dest)
 {
     int i;
     for (i = 0; i < NAME_LIMIT; i++) {
-        dest[i] = source[i];
+        source[i] = dest[i];
     }
 }
 
