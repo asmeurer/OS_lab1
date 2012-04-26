@@ -137,6 +137,29 @@ void listDirectory(){
 
 }
 
+void listBuffers(){
+	int i;
+	int j;
+	for (i = 0; i < NUM_BUFFERS; i++){
+		printf("Buffer number %d\n", i);
+		for (j = 0; j < BUFFER_SIZE; j++){
+			if(buffers[i][j].init == 0){
+				break;
+			}
+			else{
+				printf("%d:	Device: %d	Addr: %d	Access Type: ",j, buffers[i][j].device_num, buffers[i][j].addr);
+				if(buffers[i][j].access_type == READ){
+					printf("Read");
+				}
+				else{
+					printf("Write");
+				}
+				printf("\n");
+			}
+		}
+		printf("End buffer %d\n", i);
+	}
+}
 
 
 
@@ -859,13 +882,18 @@ int main(int argc, char *argv[]) {
                         listDirectory();
                         error = 0;
                     }
+                    else if (!strcmp(init_arg, "BUFFERS\n")) {
+                        printf("LIST BUFFER called\n");
+                        listBuffers();
+                        error = 0;
+                    }
                     else{
                         error = 1;
                     }
                 }
                 if(error == 1){
                     textcolor(BRIGHT, RED, BLACK);
-                    printf("Usage: LIST [DEVICES|FILEINFO <filename>|DIRECTORY]\n");
+                    printf("Usage: LIST [DEVICES|FILEINFO <filename>|DIRECTORY|BUFFERS]\n");
                     textcolor(RESET, -1, -1);
                 }
             }
@@ -890,6 +918,7 @@ int main(int argc, char *argv[]) {
                 printf("WRITE <filehandle> <block_number> <buf_prt>    \n");
                 printf("CLOSE <filehandle>\n");
                 printf("DELETE <filepath>\n");
+                printf("LIST [DEVICES|FILEINFO <filename>|DIRECTORY|BUFFERS]\n");
                 printf("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
             }
             else {
