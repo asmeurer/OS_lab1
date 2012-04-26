@@ -32,7 +32,7 @@ void list_devices(){
 			}
 			printf("\n");
 		}
-	}	
+	}
 }
 
 
@@ -104,6 +104,7 @@ path* parsePath(char* pathname, char* fs){
 		strcpy(temp->string, arg);
 		arg = strtok(NULL, "/");
 	}
+    temp->next = NULL;
 	*fs = fs_name;
 	return head;
 }
@@ -238,7 +239,7 @@ void errorToString(int error, char* command){
 			printf("File handle is out of range\n");
 			break;
 		default:
-			printf("Unknown error\n");			
+			printf("Unknown error\n");
 	}
 }
 
@@ -291,7 +292,7 @@ int main(int argc, char *argv[]) {
 		if (error == 1){
 			/* printf("%s\n", line); */
 			/* printf("%s\n", command); */
-			
+
 			if (!strcmp(command, "INIT_FS")) {
 				fgets(line, LINE_MAX, file);
 				error = 1;
@@ -319,7 +320,7 @@ int main(int argc, char *argv[]) {
 								errorToString(return_error, "INIT_FS");
 							}
 							error = 0;
-						}	 
+						}
 					}
 				}
 				if(error == 1){
@@ -327,8 +328,8 @@ int main(int argc, char *argv[]) {
 					printf("Usage: INIT_FS <device_num>\n");
 					textcolor(RESET, -1, -1);
 				}
-			}			
-			
+			}
+
 			else if (!strcmp(command, "FORMAT")) {
 				fgets(line, LINE_MAX, file);
 				error = 1;
@@ -380,7 +381,7 @@ int main(int argc, char *argv[]) {
 					textcolor(RESET, -1, -1);
 				}
 			}
-			
+
 			else if (!strcmp(command, "MOUNT")){
 				fgets(line, LINE_MAX, file);
 				error = 1;
@@ -412,7 +413,7 @@ int main(int argc, char *argv[]) {
 					textcolor(RESET, -1, -1);
 				}
 			}
-			
+
 			else if (!strcmp(command, "UNMOUNT")){
 				fgets(line, LINE_MAX, file);
 				error = 1;
@@ -444,7 +445,7 @@ int main(int argc, char *argv[]) {
 					textcolor(RESET, -1, -1);
 				}
 			}
-			
+
 			else if(!strcmp(command, "MKDIR")) {
 				fgets(line, LINE_MAX, file);
 				error = 1;
@@ -455,9 +456,9 @@ int main(int argc, char *argv[]) {
 					printf("%s\n", init_arg);
 					init_arg++;
 					printf("%s\n", init_arg);
-					head_path_arg = parsePath(init_arg, &char_arg);
-					if (head_path_arg == NULL){		
-						error = 1;
+                    head_path_arg = parsePath(init_arg, &char_arg);
+                    if (head_path_arg == NULL){
+                        error = 1;
 					}else{
 						printf("Calling MKDIR on ");
 						printPath(head_path_arg, char_arg);
@@ -469,7 +470,7 @@ int main(int argc, char *argv[]) {
 						else{
 							printf("Success\n");
 						}
-						error = 0;				
+						error = 0;
 					}
 				}
 				if(error == 1){
@@ -478,7 +479,7 @@ int main(int argc, char *argv[]) {
 					textcolor(RESET, -1, -1);
 				}
 			}
-			
+
 			else if (!strcmp(command, "OPEN")) {
 				fgets(line, LINE_MAX, file);
 				error = 1;
@@ -492,7 +493,7 @@ int main(int argc, char *argv[]) {
 					/*Option*/
 					str_arg2 = strtok(NULL, "\n");
 					/*If there is a second argument*/
-					
+
 					if(str_arg2 != NULL){
 						head_path_arg = parsePath(str_arg, &char_arg);
 						if (head_path_arg == NULL){
@@ -503,7 +504,7 @@ int main(int argc, char *argv[]) {
 								printf("Calling OPEN NEW on ");
 								printPath(head_path_arg, char_arg);
 								printf("\n");
-								return_error = create(char_arg, head_path_arg, 0);	
+								return_error = create(char_arg, head_path_arg, 0);
 								if(return_error < 0){
 									errorToString(return_error, "OPEN NEW");
 								}
@@ -596,7 +597,7 @@ int main(int argc, char *argv[]) {
 					textcolor(RESET, -1, -1);
 				}
 			}
-			
+
 			else if (!strcmp(command, "WRITE")) {
 				fgets(line, LINE_MAX, file);
 				error = 1;
@@ -643,7 +644,7 @@ int main(int argc, char *argv[]) {
 					textcolor(RESET, -1, -1);
 				}
 			}
-			
+
 			else if (!strcmp(command, "CLOSE")) {
 				fgets(line, LINE_MAX, file);
 				error = 1;
@@ -667,7 +668,7 @@ int main(int argc, char *argv[]) {
 						else{
 							printf("Success\n");
 						}
-						error = 0;	 
+						error = 0;
 					}
 				}
 				if(error == 1){
@@ -676,7 +677,7 @@ int main(int argc, char *argv[]) {
 					textcolor(RESET, -1, -1);
 				}
 			}
-			
+
 			else if(!strcmp(command, "DELETE")) {
 				fgets(line, LINE_MAX, file);
 				error = 1;
@@ -687,7 +688,7 @@ int main(int argc, char *argv[]) {
 					/*Skip space*/
 					init_arg++;
 					head_path_arg = parsePath(init_arg, &char_arg);
-					if (head_path_arg == NULL){		
+					if (head_path_arg == NULL){
 						error = 1;
 					}else{
 						printf("Calling DELETE on ");
@@ -700,8 +701,8 @@ int main(int argc, char *argv[]) {
 						else{
 							printf("Success\n");
 						}
-						
-						error = 0;				
+
+						error = 0;
 					}
 				}
 				if(error == 1){
@@ -710,7 +711,7 @@ int main(int argc, char *argv[]) {
 					textcolor(RESET, -1, -1);
 				}
 			}
-			
+
 			else if (!strcmp(command, "LIST")) {
                 fgets(line, LINE_MAX, file);
                 error = 1;
@@ -741,7 +742,7 @@ int main(int argc, char *argv[]) {
 					textcolor(RESET, -1, -1);
 				}
 			}
-			
+
 			else if (!strcmp(command, "#")) {
 				printf("\n################################################################################\n");
 				printf("#");
