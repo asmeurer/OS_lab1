@@ -14,14 +14,9 @@
  * hardware simulation can call malloc).  */
 
 /**
- * Function to reset the deinit flag for the given queue.
- */
-void dir_deinit(struct dir_queue_t *queue) {
-    queue->initialized = 0;
-}
-
-/**
- * Function to clear and set the initilized flag for the specified queue.
+ * Function to clear the specified directory queue.
+ *
+ * @param queue The directory queue to initialize.
  */
 void dir_init_queue(struct dir_queue_t *queue) {
     fcb *temp;
@@ -42,7 +37,13 @@ void dir_init_queue(struct dir_queue_t *queue) {
 
 
 /**
- * Enqueues a file into a queue.
+ * Enqueues a file into a directory queue.
+ *
+ * @param queue The directory queue to enqueue from.
+ *
+ * @param file The file to enqueue to the queue.
+ *
+ * @return Returns an error code on error, else ERROR_SUCCESS.
  */
 int dir_enqueue(struct dir_queue_t *queue, fcb *file) {
     /* Enqueue */
@@ -72,9 +73,13 @@ int dir_enqueue(struct dir_queue_t *queue, fcb *file) {
 
 
 /**
- * Dequeues a message structure from a queue.
- * @param message_queue_enum The enum for the queue (The enum matches with the integer value).
- * @return Returns the message block that was dequeued. The source field of the message returns error codes.
+ * Dequeues a file from a directory queue.  Useful for recursively deleting
+ * all files from a directory.
+ *
+ * @param queue The directory queue to dequeue from.
+ *
+ * @return Returns a pointer to the fcb that was dequeued. The error field of
+ * the fcb contains any error codes.
  */
 fcb *dir_dequeue(struct dir_queue_t *queue){
 
@@ -83,14 +88,14 @@ fcb *dir_dequeue(struct dir_queue_t *queue){
         return &error_file;
     }
 
-    /*If queue is empty*/
+    /* If queue is empty */
     if (queue->head == null) {
         error_file.error = ERROR_DIR_QUEUE_EMPTY;
         return &error_file;
     }
 
     fcb *ret = queue->head;
-    /*If entry is only one in queue*/
+    /* If entry is only one in queue */
     if(queue->head->prev == null){
         queue->head = null;
         queue->tail = null;
@@ -105,6 +110,16 @@ fcb *dir_dequeue(struct dir_queue_t *queue){
     return(ret);
 }
 
+/**
+ * Deletes a file from a directory queue.
+ *
+ * @param queue The directory queue to delete from.
+ *
+ * @param to_delete The file to delete.
+ *
+ * @return Returns a pointer to the deleted fcb.  Any error codes will be in
+ * the error field.
+ */
 fcb *dir_delete(struct dir_queue_t *queue, fcb *to_delete)
 {
 
@@ -146,14 +161,14 @@ fcb *dir_delete(struct dir_queue_t *queue, fcb *to_delete)
 }
 
 /**
- * Function to reset the deinit flag for the given queue.
- */
-void block_deinit(struct block_queue_t *queue) {
-    queue->initialized = 0;
-}
-
-/**
- * Function to search through the blocks of a fcb and checking their address
+ * Function to search through the blocks of a fcb and check their addresses.
+ *
+ * @param queue The block queue to search through.
+ *
+ * @param addr The address to search for.
+ *
+ * @return Returns 1 if a block in the queue has the given address and 0
+ * otherwise.
  */
 int seach_blocks(struct block_queue_t *queue, unsigned short addr){
     block *temp;
@@ -168,7 +183,9 @@ int seach_blocks(struct block_queue_t *queue, unsigned short addr){
     return 0;
 }
 /**
- * Function to clear and set the initilized flag for the specified queue.
+ * Function to clear the specified block queue.
+ *
+ * @param queue The block queue to initialize.
  */
 void block_init_queue(struct block_queue_t *queue) {
     block *temp;
@@ -189,7 +206,13 @@ void block_init_queue(struct block_queue_t *queue) {
 
 
 /**
- * Enqueues a file into a queue.
+ * Enqueues a block into a block queue.
+ *
+ * @param queue The block queue to enqueue into
+ *
+ * @param to_enqueue The block to enqueue
+ *
+ * @return Returns an error code on error, else ERROR_SUCCESS.
  */
 int block_enqueue(struct block_queue_t *queue, block *to_enqueue) {
     /* Enqueue */
@@ -219,9 +242,12 @@ int block_enqueue(struct block_queue_t *queue, block *to_enqueue) {
 
 
 /**
- * Dequeues a message structure from a queue.
- * @param message_queue_enum The enum for the queue (The enum matches with the integer value).
- * @return Returns the message block that was dequeued. The source field of the message returns error codes.
+ * Dequeues a block from a block queue.  Useful when deleting a file.
+ *
+ * @param queue The block queue to dequeue from.
+ *
+ * @return Returns the block that was dequeued. The error field of the block
+ * contains any error codes.
  */
 block *block_dequeue(struct block_queue_t *queue){
 
@@ -252,6 +278,16 @@ block *block_dequeue(struct block_queue_t *queue){
     return(ret);
 }
 
+/**
+ * Deletes a block from a block queue.
+ *
+ * @param queue The block queue to delete from.
+ *
+ * @param to_delete The block to delete.
+ *
+ * @return Returns a pointer to the deleted block.  Any error codes will be in
+ * the error field.
+ */
 block *block_delete(struct block_queue_t *queue, block *to_delete)
 {
 

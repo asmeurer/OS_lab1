@@ -50,14 +50,12 @@ struct block_queue_t
     int initialized;
 };
 
-void dir_deinit(struct dir_queue_t *queue);
 void dir_init_queue(struct dir_queue_t *queue);
 int dir_enqueue(struct dir_queue_t *queue, fcb *file);
 fcb *dir_dequeue(struct dir_queue_t *queue);
 fcb *dir_delete(struct dir_queue_t *queue, fcb *to_delete);
 int seach_blocks(struct block_queue_t *queue, unsigned short addr);
 
-void block_deinit(struct block_queue_t *queue);
 void block_init_queue(struct block_queue_t *queue);
 int block_enqueue(struct block_queue_t *queue, block *to_enqueue);
 block *block_dequeue(struct block_queue_t *queue);
