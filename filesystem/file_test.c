@@ -40,27 +40,31 @@ char *fgetstring(FILE* fFile){
 	return (name);
 }
 
-char parsePath(char* pathname, path* head){
+path* parsePath(char* pathname, char* fs){
 	char* arg;
-	path* temp;
+	path* temp = NULL;
+	path* head = NULL;
 	int len;
 	char fs_name;
 	arg = strtok(pathname,"/");
 	len = strlen(arg);
 	if (len != 1 || arg[0]<'A' || arg[0]>'Z'){
 		printf("fs_name must be one uppercase character A-Z\n");
-		head = NULL;
-		return '!';
+		return NULL;
 	}
 	fs_name = arg[0];
 	/*Next path segment*/
 	arg = strtok(NULL, "/");
+	/*If nothing after fs_name*/
+	if (arg == NULL){
+		printf("Must specify filename\n");
+		return NULL;
+	}
 	/*Add into linked list until end of path*/
 	while(arg != NULL){
 		if (temp == NULL){
 			temp = (path*) malloc(sizeof(path));
 			head = temp;
-
 		}
 		else{
 			temp->next = (path*) malloc(sizeof(path));
@@ -69,12 +73,8 @@ char parsePath(char* pathname, path* head){
 		strcpy(temp->string, arg);
 		arg = strtok(NULL, "/");
 	}
-	if (head == NULL){
-		printf("Filename must be speicified\n");
-		head = NULL;
-		return '!';
-	}
-	return fs_name;
+	*fs = fs_name;
+	return head;
 }
 
 
@@ -147,9 +147,9 @@ int main(int argc, char *argv[]) {
 		if (error == 1){
 			/* printf("%s\n", line); */
 			/* printf("%s\n", command); */
-
+			
 			if (!strcmp(command, "INIT_FS")) {
-				 fgets(line, LINE_MAX, file);
+				fgets(line, LINE_MAX, file);
                 error = 1;
                 /*Initial split of line*/
                 init_arg = strtok(line, "\n");
@@ -176,15 +176,13 @@ int main(int argc, char *argv[]) {
 						 }	 
 					}
 				}
-			}
-			if(error == 1){
-				textcolor(BRIGHT, RED, BLACK);
+			
+				if(error == 1){
+					textcolor(BRIGHT, RED, BLACK);
 					printf("Usage: INIT_FS <device_num>\n");
 					textcolor(RESET, -1, -1);
+				}
 			}			
-				
-			
-
 			
 			else if (!strcmp(command, "FORMAT")) {
 				fgets(line, LINE_MAX, file);
@@ -225,13 +223,13 @@ int main(int argc, char *argv[]) {
 						}
 					}
 				}
-
 				if (error == 1){
 					textcolor(BRIGHT, RED, BLACK);
 					printf("Usage: FORMAT <device_num> <fs_name> <blocksize>\n");
 					textcolor(RESET, -1, -1);
 				}
 			}
+			
 			else if (!strcmp(command, "MOUNT")){
 				fgets(line, LINE_MAX, file);
 				error = 1;
@@ -262,31 +260,30 @@ int main(int argc, char *argv[]) {
 				fgets(line, LINE_MAX, file);
 				error = 1;
 				/*Initial split of line*/
-				init_arg = strtok(line, " ");
+				init_arg = strtok(line, "\n");
 				/*If there exists arguments*/
 				if (strcmp(init_arg, "\n") != 0 && init_arg != NULL) {
-					/*Filename*/
-					str_arg = (char*) malloc(sizeof(char) * (strlen(init_arg)+1));
-					strcpy(str_arg, init_arg);
-					/*Option*/
-					str_arg2 = strtok(NULL, "\n");
-					/*If there is a second argument*/
-					if(str_arg2 != NULL){						
-						char_arg = parsePath(str_arg, head_path_arg);
-						if (head_path_arg == NULL){		
-							error = 1;
-						}else{
-							create(char_arg, head_path_arg, 1);
-							error = 0;
-							
-						}	
+					printf("%s\n", init_arg);
+					init_arg++;
+					printf("%s\n", init_arg);
+					head_path_arg = parsePath(init_arg, &char_arg);
+					if (head_path_arg == NULL){		
+						error = 1;
+					}else{
+						printf("Calling MKDIR on ");
+						printPath(head_path_arg, char_arg);
+						printf("\n");
+						create(char_arg, head_path_arg, 1);
+						error = 0;				
 					}
 				}
 				if(error == 1){
-						
+					textcolor(BRIGHT, RED, BLACK);
+					printf("Usage: MKDIR <dirname>\n");
+					textcolor(RESET, -1, -1);
 				}
-				
-		}
+			}
+			
 			else if (!strcmp(command, "OPEN")) {
 				fgets(line, LINE_MAX, file);
 				error = 1;
@@ -302,7 +299,7 @@ int main(int argc, char *argv[]) {
 					/*If there is a second argument*/
 					
 					if(str_arg2 != NULL){
-						char_arg = parsePath(str_arg, head_path_arg);
+						head_path_arg = parsePath(str_arg, &char_arg);
 						if (head_path_arg == NULL){
 							error = 1;
 						}
