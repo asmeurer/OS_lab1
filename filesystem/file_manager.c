@@ -228,6 +228,18 @@ fcb *get_file(int dev, path *file_path)
  * @return Returns ERROR_SUCCESS on success, else an error code.
  */
 int close(int filehandle){
+    /* Check the bounds of the filehandle */
+    if (filehandle < 0 || filehandle >= MAX_OPEN) {
+        return ERROR_FILE_HANDLE_OUT_OF_RANGE;
+    }
+
+    /* Check if file is open */
+    if (!(open_files[filehandle].bits & OPEN_TYPE_OPEN_BITMASK)){
+        return ERROR_FILE_NOT_OPEN;
+    }
+
+    /* TODO: Check if the file is using any buffers. */
+
     open_files[filehandle].file = null;
     open_files[filehandle].bits = 0;
 
@@ -368,12 +380,12 @@ int write(int filehandle, unsigned short block_number, int buf_ptr){
  * Reads the block block_number from the file corresponding to filehandle
  * using the buffer corresponding to buf_ptr.
  *
- * @param filehandle The file handle of the file to write. This is the number
- * returned by open().
+ * @param filehandle The file handle of the file to read from. This is the
+ * number returned by open().
  *
- * @param block_number The address of the block to be written.
+ * @param block_number The address of the block to be read.
  *
- * @param buf_ptr The index of the buffer to use for writing.
+ * @param buf_ptr The index of the buffer to use for reading.
  *
  * @return Returns ERROR_SUCCESS on success and an error code otherwise.
  */
@@ -381,25 +393,34 @@ int read(int filehandle, unsigned short block_number, int buf_ptr){
     fcb *file;
 
     int i = 0;
-    /*Check if file is open*/
 
+    /* Check the bounds of the filehandle */
+    if (filehandle < 0 || filehandle >= MAX_OPEN) {
+        return ERROR_FILE_HANDLE_OUT_OF_RANGE;
+    }
+
+    /* Check the bounds on the buf_ptr */
+    if (buf_ptr < 0 || buf_ptr >= NUM_BUFFERS) {
+        return ERROR_BUFFER_NOT_EXIST;
+    }
+
+    /*Check if file is open*/
     if (!(open_files[filehandle].bits & OPEN_TYPE_OPEN_BITMASK)){
         return ERROR_FILE_NOT_OPEN;
     }
     file = open_files[filehandle].file;
-    /* Check if file is a direcroty */
+
+    /* Check if file is a directory */
     if(!(file->bits & FCB_DIR_BITMASK)){
         return ERROR_FILE_IS_DIR;
     }
-    /*Check if block number is part of file*/
+
+    /* Check if block number is part of file */
     if((seach_blocks(file->block_queue, block_number)) != 1){
         return ERROR_BLOCK_NOT_IN_FILE;
     }
-    /*Check buffer pointer*/
-    if(buf_ptr < 0 || buf_ptr >= NUM_BUFFERS){
-        return ERROR_BUFFER_NOT_EXIST;
-    }
-    /*Find next buffer slot*/
+
+    /* Find next buffer slot */
     for(i = 0; i < BUFFER_SIZE; i++){
         if(buffers[buf_ptr]->init == 0){
             buffers[buf_ptr]->init = 1;
@@ -414,6 +435,23 @@ int read(int filehandle, unsigned short block_number, int buf_ptr){
     return ERROR_SUCCESS;
 }
 
+/**
+ * Create the given file or directory.
+ *
+ * Directories are not create recursively---all sub-directories in the given
+ * path must already exist.
+ *
+ * @param fs_name The name of the filesystem that the file should be created
+ * in.
+ *
+ * @param file_path The file path data structure corresponding to the file or
+ * directory to be created.
+ *
+ * @param dir A boolean.  If it is 1, it means the new file should be a
+ * directory; if it is 0 it means that the new file should be a file.
+ *
+ * @return Returns ERROR_SUCCESS on success and an error code on failure.
+ */
 int create(char fs_name, struct path *file_path, int dir)
 {
     int dev = get_device(fs_name);
@@ -487,6 +525,14 @@ int create(char fs_name, struct path *file_path, int dir)
     return ERROR_SUCCESS;
 }
 
+/**
+ * Deletes the given file or directory.
+ *
+ * Directories are recursively deleted. All blocks for deleted files are
+ * files.
+ *
+ * @param fs_name The filesystem where
+ */
 int delete(char fs_name, struct path *file_path)
 {
     int dev = get_device(fs_name);
