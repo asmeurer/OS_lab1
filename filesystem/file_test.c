@@ -1,4 +1,4 @@
-/*
+/**
  * Memory Test Interface
  *
  *	Group 2
@@ -7,6 +7,7 @@
  *	Sheng Lundquist
  */
 
+#include "definitions.h"
 #include "file_test.h"
 
 /**
@@ -102,6 +103,7 @@ int main(int argc, char *argv[]) {
 	int error = 0;
 	char command[20];
 	char line[LINE_MAX];
+	int j;
 	int int_arg;
 	int int_arg2;
 	char char_arg;
@@ -148,8 +150,37 @@ int main(int argc, char *argv[]) {
 			/* printf("%s\n", command); */
 
 			if (!strcmp(command, "INIT_FS")) {
-				/*Call init_fs*/
-				printf("File System has been initialized.\n");
+				 fgets(line, LINE_MAX, file);
+                error = 1;
+                /*Initial split of line*/
+                init_arg = strtok(line, "\n");
+                /*If there exists arguments*/
+                if (init_arg != NULL){
+                    error = 0;
+                    /*Loop through each character in string checking if it is a digit*/
+                    for(j = 1; j < strlen(init_arg) - 1; j++){
+                        if (!isdigit(init_arg[j])){
+                            error = 1;
+                            break;
+                        }
+                    }
+                    if (error == 0){
+						 int_arg = atoi(init_arg);
+						 if(int_arg >= MAX_DEVICE || int_arg < 0){
+							textcolor(BRIGHT, RED, BLACK);
+                            printf("A device must be a number from 0-4.\n");
+                            textcolor(BRIGHT, -1, -1);
+						 }else{
+							 init_fs(int_arg);
+							 printf("File System has been initialized.\n");
+						 }	 
+					}
+				}
+				
+			if(error == 1){
+				
+			}			
+				
 			}
 			else if (!strcmp(command, "FORMAT")) {
 				fgets(line, LINE_MAX, file);
