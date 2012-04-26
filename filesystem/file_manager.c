@@ -228,7 +228,9 @@ int read(int filehandle, short block_number, int buf_ptr){
 
     int i = 0;
     /*Check if file is open*/
-
+    if(filehandle < 0 || filehandle >= MAX_OPEN){
+		return ERROR_FILE_HANDLE_OUT_OF_RANGE;
+	}
     if (!(open_files[filehandle].bits & OPEN_TYPE_OPEN_BITMASK)){
         return ERROR_FILE_NOT_OPEN;
     }

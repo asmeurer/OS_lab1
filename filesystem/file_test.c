@@ -225,7 +225,6 @@ int main(int argc, char *argv[]) {
 						}
 					}
 				}
-
 				if (error == 1){
 					textcolor(BRIGHT, RED, BLACK);
 					printf("Usage: FORMAT <device_num> <fs_name> <blocksize>\n");
