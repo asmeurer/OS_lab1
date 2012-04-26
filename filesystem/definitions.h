@@ -36,7 +36,7 @@ typedef unsigned char byte;
 #define ERROR_BAD_BLOCK_PTR -14 /* Not to be confused with bad blocks */
 #define ERROR_BAD_BLOCK_QUEUE -15
 #define ERROR_BLOCK_QUEUE_EMPTY -16
-#define ERROR_BAD_FSNAME -17
+#define ERROR_BAD_FS_NAME -17
 #define ERROR_FILE_ALREADY_EXISTS -18
 #define ERROR_DIR_IS_FILE -19
 #define ERROR_DIR_NOT_FOUND -20
@@ -48,7 +48,8 @@ typedef unsigned char byte;
 #define MAX_DEVICE 5
 #define MAX_OPEN 8
 #define FCB_DIR_BITMASK 0x01
-#define FCB_WRITE_ACC_BITMASK 0x02
+#define OPEN_TYPE_OPEN 0x01
+#define OPEN_TYPE_WRITE_ACC_BITMASK 0x02
 #define DEVICE_FORMAT_BITMASK 0x01
 #define DEVICE_MOUNTED_BITMASK 0x02
 #define NAME_LIMIT 11
@@ -85,7 +86,7 @@ typedef struct block block;
 
 struct fcb {
 	char filename[NAME_LIMIT];
-	/*0 0 0 0 0 0 (Write access) (Directory)*/
+	/*0 0 0 0 0 0 0 (Directory)*/
 	byte bits;
 	struct fcb* dirHead;
 	block* blockhead;
@@ -113,7 +114,8 @@ device device_array [MAX_DEVICE];
 
 typedef struct{
 	fcb* file;
-	byte open;
+	byte bits;
+    /* 0 0 0 0 0 0 (write access) (open) */
 }open_type;
 /*Open files array*/
 open_type open_files[MAX_OPEN];

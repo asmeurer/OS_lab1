@@ -25,10 +25,10 @@ int init_fs (int device){
 
 
 /* Mount: checks if the device has been inited and formated, if so mounts it. Otherwise, returns an error. */
-int mount (char fsname){
+int mount (char fs_name){
 	int i;
 	for(i = 0; i < MAX_DEVICE; i++){
-		if(device_array[i].fsname == fsname && (!(device_array[i].bits & DEVICE_FORMAT_BITMASK))){
+		if(device_array[i].fs_name == fs_name && (!(device_array[i].bits & DEVICE_FORMAT_BITMASK))){
 			device_array[i].bits | DEVICE_MOUNTED_BITMASK;
 			return ERROR_SUCCESS;
 		}
@@ -37,23 +37,23 @@ int mount (char fsname){
 	return ERROR_NOT_INITIALIZED_OR_FORMATED;
 }
 
-int format(int device_num, char fsname, int blocksize){
+int format(int device_num, char fs_name, int blocksize){
 	/*Check for correct num of devices*/
 	int i;
-	
+
 	if(blocksize != 4 || blocksize != 8 || blocksize != 16){
 		return ERROR_INVALID_BLOCK_SIZE;
 	}
-	
+
 	for(i = 0; i < MAX_DEVICE; i++){
 		if(!(device_array[device_num].bits & DEVICE_MOUNTED_BITMASK)){
 			device_array[device_num].bits | DEVICE_FORMAT_BITMASK
 			device_array[device_num].fs_name = fs_name;
 		}else if(device_array[device_num].bits & DEVICE_MOUNTED_BITMASK){
-			return ERROR_DEVICE_MOUNTED;		
+			return ERROR_DEVICE_MOUNTED;
 		}
 	}
-	
+
 	if(device_num < 0 || device_num >= MAX_DEVICE){
 		return ERROR_INVALID_DEVICE_NUM;
 	}
@@ -130,20 +130,20 @@ int read(int filehandle, short block_number, int buf_ptr){
 	return ERROR_SUCCESS;
 }
 
-int create_file(char fsname, struct path file_path)
+int create(char fs_name, struct path file_path, int dir)
 {
-    int dev = get_device(fsname);
+    int dev = get_device(fs_name);
 
     struct path *next = &file_path;
     fcb *current_file = device_array[dev].filehead;
 
     fcb *newfile;
 
-    while (next != null) {
+    while (next->next != null) {
         if (current_file == null) {
-            /* We reached the end of the directory and didn't fine the
+            /* We reached the end of the directory and didn't find the
              * specified directory in the path.  Since create_file does not
-             * create directories (use create_dir for that), this is an error. */
+             * recursively create directories, this is an error. */
             return ERROR_DIR_NOT_FOUND;
 
         } else if (filename_eq(current_file->filename, next->string)) {
@@ -170,25 +170,29 @@ int create_file(char fsname, struct path file_path)
      * already exists, and the given file does not.  So create the file.*/
     newfile = malloc_file();
 
+    filename_copy(newfile->filename, next->string);
+    newfile->bits = dir;
+    newfile->dirHead = null;
+    newfile->blockhead = null;
+    newfile->blocktail = null;
+    newfile->next = null;
+    /* Put the new file at the head of the directory */
+    newfile->prev = current_file;
+    newfile->device_num = dev;
+
     return ERROR_SUCCESS;
 }
 
-int create_dir(char fsname, struct path file_path)
-{
-    return 0;
-}
-
-
 /* Convert a filesystem character name to a device number */
-int get_device(char fsname)
+int get_device(char fs_name)
 {
     int i;
     for (i=0; i < MAX_DEVICE; i++) {
-        if (device_array[i].fsname == fsname) {
+        if (device_array[i].fs_name == fs_name) {
             return i;
         }
     }
-    return ERROR_BAD_FSNAME;
+    return ERROR_BAD_FS_NAME;
 }
 
 /* Custom version of strcmp to compare filenames. Returns 0 if the names are
@@ -202,4 +206,14 @@ int filename_eq(char *string1, char *string2)
         }
     }
     return 1;
+}
+
+/* Custom version of strcpy for filenames. Copies the string from source into
+ * dest.  Doesn't do any error checking. */
+void filename_copy(char *source, char *dest)
+{
+    int i;
+    for (i = 0; i < NAME_LIMIT; i++) {
+        dest[i] = source[i];
+    }
 }
