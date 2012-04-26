@@ -753,14 +753,15 @@ int main(int argc, char *argv[]) {
 			else if(!strcmp(command, "HELP")){
 				printf("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
 				printf("COMMANDS:\n");
-				printf("INIT_MEM\n");
-				printf("ALLOC_PT <page_table_size>\n");
-				printf("DEALLOC <page_table_id>\n");
-				printf("FILL_PHY_MEM <page_table_id>\n");
-				printf("PAGE_HIT <page_table_id> <page_num>\n");
-				printf("PAGE_FAULT <page_table_id> <page_num>\n");
-				printf("LIST [USER | SYSTEM | BS | PAGETABLE page_table_id]\n");
-				printf("LRU_OVERFLOW\n");
+				printf("INIT_FS <device>\n");
+				printf("FORMAT <device> <fs_name> <blocksize>\n");
+				printf("MOUNT <fs_name>\n");
+				printf("OPEN <filename> [ NEW | READ-ONLY \ READ-WRITE ]\n");
+				printf("MKDIR <filepath>\n");
+				printf("READ <filehandle> <block_number> <buf_ptr>\n");
+				printf("WRITE <filehandle> <block_number> <buf_prt>	\n");
+				printf("CLOSE <filehandle>\n");
+				printf("DELETE <filepath>\n");
 				printf("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
 			}
 			else {

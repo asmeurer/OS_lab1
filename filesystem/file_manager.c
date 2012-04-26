@@ -99,8 +99,8 @@ int format(int device_num, char fs_name, int blocksize){
     int i;
     int error;
 
-    if(blocksize != 4 || blocksize != 8 || blocksize != 16){
-        return ERROR_INVALID_BLOCK_SIZE;
+    if(blocksize != 4 && blocksize != 8 && blocksize != 16){
+        //return ERROR_INVALID_BLOCK_SIZE;
     }
 
     if(device_num < 0 || device_num >= MAX_DEVICE){
@@ -125,7 +125,7 @@ int format(int device_num, char fs_name, int blocksize){
     error = delete_internal(device_num, format_me->root);
 
     if (error < 0) {
-        return error;
+        //return error;
     }
 
     /*Erase*/
