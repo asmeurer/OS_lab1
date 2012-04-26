@@ -13,6 +13,7 @@
 
 #include "definitions.h"
 #include "file_hardware.h"
+#include "file_queuemanager.h"
 
 int init_fs(int device);
 int format(int device_num, char fs_name, int blocksize);

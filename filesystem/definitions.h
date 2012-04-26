@@ -88,9 +88,8 @@ struct fcb {
 	char filename[NAME_LIMIT];
 	/*0 0 0 0 0 0 0 (Directory)*/
 	byte bits;
-	struct fcb* dirHead;
-	block* blockhead;
-	block* blocktail;
+	dir_queue_t* dirHead;
+    block_queue_t block_queue;
 	struct fcb* next;
 	struct fcb* prev;
 	byte device_num;
@@ -100,7 +99,7 @@ typedef struct fcb fcb;
 
 /*Device*/
 typedef struct{
-	fcb* filehead;
+	struct dir_queue_t *root;
 	/*Memory size divided by smallest allowed block, divided by 8 bits per byte*/
 	byte bitmap[MEM_SIZE / 32];
 	byte numblock;

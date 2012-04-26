@@ -135,9 +135,12 @@ int create(char fs_name, struct path file_path, int dir)
     int dev = get_device(fs_name);
 
     struct path *next = &file_path;
-    fcb *current_file = device_array[dev].filehead;
+    struct dir_queue_t *current_dir = device_array[dev].root;
+    fcb *current_file = current_dir->head;
 
     fcb *newfile;
+    struct dir_queue_t *new_dirqueue;
+    struct block_queue_t *new_blockqueue;
 
     while (next->next != null) {
         if (current_file == null) {
@@ -169,15 +172,21 @@ int create(char fs_name, struct path file_path, int dir)
     /* If we reach the end of the while loop, it means that the given path
      * already exists, and the given file does not.  So create the file.*/
     newfile = malloc_file();
+    new_blockqueue = malloc_block_queue();
+
+    if (dir) {
+        new_dirqueue = malloc_dir_queue();
+        dir_init_queue(new_dirqueue);
+    } else {
+        new_dirqueue = null;
+    }
+
+    block_init_queue(new_blockqueue);
 
     filename_copy(newfile->filename, next->string);
     newfile->bits = dir;
-    newfile->dirHead = null;
-    newfile->blockhead = null;
-    newfile->blocktail = null;
-    newfile->next = null;
-    /* Put the new file at the head of the directory */
-    newfile->prev = current_file;
+    newfile->dirHead = new_dirqueue;
+    newfile->block_queue = new_blockqueue;
     newfile->device_num = dev;
 
     return ERROR_SUCCESS;
