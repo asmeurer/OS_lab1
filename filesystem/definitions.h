@@ -117,7 +117,7 @@ typedef struct fcb fcb;
 
 /* Device struct */
 typedef struct{
-    struct dir_queue_t *root;
+    fcb *root;
     /* Memory size divided by smallest allowed block, divided by 8 bits per
      * byte */
     byte bitmap[MAX_BLOCK_SIZE];

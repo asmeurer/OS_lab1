@@ -52,12 +52,25 @@ int mount (char fs_name){
 /**
  * Formats the given device.
  *
- * This gives the device a character name, erases all data on the device, and
- * breaks it up into blocks.  This only works if the device is unmounted.
+ * This gives the device a character name, erases all data on the device (all
+ * files, directories, and blocks), and breaks it up into blocks.  It also
+ * creates the root directory. This only works if the device is unmounted.
+ *
+ * @param device_num The device number to be formatted.  Must be between 0 and
+ * MAX_DEVICE - 1.
+ *
+ * @param fs_name The character name for the filesystem.  Must be a single
+ * uppercase letter (A-Z).
+ *
+ * @param blocksize The size of the blocks, in KB.  Must be one of 4, 8, or
+ * 16.
+ *
+ * @return Returns ERROR_SUCCESS on success, else the error code.
  */
 int format(int device_num, char fs_name, int blocksize){
     /*Check for correct num of devices*/
     int i;
+    int error;
 
     if(blocksize != 4 || blocksize != 8 || blocksize != 16){
         return ERROR_INVALID_BLOCK_SIZE;
@@ -72,14 +85,33 @@ int format(int device_num, char fs_name, int blocksize){
         return ERROR_DEVICE_MOUNTED;
     }
 
+    if (fs_name < 'A' || fs_name > 'Z') {
+        return ERROR_BAD_FS_NAME;
+    }
+
     format_me->fs_name = fs_name;
     format_me->numblock = MEM_SIZE/(blocksize<<10);
+
+    error = delete_internal(device_num, format_me->root);
 
     /*Erase*/
     for(i = 0; i < MEM_SIZE / 32; i++){
         format_me->bitmap[i] = 0;
     }
     format_me->bits = format_me->bits | DEVICE_FORMAT_BITMASK;
+
+    format_me->root = malloc_file();
+    filename_copy(format_me->root->filename,"root");
+    format_me->root->bits = 0;
+    format_me->root->dirHead = null;
+    /* This is the reason we don't use create() to make the root directory.
+     * It has a special case for containing_dir, which is just null. */
+    format_me->root->containing_dir = null;
+    format_me->root->block_queue = null;
+    format_me->root->next = null;
+    format_me->root->prev = null;
+    format_me->root->device_num = device_num;
+    format_me->root->error = 0;
 
     return format_me->numblock;
 }
@@ -97,7 +129,7 @@ int unmount(char fs_name){
 fcb *get_file(int dev, path *file_path)
 {
     struct path *next = file_path;
-    struct dir_queue_t *current_dir = device_array[dev].root;
+    struct dir_queue_t *current_dir = device_array[dev].root->dirHead;
     fcb *current_file = current_dir->tail;
 
     while (next->next != null) {
@@ -265,7 +297,7 @@ int create(char fs_name, struct path *file_path, int dir)
     int dev = get_device(fs_name);
 
     struct path *next = file_path;
-    struct dir_queue_t *current_dir = device_array[dev].root;
+    struct dir_queue_t *current_dir = device_array[dev].root->dirHead;
     fcb *current_file = current_dir->tail;
 
     fcb *newfile;
