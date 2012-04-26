@@ -23,7 +23,6 @@ int init_fs (int device){
     return ERROR_SUCCESS;
 }
 
-
 /* Mount: checks if the device has been inited and formated, if so mounts it. Otherwise, returns an error. */
 int mount (char fs_name){
     int i;
@@ -84,19 +83,52 @@ int unmount(char fs_name){
     return ERROR_SUCCESS;
 }
 
-int add_to_open_table(){
-    return ERROR_SUCCESS;
-}
-
-fcb *get_file(path *file_path)
+/* Convert a file path into a file.  This is very similar to the search
+ * inside create(). */
+fcb *get_file(int dev, path *file_path)
 {
+    struct path *next = file_path;
+    struct dir_queue_t *current_dir = device_array[dev].root;
+    fcb *current_file = current_dir->tail;
+
+    while (next->next != null) {
+        if (current_file == null) {
+            error_file.device_num = ERROR_DIR_IS_FILE;
+            return &error_file;
+        } else if (filename_eq(current_file->filename, next->string)) {
+            if (next->next == null) {
+                return current_file;
+            } else if (!(current_file->bits & FCB_DIR_BITMASK)) {
+                error_file.device_num = ERROR_DIR_IS_FILE;
+                return &error_file;
+            } else {
+                next = next->next;
+                current_dir = current_file->dirHead;
+                current_file = current_dir->tail;
+            }
+        } else {
+            current_file = current_file->next;
+        }
+    }
+
     return null;
 }
 
-int open(path *file_path, int write){
-    fcb *file = get_file(file_path);
+int open(char fs_name, path *file_path, int write){
+    int dev = get_device(fs_name);
+    fcb *file = get_file(dev, file_path);
     int i;
     int found = 0;
+
+    if (dev < 0) {
+        /* There was an error in get_device() */
+        return dev;
+    }
+
+    if (file->device_num < 0) {
+        /* There was an error with get_file() */
+        return file->device_num;
+    }
 
     /* Find and empty open file slot */
     for (i = 0; i < MAX_OPEN; i++) {
@@ -185,11 +217,11 @@ int read(int filehandle, short block_number, int buf_ptr){
     return ERROR_SUCCESS;
 }
 
-int create(char fs_name, struct path file_path, int dir)
+int create(char fs_name, struct path *file_path, int dir)
 {
     int dev = get_device(fs_name);
 
-    struct path *next = &file_path;
+    struct path *next = file_path;
     struct dir_queue_t *current_dir = device_array[dev].root;
     fcb *current_file = current_dir->tail;
 

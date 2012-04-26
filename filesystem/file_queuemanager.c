@@ -12,29 +12,6 @@
 /* This is the same as our queuemanager from the process manager, except the
  * queue elements are now queue_message_t (see ipc_definitions.h).  */
 
-/* Boilerplate initialization (since we can't use malloc) */
-
-fcb error_file =
-{
-    .filename = "\0",
-    .bits = 0,
-    .dirHead = null,
-    .blockhead = null,
-    .blocktail = null,
-    .next = null,
-    .prev = null,
-    .device_num = -1            /* This is where any error codes will
-                                 * go. */
-};
-
-block error_block =
-{
-    .addr = 0,
-    .next = null,
-    .prev = null,
-    .error = -1                 /* This is where any error codes will go. */
-};
-
 /**
  * Function to reset the deinit flag for the given queue.
  */

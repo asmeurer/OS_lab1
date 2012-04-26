@@ -12,6 +12,25 @@
 #include "definitions.h"
 #include "file_hardware.h"
 
+fcb error_file =
+{
+    .filename = "\0",
+    .bits = 0,
+    .dirHead = null,
+    .block_queue = null,
+    .next = null,
+    .prev = null,
+    .device_num = -1            /* This is where any error codes will
+                                 * go. */
+};
+
+block error_block =
+{
+    .addr = 0,
+    .next = null,
+    .prev = null,
+    .error = -1                 /* This is where any error codes will go. */
+};
 
 /* This is the struct for the queues. */
 
