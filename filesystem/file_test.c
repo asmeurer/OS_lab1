@@ -717,7 +717,7 @@ int main(int argc, char *argv[]) {
                 /*Initial split of line*/
                 init_arg = strtok(line, " ");
                 /*If there exists arguments*/
-                if (strcmp(init_arg, "\n" != 0) {
+                if (strcmp(init_arg, "\n") != 0) {
                     if (!strcmp(init_arg, "DEVICES\n")) {
                         printf("LIST USER called\n");
                         list_devices();
@@ -740,7 +740,7 @@ int main(int argc, char *argv[]) {
 					printf("Usage: LIST [DEVICES|FILEINFO <filename>|DIRECTORY]\n");
 					textcolor(RESET, -1, -1);
 				}
-                
+			}
 			
 			else if (!strcmp(command, "#")) {
 				printf("\n################################################################################\n");
