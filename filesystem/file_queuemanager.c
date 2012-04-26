@@ -19,8 +19,6 @@ void dir_deinit(struct dir_queue_t *queue) {
     queue->initialized = 0;
 }
 
-void search_file_blocks(
-
 /**
  * Function to clear and set the initilized flag for the specified queue.
  */
