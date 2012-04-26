@@ -25,6 +25,7 @@ int write(int filehandle, short block_number, int buf_ptr);
 int read(int filehandle, short block_number, int buf_ptr);
 int create(char fs_name, struct path *file_path, int dir);
 int delete(char fs_name, struct path *file_path);
+int delete_internal(int dev, fcb *file);
 int get_device(char fs_name);
 int filename_eq(char *string1, char *string2);
 void filename_copy(char *source, char *dest);

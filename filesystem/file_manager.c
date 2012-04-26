@@ -330,10 +330,17 @@ int create(char fs_name, struct path *file_path, int dir)
 
 int delete(char fs_name, struct path *file_path)
 {
-    int error;
-    int dev = get_device(fs_name);
+        int dev = get_device(fs_name);
     fcb *file = get_file(dev, file_path);
+    return delete_internal(dev, file);
+}
+
+
+int delete_internal(int dev, fcb *file)
+{
+    int error;
     block *file_block = null;
+    fcb *next_file;
 
     /* If the file is a directory, delete it if and only if it is empty. */
     if (file->bits | FCB_DIR_BITMASK) {
@@ -345,8 +352,13 @@ int delete(char fs_name, struct path *file_path)
             Free(file);
         } else {
             /* We have to support recursively deleting a directory (unlike we
-             * originally planned), because format() needs to be able to do this. */
-            while (
+             * originally planned), because format() needs to be able to do
+             * this. */
+            next_file = dir_dequeue(file->dirHead);
+            while (next_file != null) {
+                delete_internal(dev, next_file);
+                next_file = dir_dequeue(file->dirHead);
+            }
         }
     } else {
         file = dir_delete(file->containing_dir, file);
@@ -368,6 +380,7 @@ int delete(char fs_name, struct path *file_path)
     }
     return ERROR_SUCCESS;
 }
+
 
 /* Convert a filesystem character name to a device number */
 int get_device(char fs_name)
