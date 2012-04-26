@@ -1,10 +1,12 @@
 #INIT_FS TESTS
 # Init a single device 
 INIT_FS 0
-# Init multiple devices 
+LIST DEVICES
+# Init multiple devices
 INIT_FS 1
 INIT_FS 2
 INIT_FS 3
+LIST DEVICES
 # Attempt to init a device not known
 INIT_FS 5
 # FORMAT TESTS
@@ -40,6 +42,7 @@ MKDIR C/TEST/DIR1/DIR2/DIR3/DIR4
 MKDIR C/TEST/DIR1/DIR2/DIR3/DIR4/DIR5
 MKDIR C/TEST/DIR1/DIR2/DIR3/DIR4/DIR5/DIR6
 MKDIR C/TEST/DIR1/DIR2/DIR3/DIR4/DIR5/DIR6/DIR7
+LIST C/TEST/DIR1/DIR2/DIR3/DIR4/DIR5/DIR6/DIR7
 # Attempt to make a directory with the path containing a file
 OPEN C/TEST/DIR1/DIR2/DIR3/DIR4/DIR5/DIR6/DIR7/file
 MKDIR C/TEST/DIR1/DIR2/DIR3/DIR4/DIR5/DIR6/DIR7/file/DIR8
@@ -75,7 +78,11 @@ OPEN C READ-WRITE
 # Test if write works correctly
 OPEN C/a READ-WRITE
 WRITE 0 0 0
-# Attempt to write on top of the block
+CLOSE 0
+# Attempt to write to a read-only file
+OPEN C/a READ-ONLY
+WRITE 0 0 0
+# Attempt to write on a block that is full
 WRITE 0 0 0
 # Attempt to write with an invalid filehandle
 WRITE 10 0 0
@@ -102,7 +109,15 @@ READ 1 0 0
 READ 0 0 10
 # Attemp to read with an invalid block number
 READ 0 9999999 0
+# Attempt to read an empty block on the file
+READ 0 11 0
 # Attempt to fill buffer on a read
+READ 0 1 1
+READ 0 2 2
+READ 0 3 3
+READ 0 4 4
+READ 0 5 5
+READ 0 6 6
 # Close file
 CLOSE 0
 # CLOSE TESTS
