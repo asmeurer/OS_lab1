@@ -35,7 +35,93 @@ void list_devices(){
 	}
 }
 
+int list_fileinfo(char fs_name, path *file_path){
+    fcb* temp;
+    block* temp2;
+    int dev = get_device(fs_name);
+    fcb *file = get_file(dev, file_path);
+    if (dev < 0) {
+        /* There was an error in get_device() */
+        return dev;
+    }
+    if (file->error < 0) {
+        /* There was an error with get_file() */
+        return file->error;
+    }
+    printf("Listing file ");
+    printPath(file_path, fs_name);
+    printf("\n");
+    printf("Filename: %s	", file->filename);
+    printf("Type: ");
+    if(file->bits & FCB_DIR_BITMASK){
+		printf("Directory	# of files: %d\n", file->dirHead->size);
+		printf("Listing files in directory:\n");
+		temp = file->dirHead->head;
+		if (temp == NULL){
+			printf("Directory empty\n");
+		}
+		else{
+			while(temp != NULL){
+				printf("Filename: %s	", temp->filename);
+				printf("Type: ");
+				if(temp->bits & FCB_DIR_BITMASK){
+					printf("Directory");
+				}
+				else{
+					printf("File");
+				}
+				printf("\n");
+				temp = temp->next;
+			}
+		}
+	}
+	else{
+		printf("File\n");
+		printf("Size: %d\n", file->block_queue->size);
+		temp2 = file->block_queue->head;
+		if (temp2 == NULL){
+			printf("File empty\n");
+		}
+		else{
+			while(temp2 != NULL){
+				printf("Block Addr: %d\n", temp2->addr);
+				temp = temp->next;
+			}
+		}
+	}
+	return ERROR_SUCCESS;
+}
 
+void listRec(fcb* file){
+	fcb* temp;
+	/*If it is a directory*/
+	if(file->bits & FCB_DIR_BITMASK){
+		printf("Directory %s, %d files:\n", file->filename, file->dirHead->size);
+		temp = file->dirHead->head;
+		while(temp != NULL){
+			listRec(temp);
+			temp = temp->next;
+		}
+		printf("End of directory %s\n", file->filename);
+	}
+	else{
+		printf("Filename: %s	Size: %d\n", file->filename, file->block_queue->size);
+	}
+}
+
+void listDirectory(){
+	int i = 0;
+	for(i = 0; i < MAX_DEVICE; i++){
+		if(device_array[i].bits & DEVICE_INIT_BITMASK &&
+		device_array[i].bits & DEVICE_FORMAT_BITMASK &&
+		device_array[i].bits & DEVICE_MOUNTED_BITMASK){
+			printf("Listing device %c\n", device_array[i].fs_name);
+			listRec(device_array[i].root);
+			printf("End of device %c\n", device_array[i].fs_name);
+		}
+	}
+	
+}
 
 
 
@@ -310,9 +396,9 @@ int main(int argc, char *argv[]) {
 					else{
 						if(int_arg >= MAX_DEVICE || int_arg < 0){
 							textcolor(BRIGHT, RED, BLACK);
-                            printf("A device must be a number from 0-4.\n");
-                            textcolor(BRIGHT, -1, -1);
-                            error = 1;
+							printf("A device must be a number from 0-4.\n");
+							textcolor(BRIGHT, -1, -1);
+							error = 1;
 						}else{
 							printf("Calling init_fs with device %d\n", int_arg);
 							return_error=init_fs(int_arg);
@@ -453,12 +539,10 @@ int main(int argc, char *argv[]) {
 				init_arg = strtok(line, "\n");
 				/*If there exists arguments*/
 				if (strcmp(init_arg, "\n") != 0 && init_arg != NULL) {
-					printf("%s\n", init_arg);
 					init_arg++;
-					printf("%s\n", init_arg);
-                    head_path_arg = parsePath(init_arg, &char_arg);
-                    if (head_path_arg == NULL){
-                        error = 1;
+					head_path_arg = parsePath(init_arg, &char_arg);
+					if (head_path_arg == NULL){		
+						error = 1;
 					}else{
 						printf("Calling MKDIR on ");
 						printPath(head_path_arg, char_arg);
@@ -713,30 +797,47 @@ int main(int argc, char *argv[]) {
 			}
 
 			else if (!strcmp(command, "LIST")) {
-                fgets(line, LINE_MAX, file);
-                error = 1;
-                /*Initial split of line*/
-                init_arg = strtok(line, " ");
-                /*If there exists arguments*/
-                if (strcmp(init_arg, "\n") != 0) {
-                    if (!strcmp(init_arg, "DEVICES\n")) {
-                        printf("LIST USER called\n");
-                        list_devices();
-                        error = 0;
-                    }
-                    else if (!strcmp(init_arg, "FILEINFO\n")) {
-                        printf("LIST SYSTEM called\n");
-                        error = 0;
-                    }
-                    else if (!strcmp(init_arg, "DIRECTORY\n")) {
-                        printf("LIST BS (Backing Store) called\n");
-                        error = 0;
-                    }
-                    else{
-                        error = 1;
-                    }
-                }
-                if(error == 1){
+				fgets(line, LINE_MAX, file);
+				error = 1;
+				/*Initial split of line*/
+				init_arg = strtok(line, " ");
+				/*If there exists arguments*/
+				if (strcmp(init_arg, "\n") != 0) {
+					if (!strcmp(init_arg, "DEVICES\n")) {
+						printf("Calling LIST DEVICES\n");
+						list_devices();
+						error = 0;
+					}
+					/*fileinfo has no parameter*/
+					else if (!strcmp(init_arg, "FILEINFO\n")){
+						error = 1;
+					}
+					else if (!strcmp(init_arg, "FILEINFO")) {
+						init_arg = strtok(NULL, "\n");
+						/*Get rid of space*/
+						init_arg++;
+						head_path_arg = parsePath(init_arg, &char_arg);
+						if (head_path_arg == NULL){		
+							error = 1;
+						}else{
+							printf("Calling LIST FILEINFO\n");
+							return_error = list_fileinfo(char_arg, head_path_arg);
+							if(return_error < 0){
+								errorToString(return_error, "LIST FILEINFO");
+							}
+							error = 0;
+						}
+					}
+					else if (!strcmp(init_arg, "DIRECTORY\n")) {
+						printf("LIST DIRECTORY called\n");
+						listDirectory();
+						error = 0;
+					}
+					else{
+						error = 1;
+					}
+				}
+				if(error == 1){
 					textcolor(BRIGHT, RED, BLACK);
 					printf("Usage: LIST [DEVICES|FILEINFO <filename>|DIRECTORY]\n");
 					textcolor(RESET, -1, -1);

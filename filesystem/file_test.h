@@ -17,4 +17,15 @@
 #include <ctype.h>
 #include <limits.h>
 
+void list_devices();
+int list_fileinfo(char fs_name, path *file_path);
+char *fgetstring(FILE* fFile);
+path* parsePath(char* pathname, char* fs);
+int strToIntArg(char* string);
+void printPath(path* head, char fs_name);
+void errorToString(int error, char* command);
+void listRec(fcb* file);
+void listDirectory();
+
+
 #endif
