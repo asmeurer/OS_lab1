@@ -10,7 +10,29 @@
 #include "file_test.h"
 
 void list_devices(){
-	
+	int i;
+	printf("Listing devices:\n");
+	for(i = 0; i < MAX_DEVICE; i++){
+		/*If device is initialized*/
+		if (device_array[i].bits & DEVICE_INIT_BITMASK){
+			printf("Device number: %d	", i);
+			printf("Formated: ");
+			if(device_array[i].bits & DEVICE_FORMAT_BITMASK){
+				printf("Yes	Fs_name: %c	", device_array[i].fs_name);
+			}
+			else{
+				printf("No	Fs_name: -	");
+			}
+			printf("Mounted: ");
+			if(device_array[i].bits & DEVICE_MOUNTED_BITMASK){
+				printf("Yes");
+			}
+			else{
+				printf("No");
+			}
+			printf("\n");
+		}
+	}	
 }
 
 
@@ -684,10 +706,41 @@ int main(int argc, char *argv[]) {
 				}
 				if(error == 1){
 					textcolor(BRIGHT, RED, BLACK);
-					printf("Usage: MKDIR <dirname>\n");
+					printf("Usage: DELETE <filepath>\n");
 					textcolor(RESET, -1, -1);
 				}
 			}
+			
+			else if (!strcmp(command, "LIST")) {
+                fgets(line, LINE_MAX, file);
+                error = 1;
+                /*Initial split of line*/
+                init_arg = strtok(line, " ");
+                /*If there exists arguments*/
+                if (strcmp(init_arg, "\n" != 0) {
+                    if (!strcmp(init_arg, "DEVICES\n")) {
+                        printf("LIST USER called\n");
+                        list_devices();
+                        error = 0;
+                    }
+                    else if (!strcmp(init_arg, "FILEINFO\n")) {
+                        printf("LIST SYSTEM called\n");
+                        error = 0;
+                    }
+                    else if (!strcmp(init_arg, "DIRECTORY\n")) {
+                        printf("LIST BS (Backing Store) called\n");
+                        error = 0;
+                    }
+                    else{
+                        error = 1;
+                    }
+                }
+                if(error == 1){
+					textcolor(BRIGHT, RED, BLACK);
+					printf("Usage: LIST [DEVICES|FILEINFO <filename>|DIRECTORY]\n");
+					textcolor(RESET, -1, -1);
+				}
+                
 			
 			else if (!strcmp(command, "#")) {
 				printf("\n################################################################################\n");
