@@ -354,6 +354,7 @@ int delete(char fs_name, struct path *file_path)
                 return error;
             }
             Free(file_block);
+            file_block = block_dequeue(file->block_queue);
         }
     }
     return ERROR_SUCCESS;
