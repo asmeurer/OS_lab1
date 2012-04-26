@@ -92,10 +92,11 @@ typedef struct{
     unsigned short addr;
     enum rw access_type;
     byte init;
+    int device_num;
 } buffer_slot;
 
 /* Buffers */
-buffer_slot buffers [NUM_BUFFERS][BUFFER_SIZE];
+buffer_slot buffers[NUM_BUFFERS][BUFFER_SIZE];
 
 /* Block struct */
 struct block{

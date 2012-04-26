@@ -10,23 +10,30 @@
 #include "file_manager.h"
 
 /**
- * Checks if the device is known. If so, it sets the device name.
+ * Initialize the filesystem manager data structures.
  *
- * @param device The integer index for the device to initialize
+ * @param device The integer index for a device.
  *
  * @return Returns ERROR_SUCCESS on success, else an error code.
  */
-int init_fs (int device){
+int init_fs(int device){
     int i;
-    /*Unmount all devices*/
+    /* Unmount all devices */
     for (i = 0; i < MAX_DEVICE; i++){
         device_array[i].bits = device_array[i].bits & (~DEVICE_MOUNTED_BITMASK);
     }
-    /*Clear open file array*/
+
+    /* Clear open file array. */
     for (i = 0; i < MAX_OPEN; i++){
         open_files[i].bits = open_files[i].bits | (~OPEN_TYPE_OPEN_BITMASK);
         open_files[i].file = null;
     }
+
+    /* Clear all the buffers. */
+    for (i = 0; i < NUM_BUFFERS; i++) {
+        buf_flush(i);
+    }
+
     return ERROR_SUCCESS;
 }
 
@@ -38,7 +45,8 @@ int init_fs (int device){
  *
  * @return Returns ERROR_SUCCESS on success, else an error code.
  */
-int mount (char fs_name){
+int mount(char fs_name){
+    int i;
     int dev;
     dev = get_device(fs_name);
 
@@ -60,6 +68,9 @@ int mount (char fs_name){
     }
 
     device_array[dev].bits |= DEVICE_MOUNTED_BITMASK;
+
+    for (i = 1; i < NUM_BUFFERS; i++) {
+    }
 
     return ERROR_SUCCESS;
 }
@@ -148,6 +159,7 @@ int format(int device_num, char fs_name, int blocksize){
 int unmount(char fs_name){
     int dev = get_device(fs_name);
     int i;
+    int j;
 
     if (dev < 0) {
         /* Bad fs_name */
@@ -169,6 +181,23 @@ int unmount(char fs_name){
     for(i = 0; i < MAX_OPEN; i++){
         if ((open_files[i].bits & OPEN_TYPE_OPEN_BITMASK) && (open_files[i].file->device_num == dev)) {
             return ERROR_FILES_ARE_OPEN;
+        }
+    }
+
+    /* Before a device can be unmounted, the buffers must be cleared.  This
+     * calls the hardware simulation of flushing the buffers that have buffer
+     * slots corresponding to this device.  In a real system, this would
+     * amount to blocking the unmount until all such buffers have been
+     * cleared. */
+    for (i = 0; i < NUM_BUFFERS; i++) {
+        for (j = 0; j < BUFFER_SIZE; j++) {
+            if (buffers[i][j].device_num == dev) {
+                /* This buffer has a slot corresponding to this device, so
+                 * flush it.  There's no need to check for more; just one is
+                 * enough to warrant this. */
+                buf_flush(i);
+                break;
+            }
         }
     }
 
@@ -365,10 +394,11 @@ int write(int filehandle, unsigned short block_number, int buf_ptr){
 
     /*Find next buffer slot*/
     for(i = 0; i < BUFFER_SIZE; i++){
-        if(buffers[buf_ptr]->init == 0){
-            buffers[buf_ptr]->init = 1;
-            buffers[buf_ptr]->addr = block_number;
-            buffers[buf_ptr]->access_type = WRITE;
+        if(buffers[buf_ptr][i].init == 0){
+            buffers[buf_ptr][i].init = 1;
+            buffers[buf_ptr][i].addr = block_number;
+            buffers[buf_ptr][i].access_type = WRITE;
+            buffers[buf_ptr][i].device_num = file->device_num;
             break;
         }
         if (i == BUFFER_SIZE){
@@ -426,10 +456,11 @@ int read(int filehandle, unsigned short block_number, int buf_ptr){
 
     /* Find next buffer slot */
     for(i = 0; i < BUFFER_SIZE; i++){
-        if(buffers[buf_ptr]->init == 0){
-            buffers[buf_ptr]->init = 1;
-            buffers[buf_ptr]->addr = block_number;
-            buffers[buf_ptr]->access_type = READ;
+        if(buffers[buf_ptr][i].init == 0){
+            buffers[buf_ptr][i].init = 1;
+            buffers[buf_ptr][i].addr = block_number;
+            buffers[buf_ptr][i].access_type = READ;
+            buffers[buf_ptr][i].device_num = file->device_num;
             break;
         }
         if (i == BUFFER_SIZE){
