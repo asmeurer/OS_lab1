@@ -289,32 +289,57 @@ int open(char fs_name, path *file_path, int write){
 }
 
 /**
- * Writes the block_number to the file handle
+ * Writes the block block_number to the file corresponding to filehandle using
+ * the buffer corresponding to buf_ptr.
+ *
+ * @param filehandle The file handle of the file to write. This is the number
+ * returned by open().
+ *
+ * @param block_number The address of the block to be written.
+ *
+ * @param buf_ptr The index of the buffer to use for writing.
+ *
+ * @return Returns ERROR_SUCCESS on success and an error code otherwise.
  */
-int write(int filehandle, short block_number, int buf_ptr){
+int write(int filehandle, unsigned short block_number, int buf_ptr){
     block *temp;
     fcb *file;
     int error;
     int i = 0;
 
+    /* Check the bounds of the filehandle */
+    if (filehandle < 0 || filehandle >= MAX_OPEN) {
+        return ERROR_FILE_HANDLE_OUT_OF_RANGE;
+    }
+
+    /* Check the bounds on the buf_ptr */
+    if (buf_ptr < 0 || buf_ptr >= NUM_BUFFERS) {
+        return ERROR_BUFFER_NOT_EXIST;
+    }
+
     /* Check if file is open */
     if (!(open_files[filehandle].bits & OPEN_TYPE_OPEN_BITMASK)){
         return ERROR_FILE_NOT_OPEN;
     }
-
-    /* Check if block number is part of file */
     file = open_files[filehandle].file;
+
+    /* Check if the file has write permissions. */
+    if (!(file->bits & OPEN_TYPE_WRITE_ACC_BITMASK)) {
+        return ERROR_FILE_IS_READ_ONLY;
+    }
+
+    /* Check if file is a directory */
     if(!(file->bits & FCB_DIR_BITMASK)){
         return ERROR_FILE_IS_DIR;
     }
 
-    /* Check if the block number is associated with another file, if not set the block */
+    /* Check if the block number is associated with another file. If not set the block. */
     error = set_block_full(file->device_num, block_number);
     if(error != ERROR_SUCCESS){
         return error;
     }
 
-    /* Malloc the block, enqueue it to the block_queue and check for any errors */
+    /* Malloc the block, enqueue it to the block_queue, and check for any errors */
     temp = malloc_block();
     temp->addr = block_number;
     error = block_enqueue(file->block_queue, temp);
@@ -339,7 +364,20 @@ int write(int filehandle, short block_number, int buf_ptr){
 
 }
 
-int read(int filehandle, short block_number, int buf_ptr){
+/**
+ * Reads the block block_number from the file corresponding to filehandle
+ * using the buffer corresponding to buf_ptr.
+ *
+ * @param filehandle The file handle of the file to write. This is the number
+ * returned by open().
+ *
+ * @param block_number The address of the block to be written.
+ *
+ * @param buf_ptr The index of the buffer to use for writing.
+ *
+ * @return Returns ERROR_SUCCESS on success and an error code otherwise.
+ */
+int read(int filehandle, unsigned short block_number, int buf_ptr){
     fcb *file;
 
     int i = 0;
@@ -559,7 +597,7 @@ void filename_copy(char *source, char *dest)
  * @param dev Device number to search.
  * @return Returns the index of the empty backing frame.
  */
-short find_empty_block(int dev) {
+unsigned short find_empty_block(int dev) {
     int prefix;
     const int blocks_free_size = MAX_BLOCK_SIZE/8;
     byte not_byte;
@@ -604,7 +642,7 @@ short find_empty_block(int dev) {
  * @param addr The address to be set as empty.
  * @return Returns an error code.
  */
-int set_block_empty(int dev, short addr) {
+int set_block_empty(int dev, unsigned short addr) {
     int prefix;
     int suffix;
     byte suffix_bitmask;
@@ -635,7 +673,7 @@ int set_block_empty(int dev, short addr) {
  * @param addr The address to be set as full.
  * @return Returns an error code.
  */
-int set_block_full(int dev, short addr) {
+int set_block_full(int dev, unsigned short addr) {
     int prefix;
     int suffix;
     byte suffix_bitmask;

@@ -53,6 +53,8 @@ typedef unsigned char byte;
 #define ERROR_ALREADY_MOUNTED -31
 #define ERROR_ALREADY_UNMOUNTED -32
 #define ERROR_FS_NAME_NOT_EXISTS -33
+#define ERROR_FILE_IS_READ_ONLY -34
+#define ERROR_FILE_HANDLE_OUT_OF_RANGE -35
 
 /* Constants
  *
