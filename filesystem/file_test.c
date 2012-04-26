@@ -120,7 +120,7 @@ void listDirectory(){
 			printf("End of device %c\n", device_array[i].fs_name);
 		}
 	}
-	
+
 }
 
 
@@ -541,7 +541,7 @@ int main(int argc, char *argv[]) {
 				if (strcmp(init_arg, "\n") != 0 && init_arg != NULL) {
 					init_arg++;
 					head_path_arg = parsePath(init_arg, &char_arg);
-					if (head_path_arg == NULL){		
+					if (head_path_arg == NULL){
 						error = 1;
 					}else{
 						printf("Calling MKDIR on ");
@@ -817,7 +817,7 @@ int main(int argc, char *argv[]) {
 						/*Get rid of space*/
 						init_arg++;
 						head_path_arg = parsePath(init_arg, &char_arg);
-						if (head_path_arg == NULL){		
+						if (head_path_arg == NULL){
 							error = 1;
 						}else{
 							printf("Calling LIST FILEINFO\n");
@@ -858,7 +858,7 @@ int main(int argc, char *argv[]) {
 				printf("INIT_FS <device>\n");
 				printf("FORMAT <device> <fs_name> <blocksize>\n");
 				printf("MOUNT <fs_name>\n");
-				printf("OPEN <filename> [ NEW | READ-ONLY \ READ-WRITE ]\n");
+				printf("OPEN <filename> [ NEW | READ-ONLY | READ-WRITE ]\n");
 				printf("MKDIR <filepath>\n");
 				printf("READ <filehandle> <block_number> <buf_ptr>\n");
 				printf("WRITE <filehandle> <block_number> <buf_prt>	\n");
