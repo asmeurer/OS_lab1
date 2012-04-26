@@ -115,4 +115,12 @@ typedef struct{
 /*Open files array*/
 open_type open_files[MAX_OPEN];
 
+/* A simple linked list of strings to represent a file path */
+struct path
+{
+    char string[NAME_LIMIT];
+    struct path *next;
+    struct path *prev;
+};
+
 #endif

@@ -43,7 +43,7 @@ char *fgetstring(FILE* fFile){
 int strToIntArg(char* string){
 	int i;
 	/*Loop through each character in string checking if it is a digit*/
-	for(i = 1; i < strlen(string) - 1; i++){
+	for(i = 0; i < strlen(string); i++){
 		if (!isdigit(string[i])){
 			return ERROR_ARG_NOT_INT;
 		}
@@ -57,6 +57,8 @@ int main(int argc, char *argv[]) {
 	char line[LINE_MAX];
 	int int_arg;
 	int int_arg2;
+	char char_arg;
+	int temp;
 	char* str_arg;
 	char* str_arg2;
 	char* init_arg;
@@ -86,6 +88,7 @@ int main(int argc, char *argv[]) {
 		exit(-1);
 	}
 
+
 	while(1) {
 		/*printf("***reading the file***\n");*/
 		if (file == stdin) {
@@ -110,21 +113,32 @@ int main(int argc, char *argv[]) {
 					error = 0;
 					int_arg = strToIntArg(init_arg);
 					if(int_arg == ERROR_ARG_NOT_INT){
+						printf("Device num must be an integer\n");
 						error = 1;
 					}
 					else{
-						init_arg = strtok(line, " ");
+						init_arg = strtok(NULL, " ");
 						/*Check size of init_arg, if more than one character, error*/
 						/*-1 for null character*/
-						if ((sizeof(init_arg)/sizeof(char))-1 != 1){
+						temp = strlen(init_arg);
+						if (temp != 1 || init_arg[0]<'A' || init_arg[0]>'Z'){
+							printf("fs_name must be one uppercase character A-Z\n");
 							error = 1;
 						}
 						else{
-							printf("Argument: %s\n", init_arg);
+							char_arg = init_arg[0];
 							/*Grab rest of line*/
-							init_arg = strtok(line, "\n");
+							init_arg = strtok(NULL, "\n");
 							int_arg2 = strToIntArg(init_arg);
-						//	printf("Calling FORMAT with device %d, name %c, ");
+							if(int_arg2 == ERROR_ARG_NOT_INT){
+								printf("Block size must be an integer\n");
+								error = 1;
+							}
+							else{
+								printf("Calling FORMAT with device %d, name %c, blocksize %d\n", int_arg, char_arg, int_arg2);
+								/*TODO: Call format*/
+								error = 0;
+							}
 						}
 					}
 				}
@@ -135,28 +149,28 @@ int main(int argc, char *argv[]) {
 					textcolor(RESET, -1, -1);
 				}
 			}
-			else if (!strcmp(command, "DEALLOC_PT")){
+			else if (!strcmp(command, "MOUNT")){
 				fgets(line, LINE_MAX, file);
 				error = 1;
 				/*Initial split of line*/
 				init_arg = strtok(line, "\n");
 				/*If there exists arguments*/
 				if (init_arg != NULL){
-					error = 0;
-					/*Loop through each character in string checking if it is a digit*/
-					for(j = 1; j < strlen(init_arg) - 1; j++){
-						if (!isdigit(init_arg[j])){
-							error = 1;
-							break;
-						}
+					temp = strlen(init_arg);
+					if (temp != 1 || init_arg[0]<'A' || init_arg[0]>'Z'){
+						printf("fs_name must be one uppercase character A-Z\n");
+						error = 1;
 					}
-					if (error == 0){
-						int_arg = atoi(init_arg);
+					else{
+						char_arg = init_arg[0];
+						printf("Calling MOUNT with name %c\n", char_arg);
+						/*TODO: Call mount*/
+						error = 0;
 					}
 				}
 				if (error == 1){
 					textcolor(BRIGHT, RED, BLACK);
-					printf("Usage: DEALLOC <page_table_id>\n");
+					printf("Usage: MOUNT <fs_name>\n");
 					textcolor(RESET, -1, -1);
 				}
 			}
@@ -177,7 +191,7 @@ int main(int argc, char *argv[]) {
 					}
 					if (error == 0){
 						int_arg = atoi(init_arg);
-						
+
 					}
 				}
 				if (error == 1){
@@ -186,13 +200,15 @@ int main(int argc, char *argv[]) {
 					textcolor(RESET, -1, -1);
 				}
 			}
-			else if (!strcmp(command, "LIST")) {
+			else if (!strcmp(command, "OPEN")) {
 				fgets(line, LINE_MAX, file);
 				error = 1;
 				/*Initial split of line*/
 				init_arg = strtok(line, " ");
 				/*If there exists arguments*/
 				if (strcmp(init_arg, "\n") != 0) {
+					strcpy(str_arg, init_arg);
+					
 					if (!strcmp(init_arg, "USER\n")) {
 						error = 0;
 					}
