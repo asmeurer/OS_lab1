@@ -217,7 +217,9 @@ void printPath(path* head, char fs_name){
 }
 
 void errorToString(int error, char* command){
-	printf("Error in %s, code %d: ", command, error);
+    textcolor(BRIGHT, RED, BLACK);
+    printf("Error in %s, code %d: ", command, error);
+    textcolor(RESET, -1, -1);
 	switch(error){
 		case ERROR_INVALID_DEVICE_NUM:
 			printf("Device number not valid\n");
