@@ -7,7 +7,6 @@
  *	Sheng Lundquist
  */
 
-#include "definitions.h"
 #include "file_test.h"
 
 /**
@@ -61,7 +60,7 @@ char parsePath(char* pathname, path* head){
 		if (temp == NULL){
 			temp = (path*) malloc(sizeof(path));
 			head = temp;
-			
+
 		}
 		else{
 			temp->next = (path*) malloc(sizeof(path));
@@ -113,7 +112,7 @@ int main(int argc, char *argv[]) {
 	char* init_arg;
 	path* head_path_arg = NULL;
 	int return_error = 0;
-	
+
 
 	FILE *file;
 	if (argc == 1){
@@ -173,14 +172,14 @@ int main(int argc, char *argv[]) {
 						 }else{
 							 init_fs(int_arg);
 							 printf("File System has been initialized.\n");
-						 }	 
+						 }
 					}
 				}
-				
+
 			if(error == 1){
-				
-			}			
-				
+
+			}
+
 			}
 			else if (!strcmp(command, "FORMAT")) {
 				fgets(line, LINE_MAX, file);
@@ -221,7 +220,7 @@ int main(int argc, char *argv[]) {
 						}
 					}
 				}
-				
+
 				if (error == 1){
 					textcolor(BRIGHT, RED, BLACK);
 					printf("Usage: FORMAT <device_num> <fs_name> <blocksize>\n");
@@ -266,10 +265,10 @@ int main(int argc, char *argv[]) {
 					/*Option*/
 					str_arg2 = strtok(NULL, "\n");
 					/*If there is a second argument*/
-					if(str_arg2 != NULL){						
+					if(str_arg2 != NULL){
 						char_arg = parsePath(str_arg, head_path_arg);
 						if (head_path_arg == NULL){
-							
+
 							error = 1;
 						}
 						else{

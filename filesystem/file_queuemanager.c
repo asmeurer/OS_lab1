@@ -14,6 +14,27 @@
  * queue elements are now fcb or blocks, and they take pointers (because the
  * hardware simulation can call malloc).  */
 
+fcb error_file =
+{
+    .filename = "\0",
+    .bits = 0,
+    .dirHead = null,
+    .containing_dir = null,
+    .block_queue = null,
+    .next = null,
+    .prev = null,
+    .device_num = -1,
+    .error = -1                   /* This is where any error codes will go. */
+};
+
+block error_block =
+{
+    .addr = 0,
+    .next = null,
+    .prev = null,
+    .error = -1                 /* This is where any error codes will go. */
+};
+
 /**
  * Function to clear the specified directory queue.
  *

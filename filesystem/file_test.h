@@ -4,6 +4,10 @@
 
 #ifndef MEM_TEST_H
 #define MEM_TEST_H
+
+#include "file_manager.h"
+#include "file_hardware.h"
+
 #include "definitions.h"
 #include <stdlib.h>
 #include <stdio.h>

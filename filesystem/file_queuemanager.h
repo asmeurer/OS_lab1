@@ -11,26 +11,10 @@
 
 #include "definitions.h"
 
-fcb error_file =
-{
-    .filename = "\0",
-    .bits = 0,
-    .dirHead = null,
-    .containing_dir = null,
-    .block_queue = null,
-    .next = null,
-    .prev = null,
-    .device_num = -1,
-    .error = -1                   /* This is where any error codes will go. */
-};
 
-block error_block =
-{
-    .addr = 0,
-    .next = null,
-    .prev = null,
-    .error = -1                 /* This is where any error codes will go. */
-};
+extern fcb error_file;
+
+extern block error_block;
 
 /* This is the struct for the queues. */
 
