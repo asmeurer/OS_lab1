@@ -98,6 +98,119 @@ void printPath(path* head, char fs_name){
 	}
 }
 
+void errorToString(int error, char* command){
+	printf("Error in %s, code %d: ", command, error);
+	switch(error){
+		case ERROR_INVALID_DEVICE_NUM:
+			printf("Device number not valid\n");
+			break;
+		case ERROR_DEVICE_MOUNTED:
+			printf("Device mounted\n");
+			break;
+		case ERROR_FILE_NOT_OPEN:
+			printf("File is not open\n");
+			break;
+		case ERROR_BLOCK_NOT_IN_FILE:
+			printf("Block is not in file\n");
+			break;
+		case ERROR_BUFFER_FULL:
+			printf("Buffer is full\n");
+			break;
+		case ERROR_BUFFER_NOT_EXIST:
+			printf("Buffer does not exist\n");
+			break;
+		case ERROR_NOT_INITIALIZED_OR_FORMATED:
+			printf("Device is not initialized or formatted\n");
+			break;
+		case ERROR_DEVICE_NOT_KNOWN:
+			printf("Device is not known\n");
+			break;
+		case ERROR_SOURCE_QUEUE_NOT_EXIST:
+			printf("Source Queue does not exist\n");
+			break;
+		case ERROR_BAD_FILE_PTR:
+			printf("Bad file pointer\n");
+			break;
+		case ERROR_BAD_DIR_QUEUE:
+			printf("Bad directory queue\n");
+			break;
+		case ERROR_DIR_QUEUE_EMPTY:
+			printf("Directory queue empty\n");
+			break;
+		case ERROR_ARG_NOT_INT:
+			printf("Argument is not an integer\n");
+			break;
+		case ERROR_BAD_BLOCK_PTR:
+			printf("Bad block pointer\n");
+			break;
+		case ERROR_BAD_BLOCK_QUEUE:
+			printf("Bad block queue\n");
+			break;
+		case ERROR_BLOCK_QUEUE_EMPTY:
+			printf("Block queue empty\n");
+			break;
+		case ERROR_BAD_FS_NAME:
+			printf("Bad file system name\n");
+			break;
+		case ERROR_FILE_ALREADY_EXISTS:
+			printf("File already exists\n");
+			break;
+		case ERROR_DIR_IS_FILE:
+			printf("Directory is a file\n");
+			break;
+		case ERROR_DIR_NOT_FOUND:
+			printf("Directory is not found\n");
+			break;
+		case ERROR_INVALID_BLOCK_SIZE:
+			printf("Invalid block size\n");
+			break;
+		case ERROR_FILE_IS_DIR:
+			printf("File is a directory\n");
+			break;
+		case ERROR_FS_NAME_ARG:
+			printf("File system arguement not valid\n");
+			break;
+		case ERROR_BAD_OPTION:
+			printf("Bad option\n");
+			break;
+		case ERROR_TOO_MANY_OPEN_FILES:
+			printf("Too many open files\n");
+			break;
+		case ERROR_NO_FREE_BLOCKS:
+			printf("No free blocks\n");
+			break;
+		case ERROR_ADDR_OUT_OF_BOUNDS:
+			printf("Address out of bounds\n");
+			break;
+		case ERROR_BLOCK_ALREADY_EMPTY:
+			printf("Block already empty\n");
+			break;
+		case ERROR_BLOCK_ALREADY_FULL:
+			printf("Block already full\n");
+			break;
+		case ERROR_FILES_ARE_OPEN:
+			printf("Files are open\n");
+			break;
+		case ERROR_ALREADY_MOUNTED:
+			printf("Device already mounted\n");
+			break;
+		case ERROR_ALREADY_UNMOUNTED:
+			printf("Device already unmounted\n");
+			break;
+		case ERROR_FS_NAME_NOT_EXISTS:
+			printf("File system name does not exist\n");
+			break;
+		case ERROR_FILE_IS_READ_ONLY:
+			printf("File is read only\n");
+			break;
+		case ERROR_FILE_HANDLE_OUT_OF_RANGE:
+			printf("File handle is out of range\n");
+			break;
+		default:
+			printf("Unknown error\n");			
+	}
+}
+
 int main(int argc, char *argv[]) {
 	int error = 0;
 	char command[20];
@@ -169,8 +282,11 @@ int main(int argc, char *argv[]) {
                             textcolor(BRIGHT, -1, -1);
                             error = 1;
 						}else{
-							init_fs(int_arg);
-							printf("File System has been initialized.\n");
+							printf("Calling init_fs with device %d\n", int_arg);
+							return_error=init_fs(int_arg);
+							if(return_error < 0){
+								errorToString(return_error, "INIT_FS");
+							}
 							error = 0;
 						}	 
 					}
@@ -215,7 +331,13 @@ int main(int argc, char *argv[]) {
 							}
 							else{
 								printf("Calling FORMAT with device %d, name %c, blocksize %d\n", int_arg, char_arg, int_arg2);
-								format(int_arg, char_arg, int_arg2);
+								return_error = format(int_arg, char_arg, int_arg2);
+								if(return_error < 0){
+									errorToString(return_error, "FORMAT");
+								}
+								else{
+									printf("Success, device has %d blocks\n", return_error);
+								}
 								error = 0;
 							}
 						}
@@ -243,7 +365,13 @@ int main(int argc, char *argv[]) {
 					else{
 						char_arg = init_arg[0];
 						printf("Calling MOUNT with name %c\n", char_arg);
-						mount(char_arg);
+						return_error = mount(char_arg);
+						if(return_error < 0){
+							errorToString(return_error, "MOUNT");
+						}
+						else{
+							printf("Success\n");
+						}
 						error = 0;
 					}
 				}
@@ -269,7 +397,13 @@ int main(int argc, char *argv[]) {
 					else{
 						char_arg = init_arg[0];
 						printf("Calling UNMOUNT with name %c\n", char_arg);
-						unmount(char_arg);
+						return_error = unmount(char_arg);
+						if(return_error < 0){
+							errorToString(return_error, "UNMOUNT");
+						}
+						else{
+							printf("Success\n");
+						}
 						error = 0;
 					}
 				}
@@ -297,7 +431,13 @@ int main(int argc, char *argv[]) {
 						printf("Calling MKDIR on ");
 						printPath(head_path_arg, char_arg);
 						printf("\n");
-						create(char_arg, head_path_arg, 1);
+						return_error = create(char_arg, head_path_arg, 1);
+						if(return_error < 0){
+							errorToString(return_error, "MKDIR");
+						}
+						else{
+							printf("Success\n");
+						}
 						error = 0;				
 					}
 				}
@@ -332,21 +472,39 @@ int main(int argc, char *argv[]) {
 								printf("Calling OPEN NEW on ");
 								printPath(head_path_arg, char_arg);
 								printf("\n");
-								create(char_arg, head_path_arg, 0);	
+								return_error = create(char_arg, head_path_arg, 0);	
+								if(return_error < 0){
+									errorToString(return_error, "OPEN NEW");
+								}
+								else{
+									printf("Success\n");
+								}
 								error = 0;
 							}
 							else if (!strcmp(str_arg2, "READ-ONLY")) {
 								printf("Calling OPEN READ-ONLY on ");
 								printPath(head_path_arg, char_arg);
 								printf("\n");
-								open(char_arg, head_path_arg, 0);
+								return_error = open(char_arg, head_path_arg, 0);
+								if(return_error < 0){
+									errorToString(return_error, "OPEN READ-ONLY");
+								}
+								else{
+									printf("Success, file handle %d\n", return_error);
+								}
 								error = 0;
 							}
 							else if (!strcmp(str_arg2, "READ-WRITE")) {
 								printf("Calling OPEN READ-WRITE on ");
 								printPath(head_path_arg, char_arg);
 								printf("\n");
-								open(char_arg, head_path_arg, 1);
+								return_error = open(char_arg, head_path_arg, 1);
+								if(return_error < 0){
+									errorToString(return_error, "OPEN READ-WRITE");
+								}
+								else{
+									printf("Success, file handle %d\n", return_error);
+								}
 								error = 0;
 							}
 							else{
@@ -389,7 +547,13 @@ int main(int argc, char *argv[]) {
 							}
 							else{
 								printf("Called READ on filehandle %d, block number %d, buf_ptr %d\n", int_arg, int_arg2, int_arg3);
-								read(int_arg, (short)int_arg2, int_arg3);
+								return_error = read(int_arg, (short)int_arg2, int_arg3);
+								if(return_error < 0){
+									errorToString(return_error, "READ");
+								}
+								else{
+									printf("Success\n");
+								}
 								error = 0;
 							}
 						}
@@ -430,7 +594,13 @@ int main(int argc, char *argv[]) {
 							}
 							else{
 								printf("Called WRITE on filehandle %d, block number %d, buf_ptr %d\n", int_arg, int_arg2, int_arg3);
-								write(int_arg, (short)int_arg2, int_arg3);
+								return_error = write(int_arg, (short)int_arg2, int_arg3);
+								if(return_error < 0){
+									errorToString(return_error, "WRITE");
+								}
+								else{
+									printf("Success\n");
+								}
 								error = 0;
 							}
 						}
@@ -459,7 +629,13 @@ int main(int argc, char *argv[]) {
 					}
 					else{
 						printf("Calling close on %d\n", int_arg);
-						close(int_arg);
+						return_error = close(int_arg);
+						if(return_error < 0){
+							errorToString(return_error, "CLOSE");
+						}
+						else{
+							printf("Success\n");
+						}
 						error = 0;	 
 					}
 				}
@@ -486,7 +662,14 @@ int main(int argc, char *argv[]) {
 						printf("Calling DELETE on ");
 						printPath(head_path_arg, char_arg);
 						printf("\n");
-						delete(char_arg, head_path_arg);
+						return_error = delete(char_arg, head_path_arg);
+						if(return_error < 0){
+							errorToString(return_error, "DELETE");
+						}
+						else{
+							printf("Success\n");
+						}
+						
 						error = 0;				
 					}
 				}
