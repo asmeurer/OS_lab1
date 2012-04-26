@@ -9,8 +9,9 @@
 #include "file_queuemanager.h"
 #include "definitions.h"
 
-/* This is the same as our queuemanager from the process manager, except the
- * queue elements are now queue_message_t (see ipc_definitions.h).  */
+/* This is similar our queuemanager from the process manager and ipc, except the
+ * queue elements are now fcb or blocks, and they take pointers (because the
+ * hardware simulation can call malloc).  */
 
 /**
  * Function to reset the deinit flag for the given queue.
