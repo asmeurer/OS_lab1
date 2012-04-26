@@ -73,12 +73,29 @@ OPEN foo NEW
 OPEN C/thisfilenameistoolong NEW
 # Attempt to open more files than allowed
 OPEN C/a NEW
+OPEN C/a READ-ONLY
 OPEN C/b NEW
+OPEN C/b READ-ONLY
 OPEN C/c NEW
+OPEN C/c READ-ONLY
 OPEN C/d NEW
+OPEN C/d READ-ONLY
 OPEN C/e NEW
+OPEN C/e READ-ONLY
 OPEN C/f NEW
+OPEN C/f READ-ONLY
 OPEN C/g NEW
+OPEN C/g READ-ONLY
+OPEN C/h NEW
+OPEN C/h READ-ONLY
+CLOSE 0
+CLOSE 1
+CLOSE 2
+CLOSE 3
+CLOSE 4
+CLOSE 5
+CLOSE 6
+CLOSE 7
 # Attempt to create a file in a directory that doesn't exist
 OPEN C/something/file NEW
 # Attempt to make file containing a space in the name
@@ -91,10 +108,16 @@ OPEN C/TEST READ-WRITE
 OPEN C/a READ-WRITE
 WRITE 0 0 0
 CLOSE 0
+CLOSE 0
 # Attempt to write to a read-only file
 OPEN C/a READ-ONLY
 WRITE 0 0 0
-LIST FILE
+WRITE 0 10 1
+LIST FILEINFO C/a
+# Try to open a file that's already open
+OPEN C/a READ-WRITE
+CLOSE 0
+OPEN C/a READ-WRITE
 # Attempt to write on a block that is full
 WRITE 0 0 0
 # Attempt to write with an invalid filehandle
@@ -105,11 +128,17 @@ WRITE 0 0 10
 WRITE 0 999999999 0
 # Attempt to fill buffer on a write
 WRITE 0 1 1
-WRITE 0 2 2
-WRITE 0 3 3
-WRITE 0 4 4
-WRITE 0 5 5
-WRITE 0 6 6
+WRITE 0 2 1
+WRITE 0 3 1
+WRITE 0 4 1
+WRITE 0 5 1
+WRITE 0 6 1
+WRITE 0 7 1
+WRITE 0 8 1
+WRITE 0 9 1
+LIST BUFFERS
+BUF_FLUSH 1
+LIST BUFFERS
 # Close file
 CLOSE 0
 # READ TESTS
@@ -117,7 +146,8 @@ CLOSE 0
 OPEN C/a READ-ONLY
 READ 0 0 1
 # Attempt to read with an invalid filehandle
-READ 1 0 0
+READ 2 0 0
+READ 20 0 0
 # Attempt to read with an invalid buffer
 READ 0 0 10
 # Attemp to read with an invalid block number

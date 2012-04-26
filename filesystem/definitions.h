@@ -56,6 +56,7 @@ typedef unsigned char byte;
 #define ERROR_FILE_IS_READ_ONLY -34
 #define ERROR_FILE_HANDLE_OUT_OF_RANGE -35
 #define ERROR_FILE_NOT_FOUND -36
+#define ERROR_FILE_ALREADY_OPEN -37
 
 /* Constants
  *
@@ -129,7 +130,7 @@ typedef struct fcb fcb;
 typedef struct {
     fcb *root;
     byte bitmap[MAX_BLOCK_SIZE];
-    int numblock;
+    unsigned int numblock;
     char fs_name;
     /*0 0 0 0 0 (Init) (Mounted) (Formatted)*/
     byte bits;

@@ -37,7 +37,7 @@ void dir_init_queue(struct dir_queue_t *queue);
 int dir_enqueue(struct dir_queue_t *queue, fcb *file);
 fcb *dir_dequeue(struct dir_queue_t *queue);
 fcb *dir_delete(struct dir_queue_t *queue, fcb *to_delete);
-int seach_blocks(struct block_queue_t *queue, unsigned short addr);
+int search_blocks(struct block_queue_t *queue, unsigned short addr);
 
 void block_init_queue(struct block_queue_t *queue);
 int block_enqueue(struct block_queue_t *queue, block *to_enqueue);

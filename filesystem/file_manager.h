@@ -22,17 +22,16 @@ int unmount(char fs_name);
 fcb *get_file(int dev, path *file_path);
 int close(int filehandle);
 int open(char fs_name, path *file_path, int write);
-int write(int filehandle, unsigned short block_number, int buf_ptr);
-int read(int filehandle, unsigned short block_number, int buf_ptr);
+int write(int filehandle, unsigned int block_number, int buf_ptr);
+int read(int filehandle, unsigned int block_number, int buf_ptr);
 int create(char fs_name, struct path *file_path, int dir);
 int delete(char fs_name, struct path *file_path);
 int delete_internal(int dev, fcb *file);
 int get_device(char fs_name);
 int filename_eq(char *string1, char *string2);
 void filename_copy(char *source, char *dest);
-unsigned short find_empty_block(int dev);
-int set_block_empty(int dev, unsigned short addr);
-int set_block_full(int dev, unsigned short addr);
-
+unsigned int find_empty_block(int dev);
+int set_block_empty(int dev, unsigned int addr);
+int set_block_full(int dev, unsigned int addr);
 
 #endif

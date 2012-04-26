@@ -192,8 +192,9 @@ fcb *dir_delete(struct dir_queue_t *queue, fcb *to_delete)
  * @return Returns 1 if a block in the queue has the given address and 0
  * otherwise.
  */
-int seach_blocks(struct block_queue_t *queue, unsigned short addr){
+int search_blocks(struct block_queue_t *queue, unsigned short addr){
     block *temp;
+
     temp = queue->tail;
 
     while(temp != null){

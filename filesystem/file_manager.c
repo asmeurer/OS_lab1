@@ -292,8 +292,6 @@ int close(int filehandle){
         return ERROR_FILE_NOT_OPEN;
     }
 
-    /* TODO: Check if the file is using any buffers. */
-
     open_files[filehandle].file = null;
     open_files[filehandle].bits = 0;
 
@@ -337,6 +335,12 @@ int open(char fs_name, path *file_path, int write){
         return ERROR_FILE_IS_DIR;
     }
 
+    for (i = 0; i < MAX_OPEN; i++) {
+        if (open_files[i].file == file) {
+            return ERROR_FILE_ALREADY_OPEN;
+        }
+    }
+
     /* Find and empty open file slot */
     for (i = 0; i < MAX_OPEN; i++) {
         if (!(open_files[i].bits & OPEN_TYPE_OPEN_BITMASK)) {
@@ -372,11 +376,12 @@ int open(char fs_name, path *file_path, int write){
  *
  * @return Returns ERROR_SUCCESS on success and an error code otherwise.
  */
-int write(int filehandle, unsigned short block_number, int buf_ptr){
+int write(int filehandle, unsigned int block_number, int buf_ptr){
     block *temp;
     fcb *file;
     int error;
     int i = 0;
+    int found = 0;
 
     /* Check the bounds of the filehandle */
     if (filehandle < 0 || filehandle >= MAX_OPEN) {
@@ -395,12 +400,12 @@ int write(int filehandle, unsigned short block_number, int buf_ptr){
     file = open_files[filehandle].file;
 
     /* Check if the file has write permissions. */
-    if (!(file->bits & OPEN_TYPE_WRITE_ACC_BITMASK)) {
+    if (!(open_files[filehandle].bits & OPEN_TYPE_WRITE_ACC_BITMASK)) {
         return ERROR_FILE_IS_READ_ONLY;
     }
 
     /* Check if file is a directory */
-    if(!(file->bits & FCB_DIR_BITMASK)){
+    if (file->bits & FCB_DIR_BITMASK){
         return ERROR_FILE_IS_DIR;
     }
 
@@ -425,11 +430,12 @@ int write(int filehandle, unsigned short block_number, int buf_ptr){
             buffers[buf_ptr][i].addr = block_number;
             buffers[buf_ptr][i].access_type = WRITE;
             buffers[buf_ptr][i].device_num = file->device_num;
+            found = 1;
             break;
         }
-        if (i == BUFFER_SIZE){
-            return ERROR_BUFFER_FULL;
-        }
+    }
+    if (!found) {
+        return ERROR_BUFFER_FULL;
     }
 
     return ERROR_SUCCESS;
@@ -449,7 +455,7 @@ int write(int filehandle, unsigned short block_number, int buf_ptr){
  *
  * @return Returns ERROR_SUCCESS on success and an error code otherwise.
  */
-int read(int filehandle, unsigned short block_number, int buf_ptr){
+int read(int filehandle, unsigned int block_number, int buf_ptr){
     fcb *file;
 
     int i = 0;
@@ -471,12 +477,16 @@ int read(int filehandle, unsigned short block_number, int buf_ptr){
     file = open_files[filehandle].file;
 
     /* Check if file is a directory */
-    if(!(file->bits & FCB_DIR_BITMASK)){
+    if (file->bits & FCB_DIR_BITMASK){
         return ERROR_FILE_IS_DIR;
     }
 
+    if (block_number > device_array[file->device_num].numblock) {
+        return ERROR_ADDR_OUT_OF_BOUNDS;
+    }
+
     /* Check if block number is part of file */
-    if((seach_blocks(file->block_queue, block_number)) != 1){
+    if((search_blocks(file->block_queue, block_number)) != 1){
         return ERROR_BLOCK_NOT_IN_FILE;
     }
 
@@ -763,7 +773,7 @@ void filename_copy(char *source, char *dest)
  *
  * @return Returns the address of the empty block.
  */
-unsigned short find_empty_block(int dev) {
+unsigned int find_empty_block(int dev) {
     int prefix;
     const int blocks_free_size = MAX_BLOCK_SIZE/8;
     byte not_byte;
@@ -812,7 +822,7 @@ unsigned short find_empty_block(int dev) {
  *
  * @return Returns ERROR_SUCCESS on success or an error code on failure.
  */
-int set_block_empty(int dev, unsigned short addr) {
+int set_block_empty(int dev, unsigned int addr) {
     int prefix;
     int suffix;
     byte suffix_bitmask;
@@ -847,7 +857,7 @@ int set_block_empty(int dev, unsigned short addr) {
  *
  * @return Returns ERROR_SUCCESS on success and an error code on failure.
  */
-int set_block_full(int dev, unsigned short addr) {
+int set_block_full(int dev, unsigned int addr) {
     int prefix;
     int suffix;
     byte suffix_bitmask;

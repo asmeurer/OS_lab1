@@ -56,7 +56,7 @@ int list_fileinfo(char fs_name, path *file_path){
     if(file->bits & FCB_DIR_BITMASK){
         printf("Directory    # of files: %d\n", file->dirHead->size);
         printf("Listing files in directory:\n");
-        temp = file->dirHead->head;
+        temp = file->dirHead->tail;
         if (temp == NULL){
             printf("Directory empty\n");
         }
@@ -78,14 +78,14 @@ int list_fileinfo(char fs_name, path *file_path){
     else{
         printf("File\n");
         printf("Size: %d\n", file->block_queue->size);
-        temp2 = file->block_queue->head;
+        temp2 = file->block_queue->tail;
         if (temp2 == NULL){
             printf("File empty\n");
         }
         else{
             while(temp2 != NULL){
                 printf("Block Addr: %d\n", temp2->addr);
-                temp = temp->next;
+                temp2 = temp2->next;
             }
         }
     }
@@ -147,7 +147,7 @@ void listBuffers(){
 				break;
 			}
 			else{
-				printf("%d:	Device: %d	Addr: %d	Access Type: ",j, buffers[i][j].device_num, buffers[i][j].addr);
+				printf("%d:	Device: %d	Addr: %d	Access Type: ",j + 1, buffers[i][j].device_num, buffers[i][j].addr);
 				if(buffers[i][j].access_type == READ){
 					printf("Read");
 				}
@@ -372,6 +372,9 @@ void errorToString(int error, char* command){
         break;
     case ERROR_FILE_NOT_FOUND:
         printf("File not found\n");
+        break;
+    case ERROR_FILE_ALREADY_OPEN:
+        printf("File is already open\n");
         break;
     default:
         printf("Unknown error\n");
@@ -847,6 +850,39 @@ int main(int argc, char *argv[]) {
                 }
             }
 
+            else if (!strcmp(command, "BUF_FLUSH")) {
+                fgets(line, LINE_MAX, file);
+                error = 1;
+                /*Initial split of line*/
+                init_arg = strtok(line, "\n");
+                /*If there exists arguments*/
+                if (init_arg != NULL && strcmp(init_arg, "\n") != 0){
+                    /*Skip space*/
+                    init_arg++;
+                    int_arg = strToIntArg(init_arg);
+                    if(int_arg == ERROR_ARG_NOT_INT){
+                        printf("buf_ptr must be an integer\n");
+                        error = 1;
+                    }
+                    else{
+                        printf("Calling buf_flush on %d\n", int_arg);
+                        return_error = buf_flush(int_arg);
+                        if(return_error < 0){
+                            errorToString(return_error, "BUF_FLUSH");
+                        }
+                        else{
+                            printf("Success\n");
+                        }
+                        error = 0;
+                    }
+                }
+                if(error == 1){
+                    textcolor(BRIGHT, RED, BLACK);
+                    printf("Usage: BUF_FLUSH <buf_ptr>\n");
+                    textcolor(RESET, -1, -1);
+                }
+
+            }
             else if (!strcmp(command, "LIST")) {
                 fgets(line, LINE_MAX, file);
                 error = 1;
