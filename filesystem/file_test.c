@@ -40,6 +40,44 @@ char *fgetstring(FILE* fFile){
 	return (name);
 }
 
+char parsePath(char* pathname, path* head){
+	char* arg;
+	path* temp;
+	int len;
+	char fs_name;
+	arg = strtok(pathname,"/");
+	len = strlen(arg);
+	if (len != 1 || arg[0]<'A' || arg[0]>'Z'){
+		printf("fs_name must be one uppercase character A-Z\n");
+		head = NULL;
+		return '!';
+	}
+	fs_name = arg[0];
+	/*Next path segment*/
+	arg = strtok(NULL, "/");
+	/*Add into linked list until end of path*/
+	while(arg != NULL){
+		if (temp == NULL){
+			temp = (path*) malloc(sizeof(path));
+			head = temp;
+			
+		}
+		else{
+			temp->next = (path*) malloc(sizeof(path));
+			temp = temp->next;
+		}
+		strcpy(temp->string, arg);
+		arg = strtok(NULL, "/");
+	}
+	if (head == NULL){
+		printf("Filename must be speicified\n");
+		head = NULL;
+		return '!';
+	}
+	return fs_name;
+}
+
+
 int strToIntArg(char* string){
 	int i;
 	/*Loop through each character in string checking if it is a digit*/
@@ -49,6 +87,15 @@ int strToIntArg(char* string){
 		}
 	}
 	return atoi(string);
+}
+
+void printPath(path* head, char fs_name){
+	path* temp = head;
+	printf("~%c", fs_name);
+	while (temp != NULL){
+		printf("/%s", temp->string);
+		temp = temp->next;
+	}
 }
 
 int main(int argc, char *argv[]) {
@@ -62,8 +109,9 @@ int main(int argc, char *argv[]) {
 	char* str_arg;
 	char* str_arg2;
 	char* init_arg;
-	int j;
+	path* head_path_arg = NULL;
 	int return_error = 0;
+	
 
 	FILE *file;
 	if (argc == 1){
@@ -174,82 +222,53 @@ int main(int argc, char *argv[]) {
 					textcolor(RESET, -1, -1);
 				}
 			}
-			else if (!strcmp(command, "PAGE_FAULT")) {
-				fgets(line, LINE_MAX, file);
-				error = 1;
-				/*Initial split of line*/
-				init_arg = strtok(line, " ");
-				/*If there exists arguments*/
-				if (init_arg != NULL){
-					error = 0;
-					/*Loop through each character in string checking if it is a digit*/
-					for(j = 0; j < strlen(init_arg); j++){
-						if (!isdigit(init_arg[j])){
-							error = 1;
-							break;
-						}
-					}
-					if (error == 0){
-						int_arg = atoi(init_arg);
-
-					}
-				}
-				if (error == 1){
-					textcolor(BRIGHT, RED, BLACK);
-					printf("Usage: PAGE_FAULT <page_table_id> <page_num>\n");
-					textcolor(RESET, -1, -1);
-				}
-			}
 			else if (!strcmp(command, "OPEN")) {
 				fgets(line, LINE_MAX, file);
 				error = 1;
 				/*Initial split of line*/
 				init_arg = strtok(line, " ");
 				/*If there exists arguments*/
-				if (strcmp(init_arg, "\n") != 0) {
+				if (strcmp(init_arg, "\n") != 0 && init_arg != NULL) {
+					/*Filename*/
+					str_arg = (char*) malloc(sizeof(char) * (strlen(init_arg)+1));
 					strcpy(str_arg, init_arg);
-					
-					if (!strcmp(init_arg, "USER\n")) {
-						error = 0;
-					}
-					else if (!strcmp(init_arg, "SYSTEM\n")) {
-						error = 0;
-					}
-					else if (!strcmp(init_arg, "BS\n")) {
-						error = 0;
-					}
-					/* No arguments for pagetable */
-					else if (!strcmp(init_arg, "PAGETABLE\n")) {
-						error = 1;
-					}
-					else if (!strcmp(init_arg, "PAGETABLE")) {
-						error = 0;
-						/* Reads until end of line */
-						init_arg = strtok(NULL, "\n");
-						/*Loop through each character in string checking if it is a digit*/
-						for(j = 0; j < strlen(init_arg); j++){
-							if (!isdigit(init_arg[j])){
+					/*Option*/
+					str_arg2 = strtok(NULL, "\n");
+					/*If there is a second argument*/
+					if(str_arg2 != NULL){						
+						char_arg = parsePath(str_arg, head_path_arg);
+						if (head_path_arg == NULL){
+							
+							error = 1;
+						}
+						else{
+							if (!strcmp(str_arg2, "NEW")) {
+								printf("Calling OPEN NEW on ");
+								printPath(head_path_arg, char_arg);
+								printf("\n");
+								error = 0;
+							}
+							else if (!strcmp(str_arg2, "READ-ONLY")) {
+								printf("Calling OPEN READ-ONLY on ");
+								printPath(head_path_arg, char_arg);
+								printf("\n");
+								error = 0;
+							}
+							else if (!strcmp(str_arg2, "READ-WRITE")) {
+								printf("Calling OPEN READ-WRITE on ");
+								printPath(head_path_arg, char_arg);
+								printf("\n");
+								error = 0;
+							}
+							else{
 								error = 1;
-								break;
 							}
 						}
-						if (error == 0){
-							int_arg = atoi(init_arg);
-						}
 					}
-					else{
-						error = 1;
-					}
-				}
-				/*No arguments*/
-				else{
-					printf("LIST called\n");
-					printf("Listing all...\n");
-					error = 0;
 				}
 				if (error == 1){
 					textcolor(BRIGHT, RED, BLACK);
-					printf("Usage: LIST [USER | SYSTEM | PAGETABLE page_table_id]\n");
+					printf("Usage: OPEN <filename> [NEW | READ-ONLY | READ-WRITE]\n");
 					textcolor(RESET, -1, -1);
 				}
 			}

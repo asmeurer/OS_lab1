@@ -33,7 +33,7 @@ int mount (char fs_name){
 			return ERROR_SUCCESS;
 		}
 	}
-
+*/
 	return ERROR_NOT_INITIALIZED_OR_FORMATED;
 }
 
@@ -44,7 +44,19 @@ int format(int device_num, char fs_name, int blocksize){
 	if(blocksize != 4 || blocksize != 8 || blocksize != 16){
 		return ERROR_INVALID_BLOCK_SIZE;
 	}
-
+	
+	for(i = 0; i < MAX_DEVICE; i++){
+		if(!(device_array[device_num].bits & DEVICE_MOUNTED_BITMASK)){
+			device_array[device_num].bits | DEVICE_FORMAT_BITMASK;
+			device_array[device_num].fs_name = fs_name;
+		}else if(device_array[device_num].bits & DEVICE_MOUNTED_BITMASK){
+			return ERROR_DEVICE_MOUNTED;		
+		}
+	}
+	
+	if(device_num < 0 || device_num >= MAX_DEVICE){
+		return ERROR_INVALID_DEVICE_NUM;
+	}
 	device *format_me = &device_array[device_num];
 	/*Must be unmounted*/
 	if(format_me->bits & DEVICE_MOUNTED_BITMASK){
@@ -85,6 +97,7 @@ int open(char* filename, int option){
 		case OPEN_RW:
 			break;
 	}
+	return ERROR_SUCCESS;
 }
 
 int write(int filehandle, short block_number, int buf_ptr){
@@ -122,7 +135,7 @@ int read(int filehandle, short block_number, int buf_ptr){
 		return ERROR_FILE_NOT_OPEN;
 	}
 
-	open_files[filehandle].file->blocktail = temp;
+	temp = open_files[filehandle].file->blocktail;
 	/*Check if block number is part of file*/
 	while (temp != null){
 		if (temp->addr == block_number){
