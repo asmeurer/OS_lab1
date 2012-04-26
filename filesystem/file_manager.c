@@ -17,7 +17,7 @@ int init_fs (int device){
 	}
 	/*Clear open file array*/
 	for (i = 0; i < MAX_OPEN; i++){
-		open_files[i].bits = open_files[i].bits | (~OPEN_TYPE_OPEN); 
+		open_files[i].bits = open_files[i].bits | (~OPEN_TYPE_OPEN);
 		open_files[i].file = null;
 	}
 	return ERROR_SUCCESS;
@@ -181,8 +181,8 @@ int write(int filehandle, short block_number, int buf_ptr){
 
 	/*Check if buffer pointer is valid */
 	//block_enqueue(file->block_queue, malloc_block());
-	// TODO: Import bit map stuff from memory manager 
-	
+	// TODO: Import bit map stuff from memory manager
+
 	/*Find next buffer slot*/
 	for(i = 0; i < BUFFER_SIZE; i++){
 		if(buffers[buf_ptr]->init == 0){
@@ -195,7 +195,7 @@ int write(int filehandle, short block_number, int buf_ptr){
 			return ERROR_BUFFER_FULL;
 		}
 	}
-	
+
 	return ERROR_SUCCESS;
 
 }
