@@ -1,4 +1,4 @@
-/**
+/*
  * Memory Test Interface
  *
  *	Group 2

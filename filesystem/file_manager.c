@@ -10,17 +10,17 @@
 
 /* Init_fs: checks if the device is known, if so set the device name */
 int init_fs (int device){
-    int i;
-    /*Unmount all devices*/
-    for (i = 0; i < MAX_DEVICE; i++){
-        device_array[i].bits = device_array[i].bits & (~DEVICE_MOUNTED_BITMASK);
-    }
-    /*Clear open file array*/
-    for (i = 0; i < MAX_OPEN; i++){
-        open_files[i].bits = open_files[i].bits | (~OPEN_TYPE_OPEN_BITMASK);
-        open_files[i].file = null;
-    }
-    return ERROR_SUCCESS;
+	int i;
+	/*Unmount all devices*/
+	for (i = 0; i < MAX_DEVICE; i++){	
+		device_array[i].bits = device_array[i].bits & (~DEVICE_MOUNTED_BITMASK);
+	}
+	/*Clear open file array*/
+	for (i = 0; i < MAX_OPEN; i++){
+		open_files[i].bits = open_files[i].bits | (~OPEN_TYPE_OPEN_BITMASK);
+		open_files[i].file = null;
+	}
+	return ERROR_SUCCESS;
 }
 
 /* Mount: checks if the device has been inited and formated, if so mounts it. Otherwise, returns an error. */
@@ -121,15 +121,14 @@ fcb *get_file(int dev, path *file_path)
  * This function closes a file by using the file handle to referance it, then sets the fbc pointer file to null and the bits to 0
  */
 int close(int filehandle){
-    int i;
-    for(i = 0; i < MAX_OPEN; i++){
-        if(i == filehandle){
-            open_files[i].file = null;
-            open_files[i].bits = 0;
-
-        }
-    }
-    return ERROR_SUCCESS;
+	int i;
+	for(i = 0; i < MAX_OPEN; i++){
+		if(i == filehandle){
+			open_files[i].file = null;
+			open_files[i].bits = 0;
+		}
+	}
+	return ERROR_SUCCESS;
 }
 
 int open(char fs_name, path *file_path, int write){
@@ -173,6 +172,7 @@ int open(char fs_name, path *file_path, int write){
 int write(int filehandle, short block_number, int buf_ptr){
     block *temp;
     fcb *file;
+    int error;
     int i = 0;
 
     /*Check if file is open*/
@@ -181,38 +181,37 @@ int write(int filehandle, short block_number, int buf_ptr){
     }
 
     /*Check if block number is part of file*/
-
     file = open_files[filehandle].file;
-
-    if(!(file->bits & FCB_DIR_BITMASK)){
-        return ERROR_FILE_IS_DIR;
-    }
-
-
-    //For setting the
-    temp = file->block_queue->tail;
-    temp->addr = block_number;
-
-    /*Check if the block is assosiated with another file */
-
-    // TODO: make a function to
-
-    /*Check if buffer pointer is valid */
-    //block_enqueue(file->block_queue, malloc_block());
-    // TODO: Import bit map stuff from memory manager
-
-    /*Find next buffer slot*/
-    for(i = 0; i < BUFFER_SIZE; i++){
-        if(buffers[buf_ptr]->init == 0){
-            buffers[buf_ptr]->init = 1;
-            buffers[buf_ptr]->addr = block_number;
-            buffers[buf_ptr]->access_type = WRITE;
-            break;
-        }
-        if (i == BUFFER_SIZE){
-            return ERROR_BUFFER_FULL;
-        }
-    }
+	if(!(file->bits & FCB_DIR_BITMASK)){
+			return ERROR_FILE_IS_DIR;
+	}
+	
+	/* Check if the block number is associated with another file, if not set the block */
+	error = set_block_full(file->device_num, block_number);
+	if(error != ERROR_SUCCESS){
+			return error;
+	}
+	
+	/* Malloc the block, enqueue it to the block_queue and check for any errors */
+	temp = malloc_block();
+	temp->addr = block_number;
+	error = block_enqueue(file->block_queue, temp);
+	if(error != ERROR_SUCCESS){
+		return error; 
+	}	
+	
+	/*Find next buffer slot*/
+	for(i = 0; i < BUFFER_SIZE; i++){
+		if(buffers[buf_ptr]->init == 0){
+			buffers[buf_ptr]->init = 1;
+			buffers[buf_ptr]->addr = block_number;
+			buffers[buf_ptr]->access_type = WRITE;
+			break;
+		}
+		if (i == BUFFER_SIZE){
+			return ERROR_BUFFER_FULL;
+		}
+	}
 
     return ERROR_SUCCESS;
 
@@ -493,7 +492,7 @@ int set_block_full(int dev, short addr) {
     suffix_bitmask = 1 << (7 - suffix);
 
     if (blocks_free[dev][prefix] & suffix_bitmask) {
-        /* The memory was already set to full */
+        /* The block was already set to full */
         return ERROR_BLOCK_ALREADY_FULL;
     } else {
         blocks_free[dev][prefix] = blocks_free[dev][prefix] | suffix_bitmask;
