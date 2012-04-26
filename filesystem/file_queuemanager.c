@@ -42,6 +42,8 @@ void dir_deinit(struct dir_queue_t *queue) {
     queue->initialized = 0;
 }
 
+void search_file_blocks(
+
 /**
  * Function to clear and set the initilized flag for the specified queue.
  */
@@ -174,6 +176,21 @@ void block_deinit(struct block_queue_t *queue) {
     queue->initialized = 0;
 }
 
+/**
+ * Function to search through the blocks of a fcb and checking their address 
+ */
+int seach_blocks(struct block_queue_t *queue, unsigned short addr){
+	block *temp;
+	temp = queue->tail;
+	
+	while(temp != null){
+		if(temp.addr == addr){
+			return 1; 
+		}
+		temp= temp->next;
+	}
+	return 0;
+}
 /**
  * Function to clear and set the initilized flag for the specified queue.
  */

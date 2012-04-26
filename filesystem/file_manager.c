@@ -105,33 +105,31 @@ int write(int filehandle, short block_number, int buf_ptr){
 	if(!(file->bits & FCB_DIR_BITMASK)){
 			return ERROR_FILE_IS_DIR;
 	}
-	
-	
-	/*Check if buffer point is valid */
-
-
+	/*Check if buffer pointer is valid */
+	block_enqueue(file->block_queue, malloc_block());
+	// TODO: Import bit map stuff from memory manager 
 
 }
 
 int read(int filehandle, short block_number, int buf_ptr){
 	block* temp;
+	fcb *file;
+	
 	int error = 1;
 	int i = 0;
 	/*Check if file is open*/
+	
 	if (!(open_files[filehandle].bits & OPEN_TYPE_OPEN)){
 		return ERROR_FILE_NOT_OPEN;
 	}
-
-	open_files[filehandle].file->blocktail = temp;
-	/*Check if block number is part of file*/
-	while (temp != null){
-		if (temp->addr == block_number){
-			error = 0;
-		}
-		temp = temp->next;
+	file = open_files[filehandle].file;
+	/* Check if file is a direcroty */
+	if(!(file->bits & FCB_DIR_BITMASK)){
+			return ERROR_FILE_IS_DIR;
 	}
-	if (error == 1){
-		return ERROR_BLOCK_NOT_IN_FILE;
+	/*Check if block number is part of file*/
+	if((seach_blocks(file->block_queue, block_number)) != 1){
+			return ERROR_BLOCK_NOT_IN_FILE;
 	}
 	/*Check buffer pointer*/
 	if(buf_ptr < 0 || buf_ptr >= NUM_BUFFERS){
