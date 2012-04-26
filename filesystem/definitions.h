@@ -37,6 +37,9 @@ typedef unsigned char byte;
 #define ERROR_BAD_BLOCK_QUEUE -15
 #define ERROR_BLOCK_QUEUE_EMPTY -16
 #define ERROR_BAD_FSNAME -17
+#define ERROR_FILE_ALREADY_EXISTS -18
+#define ERROR_DIR_IS_FILE -19
+#define ERROR_DIR_NOT_FOUND -20
 
 /*Constants*/
 #define null 0

@@ -69,7 +69,7 @@ int add_to_open_table(){
 int open(char* filename, int option){
 	switch(option){
 		case OPEN_NEW:
-			
+
 			break;
 		case OPEN_R:
 			break;
@@ -86,7 +86,7 @@ int read(int filehandle, short block_number, int buf_ptr){
 	if (open_files[filehandle].open == 0){
 		return ERROR_FILE_NOT_OPEN;
 	}
-	
+
 	open_files[filehandle].file->blocktail = temp;
 	/*Check if block number is part of file*/
 	while (temp != null){
@@ -119,10 +119,45 @@ int read(int filehandle, short block_number, int buf_ptr){
 
 int create_file(char fsname, struct path file_path)
 {
-    struct path *next = &file_path;
+    int dev = get_device(fsname);
 
-    while (
-    return 0;
+    struct path *next = &file_path;
+    fcb *current_file = device_array[dev].filehead;
+
+    fcb *newfile;
+
+    while (next != null) {
+        if (current_file == null) {
+            /* We reached the end of the directory and didn't fine the
+             * specified directory in the path.  Since create_file does not
+             * create directories (use create_dir for that), this is an error. */
+            return ERROR_DIR_NOT_FOUND;
+
+        } else if (filename_eq(current_file->filename, next->string)) {
+            if (next->next == null) {
+                /* End of the given path; this is the file to create.  We
+                 * found the file, so this means it's an error. */
+                return ERROR_FILE_ALREADY_EXISTS;
+            } else if (!(current_file->bits & FCB_DIR_BITMASK)) {
+                /* One of the directories in the path is actually a file.
+                 * This is also an error. */
+                    return ERROR_DIR_IS_FILE;
+            } else {
+                /* We found one of the directories in the given path.
+                 * Continue recursing. */
+                next = next->next;
+                current_file = current_file->dirHead;
+            }
+
+        } else {
+            current_file = current_file->next;
+        }
+    }
+    /* If we reach the end of the while loop, it means that the given path
+     * already exists, and the given file does not.  So create the file.*/
+    newfile = malloc_file();
+
+    return ERROR_SUCCESS;
 }
 
 int create_dir(char fsname, struct path file_path)
@@ -141,4 +176,17 @@ int get_device(char fsname)
         }
     }
     return ERROR_BAD_FSNAME;
+}
+
+/* Custom version of strcmp to compare filenames. Returns 0 if the names are
+ * unequal and 1 if they are equal. */
+int filename_eq(char *string1, char *string2)
+{
+    int i;
+    for (i = 0; i < NAME_LIMIT; i++) {
+        if (string1[i] != string2[i]) {
+            return 0;
+        }
+    }
+    return 1;
 }
