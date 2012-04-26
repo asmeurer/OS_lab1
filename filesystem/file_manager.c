@@ -140,7 +140,6 @@ int _format(int device_num, char fs_name, int blocksize){
     filename_copy(format_me->root->filename,"root");
     format_me->root->bits = 0;
     format_me->root->dirHead = malloc_dir_queue();
-    format_me->root->dirHead->tail = null;
 
     dir_init_queue(format_me->root->dirHead);
 

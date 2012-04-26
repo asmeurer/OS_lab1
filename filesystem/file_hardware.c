@@ -77,7 +77,9 @@ block *malloc_block()
  */
 struct block_queue_t *malloc_block_queue()
 {
-    return malloc(sizeof(struct block_queue_t));
+    struct block_queue_t *block_queue = malloc(sizeof(struct block_queue_t));
+    block_queue->tail = null;
+    return block_queue;
 }
 
 /**
@@ -97,7 +99,9 @@ struct block_queue_t *malloc_block_queue()
  */
 struct dir_queue_t *malloc_dir_queue()
 {
-    return malloc(sizeof(struct dir_queue_t));
+    struct dir_queue_t *dir_queue =  malloc(sizeof(struct dir_queue_t));
+    dir_queue->tail = null;
+    return dir_queue;
 }
 
 /**
