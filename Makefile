@@ -2,6 +2,7 @@
 .PHONY := clean check-syntax all
 
 SOURCES:=$(shell find . -name "*.c" | sed 's/\.\///g')
+OUTPUT:=$(shell find . -name "*.o" | sed 's/\.\///g')
 
 CC=cc
 FLAGS=-Wall
@@ -87,7 +88,7 @@ filesystem/file_test.o: filesystem/file_test.c filesystem/file_test.h \
 	$(CC) $(FLAGS) filesystem/file_test.c shared/textcolor.o -o filesystem/file_test.o
 
 clean:
-	-rm -f process_manager/*.o ipc/*o shared/*.o memory/*.o filesystem/*.o nul
+	-rm -f $(OUTPUT) nul
 
 check-syntax:
 	$(CC) -o nul $(FLAGS) -S $(CHK_SOURCES)
