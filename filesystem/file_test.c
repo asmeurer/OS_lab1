@@ -363,7 +363,7 @@ int main(int argc, char *argv[]) {
 							}
 							else{
 								printf("Calling FORMAT with device %d, name %c, blocksize %d\n", int_arg, char_arg, int_arg2);
-								return_error = format(int_arg, char_arg, int_arg2);
+								return_error = _format(int_arg, char_arg, int_arg2);
 								if(return_error < 0){
 									errorToString(return_error, "FORMAT");
 								}

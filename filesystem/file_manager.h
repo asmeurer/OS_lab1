@@ -16,7 +16,7 @@
 #include "file_hardware.h"
 
 int init_fs(int device);
-int format(int device_num, char fs_name, int blocksize);
+int _format(int device_num, char fs_name, int blocksize);
 int mount(char fs_name);
 int unmount(char fs_name);
 fcb *get_file(int dev, path *file_path);
