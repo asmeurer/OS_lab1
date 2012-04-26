@@ -115,7 +115,9 @@ void listDirectory(){
 		if(device_array[i].bits & DEVICE_INIT_BITMASK &&
 		device_array[i].bits & DEVICE_FORMAT_BITMASK &&
 		device_array[i].bits & DEVICE_MOUNTED_BITMASK){
+			printf("Listing device %c\n", device_array[i].fs_name);
 			listRec(device_array[i].root);
+			printf("End of device %c\n", device_array[i].fs_name);
 		}
 	}
 	
