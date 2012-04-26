@@ -396,7 +396,7 @@ int set_back_addr_empty(int dev, short addr) {
     int suffix;
     byte suffix_bitmask;
 
-    if (addr > BACK_STORE_NUM_FRAME) {
+    if (addr > device_array[dev].numblock) {
         return ERROR_ADDR_OUT_OF_BOUNDS;
     }
 
@@ -405,11 +405,11 @@ int set_back_addr_empty(int dev, short addr) {
     /* Create the bitmask for the suffix */
     suffix_bitmask = 1 << (7 - suffix);
 
-    if (~backing_store_free[prefix] & suffix_bitmask) {
+    if (~blocks_free[dev][prefix] & suffix_bitmask) {
         /* The memory was already set to empty */
-        return ERROR_BACKING_EMPTY;
+        return ERROR_BLOCK_ALREADY_EMPTY;
     } else {
-        backing_store_free[prefix] = ~(~backing_store_free[prefix] | suffix_bitmask);
+        blocks_free[dev][prefix] = ~(~blocks_free[dev][prefix] | suffix_bitmask);
         return ERROR_SUCCESS;
     }
 }
@@ -418,15 +418,16 @@ int set_back_addr_empty(int dev, short addr) {
  * Set the address addr to empty. Returns errors if the memory is
  * already in the state it is being set to, or if the address is out of
  * bounds.
- * @param addr The address to be set as full
- * @return Returns an error code
+ * @param dev The device to set.
+ * @param addr The address to be set as full.
+ * @return Returns an error code.
  */
-int set_back_addr_full(short addr) {
+int set_back_addr_full(int dev, short addr) {
     int prefix;
     int suffix;
     byte suffix_bitmask;
 
-    if (addr > BACK_STORE_NUM_FRAME) {
+    if (addr > device_array[dev].numblock) {
         return ERROR_ADDR_OUT_OF_BOUNDS;
     }
 
@@ -435,11 +436,11 @@ int set_back_addr_full(short addr) {
     /* Create the bitmask for the suffix */
     suffix_bitmask = 1 << (7 - suffix);
 
-    if (backing_store_free[prefix] & suffix_bitmask) {
+    if (blocks_free[dev][prefix] & suffix_bitmask) {
         /* The memory was already set to full */
-        return ERROR_BACKING_FULL;
+        return ERROR_BLOCK_ALREADY_FULL;
     } else {
-        backing_store_free[prefix] = backing_store_free[prefix] | suffix_bitmask;
+        blocks_free[dev][prefix] = blocks_free[dev][prefix] | suffix_bitmask;
         return ERROR_SUCCESS;
     }
 }
