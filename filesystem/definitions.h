@@ -43,6 +43,7 @@ typedef unsigned char byte;
 #define ERROR_FS_NAME_ARG -23
 #define ERROR_BAD_OPTION -24
 #define ERROR_TOO_MANY_OPEN_FILES -25
+#define ERROR_NO_FREE_BLOCKS -26
 
 /*Constants*/
 #define null 0
@@ -57,7 +58,12 @@ typedef unsigned char byte;
 #define NAME_LIMIT 11
 #define NUM_BUFFERS 5
 /*256 MB*/
-#define MEM_SIZE 262144
+#define MEM_SIZE (256<<20)
+
+/* The smallest block size is 4 KB */
+#define MAX_BLOCK_SIZE (MEM_SIZE/(4<<10))
+
+byte blocks_free[MAX_DEVICE][MAX_BLOCK_SIZE]
 
 enum rw {
     READ,

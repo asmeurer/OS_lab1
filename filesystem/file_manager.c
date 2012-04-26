@@ -62,7 +62,7 @@ int format(int device_num, char fs_name, int blocksize){
     }
 
     format_me->fs_name = fs_name;
-    format_me->numblock = MEM_SIZE/blocksize;
+    format_me->numblock = MEM_SIZE/(blocksize<<10);
 
     /*Erase*/
     for(i = 0; i < MEM_SIZE / 32; i++){
@@ -152,76 +152,76 @@ int open(char fs_name, path *file_path, int write){
 }
 
 int write(int filehandle, short block_number, int buf_ptr){
-	block *temp;
-	fcb *file;
-	int error = 1;
-	int i = 0;
+    block *temp;
+    fcb *file;
+    int error = 1;
+    int i = 0;
 
-	/*Check if file is open*/
-	if (!(open_files[filehandle].bits & OPEN_TYPE_OPEN)){
-		return ERROR_FILE_NOT_OPEN;
-	}
+    /*Check if file is open*/
+    if (!(open_files[filehandle].bits & OPEN_TYPE_OPEN)){
+        return ERROR_FILE_NOT_OPEN;
+    }
 
-	/*Check if block number is part of file*/
+    /*Check if block number is part of file*/
 
-	file = open_files[filehandle].file;
+    file = open_files[filehandle].file;
 
 	if(!(file->bits & FCB_DIR_BITMASK)){
 			return ERROR_FILE_IS_DIR;
 	}
-	
-	
-	//For setting the 
+
+
+	//For setting the
 	temp = file->block_queue->tail;
 	temp->addr = block_number;
-	
+
 	/*Check if the block is assosiated with another file */
-	
-	// TODO: make a function to 
-	
+
+	// TODO: make a function to
+
 	/*Check if buffer pointer is valid */
 	//block_enqueue(file->block_queue, malloc_block());
-	// TODO: Import bit map stuff from memory manager 
+	// TODO: Import bit map stuff from memory manager
 
 }
 
 int read(int filehandle, short block_number, int buf_ptr){
-	block* temp;
-	fcb *file;
+    block* temp;
+    fcb *file;
 
-	int error = 1;
-	int i = 0;
-	/*Check if file is open*/
+    int error = 1;
+    int i = 0;
+    /*Check if file is open*/
 
-	if (!(open_files[filehandle].bits & OPEN_TYPE_OPEN)){
-		return ERROR_FILE_NOT_OPEN;
-	}
-	file = open_files[filehandle].file;
-	/* Check if file is a direcroty */
-	if(!(file->bits & FCB_DIR_BITMASK)){
-			return ERROR_FILE_IS_DIR;
-	}
-	/*Check if block number is part of file*/
-	if((seach_blocks(file->block_queue, block_number)) != 1){
-			return ERROR_BLOCK_NOT_IN_FILE;
-	}
-	/*Check buffer pointer*/
-	if(buf_ptr < 0 || buf_ptr >= NUM_BUFFERS){
-		return ERROR_BUFFER_NOT_EXIST;
-	}
-	/*Find next buffer slot*/
-	for(i = 0; i < BUFFER_SIZE; i++){
-		if(buffers[buf_ptr]->init == 0){
-			buffers[buf_ptr]->init = 1;
-			buffers[buf_ptr]->addr = block_number;
-			buffers[buf_ptr]->access_type = READ;
-			break;
-		}
-		if (i == BUFFER_SIZE){
-			return ERROR_BUFFER_FULL;
-		}
-	}
-	return ERROR_SUCCESS;
+    if (!(open_files[filehandle].bits & OPEN_TYPE_OPEN)){
+        return ERROR_FILE_NOT_OPEN;
+    }
+    file = open_files[filehandle].file;
+    /* Check if file is a direcroty */
+    if(!(file->bits & FCB_DIR_BITMASK)){
+        return ERROR_FILE_IS_DIR;
+    }
+    /*Check if block number is part of file*/
+    if((seach_blocks(file->block_queue, block_number)) != 1){
+        return ERROR_BLOCK_NOT_IN_FILE;
+    }
+    /*Check buffer pointer*/
+    if(buf_ptr < 0 || buf_ptr >= NUM_BUFFERS){
+        return ERROR_BUFFER_NOT_EXIST;
+    }
+    /*Find next buffer slot*/
+    for(i = 0; i < BUFFER_SIZE; i++){
+        if(buffers[buf_ptr]->init == 0){
+            buffers[buf_ptr]->init = 1;
+            buffers[buf_ptr]->addr = block_number;
+            buffers[buf_ptr]->access_type = READ;
+            break;
+        }
+        if (i == BUFFER_SIZE){
+            return ERROR_BUFFER_FULL;
+        }
+    }
+    return ERROR_SUCCESS;
 }
 
 int create(char fs_name, struct path *file_path, int dir)
@@ -321,5 +321,110 @@ void filename_copy(char *source, char *dest)
     int i;
     for (i = 0; i < NAME_LIMIT; i++) {
         dest[i] = source[i];
+    }
+}
+
+
+/**
+ * Find a free block slot in the device.  This will correspond to a 0 bit in
+ * the blocks_free byte array.
+ * @param dev Device number to search.
+ * @return Returns the index of the empty backing frame.
+ */
+short find_empty_back_addr(int dev) {
+    int prefix;
+    const int blocks_free_size = MAX_BLOCK_SIZE/8;
+    byte not_byte;
+    int found = 0;
+    int suffix = 0;
+    int shift_mask;
+
+    for (prefix = 0; prefix < blocks_free_size; prefix++) {
+        if (blocks_free[dev][prefix] != 0xff) {
+            found = 1;
+            not_byte = ~blocks_free[dev][prefix];
+            break;
+        }
+    }
+
+    /* We got to the end of the loop and didn't find any free slots. */
+    if (!found) {
+        return ERROR_NO_FREE_BLOCKS;
+    }
+
+    /* We have the byte that has a 0 in it, now find where the first 0 is.  To
+     * check this, we create a bitmask 0b1000000 and shift it right until we
+     * find the first 1 bit. */
+    shift_mask = 0x80;
+    for (suffix = 0; suffix < 8; suffix++){
+        if (not_byte & shift_mask) {
+            break;
+        }
+        shift_mask >>= 1;
+    }
+
+    /* Finally, convert the prefix and suffix into an address. */
+    return (prefix << 3) + suffix;
+}
+
+
+/**
+ * Set the block address addr to full.  Returns errors if the block is
+ * already in the state it is being set to, or if the address is out of
+ * bounds.
+ * @param dev The device to set.
+ * @param addr The address to be set as empty.
+ * @return Returns an error code.
+ */
+int set_back_addr_empty(int dev, short addr) {
+    int prefix;
+    int suffix;
+    byte suffix_bitmask;
+
+    if (addr > BACK_STORE_NUM_FRAME) {
+        return ERROR_ADDR_OUT_OF_BOUNDS;
+    }
+
+    prefix = addr >> 3;
+    suffix = addr & 0x7;
+    /* Create the bitmask for the suffix */
+    suffix_bitmask = 1 << (7 - suffix);
+
+    if (~backing_store_free[prefix] & suffix_bitmask) {
+        /* The memory was already set to empty */
+        return ERROR_BACKING_EMPTY;
+    } else {
+        backing_store_free[prefix] = ~(~backing_store_free[prefix] | suffix_bitmask);
+        return ERROR_SUCCESS;
+    }
+}
+
+/**
+ * Set the address addr to empty. Returns errors if the memory is
+ * already in the state it is being set to, or if the address is out of
+ * bounds.
+ * @param addr The address to be set as full
+ * @return Returns an error code
+ */
+int set_back_addr_full(short addr) {
+    int prefix;
+    int suffix;
+    byte suffix_bitmask;
+
+    if (addr > BACK_STORE_NUM_FRAME) {
+        return ERROR_ADDR_OUT_OF_BOUNDS;
+    }
+
+    prefix = addr >> 3;
+    suffix = addr & 0x7;
+    /* Create the bitmask for the suffix */
+    suffix_bitmask = 1 << (7 - suffix);
+
+    if (backing_store_free[prefix] & suffix_bitmask) {
+        /* The memory was already set to full */
+        return ERROR_BACKING_FULL;
+    } else {
+        backing_store_free[prefix] = backing_store_free[prefix] | suffix_bitmask;
+        return ERROR_SUCCESS;
     }
 }
