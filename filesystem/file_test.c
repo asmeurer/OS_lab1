@@ -92,16 +92,30 @@ int list_fileinfo(char fs_name, path *file_path){
     return ERROR_SUCCESS;
 }
 
-void listRec(fcb* file){
+void print_tabs(int count)
+{
+    int i;
+    for (i = 0; i < count; i++) {
+        printf("\t");
+    }
+}
+
+void listRec(fcb* file, int count){
     fcb* temp;
+    int i = 1;
+
     /*If it is a directory*/
     if(file->bits & FCB_DIR_BITMASK){
         printf("Directory %s, %d files:\n", file->filename, file->dirHead->size);
-        temp = file->dirHead->head;
+        temp = file->dirHead->tail;
         while(temp != NULL){
-            listRec(temp);
+            print_tabs(count);
+            printf("%-2d ", i);
+            listRec(temp, count + 1);
             temp = temp->next;
+            i++;
         }
+        print_tabs(count - 1);
         printf("End of directory %s\n", file->filename);
     }
     else{
@@ -116,7 +130,7 @@ void listDirectory(){
            device_array[i].bits & DEVICE_FORMAT_BITMASK &&
            device_array[i].bits & DEVICE_MOUNTED_BITMASK){
             printf("Listing device %c\n", device_array[i].fs_name);
-            listRec(device_array[i].root);
+            listRec(device_array[i].root, 0);
             printf("End of device %c\n", device_array[i].fs_name);
         }
     }
@@ -179,6 +193,13 @@ path* parsePath(char* pathname, char* fs){
     }
     /*Add into linked list until end of path*/
     while(arg != NULL){
+        if (strlen(arg) >= NAME_LIMIT) {
+            textcolor(BRIGHT, RED, BLACK);
+            printf("File name too long (must be no more than %d characters).\n", NAME_LIMIT - 1);
+            textcolor(BRIGHT, -1, -1);
+
+            return NULL;
+        }
         if (temp == NULL){
             temp = (path*) malloc(sizeof(path));
             head = temp;
@@ -546,7 +567,7 @@ int main(int argc, char *argv[]) {
                     init_arg++;
                     head_path_arg = parsePath(init_arg, &char_arg);
                     if (head_path_arg == NULL){
-                        error = 1;
+                        error = 0;
                     }else{
                         printf("Calling MKDIR on ");
                         printPath(head_path_arg, char_arg);
@@ -818,8 +839,6 @@ int main(int argc, char *argv[]) {
                     }
                     else if (!strcmp(init_arg, "FILEINFO")) {
                         init_arg = strtok(NULL, "\n");
-                        /*Get rid of space*/
-                        init_arg++;
                         head_path_arg = parsePath(init_arg, &char_arg);
                         if (head_path_arg == NULL){
                             error = 1;

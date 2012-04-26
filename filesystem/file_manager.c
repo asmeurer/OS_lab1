@@ -516,6 +516,7 @@ int create(char fs_name, struct path *file_path, int dir)
     }
 
     struct path *next = file_path;
+    fcb *p;
     struct dir_queue_t *current_dir = device_array[dev].root->dirHead;
     fcb *current_file = current_dir->tail;
 
@@ -531,11 +532,7 @@ int create(char fs_name, struct path *file_path, int dir)
             return ERROR_DIR_NOT_FOUND;
 
         } else if (filename_eq(current_file->filename, next->string)) {
-            if (next->next == null) {
-                /* End of the given path; this is the file to create.  We
-                 * found the file, so this means it's an error. */
-                return ERROR_FILE_ALREADY_EXISTS;
-            } else if (!(current_file->bits & FCB_DIR_BITMASK)) {
+            if (!(current_file->bits & FCB_DIR_BITMASK)) {
                 /* One of the directories in the path is actually a file.
                  * This is also an error. */
                 return ERROR_DIR_IS_FILE;
@@ -551,6 +548,15 @@ int create(char fs_name, struct path *file_path, int dir)
             current_file = current_file->next;
         }
     }
+    /* Check if the file already exists */
+    p = current_dir->tail;
+    while (p != null) {
+        if (filename_eq(p->filename, next->string)) {
+            return ERROR_FILE_ALREADY_EXISTS;
+        }
+        p = p->next;
+    }
+
     /* If we reach the end of the while loop, it means that the given path
      * already exists, and the given file does not.  So create the file.*/
     newfile = malloc_file();

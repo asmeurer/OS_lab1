@@ -24,8 +24,8 @@ path* parsePath(char* pathname, char* fs);
 int strToIntArg(char* string);
 void printPath(path* head, char fs_name);
 void errorToString(int error, char* command);
-void listRec(fcb* file);
+void listRec(fcb* file, int count);
 void listDirectory();
-
+void print_tabs(int count);
 
 #endif
