@@ -176,16 +176,16 @@ int main(int argc, char *argv[]) {
 						 }	 
 					}
 				}
-
+			}
 			if(error == 1){
 				textcolor(BRIGHT, RED, BLACK);
 					printf("Usage: INIT_FS <device_num>\n");
 					textcolor(RESET, -1, -1);
 			}			
 				
-			}
+			
 
-			}
+			
 			else if (!strcmp(command, "FORMAT")) {
 				fgets(line, LINE_MAX, file);
 				error = 1;
@@ -273,15 +273,20 @@ int main(int argc, char *argv[]) {
 					/*If there is a second argument*/
 					if(str_arg2 != NULL){						
 						char_arg = parsePath(str_arg, head_path_arg);
-						if (head_path_arg == NULL){
-							
+						if (head_path_arg == NULL){		
 							error = 1;
-						}else {
+						}else{
+							create(char_arg, head_path_arg, 1);
+							error = 0;
 							
 						}	
 					}
 				}
-			}	
+				if(error == 1){
+						
+				}
+				
+		}
 			else if (!strcmp(command, "OPEN")) {
 				fgets(line, LINE_MAX, file);
 				error = 1;
@@ -295,10 +300,10 @@ int main(int argc, char *argv[]) {
 					/*Option*/
 					str_arg2 = strtok(NULL, "\n");
 					/*If there is a second argument*/
+					
 					if(str_arg2 != NULL){
 						char_arg = parsePath(str_arg, head_path_arg);
 						if (head_path_arg == NULL){
-
 							error = 1;
 						}
 						else{
@@ -306,20 +311,21 @@ int main(int argc, char *argv[]) {
 								printf("Calling OPEN NEW on ");
 								printPath(head_path_arg, char_arg);
 								printf("\n");
-								open(char_arg, head_path_arg, 0);	
+								create(char_arg, head_path_arg, 0);	
 								error = 0;
 							}
 							else if (!strcmp(str_arg2, "READ-ONLY")) {
 								printf("Calling OPEN READ-ONLY on ");
 								printPath(head_path_arg, char_arg);
 								printf("\n");
-								
+								open(char_arg, head_path_arg, 0);
 								error = 0;
 							}
 							else if (!strcmp(str_arg2, "READ-WRITE")) {
 								printf("Calling OPEN READ-WRITE on ");
 								printPath(head_path_arg, char_arg);
 								printf("\n");
+								open(char_arg, head_path_arg, 1);
 								error = 0;
 							}
 							else{
