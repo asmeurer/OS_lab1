@@ -41,6 +41,7 @@ typedef unsigned char byte;
 #define ERROR_DIR_IS_FILE -19
 #define ERROR_DIR_NOT_FOUND -20
 #define ERROR_INVALID_BLOCK_SIZE -21
+#define ERROR_FS_NAME_ARG -22
 
 /*Constants*/
 #define null 0
@@ -123,7 +124,8 @@ struct path
 {
     char string[NAME_LIMIT];
     struct path *next;
-    struct path *prev;
 };
+struct path;
+typedef struct path path;
 
 #endif

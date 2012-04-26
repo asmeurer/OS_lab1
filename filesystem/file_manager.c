@@ -26,6 +26,7 @@ int init_fs (int device){
 
 /* Mount: checks if the device has been inited and formated, if so mounts it. Otherwise, returns an error. */
 int mount (char fsname){
+	/*
 	int i;
 	for(i = 0; i < MAX_DEVICE; i++){
 		if(device_array[i].fsname == fsname && (!(device_array[i].bits & DEVICE_FORMAT_BITMASK))){
@@ -33,11 +34,11 @@ int mount (char fsname){
 			return ERROR_SUCCESS;
 		}
 	}
-
+*/
 	return ERROR_NOT_INITIALIZED_OR_FORMATED;
 }
 
-int format(int device_num, char fsname, int blocksize){
+int format(int device_num, char fs_name, int blocksize){
 	/*Check for correct num of devices*/
 	int i;
 	
@@ -47,7 +48,7 @@ int format(int device_num, char fsname, int blocksize){
 	
 	for(i = 0; i < MAX_DEVICE; i++){
 		if(!(device_array[device_num].bits & DEVICE_MOUNTED_BITMASK)){
-			device_array[device_num].bits | DEVICE_FORMAT_BITMASK
+			device_array[device_num].bits | DEVICE_FORMAT_BITMASK;
 			device_array[device_num].fs_name = fs_name;
 		}else if(device_array[device_num].bits & DEVICE_MOUNTED_BITMASK){
 			return ERROR_DEVICE_MOUNTED;		
@@ -89,6 +90,7 @@ int open(char* filename, int option){
 		case OPEN_RW:
 			break;
 	}
+	return ERROR_SUCCESS;
 }
 
 int read(int filehandle, short block_number, int buf_ptr){
@@ -100,7 +102,7 @@ int read(int filehandle, short block_number, int buf_ptr){
 		return ERROR_FILE_NOT_OPEN;
 	}
 
-	open_files[filehandle].file->blocktail = temp;
+	temp = open_files[filehandle].file->blocktail;
 	/*Check if block number is part of file*/
 	while (temp != null){
 		if (temp->addr == block_number){
@@ -180,11 +182,11 @@ int create_dir(char fsname, struct path file_path)
 
 
 /* Convert a filesystem character name to a device number */
-int get_device(char fsname)
+int get_device(char fs_name)
 {
     int i;
     for (i=0; i < MAX_DEVICE; i++) {
-        if (device_array[i].fsname == fsname) {
+        if (device_array[i].fs_name == fs_name) {
             return i;
         }
     }
