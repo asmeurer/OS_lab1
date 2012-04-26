@@ -199,3 +199,12 @@ MKDIR C/TEST/DIR/DIR1/DIR2/DIR6
 MKDIR C/TEST/DIR/DIR1/DIR2/DIR7
 MKDIR C/TEST/DIR/DIR1/DIR2/DIR8
 LIST DIRECTORY
+# Unmount the device and make sure stuff is still there
+UNMOUNT C
+MOUNT C
+LIST DIRECTORY
+# Format the file system and make sure everything is gone forever
+UNMOUNT C
+FORMAT 0 C 4
+MOUNT C
+LIST DIRECTORY
