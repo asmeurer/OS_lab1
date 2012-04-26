@@ -17,7 +17,7 @@ int init_fs (int device){
 	}
 	/*Clear open file array*/
 	for (i = 0; i < MAX_OPEN; i++){
-		open_files[i].bits = open_files[i].bits | (~OPEN_TYPE_OPEN); 
+		open_files[i].bits = open_files[i].bits | (~OPEN_TYPE_OPEN_BITMASK); 
 		open_files[i].file = null;
 	}
 	return ERROR_SUCCESS;
@@ -79,6 +79,10 @@ int format(int device_num, char fs_name, int blocksize){
 }
 
 int unmount(char fs_name){
+	int i;
+	for(i = 0; i < MAX_DEVICE; i++){
+		
+	}
     return ERROR_SUCCESS;
 }
 
@@ -111,6 +115,21 @@ fcb *get_file(int dev, path *file_path)
     }
 
     return null;
+}
+
+/**
+ * This function closes a file by using the file handle to referance it, then sets the fbc pointer file to null and the bits to 0
+ */ 
+int close(int filehandle){
+	int i;
+	for(i = 0; i < MAX_OPEN; i++){
+		if(i == filehandle){
+			open_files[i].file = null;
+			open_files[i].bits = 0;
+	
+		}		
+	}
+	return ERROR_SUCCESS;
 }
 
 int open(char fs_name, path *file_path, int write){
@@ -148,7 +167,7 @@ int open(char fs_name, path *file_path, int write){
         open_files[i].bits |= OPEN_TYPE_WRITE_ACC_BITMASK;
     }
 
-    return ERROR_SUCCESS;
+    return i;
 }
 
 int write(int filehandle, short block_number, int buf_ptr){
