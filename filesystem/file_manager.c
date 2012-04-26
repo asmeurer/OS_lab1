@@ -89,22 +89,23 @@ int open(char* filename, int option){
 
 int write(int filehandle, short block_number, int buf_ptr){
 	block *temp;
+	fcb *file;
 	int error = 1;
 	int i = 0;
+	
 	/*Check if file is open*/
-	if (open_files[filehandle].open == 0){
+	if (!(open_files[filehandle].bits & OPEN_TYPE_OPEN)){
 		return ERROR_FILE_NOT_OPEN;
 	}
+	
 	/*Check if block number is part of file*/
-	while (temp != null){
-		if (temp->addr == block_number){
-			error = 0;
-		}
-		temp = temp->next;
+	
+	file = open_files[filehandle].file;
+	
+	if(!(file->bits & FCB_DIR_BITMASK)){
+			return ERROR_FILE_IS_DIR;
 	}
-	if (error == 1){
-		return ERROR_BLOCK_NOT_IN_FILE;
-	}
+	
 	
 	/*Check if buffer point is valid */
 	
@@ -117,7 +118,7 @@ int read(int filehandle, short block_number, int buf_ptr){
 	int error = 1;
 	int i = 0;
 	/*Check if file is open*/
-	if (open_files[filehandle].open == 0){
+	if (!(open_files[filehandle].bits & OPEN_TYPE_OPEN)){
 		return ERROR_FILE_NOT_OPEN;
 	}
 

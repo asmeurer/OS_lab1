@@ -41,6 +41,7 @@ typedef unsigned char byte;
 #define ERROR_DIR_IS_FILE -19
 #define ERROR_DIR_NOT_FOUND -20
 #define ERROR_INVALID_BLOCK_SIZE -21
+#define ERROR_FILE_IS_DIR -22
 
 /*Constants*/
 #define null 0
@@ -88,10 +89,10 @@ struct fcb {
 	char filename[NAME_LIMIT];
 	/*0 0 0 0 0 0 0 (Directory)*/
 	byte bits;
-	dir_queue_t* dirHead;
-    block_queue_t block_queue;
-	struct fcb* next;
-	struct fcb* prev;
+	struct dir_queue_t* dirHead;
+    struct block_queue_t block_queue;
+	fcb* next;
+	fcb* prev;
 	byte device_num;
 };
 struct fcb;
