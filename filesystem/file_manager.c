@@ -39,14 +39,29 @@ int init_fs (int device){
  * @return Returns ERROR_SUCCESS on success, else an error code.
  */
 int mount (char fs_name){
-    int i;
-    for(i = 0; i < MAX_DEVICE; i++){
-        if(device_array[i].fs_name == fs_name && (!(device_array[i].bits & DEVICE_FORMAT_BITMASK))){
-            device_array[i].bits |= DEVICE_MOUNTED_BITMASK;
-            return ERROR_SUCCESS;
-        }
+    int dev;
+    dev = get_device(fs_name);
+
+    if (dev < 0) {
+        /* Bad fs_name */
+        return dev;
     }
-    return ERROR_NOT_INITIALIZED_OR_FORMATED;
+
+    /* Mount cannot work if the file system has not been formatted, or if it
+     * is already mounted. */
+    if (!(device_array[dev].bits & DEVICE_FORMAT_BITMASK)) {
+        /* A file system cannot have a name if it isn't formatted, so this
+         * should actually never happen. */
+        return ERROR_NOT_INITIALIZED_OR_FORMATED;
+    }
+
+    if (device_array[dev].bits & DEVICE_MOUNTED_BITMASK) {
+        return ERROR_ALREADY_MOUNTED;
+    }
+
+    device_array[dev].bits |= DEVICE_MOUNTED_BITMASK;
+
+    return ERROR_SUCCESS;
 }
 
 /**
@@ -116,18 +131,64 @@ int format(int device_num, char fs_name, int blocksize){
     return format_me->numblock;
 }
 
+/**
+ * Unmounts the drive.
+ *
+ * A drive cannot be unmounted if it has open files, or if it is already
+ * unmounted.
+ *
+ * @param fs_name The name of the filesystem to unmount.
+ *
+ * @return Returns ERROR_SUCCESS on success, else an error code.
+ */
 int unmount(char fs_name){
+    int dev = get_device(fs_name);
     int i;
-    for(i = 0; i < MAX_DEVICE; i++){
 
+    if (dev < 0) {
+        /* Bad fs_name */
+        return dev;
     }
+
+    /* A device cannot be unmounted if it is not formatted, or if it is
+     * already unmounted. */
+    if (!(device_array[dev].bits & DEVICE_FORMAT_BITMASK)) {
+        /* This should never happen. */
+        return ERROR_NOT_INITIALIZED_OR_FORMATED;
+    }
+
+    if (!(device_array[dev].bits & DEVICE_MOUNTED_BITMASK)) {
+        return ERROR_ALREADY_UNMOUNTED;
+    }
+
+    /* A device cannot be unmounted if there are open files. */
+    for(i = 0; i < MAX_OPEN; i++){
+        if ((open_files[i].bits & OPEN_TYPE_OPEN_BITMASK) && (open_files[i].file->device_num == dev)) {
+            return ERROR_FILES_ARE_OPEN;
+        }
+    }
+
+    device_array[dev].bits |= ~DEVICE_MOUNTED_BITMASK;
     return ERROR_SUCCESS;
 }
 
-/* Convert a file path into a file.  This is very similar to the search inside
- * create(). */
+/**
+ * Convert a file path into a file.
+ *
+ * This is used internally to find the file given a file path data structure,
+ * which is basically a linked list of strings.
+ *
+ * @param dev The device number to look for the file in
+ *
+ * @file_path The file path corresponding to the file to be returned.
+ *
+ * @return Returns a pointer to the file corresponding to file_path.  Any
+ * error codes will be in the error field of the fcb.
+ */
 fcb *get_file(int dev, path *file_path)
 {
+    /* This is very similar to the search inside create(), but we care about
+     * different errors in this case. */
     struct path *next = file_path;
     struct dir_queue_t *current_dir = device_array[dev].root->dirHead;
     fcb *current_file = current_dir->tail;
@@ -152,20 +213,24 @@ fcb *get_file(int dev, path *file_path)
         }
     }
 
-    return null;
+    return current_file;
 }
 
 /**
- * This function closes a file by using the file handle to referance it, then sets the fbc pointer file to null and the bits to 0
+ * Closes the given file, by file handle.
+ *
+ * The file handle is the index in the open file array (though this is
+ * technically an implementation detail).
+ *
+ * @param filehandle The file handle for the file to be closed.  This is the
+ * same file handle that will be returned to the user on a call to open().
+ *
+ * @return Returns ERROR_SUCCESS on success, else an error code.
  */
 int close(int filehandle){
-    int i;
-    for(i = 0; i < MAX_OPEN; i++){
-        if(i == filehandle){
-            open_files[i].file = null;
-            open_files[i].bits = 0;
-        }
-    }
+    open_files[filehandle].file = null;
+    open_files[filehandle].bits = 0;
+
     return ERROR_SUCCESS;
 }
 
@@ -296,6 +361,11 @@ int create(char fs_name, struct path *file_path, int dir)
 {
     int dev = get_device(fs_name);
 
+    if (dev < 0) {
+        /* Bad fs_name */
+        return dev;
+    }
+
     struct path *next = file_path;
     struct dir_queue_t *current_dir = device_array[dev].root->dirHead;
     fcb *current_file = current_dir->tail;
@@ -362,8 +432,16 @@ int create(char fs_name, struct path *file_path, int dir)
 
 int delete(char fs_name, struct path *file_path)
 {
-        int dev = get_device(fs_name);
+    int dev = get_device(fs_name);
+    if (dev < 0) {
+        return dev;
+    }
+
     fcb *file = get_file(dev, file_path);
+    if (file->error < 0) {
+        return file->error;
+    }
+
     return delete_internal(dev, file);
 }
 
@@ -418,12 +496,18 @@ int delete_internal(int dev, fcb *file)
 int get_device(char fs_name)
 {
     int i;
-    for (i=0; i < MAX_DEVICE; i++) {
+
+    if (fs_name < 'A' || fs_name > 'Z') {
+        return ERROR_BAD_FS_NAME;
+    }
+
+    for (i = 0; i < MAX_DEVICE; i++) {
         if (device_array[i].fs_name == fs_name) {
             return i;
         }
     }
-    return ERROR_BAD_FS_NAME;
+
+    return ERROR_FS_NAME_NOT_EXISTS;
 }
 
 /* Custom version of strcmp to compare filenames. Returns 0 if the names are

@@ -49,7 +49,10 @@ typedef unsigned char byte;
 #define ERROR_ADDR_OUT_OF_BOUNDS -27
 #define ERROR_BLOCK_ALREADY_EMPTY -28
 #define ERROR_BLOCK_ALREADY_FULL -29
-#define ERROR_DIR_NOT_EMPTY -30
+#define ERROR_FILES_ARE_OPEN -30
+#define ERROR_ALREADY_MOUNTED -31
+#define ERROR_ALREADY_UNMOUNTED -32
+#define ERROR_FS_NAME_NOT_EXISTS -33
 
 /* Constants
  *
@@ -72,7 +75,9 @@ typedef unsigned char byte;
 /*256 MB*/
 #define MEM_SIZE (256<<20)
 
-/* The smallest block size is 4 KB */
+/* Memory size divided by smallest allowed block size (4KB), divided by 8 bits
+     * per byte */
+
 #define MAX_BLOCK_SIZE (MEM_SIZE/(4<<10))
 
 enum rw {
@@ -116,10 +121,8 @@ struct fcb;
 typedef struct fcb fcb;
 
 /* Device struct */
-typedef struct{
+typedef struct {
     fcb *root;
-    /* Memory size divided by smallest allowed block, divided by 8 bits per
-     * byte */
     byte bitmap[MAX_BLOCK_SIZE];
     byte numblock;
     char fs_name;
@@ -131,7 +134,7 @@ typedef struct{
 device device_array [MAX_DEVICE];
 
 /* Open File struct */
-typedef struct{
+typedef struct {
     fcb* file;
     byte bits;
     /* 0 0 0 0 0 0 (write access) (open) */
