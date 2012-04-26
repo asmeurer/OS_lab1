@@ -173,12 +173,15 @@ int main(int argc, char *argv[]) {
 						 }else{
 							 init_fs(int_arg);
 							 printf("File System has been initialized.\n");
+							 error = 0;
 						 }	 
 					}
 				}
 				
 			if(error == 1){
-				
+				textcolor(BRIGHT, RED, BLACK);
+					printf("Usage: INIT_FS <device_num>\n");
+					textcolor(RESET, -1, -1);
 			}			
 				
 			}
@@ -215,7 +218,7 @@ int main(int argc, char *argv[]) {
 							}
 							else{
 								printf("Calling FORMAT with device %d, name %c, blocksize %d\n", int_arg, char_arg, int_arg2);
-								/*TODO: Call format*/
+								format(int_arg, char_arg, int_arg2);
 								error = 0;
 							}
 						}
@@ -243,7 +246,7 @@ int main(int argc, char *argv[]) {
 					else{
 						char_arg = init_arg[0];
 						printf("Calling MOUNT with name %c\n", char_arg);
-						/*TODO: Call mount*/
+						mount(char_arg);
 						error = 0;
 					}
 				}
@@ -253,6 +256,31 @@ int main(int argc, char *argv[]) {
 					textcolor(RESET, -1, -1);
 				}
 			}
+			
+			else if(!strcmp(command, "MKDIR")) {
+				fgets(line, LINE_MAX, file);
+				error = 1;
+				/*Initial split of line*/
+				init_arg = strtok(line, " ");
+				/*If there exists arguments*/
+				if (strcmp(init_arg, "\n") != 0 && init_arg != NULL) {
+					/*Filename*/
+					str_arg = (char*) malloc(sizeof(char) * (strlen(init_arg)+1));
+					strcpy(str_arg, init_arg);
+					/*Option*/
+					str_arg2 = strtok(NULL, "\n");
+					/*If there is a second argument*/
+					if(str_arg2 != NULL){						
+						char_arg = parsePath(str_arg, head_path_arg);
+						if (head_path_arg == NULL){
+							
+							error = 1;
+						}else {
+							
+						}	
+					}
+				}
+			}	
 			else if (!strcmp(command, "OPEN")) {
 				fgets(line, LINE_MAX, file);
 				error = 1;
@@ -277,12 +305,14 @@ int main(int argc, char *argv[]) {
 								printf("Calling OPEN NEW on ");
 								printPath(head_path_arg, char_arg);
 								printf("\n");
+								open(char_arg, head_path_arg, 0);	
 								error = 0;
 							}
 							else if (!strcmp(str_arg2, "READ-ONLY")) {
 								printf("Calling OPEN READ-ONLY on ");
 								printPath(head_path_arg, char_arg);
 								printf("\n");
+								
 								error = 0;
 							}
 							else if (!strcmp(str_arg2, "READ-WRITE")) {
