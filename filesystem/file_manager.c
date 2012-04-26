@@ -28,7 +28,7 @@ int mount (char fs_name){
     int i;
     for(i = 0; i < MAX_DEVICE; i++){
         if(device_array[i].fs_name == fs_name && (!(device_array[i].bits & DEVICE_FORMAT_BITMASK))){
-            device_array[i].bits | DEVICE_MOUNTED_BITMASK;
+            device_array[i].bits |= DEVICE_MOUNTED_BITMASK;
             return ERROR_SUCCESS;
         }
     }
@@ -45,7 +45,7 @@ int format(int device_num, char fs_name, int blocksize){
 
     for(i = 0; i < MAX_DEVICE; i++){
         if(!(device_array[device_num].bits & DEVICE_MOUNTED_BITMASK)){
-            device_array[device_num].bits | DEVICE_FORMAT_BITMASK;
+            device_array[device_num].bits |= DEVICE_FORMAT_BITMASK;
             device_array[device_num].fs_name = fs_name;
         }else if(device_array[device_num].bits & DEVICE_MOUNTED_BITMASK){
             return ERROR_DEVICE_MOUNTED;
@@ -173,11 +173,10 @@ int open(char fs_name, path *file_path, int write){
 int write(int filehandle, short block_number, int buf_ptr){
     block *temp;
     fcb *file;
-    int error = 1;
     int i = 0;
 
     /*Check if file is open*/
-    if (!(open_files[filehandle].bits & OPEN_TYPE_OPEN)){
+    if (!(open_files[filehandle].bits & OPEN_TYPE_OPEN_BITMASK)){
         return ERROR_FILE_NOT_OPEN;
     }
 
@@ -220,14 +219,12 @@ int write(int filehandle, short block_number, int buf_ptr){
 }
 
 int read(int filehandle, short block_number, int buf_ptr){
-    block* temp;
     fcb *file;
 
-    int error = 1;
     int i = 0;
     /*Check if file is open*/
 
-    if (!(open_files[filehandle].bits & OPEN_TYPE_OPEN)){
+    if (!(open_files[filehandle].bits & OPEN_TYPE_OPEN_BITMASK)){
         return ERROR_FILE_NOT_OPEN;
     }
     file = open_files[filehandle].file;
