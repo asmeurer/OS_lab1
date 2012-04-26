@@ -32,5 +32,6 @@ void filename_copy(char *source, char *dest);
 unsigned short find_empty_block(int dev);
 int set_block_empty(int dev, unsigned short addr);
 int set_block_full(int dev, unsigned short addr);
+int close(int filehandle);
 
 #endif
