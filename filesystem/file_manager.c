@@ -10,159 +10,160 @@
 
 /* Init_fs: checks if the device is known, if so set the device name */
 int init_fs (int device){
-	int i;
-	/*Unmount all devices*/
-	for (i = 0; i < MAX_DEVICE; i++){
-		device_array[i].bits = device_array[i].bits & (~DEVICE_MOUNTED_BITMASK);
-	}
-	/*Clear open file array*/
-	for (i = 0; i < MAX_OPEN; i++){
-		open_files[i].open = 0;
-		open_files[i].file = null;
-	}
-	return ERROR_SUCCESS;
+    int i;
+    /*Unmount all devices*/
+    for (i = 0; i < MAX_DEVICE; i++){
+        device_array[i].bits = device_array[i].bits & (~DEVICE_MOUNTED_BITMASK);
+    }
+    /*Clear open file array*/
+    for (i = 0; i < MAX_OPEN; i++){
+        open_files[i].open = 0;
+        open_files[i].file = null;
+    }
+    return ERROR_SUCCESS;
 }
 
 
 /* Mount: checks if the device has been inited and formated, if so mounts it. Otherwise, returns an error. */
 int mount (char fs_name){
-	int i;
-	for(i = 0; i < MAX_DEVICE; i++){
-		if(device_array[i].fs_name == fs_name && (!(device_array[i].bits & DEVICE_FORMAT_BITMASK))){
-			device_array[i].bits | DEVICE_MOUNTED_BITMASK;
-			return ERROR_SUCCESS;
-		}
-	}
-*/
-	return ERROR_NOT_INITIALIZED_OR_FORMATED;
+    int i;
+    for(i = 0; i < MAX_DEVICE; i++){
+        if(device_array[i].fs_name == fs_name && (!(device_array[i].bits & DEVICE_FORMAT_BITMASK))){
+            device_array[i].bits | DEVICE_MOUNTED_BITMASK;
+            return ERROR_SUCCESS;
+        }
+    }
+    */
+        return ERROR_NOT_INITIALIZED_OR_FORMATED;
 }
 
 int format(int device_num, char fs_name, int blocksize){
-	/*Check for correct num of devices*/
-	int i;
+    /*Check for correct num of devices*/
+    int i;
 
-	if(blocksize != 4 || blocksize != 8 || blocksize != 16){
-		return ERROR_INVALID_BLOCK_SIZE;
-	}
-	
-	for(i = 0; i < MAX_DEVICE; i++){
-		if(!(device_array[device_num].bits & DEVICE_MOUNTED_BITMASK)){
-			device_array[device_num].bits | DEVICE_FORMAT_BITMASK;
-			device_array[device_num].fs_name = fs_name;
-		}else if(device_array[device_num].bits & DEVICE_MOUNTED_BITMASK){
-			return ERROR_DEVICE_MOUNTED;		
-		}
-	}
-	
-	if(device_num < 0 || device_num >= MAX_DEVICE){
-		return ERROR_INVALID_DEVICE_NUM;
-	}
-	device *format_me = &device_array[device_num];
-	/*Must be unmounted*/
-	if(format_me->bits & DEVICE_MOUNTED_BITMASK){
-		return ERROR_DEVICE_MOUNTED;
-	}
+    if(blocksize != 4 || blocksize != 8 || blocksize != 16){
+        return ERROR_INVALID_BLOCK_SIZE;
+    }
 
-	format_me->fs_name = fs_name;
-	format_me->numblock = MEM_SIZE/blocksize;
+    for(i = 0; i < MAX_DEVICE; i++){
+        if(!(device_array[device_num].bits & DEVICE_MOUNTED_BITMASK)){
+            device_array[device_num].bits | DEVICE_FORMAT_BITMASK;
+            device_array[device_num].fs_name = fs_name;
+        }else if(device_array[device_num].bits & DEVICE_MOUNTED_BITMASK){
+            return ERROR_DEVICE_MOUNTED;
+        }
+    }
 
-	/*Erase*/
-	for(i = 0; i < MEM_SIZE / 32; i++){
-		format_me->bitmap[i] = 0;
-	}
-	format_me->bits = format_me->bits | DEVICE_FORMAT_BITMASK;
+    if(device_num < 0 || device_num >= MAX_DEVICE){
+        return ERROR_INVALID_DEVICE_NUM;
+    }
+    device *format_me = &device_array[device_num];
+    /*Must be unmounted*/
+    if(format_me->bits & DEVICE_MOUNTED_BITMASK){
+        return ERROR_DEVICE_MOUNTED;
+    }
+
+    format_me->fs_name = fs_name;
+    format_me->numblock = MEM_SIZE/blocksize;
+
+    /*Erase*/
+    for(i = 0; i < MEM_SIZE / 32; i++){
+        format_me->bitmap[i] = 0;
+    }
+    format_me->bits = format_me->bits | DEVICE_FORMAT_BITMASK;
 
 
-	if(device_num < 0 || device_num >= MAX_DEVICE){
-		return ERROR_INVALID_DEVICE_NUM;
-	}
+    if(device_num < 0 || device_num >= MAX_DEVICE){
+        return ERROR_INVALID_DEVICE_NUM;
+    }
 
-	return format_me->numblock;
+    return format_me->numblock;
 }
 
 int unmount(char fs_name){
-	return ERROR_SUCCESS;
+    return ERROR_SUCCESS;
 }
 
 int add_to_open_table(){
-	return ERROR_SUCCESS;
+    return ERROR_SUCCESS;
 }
-int open(char* filename, int option){
-	switch(option){
-		case OPEN_NEW:
 
-			break;
-		case OPEN_R:
-			break;
-		case OPEN_RW:
-			break;
-	}
-	return ERROR_SUCCESS;
+int open(char* filename, int option){
+    switch(option){
+    case OPEN_NEW:
+
+        break;
+    case OPEN_R:
+        break;
+    case OPEN_RW:
+        break;
+    }
+    return ERROR_SUCCESS;
 }
 
 int write(int filehandle, short block_number, int buf_ptr){
-	block *temp;
-	fcb *file;
-	int error = 1;
-	int i = 0;
-	
-	/*Check if file is open*/
-	if (!(open_files[filehandle].bits & OPEN_TYPE_OPEN)){
-		return ERROR_FILE_NOT_OPEN;
-	}
-	
-	/*Check if block number is part of file*/
-	
-	file = open_files[filehandle].file;
-	
-	if(!(file->bits & FCB_DIR_BITMASK)){
-			return ERROR_FILE_IS_DIR;
-	}
-	
-	
-	/*Check if buffer point is valid */
+    block *temp;
+    fcb *file;
+    int error = 1;
+    int i = 0;
+
+    /*Check if file is open*/
+    if (!(open_files[filehandle].bits & OPEN_TYPE_OPEN)){
+        return ERROR_FILE_NOT_OPEN;
+    }
+
+    /*Check if block number is part of file*/
+
+    file = open_files[filehandle].file;
+
+    if(!(file->bits & FCB_DIR_BITMASK)){
+        return ERROR_FILE_IS_DIR;
+    }
+
+
+    /*Check if buffer point is valid */
 
 
 
 }
 
 int read(int filehandle, short block_number, int buf_ptr){
-	block* temp;
-	int error = 1;
-	int i = 0;
-	/*Check if file is open*/
-	if (!(open_files[filehandle].bits & OPEN_TYPE_OPEN)){
-		return ERROR_FILE_NOT_OPEN;
-	}
+    block* temp;
+    int error = 1;
+    int i = 0;
+    /*Check if file is open*/
+    if (!(open_files[filehandle].bits & OPEN_TYPE_OPEN)){
+        return ERROR_FILE_NOT_OPEN;
+    }
 
-	temp = open_files[filehandle].file->blocktail;
-	/*Check if block number is part of file*/
-	while (temp != null){
-		if (temp->addr == block_number){
-			error = 0;
-		}
-		temp = temp->next;
-	}
-	if (error == 1){
-		return ERROR_BLOCK_NOT_IN_FILE;
-	}
-	/*Check buffer pointer*/
-	if(buf_ptr < 0 || buf_ptr >= NUM_BUFFERS){
-		return ERROR_BUFFER_NOT_EXIST;
-	}
-	/*Find next buffer slot*/
-	for(i = 0; i < BUFFER_SIZE; i++){
-		if(buffers[buf_ptr]->init == 0){
-			buffers[buf_ptr]->init = 1;
-			buffers[buf_ptr]->addr = block_number;
-			buffers[buf_ptr]->access_type = READ;
-			break;
-		}
-		if (i == BUFFER_SIZE){
-			return ERROR_BUFFER_FULL;
-		}
-	}
-	return ERROR_SUCCESS;
+    temp = open_files[filehandle].file->blocktail;
+    /*Check if block number is part of file*/
+    while (temp != null){
+        if (temp->addr == block_number){
+            error = 0;
+        }
+        temp = temp->next;
+    }
+    if (error == 1){
+        return ERROR_BLOCK_NOT_IN_FILE;
+    }
+    /*Check buffer pointer*/
+    if(buf_ptr < 0 || buf_ptr >= NUM_BUFFERS){
+        return ERROR_BUFFER_NOT_EXIST;
+    }
+    /*Find next buffer slot*/
+    for(i = 0; i < BUFFER_SIZE; i++){
+        if(buffers[buf_ptr]->init == 0){
+            buffers[buf_ptr]->init = 1;
+            buffers[buf_ptr]->addr = block_number;
+            buffers[buf_ptr]->access_type = READ;
+            break;
+        }
+        if (i == BUFFER_SIZE){
+            return ERROR_BUFFER_FULL;
+        }
+    }
+    return ERROR_SUCCESS;
 }
 
 int create(char fs_name, struct path file_path, int dir)
@@ -192,7 +193,7 @@ int create(char fs_name, struct path file_path, int dir)
             } else if (!(current_file->bits & FCB_DIR_BITMASK)) {
                 /* One of the directories in the path is actually a file.
                  * This is also an error. */
-                    return ERROR_DIR_IS_FILE;
+                return ERROR_DIR_IS_FILE;
             } else {
                 /* We found one of the directories in the given path.
                  * Continue recursing. */
