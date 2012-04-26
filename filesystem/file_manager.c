@@ -32,8 +32,7 @@ int mount (char fs_name){
             return ERROR_SUCCESS;
         }
     }
-    */
-        return ERROR_NOT_INITIALIZED_OR_FORMATED;
+    return ERROR_NOT_INITIALIZED_OR_FORMATED;
 }
 
 int format(int device_num, char fs_name, int blocksize){
@@ -153,68 +152,66 @@ int open(char fs_name, path *file_path, int write){
 }
 
 int write(int filehandle, short block_number, int buf_ptr){
-    block *temp;
-    fcb *file;
-    int error = 1;
-    int i = 0;
+	block *temp;
+	fcb *file;
+	int error = 1;
+	int i = 0;
 
-    /*Check if file is open*/
-    if (!(open_files[filehandle].bits & OPEN_TYPE_OPEN)){
-        return ERROR_FILE_NOT_OPEN;
-    }
+	/*Check if file is open*/
+	if (!(open_files[filehandle].bits & OPEN_TYPE_OPEN)){
+		return ERROR_FILE_NOT_OPEN;
+	}
 
-    /*Check if block number is part of file*/
+	/*Check if block number is part of file*/
 
-    file = open_files[filehandle].file;
+	file = open_files[filehandle].file;
 
-    if(!(file->bits & FCB_DIR_BITMASK)){
-        return ERROR_FILE_IS_DIR;
-    }
-
-
-    /*Check if buffer point is valid */
-
-
+	if(!(file->bits & FCB_DIR_BITMASK)){
+			return ERROR_FILE_IS_DIR;
+	}
+	/*Check if buffer pointer is valid */
+	block_enqueue(file->block_queue, malloc_block());
+	// TODO: Import bit map stuff from memory manager
 
 }
 
 int read(int filehandle, short block_number, int buf_ptr){
-    block* temp;
-    int error = 1;
-    int i = 0;
-    /*Check if file is open*/
-    if (!(open_files[filehandle].bits & OPEN_TYPE_OPEN)){
-        return ERROR_FILE_NOT_OPEN;
-    }
+	block* temp;
+	fcb *file;
 
-    temp = open_files[filehandle].file->blocktail;
-    /*Check if block number is part of file*/
-    while (temp != null){
-        if (temp->addr == block_number){
-            error = 0;
-        }
-        temp = temp->next;
-    }
-    if (error == 1){
-        return ERROR_BLOCK_NOT_IN_FILE;
-    }
-    /*Check buffer pointer*/
-    if(buf_ptr < 0 || buf_ptr >= NUM_BUFFERS){
-        return ERROR_BUFFER_NOT_EXIST;
-    }
-    /*Find next buffer slot*/
-    for(i = 0; i < BUFFER_SIZE; i++){
-        if(buffers[buf_ptr]->init == 0){
-            buffers[buf_ptr]->init = 1;
-            buffers[buf_ptr]->addr = block_number;
-            buffers[buf_ptr]->access_type = READ;
-            break;
-        }
-        if (i == BUFFER_SIZE){
-            return ERROR_BUFFER_FULL;
-        }
-    }
-    return ERROR_SUCCESS;
+	int error = 1;
+	int i = 0;
+	/*Check if file is open*/
+
+	if (!(open_files[filehandle].bits & OPEN_TYPE_OPEN)){
+		return ERROR_FILE_NOT_OPEN;
+	}
+	file = open_files[filehandle].file;
+	/* Check if file is a direcroty */
+	if(!(file->bits & FCB_DIR_BITMASK)){
+			return ERROR_FILE_IS_DIR;
+	}
+	/*Check if block number is part of file*/
+	if((seach_blocks(file->block_queue, block_number)) != 1){
+			return ERROR_BLOCK_NOT_IN_FILE;
+	}
+	/*Check buffer pointer*/
+	if(buf_ptr < 0 || buf_ptr >= NUM_BUFFERS){
+		return ERROR_BUFFER_NOT_EXIST;
+	}
+	/*Find next buffer slot*/
+	for(i = 0; i < BUFFER_SIZE; i++){
+		if(buffers[buf_ptr]->init == 0){
+			buffers[buf_ptr]->init = 1;
+			buffers[buf_ptr]->addr = block_number;
+			buffers[buf_ptr]->access_type = READ;
+			break;
+		}
+		if (i == BUFFER_SIZE){
+			return ERROR_BUFFER_FULL;
+		}
+	}
+	return ERROR_SUCCESS;
 }
 
 int create(char fs_name, struct path *file_path, int dir)
