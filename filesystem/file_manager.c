@@ -284,6 +284,7 @@ int create(char fs_name, struct path *file_path, int dir)
      * already exists, and the given file does not.  So create the file.*/
     newfile = malloc_file();
     new_blockqueue = malloc_block_queue();
+    block_init_queue(new_blockqueue);
 
     if (dir) {
         new_dirqueue = malloc_dir_queue();
