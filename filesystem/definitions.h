@@ -67,8 +67,6 @@ typedef unsigned char byte;
 /* The smallest block size is 4 KB */
 #define MAX_BLOCK_SIZE (MEM_SIZE/(4<<10))
 
-byte blocks_free[MAX_DEVICE][MAX_BLOCK_SIZE];
-
 enum rw {
     READ,
     WRITE
@@ -110,11 +108,12 @@ struct fcb {
 struct fcb;
 typedef struct fcb fcb;
 
-/*Device*/
+/* Device struct */
 typedef struct{
     struct dir_queue_t *root;
-    /*Memory size divided by smallest allowed block, divided by 8 bits per byte*/
-    byte bitmap[MEM_SIZE / 32];
+    /* Memory size divided by smallest allowed block, divided by 8 bits per
+     * byte */
+    byte bitmap[MAX_BLOCK_SIZE];
     byte numblock;
     char fs_name;
     /*0 0 0 0 0 0 (Mounted) (Formatted)*/

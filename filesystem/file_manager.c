@@ -398,9 +398,9 @@ short find_empty_block(int dev) {
     int shift_mask;
 
     for (prefix = 0; prefix < blocks_free_size; prefix++) {
-        if (blocks_free[dev][prefix] != 0xff) {
+        if (device_array[dev].bitmap[prefix] != 0xff) {
             found = 1;
-            not_byte = ~blocks_free[dev][prefix];
+            not_byte = ~device_array[dev].bitmap[prefix];
             break;
         }
     }
@@ -448,11 +448,11 @@ int set_block_empty(int dev, short addr) {
     /* Create the bitmask for the suffix */
     suffix_bitmask = 1 << (7 - suffix);
 
-    if (~blocks_free[dev][prefix] & suffix_bitmask) {
+    if (~device_array[dev].bitmap[prefix] & suffix_bitmask) {
         /* The memory was already set to empty */
         return ERROR_BLOCK_ALREADY_EMPTY;
     } else {
-        blocks_free[dev][prefix] = ~(~blocks_free[dev][prefix] | suffix_bitmask);
+        device_array[dev].bitmap[prefix] = ~(~device_array[dev].bitmap[prefix] | suffix_bitmask);
         return ERROR_SUCCESS;
     }
 }
@@ -479,11 +479,11 @@ int set_block_full(int dev, short addr) {
     /* Create the bitmask for the suffix */
     suffix_bitmask = 1 << (7 - suffix);
 
-    if (blocks_free[dev][prefix] & suffix_bitmask) {
+    if (device_array[dev].bitmap[prefix] & suffix_bitmask) {
         /* The block was already set to full */
         return ERROR_BLOCK_ALREADY_FULL;
     } else {
-        blocks_free[dev][prefix] = blocks_free[dev][prefix] | suffix_bitmask;
+        device_array[dev].bitmap[prefix] = device_array[dev].bitmap[prefix] | suffix_bitmask;
         return ERROR_SUCCESS;
     }
 }
