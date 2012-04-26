@@ -34,6 +34,7 @@ int init_fs(int device){
         buf_flush(i);
     }
 
+    device_array[device].bits = device_array[device].bits | DEVICE_INIT_BITMASK;
     return ERROR_SUCCESS;
 }
 
@@ -110,6 +111,9 @@ int format(int device_num, char fs_name, int blocksize){
     if(format_me->bits & DEVICE_MOUNTED_BITMASK){
         return ERROR_DEVICE_MOUNTED;
     }
+    if(!(format_me->bits & DEVICE_INIT_BITMASK)){
+		return ERROR_DEVICE_NOT_KNOWN;
+	}
 
     if (fs_name < 'A' || fs_name > 'Z') {
         return ERROR_BAD_FS_NAME;

@@ -72,6 +72,7 @@ typedef unsigned char byte;
 #define OPEN_TYPE_WRITE_ACC_BITMASK 0x02
 #define DEVICE_FORMAT_BITMASK 0x01
 #define DEVICE_MOUNTED_BITMASK 0x02
+#define DEVICE_INIT_BITMASK 0x04
 #define NAME_LIMIT 11
 #define NUM_BUFFERS 5
 /*256 MB*/
@@ -129,7 +130,7 @@ typedef struct {
     byte bitmap[MAX_BLOCK_SIZE];
     byte numblock;
     char fs_name;
-    /*0 0 0 0 0 0 (Mounted) (Formatted)*/
+    /*0 0 0 0 0 (Init) (Mounted) (Formatted)*/
     byte bits;
 } device;
 
