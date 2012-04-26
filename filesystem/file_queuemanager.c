@@ -155,16 +155,16 @@ void block_deinit(struct block_queue_t *queue) {
  * Function to search through the blocks of a fcb and checking their address
  */
 int seach_blocks(struct block_queue_t *queue, unsigned short addr){
-	block *temp;
-	temp = queue->tail;
+    block *temp;
+    temp = queue->tail;
 
-	while(temp != null){
-		if(temp->addr == addr){
-			return 1;
-		}
-		temp= temp->next;
-	}
-	return 0;
+    while(temp != null){
+        if(temp->addr == addr){
+            return 1;
+        }
+        temp= temp->next;
+    }
+    return 0;
 }
 /**
  * Function to clear and set the initilized flag for the specified queue.

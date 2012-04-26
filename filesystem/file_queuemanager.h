@@ -10,7 +10,7 @@
 #define FILE_QUEUE_MANAGER_H
 
 #include "definitions.h"
-	#include "file_hardware.h"
+#include "file_hardware.h"
 
 fcb error_file =
 {
