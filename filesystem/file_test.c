@@ -955,6 +955,7 @@ int main(int argc, char *argv[]) {
                 printf("CLOSE <filehandle>\n");
                 printf("DELETE <filepath>\n");
                 printf("LIST [DEVICES|FILEINFO <filename>|DIRECTORY|BUFFERS]\n");
+                printf("BUF_FLUSH <buf_prt>\n");
                 printf("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
             }
             else {
