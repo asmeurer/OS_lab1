@@ -18,6 +18,12 @@
 int init_fs(int device);
 int format(int device_num, char fs_name, int blocksize);
 int mount(char fs_name);
+int unmount(char fs_name);
+int add_to_open_table();
+fcb *get_file(path *file_path);
+int open(path *file_path, int write);
+int write(int filehandle, short block_number, int buf_ptr);
+int read(int filehandle, short block_number, int buf_ptr);
 int create(char fs_name, struct path file_path, int dir);
 int get_device(char fs_name);
 int filename_eq(char *string1, char *string2);

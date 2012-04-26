@@ -88,16 +88,35 @@ int add_to_open_table(){
     return ERROR_SUCCESS;
 }
 
-int open(char* filename, int option){
-    switch(option){
-    case OPEN_NEW:
+fcb *get_file(path *file_path)
+{
+    return null;
+}
 
-        break;
-    case OPEN_R:
-        break;
-    case OPEN_RW:
-        break;
+int open(path *file_path, int write){
+    fcb *file = get_file(file_path);
+    int i;
+    int found = 0;
+
+    /* Find and empty open file slot */
+    for (i = 0; i < MAX_OPEN; i++) {
+        if (!(open_files[i].bits & OPEN_TYPE_OPEN_BITMASK)) {
+            found = 1;
+            break;
+        }
     }
+
+    if (!found) {
+        return ERROR_TOO_MANY_OPEN_FILES;
+    }
+
+    open_files[i].file = file;
+    open_files[i].bits = 0;
+    open_files[i].bits |= OPEN_TYPE_OPEN_BITMASK;
+    if (write) {
+        open_files[i].bits |= OPEN_TYPE_WRITE_ACC_BITMASK;
+    }
+
     return ERROR_SUCCESS;
 }
 

@@ -1,14 +1,10 @@
 /**
- * Definitions header
+ * Filesystem Definitions header
  *
  * Group 2
  * Aaron Meurer
  * Oran Wallace
  * Sheng Lundquist
- */
-
-/**
- * Memory Definitions Header
  */
 
 #include "file_queuemanager.h"
@@ -45,6 +41,8 @@ typedef unsigned char byte;
 #define ERROR_INVALID_BLOCK_SIZE -21
 #define ERROR_FILE_IS_DIR -22
 #define ERROR_FS_NAME_ARG -23
+#define ERROR_BAD_OPTION -24
+#define ERROR_TOO_MANY_OPEN_FILES -25
 
 /*Constants*/
 #define null 0
@@ -52,7 +50,7 @@ typedef unsigned char byte;
 #define MAX_DEVICE 5
 #define MAX_OPEN 8
 #define FCB_DIR_BITMASK 0x01
-#define OPEN_TYPE_OPEN 0x01
+#define OPEN_TYPE_OPEN_BITMASK 0x01
 #define OPEN_TYPE_WRITE_ACC_BITMASK 0x02
 #define DEVICE_FORMAT_BITMASK 0x01
 #define DEVICE_MOUNTED_BITMASK 0x02
@@ -61,26 +59,25 @@ typedef unsigned char byte;
 /*256 MB*/
 #define MEM_SIZE 262144
 
-#define OPEN_NEW 1
-#define OPEN_R 2
-#define OPEN_RW 3
-#define READ 1
-#define WRITE 2
+enum rw {
+    READ,
+    WRITE
+};
 
 /*Buffer struct*/
 typedef struct{
-	short addr;
-	byte access_type;
-	byte init;
-}buffer_slot;
+    short addr;
+    enum rw access_type;
+    byte init;
+} buffer_slot;
 
 /*Buffers*/
 buffer_slot buffers [NUM_BUFFERS][BUFFER_SIZE];
 
 struct block{
-	unsigned short addr;
-	struct block* next;
-	struct block* prev;
+    unsigned short addr;
+    struct block* next;
+    struct block* prev;
     byte error;
 };
 /*Block Structure*/
@@ -89,35 +86,35 @@ typedef struct block block;
 /*FCB*/
 
 struct fcb {
-	char filename[NAME_LIMIT];
-	/*0 0 0 0 0 0 0 (Directory)*/
-	byte bits;
-	struct dir_queue_t* dirHead;
+    char filename[NAME_LIMIT];
+    /*0 0 0 0 0 0 0 (Directory)*/
+    byte bits;
+    struct dir_queue_t* dirHead;
     struct block_queue_t *block_queue;
-	struct fcb* next;
-	struct fcb* prev;
-	byte device_num;
+    struct fcb* next;
+    struct fcb* prev;
+    byte device_num;
 };
 struct fcb;
 typedef struct fcb fcb;
 
 /*Device*/
 typedef struct{
-	struct dir_queue_t *root;
-	/*Memory size divided by smallest allowed block, divided by 8 bits per byte*/
-	byte bitmap[MEM_SIZE / 32];
-	byte numblock;
-	char fs_name;
-	/*0 0 0 0 0 0 (Mounted) (Formated)*/
-	byte bits;
+    struct dir_queue_t *root;
+    /*Memory size divided by smallest allowed block, divided by 8 bits per byte*/
+    byte bitmap[MEM_SIZE / 32];
+    byte numblock;
+    char fs_name;
+    /*0 0 0 0 0 0 (Mounted) (Formatted)*/
+    byte bits;
 } device;
 
 /*Device list*/
 device device_array [MAX_DEVICE];
 
 typedef struct{
-	fcb* file;
-	byte bits;
+    fcb* file;
+    byte bits;
     /* 0 0 0 0 0 0 (write access) (open) */
 } open_type;
 /*Open files array*/
