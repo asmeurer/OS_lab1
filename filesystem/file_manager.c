@@ -234,6 +234,22 @@ int close(int filehandle){
     return ERROR_SUCCESS;
 }
 
+/**
+ * Opens the given file on the given filesystem, with read-write or read-only
+ * permissions.
+ *
+ * @param fs_name The filesystem name where the file is.
+ *
+ * @param file_path The file path data structure corresponding to the file to
+ * be opened.
+ *
+ * @param write A boolean, 1 means open the file with read-write permissions,
+ * 0 means open the file with read-only permissions.
+ *
+ * @return Returns the file handle on success, or an error code on failure.
+ * The file handle is an integer that can be passed to close() to close the
+ * file.  In the implementation, it is just the index in the open file array.
+ */
 int open(char fs_name, path *file_path, int write){
     int dev = get_device(fs_name);
     fcb *file = get_file(dev, file_path);
@@ -272,18 +288,21 @@ int open(char fs_name, path *file_path, int write){
     return i;
 }
 
+/**
+ * Writes the block_number to the file handle
+ */
 int write(int filehandle, short block_number, int buf_ptr){
     block *temp;
     fcb *file;
     int error;
     int i = 0;
 
-    /*Check if file is open*/
+    /* Check if file is open */
     if (!(open_files[filehandle].bits & OPEN_TYPE_OPEN_BITMASK)){
         return ERROR_FILE_NOT_OPEN;
     }
 
-    /*Check if block number is part of file*/
+    /* Check if block number is part of file */
     file = open_files[filehandle].file;
     if(!(file->bits & FCB_DIR_BITMASK)){
         return ERROR_FILE_IS_DIR;
