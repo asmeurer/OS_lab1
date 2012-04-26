@@ -16,7 +16,10 @@ typedef unsigned char byte;
 
 #define null 0
 
-/* Error Codes */
+/* Error Codes
+ *
+ * Yes, there are a lot of them
+ */
 #define ERROR_SUCCESS 0
 #define ERROR_INVALID_DEVICE_NUM -1
 #define ERROR_DEVICE_MOUNTED -2
@@ -49,11 +52,17 @@ typedef unsigned char byte;
 #define ERROR_BLOCK_ALREADY_FULL -29
 #define ERROR_DIR_NOT_EMPTY -30
 
-/*Constants*/
+/* Constants
+ *
+ * Most of the "size" constants can be changed without any
+ * issues.
+ */
 #define null 0
 #define BUFFER_SIZE 5
 #define MAX_DEVICE 5
-#define MAX_OPEN 8
+#define MAX_OPEN 8              /* This is probably too small, but it makes
+                                 * testing easier and it can be easily
+                                 * changed. */
 #define FCB_DIR_BITMASK 0x01
 #define OPEN_TYPE_OPEN_BITMASK 0x01
 #define OPEN_TYPE_WRITE_ACC_BITMASK 0x02
@@ -72,27 +81,26 @@ enum rw {
     WRITE
 };
 
-/*Buffer struct*/
+/* Buffer struct */
 typedef struct{
     short addr;
     enum rw access_type;
     byte init;
 } buffer_slot;
 
-/*Buffers*/
+/* Buffers */
 buffer_slot buffers [NUM_BUFFERS][BUFFER_SIZE];
 
+/* Block struct */
 struct block{
     unsigned short addr;
     struct block* next;
     struct block* prev;
     byte error;
 };
-/*Block Structure*/
 typedef struct block block;
 
-/*FCB*/
-
+/* File Control Block struct */
 struct fcb {
     char filename[NAME_LIMIT];
     /*0 0 0 0 0 0 0 (Directory)*/
@@ -120,18 +128,21 @@ typedef struct{
     byte bits;
 } device;
 
-/*Device list*/
+/* Device list*/
 device device_array [MAX_DEVICE];
 
+/* Open File struct */
 typedef struct{
     fcb* file;
     byte bits;
     /* 0 0 0 0 0 0 (write access) (open) */
 } open_type;
+
 /*Open files array*/
 open_type open_files[MAX_OPEN];
 
-/* A simple linked list of strings to represent a file path */
+/* A simple linked list of strings to represent a file path.  This is what the
+ * test runner passes to the filesystem manager functions. */
 struct path
 {
     char string[NAME_LIMIT];
