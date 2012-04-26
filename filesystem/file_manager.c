@@ -129,7 +129,7 @@ int _format(int device_num, char fs_name, int blocksize){
     }
 
     if (error < 0) {
-        return error;
+        //return error;
     }
 
     /*Erase*/
