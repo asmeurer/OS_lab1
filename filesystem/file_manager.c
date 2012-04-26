@@ -10,17 +10,17 @@
 
 /* Init_fs: checks if the device is known, if so set the device name */
 int init_fs (int device){
-    int i;
-    /*Unmount all devices*/
-    for (i = 0; i < MAX_DEVICE; i++){
-        device_array[i].bits = device_array[i].bits & (~DEVICE_MOUNTED_BITMASK);
-    }
-    /*Clear open file array*/
-    for (i = 0; i < MAX_OPEN; i++){
-        open_files[i].open = 0;
-        open_files[i].file = null;
-    }
-    return ERROR_SUCCESS;
+	int i;
+	/*Unmount all devices*/
+	for (i = 0; i < MAX_DEVICE; i++){
+		device_array[i].bits = device_array[i].bits & (~DEVICE_MOUNTED_BITMASK);
+	}
+	/*Clear open file array*/
+	for (i = 0; i < MAX_OPEN; i++){
+		open_files[i].bits = open_files[i].bits | (~OPEN_TYPE_OPEN); 
+		open_files[i].file = null;
+	}
+	return ERROR_SUCCESS;
 }
 
 /* Mount: checks if the device has been inited and formated, if so mounts it. Otherwise, returns an error. */
@@ -181,7 +181,22 @@ int write(int filehandle, short block_number, int buf_ptr){
 
 	/*Check if buffer pointer is valid */
 	//block_enqueue(file->block_queue, malloc_block());
-	// TODO: Import bit map stuff from memory manager
+	// TODO: Import bit map stuff from memory manager 
+	
+	/*Find next buffer slot*/
+	for(i = 0; i < BUFFER_SIZE; i++){
+		if(buffers[buf_ptr]->init == 0){
+			buffers[buf_ptr]->init = 1;
+			buffers[buf_ptr]->addr = block_number;
+			buffers[buf_ptr]->access_type = WRITE;
+			break;
+		}
+		if (i == BUFFER_SIZE){
+			return ERROR_BUFFER_FULL;
+		}
+	}
+	
+	return ERROR_SUCCESS;
 
 }
 
