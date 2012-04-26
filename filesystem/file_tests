@@ -22,6 +22,17 @@ MOUNT C
 FORMAT 0 C 4
 # Attempt to format a device with a bad file system name
 FORMAT 0 hello 4
+# UNMOUNT TESTS
+# Test if unmount works correctly
+UNMOUNT C
+# Attempt to unmount an invalid file sysmte
+UNMOUNT B
+# MOUNT TESTS
+# Test if mount works correctly
+FORMAT 0 C 4
+MOUNT C
+# Attempt to mount an invalid file system
+MOUNT B
 # MKDIR TESTS
 # Test mkdir works correctly
 MKDIR C/TEST
@@ -82,6 +93,7 @@ CLOSE 0
 # Attempt to write to a read-only file
 OPEN C/a READ-ONLY
 WRITE 0 0 0
+LIST FILE
 # Attempt to write on a block that is full
 WRITE 0 0 0
 # Attempt to write with an invalid filehandle
