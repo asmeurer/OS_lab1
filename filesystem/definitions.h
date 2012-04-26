@@ -93,8 +93,8 @@ struct fcb {
 	byte bits;
 	struct dir_queue_t* dirHead;
     struct block_queue_t *block_queue;
-	fcb* next;
-	fcb* prev;
+	struct fcb* next;
+	struct fcb* prev;
 	byte device_num;
 };
 struct fcb;
