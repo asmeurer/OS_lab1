@@ -868,6 +868,7 @@ int main(int argc, char *argv[]) {
                 printf("WRITE <filehandle> <block_number> <buf_prt>    \n");
                 printf("CLOSE <filehandle>\n");
                 printf("DELETE <filepath>\n");
+                printf("BUF_FLUSH <buf_prt>\n");
                 printf("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
             }
             else {

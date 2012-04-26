@@ -16,6 +16,10 @@ FORMAT 0 C 4
 FORMAT 0 C 2
 FORMAT 0 C 5
 FORMAT 0 C 10
+# Format multiple devices
+FORMAT 0 C 4
+FORMAT 1 D 8
+FORMAT 2 E 16
 # Attempt to formate a device that is already mounted
 FORMAT 0 C 4
 MOUNT C
