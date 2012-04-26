@@ -47,6 +47,7 @@ typedef unsigned char byte;
 #define ERROR_ADDR_OUT_OF_BOUNDS -27
 #define ERROR_BLOCK_ALREADY_EMPTY -28
 #define ERROR_BLOCK_ALREADY_FULL -29
+#define ERROR_DIR_NOT_EMPTY -30
 
 /*Constants*/
 #define null 0
@@ -99,6 +100,7 @@ struct fcb {
     /*0 0 0 0 0 0 0 (Directory)*/
     byte bits;
     struct dir_queue_t* dirHead;
+    struct dir_queue_t* containing_dir;
     struct block_queue_t *block_queue;
     struct fcb* next;
     struct fcb* prev;

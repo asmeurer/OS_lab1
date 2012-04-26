@@ -86,8 +86,8 @@ int unmount(char fs_name){
     return ERROR_SUCCESS;
 }
 
-/* Convert a file path into a file.  This is very similar to the search
- * inside create(). */
+/* Convert a file path into a file.  This is very similar to the search inside
+ * create(). */
 fcb *get_file(int dev, path *file_path)
 {
     struct path *next = file_path;
@@ -312,11 +312,50 @@ int create(char fs_name, struct path *file_path, int dir)
     filename_copy(newfile->filename, next->string);
     newfile->bits = dir;
     newfile->dirHead = new_dirqueue;
+    newfile->containing_dir = current_dir;
     newfile->block_queue = new_blockqueue;
     newfile->device_num = dev;
 
     dir_enqueue(current_dir, newfile);
 
+    return ERROR_SUCCESS;
+}
+
+int delete(char fs_name, struct path *file_path)
+{
+    int error;
+    int dev = get_device(fs_name);
+    fcb *file = get_file(dev, file_path);
+    block *file_block = null;
+
+    /* If the file is a directory, delete it if and only if it is empty. */
+    if (file->bits | FCB_DIR_BITMASK) {
+        if (file->dirHead == null) {
+            file = dir_delete(file->containing_dir, file);
+            if (file->device_num < 0) {
+                return file->device_num;
+            }
+            Free(file);
+        } else {
+            return ERROR_DIR_NOT_EMPTY;
+        }
+    } else {
+        file = dir_delete(file->containing_dir, file);
+        if (file->device_num < 0) {
+            return file->device_num;
+        }
+        /* Clear all the blocks in the file.  This means setting the addresses
+         * as free in the bitmap and actually clearing the "memory" of those
+         * blocks. */
+        file_block = block_dequeue(file->block_queue);
+        while (file_block != null) {
+            error = set_block_empty(dev, file_block->addr) < 0;
+            if (error < 0) {
+                return error;
+            }
+            Free(file_block);
+        }
+    }
     return ERROR_SUCCESS;
 }
 

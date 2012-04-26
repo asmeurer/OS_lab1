@@ -17,6 +17,7 @@ fcb error_file =
     .filename = "\0",
     .bits = 0,
     .dirHead = null,
+    .containing_dir = null,
     .block_queue = null,
     .next = null,
     .prev = null,
