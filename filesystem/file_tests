@@ -19,7 +19,7 @@ FORMAT 0 C 4
 MOUNT C
 FORMAT 0 C 4
 # Attempt to format a device with a bad file system name
-FORMAT 0 hello 4 
+FORMAT 0 hello 4
 # MKDIR TESTS
 # Test mkdir works correctly
 MKDIR C/TEST
@@ -29,6 +29,8 @@ MKDIR C/TEST/DIR
 MKDIR Z/DIR
 # Attempt to create 2 directories inside one
 MKDIR C/TEST1
+# Attempt to make a directory with a name past the max size
+MKDIR C/THISSHOULDBETOOLONG
 # Attempt create a deeply nested directory structure
 MKDIR C/TEST/DIR
 MKDIR C/TEST/DIR/DIR1
@@ -38,6 +40,9 @@ MKDIR C/TEST/DIR1/DIR2/DIR3/DIR4
 MKDIR C/TEST/DIR1/DIR2/DIR3/DIR4/DIR5
 MKDIR C/TEST/DIR1/DIR2/DIR3/DIR4/DIR5/DIR6
 MKDIR C/TEST/DIR1/DIR2/DIR3/DIR4/DIR5/DIR6/DIR7
+# Attempt to make a directory with the path containing a file
+OPEN C/TEST/DIR1/DIR2/DIR3/DIR4/DIR5/DIR6/DIR7/file
+MKDIR C/TEST/DIR1/DIR2/DIR3/DIR4/DIR5/DIR6/DIR7/file/DIR8
 # OPEN TESTS
 # Test if open works correctly for all arguments
 OPEN C/foo NEW
@@ -45,15 +50,74 @@ CLOSE 0
 OPEN C/foo READ-ONLY
 CLOSE 0
 OPEN C/foo READ-WRITE
-# Attempt  
+# Attempt to create a file with no path
 OPEN foo NEW
+# Attempt to create create a file with a name past the max size
+OPEN C/thisfilenameistoolong NEW
 # Attempt to open more files than allowed
 OPEN C/a NEW
-OPEN C/b NEW 
+OPEN C/b NEW
 OPEN C/c NEW
 OPEN C/d NEW
 OPEN C/e NEW
-OPEN C/f NEW 
+OPEN C/f NEW
 OPEN C/g NEW
 # Attempt to create a file in a directory doesnt exist
 OPEN C/SOMETHING/file
+# Attempt to create a file with a bad file name
+OPEN C/d$32/4fdwd NEW
+# Attempt to make file containing a space in the name
+OPEN C/file name NEW
+# Attempt to open a directory for both read-only and read-write
+OPEN C READ-ONLY
+OPEN C READ-WRITE
+# WRITE TEST
+# Test if write works correctly
+OPEN C/a READ-WRITE
+WRITE 0 0 0
+# Attempt to write on top of the block
+WRITE 0 0 0
+# Attempt to write with an invalid filehandle
+WRITE 10 0 0
+# Attemt to write with an invalid buffer
+WRITE 0 0 10
+# Attemp to write with an invalid block number
+WRITE 0 999999999 0
+# Attempt to fill buffer on a write
+WRITE 0 1 1
+WRITE 0 2 2
+WRITE 0 3 3
+WRITE 0 4 4 
+WRITE 0 5 5
+WRITE 0 6 6
+# Close file
+CLOSE 0
+# READ TESTS
+# Test if read works correctly
+OPEN C/a READ-ONLY
+READ 0 0 1
+# Attempt to read with an invalid filehandle
+READ 1 0 0
+# Attempt to read with an invalid buffer
+READ 0 0 10
+# Attemp to read with an invalid block number
+READ 0 9999999 0
+# Attempt to fill buffer on a read
+# Close file
+CLOSE 0
+# CLOSE TESTS
+# Test if the close works correctly
+OPEN C/a READ-WRITE
+CLOSE 0
+OPEN C/a READ-ONLY
+CLOSE 0
+# Attempt to close with an invalid filehandle
+CLOSE 10
+# DELETE TEST
+# Test if delete would correctly
+DELETE C/a
+# Attempt to delete a file that does not exist 
+DELETE C/hello
+# Delete a file in a nested directory
+OPEN C/TEST/DIR1/DIR2/DIR3/DIR4/DIR5/DIR6/DIR7/deleteme NEW
+DELETE C/TEST/DIR1/DIR2/DIR3/DIR4/DIR5/DIR6/DIR7/deleteme
