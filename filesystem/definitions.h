@@ -7,10 +7,12 @@
  * Sheng Lundquist
  */
 
-#include "file_queuemanager.h"
 
 #ifndef FILE_DEF_H
 #define FILE_DEF_H
+
+#include "file_queuemanager.h"
+#include "file_hardware.h"
 
 typedef unsigned char byte;
 

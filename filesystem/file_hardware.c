@@ -1,5 +1,4 @@
 #include "file_hardware.h"
-#include "file_queuemanager.h"
 
 /* This is the simulation of the hardware.  Normally this would happen in the
  * device itself.  The data structures used here are "stored" on the device
