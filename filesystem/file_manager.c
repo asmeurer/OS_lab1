@@ -121,11 +121,9 @@ int _format(int device_num, char fs_name, int blocksize){
 
     format_me->fs_name = fs_name;
     format_me->numblock = MEM_SIZE/(blocksize<<10);
-    if (format_me->root != null) {
-
-        /* The device has been used since being formated last. */
+    if (format_me->root != null && !(format_me->bits & DEVICE_INIT_BITMASK)) {
+        /* The device has been used since being formatted last. */
         error = delete_internal(device_num, format_me->root);
-
     }
 
     if (error < 0) {
@@ -141,7 +139,11 @@ int _format(int device_num, char fs_name, int blocksize){
     format_me->root = malloc_file();
     filename_copy(format_me->root->filename,"root");
     format_me->root->bits = 0;
-    format_me->root->dirHead = null;
+    format_me->root->dirHead = malloc_dir_queue();
+    format_me->root->dirHead->tail = null;
+
+    dir_init_queue(format_me->root->dirHead);
+
     /* This is the reason we don't use create() to make the root directory.
      * It has a special case for parent_dir, which is just null. */
     format_me->root->parent_dir = null;
