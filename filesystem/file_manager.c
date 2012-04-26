@@ -17,7 +17,7 @@ int init_fs (int device){
 	}
 	/*Clear open file array*/
 	for (i = 0; i < MAX_OPEN; i++){
-		open_files[i].bits = open_files[i].bits | (~OPEN_TYPE_OPEN_BITMASK); 
+		open_files[i].bits = open_files[i].bits | (~OPEN_TYPE_OPEN_BITMASK);
 		open_files[i].file = null;
 	}
 	return ERROR_SUCCESS;
@@ -81,7 +81,7 @@ int format(int device_num, char fs_name, int blocksize){
 int unmount(char fs_name){
 	int i;
 	for(i = 0; i < MAX_DEVICE; i++){
-		
+
 	}
     return ERROR_SUCCESS;
 }
@@ -119,15 +119,15 @@ fcb *get_file(int dev, path *file_path)
 
 /**
  * This function closes a file by using the file handle to referance it, then sets the fbc pointer file to null and the bits to 0
- */ 
+ */
 int close(int filehandle){
 	int i;
 	for(i = 0; i < MAX_OPEN; i++){
 		if(i == filehandle){
 			open_files[i].file = null;
 			open_files[i].bits = 0;
-	
-		}		
+
+		}
 	}
 	return ERROR_SUCCESS;
 }
@@ -365,7 +365,7 @@ void filename_copy(char *source, char *dest)
  * @param dev Device number to search.
  * @return Returns the index of the empty backing frame.
  */
-short find_empty_back_addr(int dev) {
+short find_empty_block(int dev) {
     int prefix;
     const int blocks_free_size = MAX_BLOCK_SIZE/8;
     byte not_byte;
@@ -410,7 +410,7 @@ short find_empty_back_addr(int dev) {
  * @param addr The address to be set as empty.
  * @return Returns an error code.
  */
-int set_back_addr_empty(int dev, short addr) {
+int set_block_empty(int dev, short addr) {
     int prefix;
     int suffix;
     byte suffix_bitmask;
@@ -441,7 +441,7 @@ int set_back_addr_empty(int dev, short addr) {
  * @param addr The address to be set as full.
  * @return Returns an error code.
  */
-int set_back_addr_full(int dev, short addr) {
+int set_block_full(int dev, short addr) {
     int prefix;
     int suffix;
     byte suffix_bitmask;

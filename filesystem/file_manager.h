@@ -27,5 +27,8 @@ int create(char fs_name, struct path *file_path, int dir);
 int get_device(char fs_name);
 int filename_eq(char *string1, char *string2);
 void filename_copy(char *source, char *dest);
+short find_empty_block(int dev);
+int set_block_empty(int dev, short addr);
+int set_block_full(int dev, short addr);
 
 #endif
