@@ -23,12 +23,10 @@ int init_fs (int device){
 	return ERROR_SUCCESS;
 }
 
-/* device[i].fsname == fsname && (!(device[i].bits & DEVICE_FORMAT_BITMASK)) ){
-			device[i].bits | DEVICE_MOUNTED_BITMASK; */
 
 /* Mount: checks if the device has been inited and formated, if so mounts it. Otherwise, returns an error. */
 int mount (char fsname){
-	int i, error;
+	int i;
 	for(i = 0; i < MAX_DEVICE; i++){
 		if(device_array[i].fsname == fsname && (!(device_array[i].bits & DEVICE_FORMAT_BITMASK))){
 			device_array[i].bits | DEVICE_MOUNTED_BITMASK;
@@ -41,6 +39,21 @@ int mount (char fsname){
 
 int format(int device_num, char fsname, int blocksize){
 	/*Check for correct num of devices*/
+	int i;
+	
+	if(blocksize != 4 || blocksize != 8 || blocksize != 16){
+		return ERROR_INVALID_BLOCK_SIZE;
+	}
+	
+	for(i = 0; i < MAX_DEVICE; i++){
+		if(!(device_array[device_num].bits & DEVICE_MOUNTED_BITMASK)){
+			device_array[device_num].bits | DEVICE_FORMAT_BITMASK
+			device_array[device_num].fs_name = fs_name;
+		}else if(device_array[device_num].bits & DEVICE_MOUNTED_BITMASK){
+			return ERROR_DEVICE_MOUNTED;		
+		}
+	}
+	
 	if(device_num < 0 || device_num >= MAX_DEVICE){
 		return ERROR_INVALID_DEVICE_NUM;
 	}

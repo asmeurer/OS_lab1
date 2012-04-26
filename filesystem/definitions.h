@@ -40,6 +40,7 @@ typedef unsigned char byte;
 #define ERROR_FILE_ALREADY_EXISTS -18
 #define ERROR_DIR_IS_FILE -19
 #define ERROR_DIR_NOT_FOUND -20
+#define ERROR_INVALID_BLOCK_SIZE -21
 
 /*Constants*/
 #define null 0
@@ -105,7 +106,6 @@ typedef struct{
 	char fs_name;
 	/*0 0 0 0 0 0 (Mounted) (Formated)*/
 	byte bits;
-	char fsname;
 }device;
 
 /*Device list*/
