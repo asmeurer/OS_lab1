@@ -1,4 +1,5 @@
 #include "file_hardware.h"
+#include "file_queuemanager.h"
 
 void Free(void *ptr)
 {
@@ -15,12 +16,12 @@ block *malloc_block()
     return malloc(sizeof(block));
 }
 
-block_queue_t *malloc_block_queue()
+struct block_queue_t *malloc_block_queue()
 {
-    return malloc(sizeof(block_queue_t));
+    return malloc(sizeof(struct block_queue_t));
 }
 
-dir_queue_t *malloc_dir_queue()
+struct dir_queue_t *malloc_dir_queue()
 {
-    return malloc(sizeof(dir_queue_t));
+    return malloc(sizeof(struct dir_queue_t));
 }

@@ -44,16 +44,16 @@ int format(int device_num, char fs_name, int blocksize){
 	if(blocksize != 4 || blocksize != 8 || blocksize != 16){
 		return ERROR_INVALID_BLOCK_SIZE;
 	}
-	
+
 	device *format_me = &device_array[device_num];
 	/*Must be unmounted*/
 	if(format_me->bits & DEVICE_MOUNTED_BITMASK){
 		return ERROR_DEVICE_MOUNTED;
 	}
-	
+
 	format_me->fs_name = fs_name;
 	format_me->numblock = MEM_SIZE/blocksize;
-	
+
 	/*Erase*/
 	for(i = 0; i < MEM_SIZE / 32; i++){
 		format_me->bitmap[i] = 0;
@@ -64,7 +64,7 @@ int format(int device_num, char fs_name, int blocksize){
 	if(device_num < 0 || device_num >= MAX_DEVICE){
 		return ERROR_INVALID_DEVICE_NUM;
 	}
-	
+
 	return format_me->numblock;
 }
 
@@ -105,11 +105,11 @@ int write(int filehandle, short block_number, int buf_ptr){
 	if (error == 1){
 		return ERROR_BLOCK_NOT_IN_FILE;
 	}
-	
+
 	/*Check if buffer point is valid */
-	
-	
-	
+
+
+
 }
 
 int read(int filehandle, short block_number, int buf_ptr){
@@ -157,7 +157,7 @@ int create(char fs_name, struct path file_path, int dir)
 
     struct path *next = &file_path;
     struct dir_queue_t *current_dir = device_array[dev].root;
-    fcb *current_file = current_dir->head;
+    fcb *current_file = current_dir->tail;
 
     fcb *newfile;
     struct dir_queue_t *new_dirqueue;
@@ -183,7 +183,8 @@ int create(char fs_name, struct path file_path, int dir)
                 /* We found one of the directories in the given path.
                  * Continue recursing. */
                 next = next->next;
-                current_file = current_file->dirHead;
+                current_dir = current_file->dirHead;
+                current_file = current_dir->tail;
             }
 
         } else {
@@ -209,6 +210,8 @@ int create(char fs_name, struct path file_path, int dir)
     newfile->dirHead = new_dirqueue;
     newfile->block_queue = new_blockqueue;
     newfile->device_num = dev;
+
+    dir_enqueue(current_dir, newfile);
 
     return ERROR_SUCCESS;
 }

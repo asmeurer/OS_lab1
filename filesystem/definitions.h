@@ -11,6 +11,8 @@
  * Memory Definitions Header
  */
 
+#include "file_queuemanager.h"
+
 #ifndef FILE_DEF_H
 #define FILE_DEF_H
 
@@ -88,8 +90,8 @@ struct fcb {
 	char filename[NAME_LIMIT];
 	/*0 0 0 0 0 0 0 (Directory)*/
 	byte bits;
-	dir_queue_t* dirHead;
-    block_queue_t block_queue;
+	struct dir_queue_t* dirHead;
+    struct block_queue_t *block_queue;
 	struct fcb* next;
 	struct fcb* prev;
 	byte device_num;
