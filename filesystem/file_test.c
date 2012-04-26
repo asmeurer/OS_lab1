@@ -102,9 +102,9 @@ int main(int argc, char *argv[]) {
 	int error = 0;
 	char command[20];
 	char line[LINE_MAX];
-	int j;
 	int int_arg;
 	int int_arg2;
+	int int_arg3;
 	char char_arg;
 	int temp;
 	char* str_arg;
@@ -150,33 +150,31 @@ int main(int argc, char *argv[]) {
 			
 			if (!strcmp(command, "INIT_FS")) {
 				fgets(line, LINE_MAX, file);
-                error = 1;
-                /*Initial split of line*/
-                init_arg = strtok(line, "\n");
-                /*If there exists arguments*/
-                if (init_arg != NULL){
-                    error = 0;
-                    /*Loop through each character in string checking if it is a digit*/
-                    for(j = 1; j < strlen(init_arg) - 1; j++){
-                        if (!isdigit(init_arg[j])){
-                            error = 1;
-                            break;
-                        }
-                    }
-                    if (error == 0){
-						 int_arg = atoi(init_arg);
-						 if(int_arg >= MAX_DEVICE || int_arg < 0){
+				error = 1;
+				/*Initial split of line*/
+				init_arg = strtok(line, "\n");
+				/*If there exists arguments*/
+				if (init_arg != NULL && strcmp(init_arg, "\n") != 0){
+					/*Skip space*/
+					init_arg++;
+					int_arg = strToIntArg(init_arg);
+					if(int_arg == ERROR_ARG_NOT_INT){
+						printf("Device must be an integer\n");
+						error = 1;
+					}
+					else{
+						if(int_arg >= MAX_DEVICE || int_arg < 0){
 							textcolor(BRIGHT, RED, BLACK);
                             printf("A device must be a number from 0-4.\n");
                             textcolor(BRIGHT, -1, -1);
-						 }else{
-							 init_fs(int_arg);
-							 printf("File System has been initialized.\n");
-							 error = 0;
-						 }	 
+                            error = 1;
+						}else{
+							init_fs(int_arg);
+							printf("File System has been initialized.\n");
+							error = 0;
+						}	 
 					}
 				}
-			
 				if(error == 1){
 					textcolor(BRIGHT, RED, BLACK);
 					printf("Usage: INIT_FS <device_num>\n");
@@ -246,6 +244,32 @@ int main(int argc, char *argv[]) {
 						char_arg = init_arg[0];
 						printf("Calling MOUNT with name %c\n", char_arg);
 						mount(char_arg);
+						error = 0;
+					}
+				}
+				if (error == 1){
+					textcolor(BRIGHT, RED, BLACK);
+					printf("Usage: MOUNT <fs_name>\n");
+					textcolor(RESET, -1, -1);
+				}
+			}
+			
+			else if (!strcmp(command, "UNMOUNT")){
+				fgets(line, LINE_MAX, file);
+				error = 1;
+				/*Initial split of line*/
+				init_arg = strtok(line, "\n");
+				/*If there exists arguments*/
+				if (init_arg != NULL){
+					temp = strlen(init_arg);
+					if (temp != 1 || init_arg[0]<'A' || init_arg[0]>'Z'){
+						printf("fs_name must be one uppercase character A-Z\n");
+						error = 1;
+					}
+					else{
+						char_arg = init_arg[0];
+						printf("Calling UNMOUNT with name %c\n", char_arg);
+						unmount(char_arg);
 						error = 0;
 					}
 				}
@@ -337,6 +361,142 @@ int main(int argc, char *argv[]) {
 					textcolor(RESET, -1, -1);
 				}
 			}
+			else if (!strcmp(command, "READ")) {
+				fgets(line, LINE_MAX, file);
+				error = 1;
+				/*Initial split of line*/
+				init_arg = strtok(line, " ");
+				/*If there exists arguments*/
+				if (init_arg != NULL && strcmp(init_arg, "\n") != 0){
+					int_arg = strToIntArg(init_arg);
+					if(int_arg == ERROR_ARG_NOT_INT){
+						printf("File handle must be an integer\n");
+						error = 1;
+					}
+					else{
+						init_arg = strtok(NULL, " ");
+						int_arg2 = strToIntArg(init_arg);
+						if(int_arg2 == ERROR_ARG_NOT_INT){
+							printf("Block number must be an integer\n");
+							error = 1;
+						}
+						else{
+							init_arg = strtok(NULL, "\n");
+							int_arg3 = strToIntArg(init_arg);
+							if(int_arg3 == ERROR_ARG_NOT_INT){
+								printf("Buf_ptr must be an integer\n");
+								error = 1;
+							}
+							else{
+								printf("Called READ on filehandle %d, block number %d, buf_ptr %d\n", int_arg, int_arg2, int_arg3);
+								read(int_arg, (short)int_arg2, int_arg3);
+								error = 0;
+							}
+						}
+					}
+				}
+				if (error == 1){
+					textcolor(BRIGHT, RED, BLACK);
+					printf("Usage: READ <filehandle> <block_number> <buf_ptr>\n");
+					textcolor(RESET, -1, -1);
+				}
+			}
+			
+			else if (!strcmp(command, "WRITE")) {
+				fgets(line, LINE_MAX, file);
+				error = 1;
+				/*Initial split of line*/
+				init_arg = strtok(line, " ");
+				/*If there exists arguments*/
+				if (init_arg != NULL && strcmp(init_arg, "\n") != 0){
+					int_arg = strToIntArg(init_arg);
+					if(int_arg == ERROR_ARG_NOT_INT){
+						printf("File handle must be an integer\n");
+						error = 1;
+					}
+					else{
+						init_arg = strtok(NULL, " ");
+						int_arg2 = strToIntArg(init_arg);
+						if(int_arg2 == ERROR_ARG_NOT_INT){
+							printf("Block number must be an integer\n");
+							error = 1;
+						}
+						else{
+							init_arg = strtok(NULL, "\n");
+							int_arg3 = strToIntArg(init_arg);
+							if(int_arg3 == ERROR_ARG_NOT_INT){
+								printf("Buf_ptr must be an integer\n");
+								error = 1;
+							}
+							else{
+								printf("Called WRITE on filehandle %d, block number %d, buf_ptr %d\n", int_arg, int_arg2, int_arg3);
+								write(int_arg, (short)int_arg2, int_arg3);
+								error = 0;
+							}
+						}
+					}
+				}
+				if (error == 1){
+					textcolor(BRIGHT, RED, BLACK);
+					printf("Usage: WRITE <filehandle> <block_number> <buf_ptr>\n");
+					textcolor(RESET, -1, -1);
+				}
+			}
+			
+			else if (!strcmp(command, "CLOSE")) {
+				fgets(line, LINE_MAX, file);
+				error = 1;
+				/*Initial split of line*/
+				init_arg = strtok(line, "\n");
+				/*If there exists arguments*/
+				if (init_arg != NULL && strcmp(init_arg, "\n") != 0){
+					/*Skip space*/
+					init_arg++;
+					int_arg = strToIntArg(init_arg);
+					if(int_arg == ERROR_ARG_NOT_INT){
+						printf("File handle must be an integer\n");
+						error = 1;
+					}
+					else{
+						printf("Calling close on %d\n", int_arg);
+						close(int_arg);
+						error = 0;	 
+					}
+				}
+				if(error == 1){
+					textcolor(BRIGHT, RED, BLACK);
+					printf("Usage: CLOSE <file_handle>\n");
+					textcolor(RESET, -1, -1);
+				}
+			}
+			
+			else if(!strcmp(command, "DELETE")) {
+				fgets(line, LINE_MAX, file);
+				error = 1;
+				/*Initial split of line*/
+				init_arg = strtok(line, "\n");
+				/*If there exists arguments*/
+				if (strcmp(init_arg, "\n") != 0 && init_arg != NULL) {
+					/*Skip space*/
+					init_arg++;
+					head_path_arg = parsePath(init_arg, &char_arg);
+					if (head_path_arg == NULL){		
+						error = 1;
+					}else{
+						printf("Calling DELETE on ");
+						printPath(head_path_arg, char_arg);
+						printf("\n");
+						delete(char_arg, head_path_arg);
+						error = 0;				
+					}
+				}
+				if(error == 1){
+					textcolor(BRIGHT, RED, BLACK);
+					printf("Usage: MKDIR <dirname>\n");
+					textcolor(RESET, -1, -1);
+				}
+			}
+			
 			else if (!strcmp(command, "#")) {
 				printf("\n################################################################################\n");
 				printf("#");
