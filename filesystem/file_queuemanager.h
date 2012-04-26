@@ -21,8 +21,8 @@ fcb error_file =
     .block_queue = null,
     .next = null,
     .prev = null,
-    .device_num = -1            /* This is where any error codes will
-                                 * go. */
+    .device_num = -1,
+    .error = -1                   /* This is where any error codes will go. */
 };
 
 block error_block =

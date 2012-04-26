@@ -105,6 +105,7 @@ struct fcb {
     struct fcb* next;
     struct fcb* prev;
     byte device_num;
+    int error;
 };
 struct fcb;
 typedef struct fcb fcb;

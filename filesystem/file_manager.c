@@ -12,7 +12,7 @@
 int init_fs (int device){
 	int i;
 	/*Unmount all devices*/
-	for (i = 0; i < MAX_DEVICE; i++){	
+	for (i = 0; i < MAX_DEVICE; i++){
 		device_array[i].bits = device_array[i].bits & (~DEVICE_MOUNTED_BITMASK);
 	}
 	/*Clear open file array*/
@@ -43,15 +43,6 @@ int format(int device_num, char fs_name, int blocksize){
         return ERROR_INVALID_BLOCK_SIZE;
     }
 
-    for(i = 0; i < MAX_DEVICE; i++){
-        if(!(device_array[device_num].bits & DEVICE_MOUNTED_BITMASK)){
-            device_array[device_num].bits |= DEVICE_FORMAT_BITMASK;
-            device_array[device_num].fs_name = fs_name;
-        }else if(device_array[device_num].bits & DEVICE_MOUNTED_BITMASK){
-            return ERROR_DEVICE_MOUNTED;
-        }
-    }
-
     if(device_num < 0 || device_num >= MAX_DEVICE){
         return ERROR_INVALID_DEVICE_NUM;
     }
@@ -69,11 +60,6 @@ int format(int device_num, char fs_name, int blocksize){
         format_me->bitmap[i] = 0;
     }
     format_me->bits = format_me->bits | DEVICE_FORMAT_BITMASK;
-
-
-    if(device_num < 0 || device_num >= MAX_DEVICE){
-        return ERROR_INVALID_DEVICE_NUM;
-    }
 
     return format_me->numblock;
 }
@@ -96,13 +82,13 @@ fcb *get_file(int dev, path *file_path)
 
     while (next->next != null) {
         if (current_file == null) {
-            error_file.device_num = ERROR_DIR_IS_FILE;
+            error_file.error = ERROR_DIR_IS_FILE;
             return &error_file;
         } else if (filename_eq(current_file->filename, next->string)) {
             if (next->next == null) {
                 return current_file;
             } else if (!(current_file->bits & FCB_DIR_BITMASK)) {
-                error_file.device_num = ERROR_DIR_IS_FILE;
+                error_file.error = ERROR_DIR_IS_FILE;
                 return &error_file;
             } else {
                 next = next->next;
@@ -142,9 +128,9 @@ int open(char fs_name, path *file_path, int write){
         return dev;
     }
 
-    if (file->device_num < 0) {
+    if (file->error < 0) {
         /* There was an error with get_file() */
-        return file->device_num;
+        return file->error;
     }
 
     /* Find and empty open file slot */
@@ -185,21 +171,21 @@ int write(int filehandle, short block_number, int buf_ptr){
 	if(!(file->bits & FCB_DIR_BITMASK)){
 			return ERROR_FILE_IS_DIR;
 	}
-	
+
 	/* Check if the block number is associated with another file, if not set the block */
 	error = set_block_full(file->device_num, block_number);
 	if(error != ERROR_SUCCESS){
 			return error;
 	}
-	
+
 	/* Malloc the block, enqueue it to the block_queue and check for any errors */
 	temp = malloc_block();
 	temp->addr = block_number;
 	error = block_enqueue(file->block_queue, temp);
 	if(error != ERROR_SUCCESS){
-		return error; 
-	}	
-	
+		return error;
+	}
+
 	/*Find next buffer slot*/
 	for(i = 0; i < BUFFER_SIZE; i++){
 		if(buffers[buf_ptr]->init == 0){
@@ -314,6 +300,7 @@ int create(char fs_name, struct path *file_path, int dir)
     newfile->containing_dir = current_dir;
     newfile->block_queue = new_blockqueue;
     newfile->device_num = dev;
+    newfile->error = 0;
 
     dir_enqueue(current_dir, newfile);
 
@@ -331,8 +318,8 @@ int delete(char fs_name, struct path *file_path)
     if (file->bits | FCB_DIR_BITMASK) {
         if (file->dirHead == null) {
             file = dir_delete(file->containing_dir, file);
-            if (file->device_num < 0) {
-                return file->device_num;
+            if (file->error < 0) {
+                return file->error;
             }
             Free(file);
         } else {
@@ -340,8 +327,8 @@ int delete(char fs_name, struct path *file_path)
         }
     } else {
         file = dir_delete(file->containing_dir, file);
-        if (file->device_num < 0) {
-            return file->device_num;
+        if (file->error < 0) {
+            return file->error;
         }
         /* Clear all the blocks in the file.  This means setting the addresses
          * as free in the bitmap and actually clearing the "memory" of those

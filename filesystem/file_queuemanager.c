@@ -79,13 +79,13 @@ int dir_enqueue(struct dir_queue_t *queue, fcb *file) {
 fcb *dir_dequeue(struct dir_queue_t *queue){
 
     if (queue->initialized == 0) {
-        error_file.device_num = ERROR_BAD_DIR_QUEUE;
+        error_file.error = ERROR_BAD_DIR_QUEUE;
         return &error_file;
     }
 
     /*If queue is empty*/
     if (queue->head == null) {
-        error_file.device_num = ERROR_DIR_QUEUE_EMPTY;
+        error_file.error = ERROR_DIR_QUEUE_EMPTY;
         return &error_file;
     }
 
@@ -110,13 +110,13 @@ fcb *dir_delete(struct dir_queue_t *queue, fcb *to_delete)
 
     if (queue->head == null && queue->tail == null) {
         /* The queue is empty */
-        error_file.device_num = ERROR_DIR_QUEUE_EMPTY;
+        error_file.error = ERROR_DIR_QUEUE_EMPTY;
         return &error_file;
     }
 
     /*If process doesn't exist*/
     if (to_delete == null){
-        error_file.device_num = ERROR_BAD_FILE_PTR;
+        error_file.error = ERROR_BAD_FILE_PTR;
         return &error_file;
     }
     fcb *ret = to_delete;
