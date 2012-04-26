@@ -1,0 +1,59 @@
+#INIT_FS TESTS
+# Init a single device 
+INIT_FS 0
+# Init multiple devices 
+INIT_FS 1
+INIT_FS 2
+INIT_FS 3
+# Attempt to init a device not known
+INIT_FS 5
+# FORMAT TESTS
+# Test that format works correctly
+FORMAT 0 C 4
+# Test that user cant format a device with an invalid block size
+FORMAT 0 C 2
+FORMAT 0 C 5
+FORMAT 0 C 10
+# Attempt to formate a device that is already mounted
+FORMAT 0 C 4
+MOUNT C
+FORMAT 0 C 4
+# Attempt to format a device with a bad file system name
+FORMAT 0 hello 4 
+# MKDIR TESTS
+# Test mkdir works correctly
+MKDIR C/TEST
+# Test that a directory can be made inside another
+MKDIR C/TEST/DIR
+# Attempt to create a directory on a file system that does not exist
+MKDIR Z/DIR
+# Attempt to create 2 directories inside one
+MKDIR C/TEST1
+# Attempt create a deeply nested directory structure
+MKDIR C/TEST/DIR
+MKDIR C/TEST/DIR/DIR1
+MKDIR C/TEST/DIR1/DIR2
+MKDIR C/TEST/DIR1/DIR2/DIR3
+MKDIR C/TEST/DIR1/DIR2/DIR3/DIR4
+MKDIR C/TEST/DIR1/DIR2/DIR3/DIR4/DIR5
+MKDIR C/TEST/DIR1/DIR2/DIR3/DIR4/DIR5/DIR6
+MKDIR C/TEST/DIR1/DIR2/DIR3/DIR4/DIR5/DIR6/DIR7
+# OPEN TESTS
+# Test if open works correctly for all arguments
+OPEN C/foo NEW
+CLOSE 0
+OPEN C/foo READ-ONLY
+CLOSE 0
+OPEN C/foo READ-WRITE
+# Attempt  
+OPEN foo NEW
+# Attempt to open more files than allowed
+OPEN C/a NEW
+OPEN C/b NEW 
+OPEN C/c NEW
+OPEN C/d NEW
+OPEN C/e NEW
+OPEN C/f NEW 
+OPEN C/g NEW
+# Attempt to create a file in a directory doesnt exist
+OPEN C/SOMETHING/file
