@@ -239,15 +239,14 @@ fcb *get_file(int dev, path *file_path)
     struct path *next = file_path;
     struct dir_queue_t *current_dir = device_array[dev].root->dirHead;
     fcb *current_file = current_dir->tail;
+    fcb *p;
 
     while (next->next != null) {
         if (current_file == null) {
             error_file.error = ERROR_DIR_IS_FILE;
             return &error_file;
         } else if (filename_eq(current_file->filename, next->string)) {
-            if (next->next == null) {
-                return current_file;
-            } else if (!(current_file->bits & FCB_DIR_BITMASK)) {
+            if (!(current_file->bits & FCB_DIR_BITMASK)) {
                 error_file.error = ERROR_DIR_IS_FILE;
                 return &error_file;
             } else {
@@ -259,8 +258,16 @@ fcb *get_file(int dev, path *file_path)
             current_file = current_file->next;
         }
     }
+    p = current_dir->tail;
+    while (p != null) {
+        if (filename_eq(p->filename, next->string)) {
+            return p;
+        }
+        p = p->next;
+    }
 
-    return current_file;
+    error_file.error = ERROR_FILE_NOT_FOUND;
+    return &error_file;
 }
 
 /**

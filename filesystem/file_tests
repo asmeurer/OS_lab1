@@ -79,15 +79,13 @@ OPEN C/d NEW
 OPEN C/e NEW
 OPEN C/f NEW
 OPEN C/g NEW
-# Attempt to create a file in a directory doesnt exist
-OPEN C/SOMETHING/file
-# Attempt to create a file with a bad file name
-OPEN C/d$32/4fdwd NEW
+# Attempt to create a file in a directory that doesn't exist
+OPEN C/something/file NEW
 # Attempt to make file containing a space in the name
 OPEN C/file name NEW
 # Attempt to open a directory for both read-only and read-write
-OPEN C READ-ONLY
-OPEN C READ-WRITE
+OPEN C/TEST READ-ONLY
+OPEN C/TEST READ-WRITE
 # WRITE TEST
 # Test if write works correctly
 OPEN C/a READ-WRITE

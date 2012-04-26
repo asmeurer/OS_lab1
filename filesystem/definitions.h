@@ -55,6 +55,7 @@ typedef unsigned char byte;
 #define ERROR_FS_NAME_NOT_EXISTS -33
 #define ERROR_FILE_IS_READ_ONLY -34
 #define ERROR_FILE_HANDLE_OUT_OF_RANGE -35
+#define ERROR_FILE_NOT_FOUND -36
 
 /* Constants
  *

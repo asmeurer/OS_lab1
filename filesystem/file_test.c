@@ -347,6 +347,9 @@ void errorToString(int error, char* command){
     case ERROR_FILE_HANDLE_OUT_OF_RANGE:
         printf("File handle is out of range\n");
         break;
+    case ERROR_FILE_NOT_FOUND:
+        printf("File not found\n");
+        break;
     default:
         printf("Unknown error\n");
     }
