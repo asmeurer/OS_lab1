@@ -109,7 +109,7 @@ typedef struct{
 	char fs_name;
 	/*0 0 0 0 0 0 (Mounted) (Formated)*/
 	byte bits;
-}device;
+} device;
 
 /*Device list*/
 device device_array [MAX_DEVICE];
@@ -118,7 +118,7 @@ typedef struct{
 	fcb* file;
 	byte bits;
     /* 0 0 0 0 0 0 (write access) (open) */
-}open_type;
+} open_type;
 /*Open files array*/
 open_type open_files[MAX_OPEN];
 
