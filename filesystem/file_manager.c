@@ -109,6 +109,10 @@ int format(int device_num, char fs_name, int blocksize){
 
     error = delete_internal(device_num, format_me->root);
 
+    if (error < 0) {
+        return error;
+    }
+
     /*Erase*/
     for(i = 0; i < MEM_SIZE / 32; i++){
         format_me->bitmap[i] = 0;
@@ -120,8 +124,8 @@ int format(int device_num, char fs_name, int blocksize){
     format_me->root->bits = 0;
     format_me->root->dirHead = null;
     /* This is the reason we don't use create() to make the root directory.
-     * It has a special case for containing_dir, which is just null. */
-    format_me->root->containing_dir = null;
+     * It has a special case for parent_dir, which is just null. */
+    format_me->root->parent_dir = null;
     format_me->root->block_queue = null;
     format_me->root->next = null;
     format_me->root->prev = null;
@@ -515,7 +519,7 @@ int create(char fs_name, struct path *file_path, int dir)
     filename_copy(newfile->filename, next->string);
     newfile->bits = dir;
     newfile->dirHead = new_dirqueue;
-    newfile->containing_dir = current_dir;
+    newfile->parent_dir = current_dir;
     newfile->block_queue = new_blockqueue;
     newfile->device_num = dev;
     newfile->error = 0;
@@ -531,7 +535,11 @@ int create(char fs_name, struct path *file_path, int dir)
  * Directories are recursively deleted. All blocks for deleted files are
  * files.
  *
- * @param fs_name The filesystem where
+ * @param fs_name The filesystem where the file to be deleted is.
+ *
+ * @param file_path The path data structure for the file to be deleted.
+ *
+ * @return Returns ERROR_SUCCESS on success and an error code on failure.
  */
 int delete(char fs_name, struct path *file_path)
 {
@@ -548,7 +556,9 @@ int delete(char fs_name, struct path *file_path)
     return delete_internal(dev, file);
 }
 
-
+/**
+ * Internal function that does the heavy work for delete().
+ */
 int delete_internal(int dev, fcb *file)
 {
     int error;
@@ -558,7 +568,8 @@ int delete_internal(int dev, fcb *file)
     /* If the file is a directory, delete it if and only if it is empty. */
     if (file->bits | FCB_DIR_BITMASK) {
         if (file->dirHead == null) {
-            file = dir_delete(file->containing_dir, file);
+            /* The directory is empty.  Just delete it. */
+            file = dir_delete(file->parent_dir, file);
             if (file->error < 0) {
                 return file->error;
             }
@@ -574,13 +585,16 @@ int delete_internal(int dev, fcb *file)
             }
         }
     } else {
-        file = dir_delete(file->containing_dir, file);
+        /* If the file is a file (not a directory), then delete all the data
+         * (blocks), in addition to the fcb. */
+        file = dir_delete(file->parent_dir, file);
         if (file->error < 0) {
             return file->error;
         }
         /* Clear all the blocks in the file.  This means setting the addresses
-         * as free in the bitmap and actually clearing the "memory" of those
-         * blocks. */
+         * as free in the bitmap and actually clearing the "data" of those
+         * blocks by calling Free in the hardware simulator (which actually
+         * only frees the data structures associated with the blocks). */
         file_block = block_dequeue(file->block_queue);
         while (file_block != null) {
             error = set_block_empty(dev, file_block->addr) < 0;
@@ -594,8 +608,18 @@ int delete_internal(int dev, fcb *file)
     return ERROR_SUCCESS;
 }
 
-
-/* Convert a filesystem character name to a device number */
+/**
+ * Convert a filesystem character name to a device number.
+ *
+ * Used internally.  The public API uses the filesystem name, and the private
+ * API uses the device number.  This function converts one to the other.
+ *
+ * The filesystem character must be an uppercase letter (A-Z).
+ *
+ * @param fs_name The filesystem name to be converted.
+ *
+ * @return Returns the device number of success and an error code on failure.
+ */
 int get_device(char fs_name)
 {
     int i;
@@ -613,8 +637,19 @@ int get_device(char fs_name)
     return ERROR_FS_NAME_NOT_EXISTS;
 }
 
-/* Custom version of strcmp to compare filenames. Returns 0 if the names are
- * unequal and 1 if they are equal. */
+/**
+ * Custom version of strcmp to compare filenames.
+ *
+ * This is here because we cannot use the system call version.  It has the
+ * bounds check for the size of a filename built-in.
+ *
+ * @param string1 The first string to be compared.
+ *
+ * @param string2 The second string to be compared.
+ *
+ * @return Returns 0 if the string1 and string2 are unequal and 1 if they are
+ * equal.
+ */
 int filename_eq(char *string1, char *string2)
 {
     int i;
@@ -622,12 +657,25 @@ int filename_eq(char *string1, char *string2)
         if (string1[i] != string2[i]) {
             return 0;
         }
+        if (string1[i] == '\0' || string2[i] == '\0') {
+            return 1;
+        }
     }
+    /* If we reach this, it's probably bad, because it means the strings
+     * don't end with null terminators.  But we'll let someone else worry
+     * about that. */
     return 1;
 }
 
-/* Custom version of strcpy for filenames. Copies the string from source into
- * dest.  Doesn't do any error checking. */
+/**
+ * Custom version of strcpy for filenames.  Copies the string from source into
+ * dest.  Doesn't do any error checking.  It has the filename length bounds
+ * check built-in.
+ *
+ * @param source The string to be copied into.
+ *
+ * @param dest The string to be copied.
+ */
 void filename_copy(char *source, char *dest)
 {
     int i;
@@ -639,9 +687,12 @@ void filename_copy(char *source, char *dest)
 
 /**
  * Find a free block slot in the device.  This will correspond to a 0 bit in
- * the blocks_free byte array.
+ * the bitmap byte array.  This is the same function from the memory manager
+ * used to find empty slots in the backing store.
+ *
  * @param dev Device number to search.
- * @return Returns the index of the empty backing frame.
+ *
+ * @return Returns the address of the empty block.
  */
 unsigned short find_empty_block(int dev) {
     int prefix;
@@ -681,12 +732,16 @@ unsigned short find_empty_block(int dev) {
 
 
 /**
- * Set the block address addr to full.  Returns errors if the block is
- * already in the state it is being set to, or if the address is out of
- * bounds.
+ * Set the block address addr to full.  Returns errors if the block is already
+ * in the state it is being set to, or if the address is out of bounds.  This
+ * is the same function from the memory manager to set a frame as empty in the
+ * backing store.
+ *
  * @param dev The device to set.
+ *
  * @param addr The address to be set as empty.
- * @return Returns an error code.
+ *
+ * @return Returns ERROR_SUCCESS on success or an error code on failure.
  */
 int set_block_empty(int dev, unsigned short addr) {
     int prefix;
@@ -712,12 +767,16 @@ int set_block_empty(int dev, unsigned short addr) {
 }
 
 /**
- * Set the address addr to empty. Returns errors if the memory is
+ * Set the block address addr to empty. Returns errors if the memory is
  * already in the state it is being set to, or if the address is out of
- * bounds.
+ * bounds.  This is the same function from the memory manager to set a frame
+ * as full in the backing store.
+ *
  * @param dev The device to set.
+ *
  * @param addr The address to be set as full.
- * @return Returns an error code.
+ *
+ * @return Returns ERROR_SUCCESS on success and an error code on failure.
  */
 int set_block_full(int dev, unsigned short addr) {
     int prefix;
