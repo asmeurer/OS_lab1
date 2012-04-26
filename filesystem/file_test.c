@@ -477,6 +477,7 @@ int main(int argc, char *argv[]) {
 				init_arg = strtok(line, "\n");
 				/*If there exists arguments*/
 				if (init_arg != NULL){
+                    init_arg++;
 					temp = strlen(init_arg);
 					if (temp != 1 || init_arg[0]<'A' || init_arg[0]>'Z'){
 						printf("fs_name must be one uppercase character A-Z\n");
